@@ -1,0 +1,2199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Every Time I Die · Bandcamp Discography Archive (2009–2021)</title>
+<meta name="description" content="Self-contained Bandcamp discography player for Every Time I Die (2009–2021), color-adaptive to all seven album covers with official embeds, liner notes, Cover Wall, Favorites, and Recently Played.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void: #08080a;
+  --surface: rgba(15, 15, 19, 0.86);
+  --surface-strong: rgba(11, 11, 14, 0.94);
+  --surface-elevated: rgba(21, 21, 26, 0.92);
+  --rule: rgba(242, 238, 231, 0.14);
+  --rule-strong: rgba(242, 238, 231, 0.28);
+  --ink: #f3efe8;
+  --ink-soft: #c5bfb4;
+  --ink-dim: #8a847b;
+
+  /* Dynamic per-album chromatic variables (updated on release switch) */
+  --accent: #f5248e;
+  --accent-2: #39e869;
+  --accent-3: #f5eb2c;
+  --accent-rgb: 245, 36, 142;
+  --accent2-rgb: 57, 232, 105;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --font-display: 'Big Shoulders Display', Impact, sans-serif;
+  --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--void);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input, select, a {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* FULL-BLEED DRIFTING COVER-ART COLLAGE BACKDROP */
+.collage-bg {
+  position: fixed;
+  inset: -44px;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.collage-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 6px;
+  width: calc(100% + 88px);
+  height: calc(100% + 88px);
+  filter: blur(5px) contrast(1.16) saturate(1.05) brightness(0.26);
+  animation: slowDrift 44s ease-in-out infinite alternate;
+  transform-origin: center;
+  will-change: transform;
+}
+@media (max-width: 900px) {
+  .collage-grid { grid-template-columns: repeat(4, 1fr); }
+}
+.collage-tile {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  opacity: 0.92;
+  background: #141418;
+}
+
+/* Active release ambient color bloom */
+.active-bloom {
+  position: fixed;
+  inset: -60px;
+  z-index: 1;
+  pointer-events: none;
+  background-size: cover;
+  background-position: center;
+  filter: blur(78px) saturate(1.35) brightness(0.28);
+  opacity: 0.58;
+  transition: background-image 0.7s ease;
+}
+
+/* Perspective horizon wireframe + print grain veil (inspired by AWOL, Radical & Ex Lives) */
+.print-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 68% 52% at 18% 14%, rgba(var(--accent-rgb), 0.16), transparent 64%),
+    radial-gradient(ellipse 60% 48% at 86% 84%, rgba(var(--accent2-rgb), 0.11), transparent 62%),
+    radial-gradient(ellipse at center, rgba(8, 8, 10, 0.44) 18%, rgba(5, 5, 7, 0.92) 100%);
+  transition: background 0.5s ease;
+}
+.print-veil::before {
+  content: '';
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: -6%;
+  height: 36vh;
+  opacity: 0.08;
+  background-image:
+    linear-gradient(to right, rgba(243, 239, 232, 0.45) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(243, 239, 232, 0.45) 1px, transparent 1px);
+  background-size: 56px 36px;
+  transform: perspective(420px) rotateX(62deg);
+  transform-origin: bottom center;
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent 85%);
+  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent 85%);
+}
+.print-veil::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.11;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.05' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+@keyframes slowDrift {
+  0% { transform: translate3d(-12px, -8px, 0) scale(1.04); }
+  100% { transform: translate3d(14px, 10px, 0) scale(1.09); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collage-grid { animation: none; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+/* HEADER */
+.header {
+  position: relative;
+  z-index: 20;
+  padding: 14px 28px;
+  background: var(--surface-strong);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* Thin prismatic hairline echoing From Parts Unknown beams + Radical neon */
+.header::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent) 22%,
+    var(--accent-2) 52%,
+    var(--accent-3) 78%,
+    transparent 100%
+  );
+  opacity: 0.85;
+  transition: background 0.45s ease;
+}
+
+.brand-zone {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.etid-mark {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--rule-strong);
+  background: rgba(var(--accent-rgb), 0.14);
+  color: var(--accent);
+  flex-shrink: 0;
+  clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 0 100%);
+  transition: color 0.35s ease, background 0.35s ease, border-color 0.35s ease;
+}
+
+.brand-title {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3vw, 36px);
+  font-weight: 800;
+  line-height: 0.94;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.brand-sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-dim);
+  margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-btn {
+  background: rgba(20, 20, 25, 0.9);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 8px 14px;
+  min-height: 38px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: border-color 0.16s var(--ease), background 0.16s var(--ease), color 0.16s var(--ease), transform 0.16s var(--ease);
+}
+
+.action-btn:hover {
+  border-color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.14);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.action-btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #09090b;
+  font-weight: 600;
+}
+
+.action-btn.primary:hover {
+  filter: brightness(1.1);
+  color: #050507;
+}
+
+.action-btn.active {
+  border-color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.22);
+  color: #fff;
+}
+
+.action-btn .count-num {
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  font-weight: 600;
+}
+.action-btn.primary .count-num,
+.action-btn.active .count-num {
+  color: inherit;
+}
+
+.back-link {
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 4px;
+  margin-right: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.16s var(--ease), border-color 0.16s var(--ease);
+}
+.back-link:hover {
+  color: var(--ink);
+  border-bottom-color: var(--accent);
+}
+
+/* MAIN SPLIT LAYOUT */
+.app {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 390px 1fr;
+  min-height: calc(100vh - 76px);
+}
+.app.hidden { display: none; }
+
+@media (max-width: 980px) {
+  .header { padding: 12px 16px; }
+  .app { grid-template-columns: 1fr; }
+}
+
+/* SIDEBAR */
+.sidebar {
+  background: var(--surface);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border-right: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 76px);
+  overflow: hidden;
+}
+
+@media (max-width: 980px) {
+  .sidebar {
+    max-height: none;
+    border-right: none;
+    border-bottom: 1px solid var(--rule);
+  }
+}
+
+.sidebar-controls {
+  padding: 16px 16px 14px;
+  border-bottom: 1px solid var(--rule);
+  background: rgba(10, 10, 13, 0.84);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.scope-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-dim);
+  font-variant-numeric: tabular-nums;
+}
+.scope-row .count-hi {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.search-input {
+  width: 100%;
+  background: rgba(18, 18, 22, 0.95);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  color: var(--ink);
+  padding: 10px 12px;
+  font-size: 13.5px;
+  transition: border-color 0.16s var(--ease);
+}
+.search-input::placeholder { color: var(--ink-dim); }
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.select-input {
+  width: 100%;
+  background: rgba(18, 18, 22, 0.95);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  color: var(--ink-soft);
+  padding: 8px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+}
+.select-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.sidebar-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 2px;
+}
+.sidebar-tools-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+.view-segmented {
+  display: inline-flex;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.mini-toggle {
+  background: transparent;
+  border: none;
+  color: var(--ink-dim);
+  padding: 6px 11px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease);
+}
+.mini-toggle:hover { color: var(--ink); }
+.mini-toggle.active {
+  background: var(--accent);
+  color: #08080a;
+  font-weight: 600;
+}
+
+/* ALBUM LIST */
+.album-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.album-list.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  align-content: start;
+  padding: 12px;
+}
+
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 60px 1fr 34px;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 10px;
+  background: rgba(16, 16, 20, 0.65);
+  border: 1px solid transparent;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.16s var(--ease), border-color 0.16s var(--ease), transform 0.16s var(--ease);
+}
+.row:hover {
+  background: rgba(25, 25, 31, 0.9);
+  border-color: var(--rule);
+  transform: translateX(2px);
+}
+.row.active {
+  background: rgba(var(--accent-rgb), 0.14);
+  border-color: var(--accent);
+}
+
+.thumb-wrap {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  background: #141418;
+  border: 1px solid var(--rule);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.row-swatch-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  display: flex;
+}
+.row-swatch-bar i {
+  flex: 1;
+  display: block;
+}
+
+.info { min-width: 0; }
+.row-title {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.row.active .row-title {
+  color: #fff;
+}
+.row-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-dim);
+  margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.row-sub {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fav-star {
+  width: 34px;
+  height: 34px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: var(--ink-dim);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s var(--ease), border-color 0.15s var(--ease), transform 0.15s var(--ease);
+}
+.fav-star:hover {
+  color: var(--accent);
+  border-color: var(--rule);
+  transform: scale(1.08);
+}
+.fav-star.saved {
+  color: var(--accent);
+}
+
+/* Sidebar Mini-Grid Tile */
+.grid-tile {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #121216;
+  transition: transform 0.18s var(--ease), border-color 0.18s var(--ease);
+}
+.grid-tile:hover {
+  transform: translateY(-2px);
+  border-color: var(--ink-soft);
+}
+.grid-tile.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.grid-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.grid-tile-cap {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 26px 8px 7px;
+  background: linear-gradient(180deg, transparent, rgba(6, 6, 8, 0.94));
+}
+.grid-tile-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.05;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.grid-tile-year {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+/* DETAIL STAGE */
+.detail {
+  overflow-y: auto;
+  max-height: calc(100vh - 76px);
+  padding: 26px 32px 48px;
+}
+@media (max-width: 980px) {
+  .detail {
+    max-height: none;
+    padding: 20px 16px 40px;
+  }
+}
+
+.detail-stage {
+  max-width: 1060px;
+  margin: 0 auto;
+  animation: fadeIn 0.24s var(--ease);
+}
+
+/* RECENTLY PLAYED STRIP */
+.history-strip {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  background: var(--surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+}
+.history-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-dim);
+  font-variant-numeric: tabular-nums;
+}
+.history-clear {
+  background: transparent;
+  border: none;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+.history-clear:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.history-items {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+.history-chip {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 10px 5px 5px;
+  background: rgba(18, 18, 22, 0.85);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  cursor: pointer;
+  flex-shrink: 0;
+  max-width: 210px;
+  transition: border-color 0.16s var(--ease), background 0.16s var(--ease);
+}
+.history-chip:hover {
+  border-color: var(--ink-soft);
+  background: rgba(28, 28, 34, 0.95);
+}
+.history-chip.active {
+  border-color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.16);
+}
+.history-chip img {
+  width: 34px;
+  height: 34px;
+  object-fit: cover;
+  display: block;
+  background: #141418;
+  flex-shrink: 0;
+}
+.history-chip-text { min-width: 0; }
+.history-chip-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.history-chip-year {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* HERO CARD — Notched corner frame inspired by Radical & A Colossal Wreck */
+.hero-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 248px 1fr;
+  gap: 28px;
+  align-items: start;
+  padding: 24px;
+  background: var(--surface-strong);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid var(--rule-strong);
+  margin-bottom: 20px;
+  clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 26px, 100% 100%, 0 100%);
+}
+.hero-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(225deg, var(--accent) 48%, transparent 50%);
+  opacity: 0.9;
+  pointer-events: none;
+  transition: background 0.4s ease;
+}
+
+@media (max-width: 740px) {
+  .hero-card {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 18px;
+  }
+}
+
+.hero-art-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hero-art-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #121216;
+  border: 1px solid var(--rule-strong);
+  overflow: hidden;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.65);
+}
+.hero-art {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Extracted album cover palette bar */
+.palette-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+}
+.palette-swatch {
+  height: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  position: relative;
+}
+.palette-caption {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-dim);
+}
+
+.hero-content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hero-meta-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.hero-meta-line .meta-accent {
+  color: var(--accent);
+  font-weight: 600;
+}
+.hero-meta-line .sep {
+  color: var(--ink-dim);
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 58px);
+  font-weight: 800;
+  line-height: 0.94;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #fff;
+  text-wrap: balance;
+}
+
+.hero-credits-summary {
+  font-size: 14px;
+  color: var(--ink-soft);
+  max-width: 62ch;
+}
+.hero-credits-summary strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.hero-featured {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-dim);
+  padding-top: 2px;
+}
+.hero-featured b {
+  color: var(--accent-2);
+  font-weight: 600;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 6px;
+}
+
+/* DECK GRID: Bandcamp Player + Companion Gatefold */
+.deck-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 1.05fr) minmax(300px, 0.95fr);
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 1080px) {
+  .deck-grid { grid-template-columns: 1fr; }
+}
+
+.iframe-shell {
+  background: var(--surface-strong);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 12px;
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+}
+.iframe-shell iframe {
+  width: 100%;
+  flex: 1;
+  min-height: 496px;
+  border: 0;
+  background: #0b0b0e;
+}
+
+.companion-card {
+  background: var(--surface);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.panel-heading {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+/* Discography 6-Sleeve Quick Switcher */
+.mini-collage {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.mini-collage-item {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #121216;
+  transition: transform 0.16s var(--ease), border-color 0.16s var(--ease);
+}
+.mini-collage-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+.mini-collage-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.mini-collage-item span {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 18px 6px 5px;
+  background: linear-gradient(180deg, transparent, rgba(6, 6, 8, 0.94));
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Liner Notes & Tracklist Tabs inside Companion Gatefold */
+.gatefold-tabs {
+  display: flex;
+  gap: 16px;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+.gatefold-tab {
+  background: transparent;
+  border: none;
+  padding: 2px 0 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-dim);
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+  transition: color 0.15s;
+}
+.gatefold-tab:hover { color: var(--ink); }
+.gatefold-tab.active { color: var(--ink); }
+.gatefold-tab.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -9px;
+  height: 2px;
+  background: var(--accent);
+}
+
+.credits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13.5px;
+}
+.credit-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(242, 238, 231, 0.06);
+}
+.credit-row:last-child { border-bottom: none; padding-bottom: 0; }
+.credit-key {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ink-dim);
+}
+.credit-val {
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.tracklist-rows {
+  display: flex;
+  flex-direction: column;
+  max-height: 256px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.track-row {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: 8px;
+  align-items: baseline;
+  padding: 6px 4px;
+  border-bottom: 1px solid rgba(242, 238, 231, 0.06);
+  font-size: 13px;
+}
+.track-row:last-child { border-bottom: none; }
+.track-row.match {
+  background: rgba(var(--accent-rgb), 0.14);
+}
+.track-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-dim);
+  font-variant-numeric: tabular-nums;
+}
+.track-name {
+  color: var(--ink);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.track-dur {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* PREV / NEXT NAV BAR */
+.detail-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+@media (max-width: 600px) {
+  .detail-nav { grid-template-columns: 1fr; }
+}
+.nav-btn {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  color: var(--ink);
+  padding: 13px 16px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.16s var(--ease), background 0.16s var(--ease), transform 0.16s var(--ease);
+}
+.nav-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.12);
+  transform: translateY(-1px);
+}
+.nav-btn:disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+}
+.nav-btn.next { text-align: right; }
+.nav-btn small {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.nav-btn span {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.kbd-bar {
+  margin-top: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-dim);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* FULL COVER WALL VIEW — Museum-grade large format for 7 releases */
+.wall-view {
+  position: relative;
+  z-index: 12;
+  display: none;
+  padding: 24px 28px 64px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.wall-view.open { display: block; }
+
+.wall-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+  padding: 14px 20px;
+  background: var(--surface-strong);
+  border: 1px solid var(--rule-strong);
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
+}
+.wall-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.wall-sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.wall-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
+.wall-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-strong);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease), border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.wall-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--card-accent, var(--accent));
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.72);
+}
+.wall-card.active {
+  border-color: var(--card-accent, var(--accent));
+  box-shadow: 0 0 0 1px var(--card-accent, var(--accent));
+}
+.wall-card-img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  background: #121216;
+}
+.wall-card-swatches {
+  display: flex;
+  height: 4px;
+}
+.wall-card-swatches i {
+  flex: 1;
+  display: block;
+}
+.wall-cap {
+  padding: 14px 16px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.wall-cap-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.wall-cap-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.wall-cap-art {
+  font-size: 12px;
+  color: var(--ink-dim);
+  margin-top: 2px;
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  background: #121216;
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  color: var(--ink);
+  padding: 11px 16px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  z-index: 300;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* SCROLLBARS */
+::-webkit-scrollbar { width: 8px; height: 6px; }
+::-webkit-scrollbar-track { background: #08080a; }
+::-webkit-scrollbar-thumb { background: rgba(242, 238, 231, 0.18); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="collage-bg" aria-hidden="true">
+  <div class="collage-grid" id="collageGrid"></div>
+</div>
+<div class="active-bloom" id="activeBloom" aria-hidden="true"></div>
+<div class="print-veil" aria-hidden="true"></div>
+
+<header class="header">
+  <div class="brand-zone">
+    <div class="etid-mark" aria-hidden="true">
+      <!-- Bespoke SVG inspired by Every Time I Die's iconic blackletter "I" crest across Radical, Ex Lives & New Junk Aesthetic -->
+      <svg width="24" height="28" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5.2 5.4C7.8 3.6 11.6 2.8 16.5 2.4L19.6 1.8C17.8 5.2 16.8 9.4 16.4 14.2C16.1 18.6 16.6 21.8 18.4 24.4C14.8 25.8 10.6 26.5 5.4 26.4L3.8 24.7C6.8 23.6 8.9 21.4 9.6 17.8L10.4 13.7C8.6 13.5 6.8 13.9 5.1 14.9L4.4 13.1C6.4 11.2 8.7 10.3 11.1 10.3L11.9 6.3C9.6 6.4 7.7 7.1 6.1 8.4L5.2 5.4Z" fill="currentColor"/>
+        <path d="M18.6 5.2C17.6 10.2 17.5 16.4 19.8 22.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div>
+      <div class="brand-title">Every Time I Die</div>
+      <div class="brand-sub">7 Bandcamp Releases · Buffalo, NY · 2009–2021</div>
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <a class="back-link" href="./index.html">← All Players</a>
+    <button class="action-btn primary" id="randomBtn" title="Jump to a random release (R)">Random</button>
+    <button class="action-btn" id="favFilterBtn" title="Toggle saved releases">Saved <span class="count-num" id="favCount">0</span></button>
+    <button class="action-btn" id="wallToggleBtn" title="Toggle 7-sleeve Cover Wall (W)">Cover Wall</button>
+    <button class="action-btn" id="remixCollageBtn" title="Shuffle background cover mosaic">Shuffle Backdrop</button>
+    <a class="action-btn" href="https://everytimeidie.bandcamp.com/" target="_blank" rel="noopener">Bandcamp ↗</a>
+  </div>
+</header>
+
+<div class="app" id="splitApp">
+  <aside class="sidebar">
+    <div class="sidebar-controls">
+      <div class="scope-row">
+        <span><span class="count-hi" id="visibleCount">7</span> / 7 Releases · 75 Tracks</span>
+        <span id="scopeLabel">Newest First</span>
+      </div>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search album, track, producer, or guest...">
+      <div class="controls-grid">
+        <select class="select-input" id="sortSelect" aria-label="Sort releases">
+          <option value="newest">Sort: Newest First</option>
+          <option value="oldest">Sort: Chronological</option>
+          <option value="tracks">Sort: Most Tracks</option>
+          <option value="album">Sort: Title A–Z</option>
+        </select>
+        <select class="select-input" id="eraSelect" aria-label="Filter by format or credits">
+          <option value="ALL">All Releases (7)</option>
+          <option value="LP">Full-Length LPs (5)</option>
+          <option value="SINGLE">Singles (2)</option>
+          <option value="PUTNEY">Will Putney Produced (4)</option>
+          <option value="JOBY">Joby J. Ford Art (2)</option>
+        </select>
+      </div>
+      <div class="sidebar-tools">
+        <span class="sidebar-tools-label">Catalog View</span>
+        <div class="view-segmented" role="group" aria-label="Catalog view mode">
+          <button class="mini-toggle active" id="viewListBtn" type="button">List</button>
+          <button class="mini-toggle" id="viewGridBtn" type="button">Covers</button>
+        </div>
+      </div>
+    </div>
+    <div class="album-list" id="albumList"></div>
+  </aside>
+
+  <main class="detail" id="detail"></main>
+</div>
+
+<section class="wall-view" id="wallView" aria-label="Cover Wall">
+  <div class="wall-header">
+    <div>
+      <div class="wall-title">Every Time I Die · Cover Wall</div>
+      <div class="wall-sub"><span id="wallCount">7</span> Releases · Click any sleeve to load its Bandcamp deck and adaptive palette</div>
+    </div>
+    <button class="action-btn" id="closeWallBtn" type="button">← Back to Player</button>
+  </div>
+  <div class="wall-grid" id="wallGrid"></div>
+</section>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const RELEASES = [
+  {
+    idx: 1,
+    id: 646459213,
+    artId: 403343777,
+    title: "Radical",
+    url: "https://everytimeidie.bandcamp.com/album/radical",
+    date: "Oct 22, 2021",
+    year: 2021,
+    format: "Full-Length LP",
+    formatKey: "LP",
+    featured: "Dark Distance",
+    duration: "51:19",
+    producer: "Will Putney",
+    studio: "Recorded at GCR Audio (Buffalo, NY) · Mixed & Mastered at Graphic Nature Audio (Belleville, NJ)",
+    artwork: "Corey Meyers",
+    lineup: "Keith Buckley (Vocals), Jordan Buckley (Guitar), Andy Williams (Guitar), Steve Micciche (Bass), Clayton “Goose” Holyoak (Drums)",
+    guests: "",
+    paletteName: "Acid Wireframe · Magenta / Phosphor / Yellow",
+    accent: "#f5248e",
+    accent2: "#39e869",
+    accent3: "#f5eb2c",
+    accentRgb: "245, 36, 142",
+    accent2Rgb: "57, 232, 105",
+    linkCol: "f5248e",
+    swatches: ["#f5248e", "#39e869", "#f5eb2c", "#f2efe8", "#0c0a0e"],
+    tracks: [
+      [1, "Dark Distance", "2:54"],
+      [2, "Sly", "2:32"],
+      [3, "Planet Shit", "3:57"],
+      [4, "Post-Boredom", "3:16"],
+      [5, "A Colossal Wreck", "2:28"],
+      [6, "Desperate Pleasures", "3:12"],
+      [7, "All This And War", "3:11"],
+      [8, "Thing With Feathers", "3:38"],
+      [9, "Hostile Architecture", "2:37"],
+      [10, "AWOL", "2:11"],
+      [11, "The Whip", "2:30"],
+      [12, "White Void", "3:35"],
+      [13, "Distress Rehearsal", "3:14"],
+      [14, "sexsexsex", "3:28"],
+      [15, "People Verses", "3:33"],
+      [16, "We Go Together", "5:03"]
+    ]
+  },
+  {
+    idx: 2,
+    id: 607170294,
+    artId: 528762435,
+    title: "AWOL",
+    url: "https://everytimeidie.bandcamp.com/album/awol",
+    date: "Feb 1, 2021",
+    year: 2021,
+    format: "Single",
+    formatKey: "SINGLE",
+    featured: "AWOL",
+    duration: "2:11",
+    producer: "Will Putney",
+    studio: "Recorded at GCR Audio (Buffalo, NY) · Radical Sessions",
+    artwork: "Corey Meyers",
+    lineup: "Keith Buckley (Vocals), Jordan Buckley (Guitar), Andy Williams (Guitar), Steve Micciche (Bass), Clayton “Goose” Holyoak (Drums)",
+    guests: "",
+    paletteName: "Shattered Orb · Plasma Pink / Emerald / Chalk Grid",
+    accent: "#ef2b9b",
+    accent2: "#2be85d",
+    accent3: "#f6e742",
+    accentRgb: "239, 43, 155",
+    accent2Rgb: "43, 232, 93",
+    linkCol: "ef2b9b",
+    swatches: ["#ef2b9b", "#2be85d", "#f6e742", "#f3f0e9", "#0b0b0d"],
+    tracks: [
+      [1, "AWOL", "2:11"]
+    ]
+  },
+  {
+    idx: 3,
+    id: 397510607,
+    artId: 2326534027,
+    title: "A Colossal Wreck // Desperate Pleasures",
+    url: "https://everytimeidie.bandcamp.com/album/a-colossal-wreck-desperate-pleasures",
+    date: "Dec 8, 2020",
+    year: 2020,
+    format: "Double Single",
+    formatKey: "SINGLE",
+    featured: "A Colossal Wreck",
+    duration: "5:40",
+    producer: "Will Putney",
+    studio: "Recorded at GCR Audio (Buffalo, NY) · Radical Sessions",
+    artwork: "Corey Meyers",
+    lineup: "Keith Buckley (Vocals), Jordan Buckley (Guitar), Andy Williams (Guitar), Steve Micciche (Bass), Clayton “Goose” Holyoak (Drums)",
+    guests: "",
+    paletteName: "Refracted Prism · Crimson / Solar Gold / Cyan",
+    accent: "#f02a63",
+    accent2: "#f6c945",
+    accent3: "#38bdf8",
+    accentRgb: "240, 42, 99",
+    accent2Rgb: "246, 201, 69",
+    linkCol: "f02a63",
+    swatches: ["#f02a63", "#f6c945", "#38bdf8", "#3ae86a", "#110d12"],
+    tracks: [
+      [1, "A Colossal Wreck", "2:28"],
+      [2, "Desperate Pleasures", "3:12"]
+    ]
+  },
+  {
+    idx: 4,
+    id: 3871421685,
+    artId: 131348869,
+    title: "Low Teens",
+    url: "https://everytimeidie.bandcamp.com/album/low-teens",
+    date: "Sep 23, 2016",
+    year: 2016,
+    format: "Full-Length LP",
+    formatKey: "LP",
+    featured: "Fear and Trembling",
+    duration: "49:26",
+    producer: "Will Putney",
+    studio: "Recorded at GCR Audio (Buffalo, NY) · Mastered by Alan Douches at West West Side Music",
+    artwork: "Joby J. Ford",
+    lineup: "Keith Buckley (Vocals), Jordan Buckley (Guitar), Andy Williams (Guitar), Daniel Davison (Drums), Steve Micciche (Bass)",
+    guests: "Tim Singer (Fear and Trembling) · Brendon Urie (It Remembers)",
+    paletteName: "Dry-Brush Pitch · Coral Rose / Deep Crimson / Void",
+    accent: "#f05a72",
+    accent2: "#ff8a9b",
+    accent3: "#d93e5c",
+    accentRgb: "240, 90, 114",
+    accent2Rgb: "217, 62, 92",
+    linkCol: "f05a72",
+    swatches: ["#f05a72", "#d93e5c", "#96283d", "#f2ece9", "#050506"],
+    tracks: [
+      [1, "Fear and Trembling", "2:55"],
+      [2, "Glitches", "2:46"],
+      [3, "C++ (Love Will Get You Killed)", "2:47"],
+      [4, "Two Summers", "3:22"],
+      [5, "Awful Lot", "3:32"],
+      [6, "I Didn't Want To Join Your Stupid Cult Anyway", "2:23"],
+      [7, "It Remembers", "3:43"],
+      [8, "Petal", "2:59"],
+      [9, "The Coin Has A Say", "2:47"],
+      [10, "Religion Of Speed", "5:10"],
+      [11, "Just As Real But Not As Brightly Lit", "3:08"],
+      [12, "1977", "2:37"],
+      [13, "Map Change", "4:57"],
+      [14, "Skin Without Bones", "2:31"],
+      [15, "Nothing Visible; Ocean Empty", "3:49"]
+    ]
+  },
+  {
+    idx: 5,
+    id: 2386672120,
+    artId: 702049036,
+    title: "From Parts Unknown",
+    url: "https://everytimeidie.bandcamp.com/album/from-parts-unknown",
+    date: "Jul 1, 2014",
+    year: 2014,
+    format: "Full-Length LP",
+    formatKey: "LP",
+    featured: "The Great Secret",
+    duration: "36:37",
+    producer: "Kurt Ballou",
+    studio: "Recorded & Mixed at GodCity Studio · Pre-production at GCR Audio (Buffalo, NY)",
+    artwork: "Joby J. Ford",
+    lineup: "Keith Buckley (Vocals), Jordan Buckley (Guitar), Andy Williams (Guitar), Ryan “Legs” Leger (Drums), Steve Micciche (Bass)",
+    guests: "Sean Ingram · El-P · Brian Fallon",
+    paletteName: "Duotone Spectrum · Cyan-Teal / Vermilion / Laser Gold",
+    accent: "#2bb5b8",
+    accent2: "#e85946",
+    accent3: "#f1cf65",
+    accentRgb: "43, 181, 184",
+    accent2Rgb: "232, 89, 70",
+    linkCol: "2bb5b8",
+    swatches: ["#2bb5b8", "#e85946", "#f1cf65", "#94ba6e", "#1d3d42"],
+    tracks: [
+      [1, "The Great Secret", "2:37"],
+      [2, "Pelican Of The Desert", "1:59"],
+      [3, "Decayin' With The Boys", "2:33"],
+      [4, "Overstayer", "2:08"],
+      [5, "If There Is Room To Move, Things Move", "2:35"],
+      [6, "Moor", "3:27"],
+      [7, "Exometrium", "2:42"],
+      [8, "Thirst", "1:25"],
+      [9, "Old Light", "3:07"],
+      [10, "All Structures Are Unstable", "2:02"],
+      [11, "El Dorado", "4:13"],
+      [12, "Idiot", "2:55"],
+      [13, "Cheap Ludes", "2:20"],
+      [14, "Saturnalia", "2:34"]
+    ]
+  },
+  {
+    idx: 6,
+    id: 2502166729,
+    artId: 4282401824,
+    title: "Ex Lives",
+    url: "https://everytimeidie.bandcamp.com/album/ex-lives",
+    date: "Mar 6, 2012",
+    year: 2012,
+    format: "Full-Length LP",
+    formatKey: "LP",
+    featured: "Underwater Bimbos From Outer Space",
+    duration: "40:16",
+    producer: "Evil Joe Barresi",
+    studio: "Recorded at JHOC, Pasadena, CA",
+    artwork: "Monochrome Riot Photograph & Stencil Crest",
+    lineup: "Keith Buckley (Vocals), Jordan Buckley (Guitar), Andy Williams (Guitar), Ryan Leger (Drums), Josh Newton (Bass)",
+    guests: "",
+    paletteName: "Riot Newsprint · Hot Stencil Magenta / Silver Gelatin",
+    accent: "#f2177d",
+    accent2: "#dcdcdc",
+    accent3: "#ff6bb0",
+    accentRgb: "242, 23, 125",
+    accent2Rgb: "220, 220, 220",
+    linkCol: "f2177d",
+    swatches: ["#f2177d", "#dcdcdc", "#8a8a8e", "#2b2b2e", "#0a0a0b"],
+    tracks: [
+      [1, "Underwater Bimbos From Outer Space", "2:43"],
+      [2, "Holy Book of Dilemma", "1:49"],
+      [3, "A Wild, Shameless Plain", "1:49"],
+      [4, "Typical Miracle", "2:26"],
+      [5, "I Suck (Blood)", "2:56"],
+      [6, "Partying Is Such Sweet Sorrow", "3:12"],
+      [7, "The Low Road Has No Exits", "2:52"],
+      [8, "Revival Mode", "3:46"],
+      [9, "Drag King", "4:12"],
+      [10, "Touch Yourself", "2:18"],
+      [11, "Indian Giver", "4:10"],
+      [12, "Grudge Music", "2:25"],
+      [13, "Business Casualty", "2:45"],
+      [14, "Starve An Artist, Cover Your Trash", "2:53"]
+    ]
+  },
+  {
+    idx: 7,
+    id: 1209222165,
+    artId: 263720197,
+    title: "New Junk Aesthetic",
+    url: "https://everytimeidie.bandcamp.com/album/new-junk-aesthetic",
+    date: "Sep 15, 2009",
+    year: 2009,
+    format: "Full-Length LP",
+    formatKey: "LP",
+    featured: "Roman Holiday",
+    duration: "37:32",
+    producer: "Steve Evetts",
+    studio: "Omen Room Studios (Garden Grove, CA) & Castle Oaks (Calabasas, CA) · Mastered by Alan Douches",
+    artwork: "Jordan Buckley (Illustrations) · Nick Pritchard (Color & Design)",
+    lineup: "Keith Buckley (Vocals), Jordan Buckley (Guitar), Andy Williams (Guitar), Michael Novak (Drums)",
+    guests: "Greg Puciato (The Marvelous Slut) · Matt Caughthran (The Sweet Life) · Pete Wentz (After One Quarter Of A Revolution)",
+    paletteName: "Hand-Inked Wash · Watercolor Rose / Ochre / Rag Paper",
+    accent: "#eb2f8c",
+    accent2: "#c7b17e",
+    accent3: "#f3ece0",
+    accentRgb: "235, 47, 140",
+    accent2Rgb: "199, 177, 126",
+    linkCol: "eb2f8c",
+    swatches: ["#eb2f8c", "#c7b17e", "#87744c", "#f3ece0", "#14120f"],
+    tracks: [
+      [1, "Roman Holiday", "3:00"],
+      [2, "The Marvelous Slut", "1:43"],
+      [3, "Who Invited The Russian Soldier?", "2:45"],
+      [4, "Wanderlust", "4:10"],
+      [5, "For The Record", "2:59"],
+      [6, "White Smoke", "3:00"],
+      [7, "Turtles All The Way Down", "2:42"],
+      [8, "Organ Grinder", "4:07"],
+      [9, "Host Disorder", "2:29"],
+      [10, "After One Quarter Of A Revolution", "2:04"],
+      [11, "The Sweet Life", "2:52"],
+      [12, "Buffalo 666", "2:40"],
+      [13, "Goddam Kids These Days", "3:01"]
+    ]
+  }
+].map(r => ({
+  ...r,
+  trackCount: r.tracks.length,
+  thumb: `https://f4.bcbits.com/img/a${r.artId}_9.jpg`,
+  cover: `https://f4.bcbits.com/img/a${r.artId}_16.jpg`
+}));
+
+const STORAGE_FAVS = "etid_archive_favs_v1";
+const STORAGE_HIST = "etid_archive_hist_v1";
+
+const state = {
+  search: "",
+  sortBy: "newest",
+  eraFilter: "ALL",
+  favoritesOnly: false,
+  sidebarMode: "list",
+  gatefoldTab: "credits",
+  wallOpen: false,
+  currentIdx: 1,
+  favorites: new Set(),
+  history: []
+};
+
+const $ = id => document.getElementById(id);
+
+function loadStorage() {
+  try {
+    const rawFavs = localStorage.getItem(STORAGE_FAVS);
+    if (rawFavs) JSON.parse(rawFavs).forEach(n => state.favorites.add(Number(n)));
+    const rawHist = localStorage.getItem(STORAGE_HIST);
+    if (rawHist) {
+      const parsed = JSON.parse(rawHist);
+      if (Array.isArray(parsed)) {
+        state.history = parsed.map(Number).filter(n => n >= 1 && n <= RELEASES.length).slice(0, 7);
+      }
+    }
+  } catch (_) {}
+}
+
+function saveStorage() {
+  try {
+    localStorage.setItem(STORAGE_FAVS, JSON.stringify([...state.favorites]));
+    localStorage.setItem(STORAGE_HIST, JSON.stringify(state.history));
+  } catch (_) {}
+}
+
+function recordHistory(idx) {
+  const n = Number(idx);
+  state.history = [n, ...state.history.filter(x => x !== n)].slice(0, 7);
+  saveStorage();
+}
+
+function escapeHtml(s) {
+  if (s == null) return "";
+  return String(s).replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[c]));
+}
+
+let toastTimer = null;
+function showToast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2400);
+}
+
+function fisherYates(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function buildBackdropCollage() {
+  // Repeat & shuffle all 7 album covers into a seamless 40-tile mosaic
+  const tiles = [];
+  for (let pass = 0; pass < 6; pass++) {
+    tiles.push(...fisherYates(RELEASES));
+  }
+  const sample = tiles.slice(0, 40);
+  $("collageGrid").innerHTML = sample.map(a =>
+    `<img class="collage-tile" src="${a.cover}" alt="" loading="lazy" referrerpolicy="no-referrer">`
+  ).join("");
+}
+
+function applyAlbumTheme(a) {
+  const root = document.documentElement.style;
+  root.setProperty("--accent", a.accent);
+  root.setProperty("--accent-2", a.accent2);
+  root.setProperty("--accent-3", a.accent3);
+  root.setProperty("--accent-rgb", a.accentRgb);
+  root.setProperty("--accent2-rgb", a.accent2Rgb);
+  $("activeBloom").style.backgroundImage = `url('${a.cover}')`;
+}
+
+function getFilteredSorted() {
+  const q = state.search.trim().toLowerCase();
+  let list = RELEASES.filter(a => {
+    if (state.favoritesOnly && !state.favorites.has(a.idx)) return false;
+    if (state.eraFilter === "LP" && a.formatKey !== "LP") return false;
+    if (state.eraFilter === "SINGLE" && a.formatKey !== "SINGLE") return false;
+    if (state.eraFilter === "PUTNEY" && !a.producer.toLowerCase().includes("putney")) return false;
+    if (state.eraFilter === "JOBY" && !a.artwork.toLowerCase().includes("joby")) return false;
+    if (q) {
+      const trackStr = a.tracks.map(t => t[1]).join(" ");
+      const hay = `${a.idx} ${a.title} ${a.year} ${a.date} ${a.format} ${a.producer} ${a.studio} ${a.artwork} ${a.lineup} ${a.guests} ${trackStr}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  if (state.sortBy === "oldest") {
+    list = list.slice().sort((a, b) => b.idx - a.idx);
+  } else if (state.sortBy === "tracks") {
+    list = list.slice().sort((a, b) => b.trackCount - a.trackCount || a.idx - b.idx);
+  } else if (state.sortBy === "album") {
+    list = list.slice().sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
+  }
+  return list;
+}
+
+function pickRandomRelease() {
+  const pool = getFilteredSorted();
+  const base = pool.length ? pool : RELEASES;
+  const choices = base.filter(a => a.idx !== state.currentIdx);
+  const pick = choices.length ? choices[Math.floor(Math.random() * choices.length)] : base[0];
+  selectRelease(pick.idx);
+}
+
+function updateHeaderBadges() {
+  $("favCount").textContent = String(state.favorites.size);
+  $("favFilterBtn").classList.toggle("active", state.favoritesOnly);
+  $("wallToggleBtn").classList.toggle("active", state.wallOpen);
+}
+
+function renderSidebar() {
+  const listEl = $("albumList");
+  const filtered = getFilteredSorted();
+  $("visibleCount").textContent = String(filtered.length);
+
+  const eraLabels = {
+    LP: "Full-Length LPs",
+    SINGLE: "Singles",
+    PUTNEY: "Will Putney Produced",
+    JOBY: "Joby J. Ford Art"
+  };
+
+  if (state.favoritesOnly) $("scopeLabel").textContent = "Saved Releases";
+  else if (state.eraFilter !== "ALL") $("scopeLabel").textContent = eraLabels[state.eraFilter];
+  else if (state.sortBy === "oldest") $("scopeLabel").textContent = "2009 → 2021";
+  else if (state.sortBy === "tracks") $("scopeLabel").textContent = "Most Tracks";
+  else if (state.sortBy === "album") $("scopeLabel").textContent = "Title A–Z";
+  else $("scopeLabel").textContent = "Newest First";
+
+  listEl.classList.toggle("mini-grid", state.sidebarMode === "grid");
+
+  if (!filtered.length) {
+    listEl.innerHTML = `<div style="padding:36px 16px;text-align:center;color:var(--ink-dim);grid-column:1/-1;">No releases match this filter.</div>`;
+    return;
+  }
+
+  if (state.sidebarMode === "grid") {
+    listEl.innerHTML = filtered.map(a => `
+      <div class="grid-tile${a.idx === state.currentIdx ? " active" : ""}" data-idx="${a.idx}" title="${escapeHtml(a.title)} (${a.year})">
+        <img src="${a.cover}" alt="${escapeHtml(a.title)} album cover" loading="lazy" referrerpolicy="no-referrer">
+        <div class="grid-tile-cap">
+          <div class="grid-tile-title">${escapeHtml(a.title)}</div>
+          <div class="grid-tile-year">${a.year} · ${a.trackCount} ${a.trackCount === 1 ? "track" : "tracks"}</div>
+        </div>
+      </div>
+    `).join("");
+    return;
+  }
+
+  listEl.innerHTML = filtered.map(a => {
+    const isFav = state.favorites.has(a.idx);
+    const isActive = a.idx === state.currentIdx;
+    const trackWord = a.trackCount === 1 ? "track" : "tracks";
+    const swatchesHtml = a.swatches.slice(0, 3).map(hex => `<i style="background:${hex}"></i>`).join("");
+    return `
+      <div class="row${isActive ? " active" : ""}" data-idx="${a.idx}">
+        <div class="thumb-wrap">
+          <img class="thumb" src="${a.thumb}" alt="${escapeHtml(a.title)}" loading="lazy" referrerpolicy="no-referrer">
+          <div class="row-swatch-bar">${swatchesHtml}</div>
+        </div>
+        <div class="info">
+          <div class="row-title">${escapeHtml(a.title)}</div>
+          <div class="row-meta">${String(a.idx).padStart(2, "0")} · ${a.year} · ${a.trackCount} ${trackWord} · ${a.duration}</div>
+          <div class="row-sub">${escapeHtml(a.format)} · Prod. ${escapeHtml(a.producer)}</div>
+        </div>
+        <button class="fav-star${isFav ? " saved" : ""}" type="button" data-fav="${a.idx}" aria-label="Save ${escapeHtml(a.title)}" title="Save release">${isFav ? "★" : "☆"}</button>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderWall() {
+  const filtered = getFilteredSorted();
+  $("wallCount").textContent = String(filtered.length);
+  $("wallGrid").innerHTML = filtered.map(a => {
+    const trackWord = a.trackCount === 1 ? "track" : "tracks";
+    const swatchStrip = a.swatches.map(hex => `<i style="background:${hex}"></i>`).join("");
+    return `
+      <div class="wall-card${a.idx === state.currentIdx ? " active" : ""}" data-idx="${a.idx}" style="--card-accent:${a.accent}">
+        <img class="wall-card-img" src="${a.cover}" alt="${escapeHtml(a.title)} cover art" loading="lazy" referrerpolicy="no-referrer">
+        <div class="wall-card-swatches">${swatchStrip}</div>
+        <div class="wall-cap">
+          <div class="wall-cap-title">${escapeHtml(a.title)}</div>
+          <div class="wall-cap-meta">${a.date} · ${a.format} · ${a.trackCount} ${trackWord} · ${a.duration}</div>
+          <div class="wall-cap-art">Art: ${escapeHtml(a.artwork)}</div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderGatefoldBody(a) {
+  const q = state.search.trim().toLowerCase();
+  if (state.gatefoldTab === "tracks") {
+    return `
+      <div class="tracklist-rows">
+        ${a.tracks.map(([num, title, dur]) => {
+          const isMatch = q && title.toLowerCase().includes(q);
+          return `
+            <div class="track-row${isMatch ? " match" : ""}">
+              <span class="track-num">${String(num).padStart(2, "0")}</span>
+              <span class="track-name" title="${escapeHtml(title)}">${escapeHtml(title)}</span>
+              <span class="track-dur">${dur}</span>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    `;
+  }
+
+  return `
+    <div class="credits-list">
+      <div class="credit-row">
+        <span class="credit-key">Production &amp; Studio</span>
+        <span class="credit-val"><strong>${escapeHtml(a.producer)}</strong> — ${escapeHtml(a.studio)}</span>
+      </div>
+      <div class="credit-row">
+        <span class="credit-key">Cover Art &amp; Visual Direction</span>
+        <span class="credit-val">${escapeHtml(a.artwork)} · ${escapeHtml(a.paletteName)}</span>
+      </div>
+      <div class="credit-row">
+        <span class="credit-key">Lineup</span>
+        <span class="credit-val">${escapeHtml(a.lineup)}</span>
+      </div>
+      ${a.guests ? `
+        <div class="credit-row">
+          <span class="credit-key">Guest Appearances</span>
+          <span class="credit-val">${escapeHtml(a.guests)}</span>
+        </div>
+      ` : ""}
+    </div>
+  `;
+}
+
+function renderDetail() {
+  const a = RELEASES.find(x => x.idx === state.currentIdx) || RELEASES[0];
+  state.currentIdx = a.idx;
+  const isFav = state.favorites.has(a.idx);
+
+  applyAlbumTheme(a);
+
+  const pool = getFilteredSorted();
+  const navList = pool.length ? pool : RELEASES;
+  const pos = navList.findIndex(x => x.idx === a.idx);
+  const prev = pos > 0 ? navList[pos - 1] : null;
+  const next = pos >= 0 && pos < navList.length - 1 ? navList[pos + 1] : null;
+
+  const iframeSrc = `https://bandcamp.com/EmbeddedPlayer/album=${a.id}/size=large/bgcol=0b0b0e/linkcol=${a.linkCol}/tracklist=true/artwork=small/transparent=true/`;
+
+  const otherReleases = RELEASES.filter(x => x.idx !== a.idx);
+  const trackWord = a.trackCount === 1 ? "Track" : "Tracks";
+
+  const histAlbums = state.history.map(id => RELEASES[id - 1]).filter(Boolean);
+  const historyHtml = histAlbums.length ? `
+    <div class="history-strip">
+      <div class="history-head">
+        <span>Recently Played · ${histAlbums.length}</span>
+        <button class="history-clear" id="clearHistBtn" type="button">Clear</button>
+      </div>
+      <div class="history-items" id="historyItems">
+        ${histAlbums.map(h => `
+          <div class="history-chip${h.idx === a.idx ? " active" : ""}" data-idx="${h.idx}" title="${escapeHtml(h.title)} (${h.year})">
+            <img src="${h.thumb}" alt="" loading="lazy" referrerpolicy="no-referrer">
+            <div class="history-chip-text">
+              <div class="history-chip-title">${escapeHtml(h.title)}</div>
+              <div class="history-chip-year">${h.year} · ${h.format}</div>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  ` : "";
+
+  $("detail").innerHTML = `
+    <div class="detail-stage">
+      ${historyHtml}
+
+      <section class="hero-card" aria-label="Selected release">
+        <div class="hero-art-col">
+          <div class="hero-art-frame">
+            <img class="hero-art" src="${a.cover}" alt="${escapeHtml(a.title)} album cover" referrerpolicy="no-referrer">
+          </div>
+          <div class="palette-strip" aria-label="Extracted album cover color palette">
+            ${a.swatches.map(hex => `<div class="palette-swatch" style="background:${hex}" title="${hex}"></div>`).join("")}
+          </div>
+          <div class="palette-caption">
+            <span>Cover Palette</span>
+            <span>${a.accent.toUpperCase()}</span>
+          </div>
+        </div>
+
+        <div class="hero-content">
+          <div class="hero-meta-line">
+            <span class="meta-accent">No. ${String(a.idx).padStart(2, "0")} / 07</span>
+            <span class="sep" aria-hidden="true">·</span>
+            <span>${escapeHtml(a.date)}</span>
+            <span class="sep" aria-hidden="true">·</span>
+            <span>${escapeHtml(a.format)}</span>
+            <span class="sep" aria-hidden="true">·</span>
+            <span>${a.trackCount} ${trackWord}</span>
+            <span class="sep" aria-hidden="true">·</span>
+            <span>${a.duration}</span>
+          </div>
+
+          <h1 class="hero-title">${escapeHtml(a.title)}</h1>
+
+          <div class="hero-credits-summary">
+            Produced by <strong>${escapeHtml(a.producer)}</strong> · Artwork by <strong>${escapeHtml(a.artwork)}</strong>
+          </div>
+
+          <div class="hero-featured">
+            Opening / Featured Cut: <b>${escapeHtml(a.featured)}</b>
+          </div>
+
+          <div class="hero-actions">
+            <button class="action-btn primary" id="deckRandomBtn" type="button">Random Release</button>
+            <button class="action-btn${isFav ? " active" : ""}" id="detailFavBtn" type="button">${isFav ? "★ Saved" : "☆ Save Release"}</button>
+            <a class="action-btn" href="${escapeHtml(a.url)}" target="_blank" rel="noopener">Open on Bandcamp ↗</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="deck-grid">
+        <div class="iframe-shell">
+          <iframe src="${iframeSrc}" title="Every Time I Die — ${escapeHtml(a.title)}" seamless allow="autoplay"></iframe>
+        </div>
+
+        <div class="companion-card">
+          <div>
+            <div class="panel-heading">Rest of the Discography (6)</div>
+            <div class="mini-collage" id="miniCollage">
+              ${otherReleases.map(c => `
+                <div class="mini-collage-item" data-idx="${c.idx}" title="${escapeHtml(c.title)} (${c.year})">
+                  <img src="${c.cover}" alt="${escapeHtml(c.title)}" loading="lazy" referrerpolicy="no-referrer">
+                  <span>${escapeHtml(c.title)}</span>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+
+          <div>
+            <div class="gatefold-tabs" role="tablist">
+              <button class="gatefold-tab${state.gatefoldTab === "credits" ? " active" : ""}" type="button" data-tab="credits" role="tab" aria-selected="${state.gatefoldTab === "credits"}">Liner Notes &amp; Credits</button>
+              <button class="gatefold-tab${state.gatefoldTab === "tracks" ? " active" : ""}" type="button" data-tab="tracks" role="tab" aria-selected="${state.gatefoldTab === "tracks"}">Tracklist (${a.trackCount})</button>
+            </div>
+            <div id="gatefoldBody">
+              ${renderGatefoldBody(a)}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-nav">
+        <button class="nav-btn prev" id="prevBtn" type="button" ${!prev ? "disabled" : ""}>
+          <small>← Previous Release</small>
+          <span>${prev ? `${String(prev.idx).padStart(2, "0")} · ${escapeHtml(prev.title)}` : "—"}</span>
+        </button>
+        <button class="nav-btn next" id="nextBtn" type="button" ${!next ? "disabled" : ""}>
+          <small>Next Release →</small>
+          <span>${next ? `${String(next.idx).padStart(2, "0")} · ${escapeHtml(next.title)}` : "—"}</span>
+        </button>
+      </div>
+
+      <div class="kbd-bar">
+        <span>↑ / K Prev</span>
+        <span>↓ / J Next</span>
+        <span>1–7 Jump to Release</span>
+        <span>R Random</span>
+        <span>W Cover Wall</span>
+        <span>F Save</span>
+      </div>
+    </div>
+  `;
+
+  $("deckRandomBtn").addEventListener("click", pickRandomRelease);
+  $("detailFavBtn").addEventListener("click", () => toggleFavorite(a.idx));
+  $("miniCollage").addEventListener("click", (e) => {
+    const card = e.target.closest(".mini-collage-item");
+    if (card) selectRelease(Number(card.dataset.idx));
+  });
+
+  document.querySelectorAll(".gatefold-tab").forEach(btn => {
+    btn.addEventListener("click", () => {
+      state.gatefoldTab = btn.dataset.tab;
+      document.querySelectorAll(".gatefold-tab").forEach(b => {
+        const active = b.dataset.tab === state.gatefoldTab;
+        b.classList.toggle("active", active);
+        b.setAttribute("aria-selected", String(active));
+      });
+      $("gatefoldBody").innerHTML = renderGatefoldBody(a);
+    });
+  });
+
+  if (prev) $("prevBtn").addEventListener("click", () => selectRelease(prev.idx));
+  if (next) $("nextBtn").addEventListener("click", () => selectRelease(next.idx));
+
+  const histEl = $("historyItems");
+  if (histEl) {
+    histEl.addEventListener("click", (e) => {
+      const chip = e.target.closest(".history-chip");
+      if (chip) selectRelease(Number(chip.dataset.idx));
+    });
+  }
+  const clearHistBtn = $("clearHistBtn");
+  if (clearHistBtn) {
+    clearHistBtn.addEventListener("click", () => {
+      state.history = [state.currentIdx];
+      saveStorage();
+      renderDetail();
+      showToast("Cleared Recently Played history");
+    });
+  }
+
+  $("detail").scrollTop = 0;
+  const activeRow = document.querySelector(".row.active, .grid-tile.active");
+  if (activeRow) activeRow.scrollIntoView({ block: "nearest", behavior: "smooth" });
+}
+
+function selectRelease(idx) {
+  state.currentIdx = Number(idx);
+  recordHistory(state.currentIdx);
+  if (state.wallOpen) {
+    state.wallOpen = false;
+    $("wallView").classList.remove("open");
+    $("splitApp").classList.remove("hidden");
+  }
+  updateHeaderBadges();
+  renderSidebar();
+  renderDetail();
+}
+
+function toggleFavorite(idx) {
+  const n = Number(idx);
+  const rel = RELEASES.find(r => r.idx === n);
+  const label = rel ? rel.title : `Release #${n}`;
+  if (state.favorites.has(n)) {
+    state.favorites.delete(n);
+    showToast(`Removed “${label}” from Saved`);
+  } else {
+    state.favorites.add(n);
+    showToast(`Saved “${label}”`);
+  }
+  saveStorage();
+  updateHeaderBadges();
+  renderSidebar();
+  const favBtn = $("detailFavBtn");
+  if (favBtn && state.currentIdx === n) {
+    const isFav = state.favorites.has(n);
+    favBtn.classList.toggle("active", isFav);
+    favBtn.textContent = isFav ? "★ Saved" : "☆ Save Release";
+  }
+}
+
+function toggleWall(force) {
+  state.wallOpen = typeof force === "boolean" ? force : !state.wallOpen;
+  $("wallView").classList.toggle("open", state.wallOpen);
+  $("splitApp").classList.toggle("hidden", state.wallOpen);
+  updateHeaderBadges();
+  if (state.wallOpen) renderWall();
+}
+
+// Header & Sidebar Listeners
+$("randomBtn").addEventListener("click", pickRandomRelease);
+$("favFilterBtn").addEventListener("click", () => {
+  state.favoritesOnly = !state.favoritesOnly;
+  updateHeaderBadges();
+  renderSidebar();
+  if (state.wallOpen) renderWall();
+});
+$("wallToggleBtn").addEventListener("click", () => toggleWall());
+$("closeWallBtn").addEventListener("click", () => toggleWall(false));
+$("remixCollageBtn").addEventListener("click", () => {
+  buildBackdropCollage();
+  showToast("Shuffled 7-sleeve cover backdrop");
+});
+
+$("searchInput").addEventListener("input", (e) => {
+  state.search = e.target.value;
+  renderSidebar();
+  if (state.wallOpen) renderWall();
+  if (state.gatefoldTab === "tracks") {
+    const a = RELEASES.find(x => x.idx === state.currentIdx) || RELEASES[0];
+    const body = $("gatefoldBody");
+    if (body) body.innerHTML = renderGatefoldBody(a);
+  }
+});
+
+$("sortSelect").addEventListener("change", (e) => {
+  state.sortBy = e.target.value;
+  renderSidebar();
+  if (state.wallOpen) renderWall();
+});
+
+$("eraSelect").addEventListener("change", (e) => {
+  state.eraFilter = e.target.value;
+  renderSidebar();
+  if (state.wallOpen) renderWall();
+});
+
+$("viewListBtn").addEventListener("click", () => {
+  state.sidebarMode = "list";
+  $("viewListBtn").classList.add("active");
+  $("viewGridBtn").classList.remove("active");
+  renderSidebar();
+});
+$("viewGridBtn").addEventListener("click", () => {
+  state.sidebarMode = "grid";
+  $("viewGridBtn").classList.add("active");
+  $("viewListBtn").classList.remove("active");
+  renderSidebar();
+});
+
+$("albumList").addEventListener("click", (e) => {
+  const star = e.target.closest(".fav-star");
+  if (star) {
+    e.stopPropagation();
+    toggleFavorite(star.dataset.fav);
+    return;
+  }
+  const item = e.target.closest(".row, .grid-tile");
+  if (item) selectRelease(Number(item.dataset.idx));
+});
+
+$("wallGrid").addEventListener("click", (e) => {
+  const card = e.target.closest(".wall-card");
+  if (card) selectRelease(Number(card.dataset.idx));
+});
+
+document.addEventListener("keydown", (e) => {
+  const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
+  if (tag === "input" || tag === "select" || tag === "textarea") {
+    if (e.key === "Escape") e.target.blur();
+    return;
+  }
+  if (e.key === "Escape" && state.wallOpen) {
+    toggleWall(false);
+    return;
+  }
+  if (e.key >= "1" && e.key <= "7" && !e.metaKey && !e.ctrlKey && !e.altKey) {
+    selectRelease(Number(e.key));
+    return;
+  }
+  const pool = getFilteredSorted();
+  const list = pool.length ? pool : RELEASES;
+  const pos = list.findIndex(x => x.idx === state.currentIdx);
+
+  if (e.key === "ArrowDown" || e.key === "j") {
+    e.preventDefault();
+    if (pos >= 0 && pos < list.length - 1) selectRelease(list[pos + 1].idx);
+  } else if (e.key === "ArrowUp" || e.key === "k") {
+    e.preventDefault();
+    if (pos > 0) selectRelease(list[pos - 1].idx);
+  } else if (e.key === "r" || e.key === "R") {
+    pickRandomRelease();
+  } else if (e.key === "w" || e.key === "W") {
+    toggleWall();
+  } else if (e.key === "f" || e.key === "F") {
+    toggleFavorite(state.currentIdx);
+  }
+});
+
+// Init
+loadStorage();
+if (!state.history.length) recordHistory(1);
+buildBackdropCollage();
+updateHeaderBadges();
+renderSidebar();
+renderDetail();
+</script>
+</body>
+</html>
