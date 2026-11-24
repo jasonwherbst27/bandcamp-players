@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GOTHIC AMERICANA &amp; DARK FOLK · 73 Bandcamp Releases</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,400;1,600&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --walnut: #0b0908;
+  --parlor: rgba(18, 14, 12, 0.85);
+  --parlor-strong: rgba(14, 11, 9, 0.93);
+  --timber: #332922;
+  --timber-soft: #261f1a;
+  --brass: #b08d57;
+  --gold: #d4af6a;
+  --oxblood: #7a1f24;
+  --oxblood-hi: #a12b32;
+  --sage: #6b8270;
+  --parchment: #ece2cc;
+  --parchment-soft: #c2b49a;
+  --parchment-dim: #8a7d68;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--walnut);
+  color: var(--parchment);
+  font-family: 'Crimson Pro', serif;
+  font-size: 16px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* FULL-BLEED DAGUERREOTYPE COVER-ART COLLAGE BACKDROP */
+.collage-bg {
+  position: fixed;
+  inset: -40px;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.collage-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 5px;
+  width: calc(100% + 80px);
+  height: calc(100% + 80px);
+  filter: blur(5px) sepia(0.45) contrast(1.12) brightness(0.32);
+  animation: slowDrift 46s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+@media (max-width: 900px) {
+  .collage-grid { grid-template-columns: repeat(5, 1fr); }
+}
+.collage-tile {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  opacity: 0.9;
+}
+
+/* Active album candlelight bloom */
+.active-bloom {
+  position: fixed;
+  inset: -60px;
+  z-index: 1;
+  pointer-events: none;
+  background-size: cover;
+  background-position: center;
+  filter: blur(70px) sepia(0.35) saturate(1.25) brightness(0.30);
+  opacity: 0.55;
+  transition: background-image 0.9s ease;
+}
+
+/* Aged parchment grain + candlelight vignette */
+.parlor-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 55% at 22% 16%, rgba(176, 141, 87, 0.14), transparent 65%),
+    radial-gradient(ellipse 65% 55% at 82% 84%, rgba(122, 31, 36, 0.16), transparent 65%),
+    radial-gradient(ellipse at center, rgba(11, 9, 8, 0.42) 22%, rgba(6, 5, 4, 0.90) 100%);
+}
+.parlor-veil::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.11;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+@keyframes slowDrift {
+  0% { transform: translate3d(-10px, -8px, 0) scale(1.04); }
+  100% { transform: translate3d(14px, 10px, 0) scale(1.09); }
+}
+@keyframes fadeRise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* HEADER */
+.header {
+  position: relative;
+  z-index: 20;
+  padding: 16px 28px;
+  background: var(--parlor-strong);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--timber);
+  box-shadow: 0 4px 26px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--brass), var(--oxblood-hi), var(--brass), transparent);
+  opacity: 0.75;
+}
+
+.brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.woodcut-mark {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--brass);
+  outline: 1px solid rgba(176, 141, 87, 0.25);
+  outline-offset: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'IM Fell English', serif;
+  font-size: 20px;
+  color: var(--gold);
+  background: rgba(122, 31, 36, 0.22);
+  flex-shrink: 0;
+}
+.brand {
+  font-family: 'IM Fell English', serif;
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1;
+  letter-spacing: 1px;
+  color: var(--parchment);
+  text-shadow: 0 2px 14px rgba(176, 141, 87, 0.24);
+}
+.subbrand {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: var(--parchment-dim);
+  margin-top: 5px;
+}
+
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.parlor-btn {
+  background: rgba(26, 20, 17, 0.88);
+  color: var(--parchment);
+  border: 1px solid var(--timber);
+  border-radius: 3px;
+  padding: 8px 13px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.16s var(--ease);
+}
+.parlor-btn:hover {
+  border-color: var(--gold);
+  background: rgba(176, 141, 87, 0.16);
+  color: #fff;
+  transform: translateY(-1px);
+}
+.parlor-btn.primary, .parlor-btn.active {
+  background: var(--oxblood);
+  border-color: var(--gold);
+  color: var(--parchment);
+}
+.parlor-btn.primary:hover {
+  background: var(--oxblood-hi);
+}
+.parlor-btn .badge {
+  background: #0b0908;
+  color: var(--gold);
+  padding: 1px 6px;
+  border-radius: 2px;
+  font-size: 10px;
+}
+
+/* MAIN SPLIT LAYOUT */
+.app {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 405px 1fr;
+  min-height: calc(100vh - 80px);
+}
+@media (max-width: 960px) {
+  .header { padding: 14px 16px; }
+  .app { grid-template-columns: 1fr; }
+}
+
+/* SIDEBAR */
+.sidebar {
+  background: var(--parlor);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right: 1px solid var(--timber);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 80px);
+  overflow: hidden;
+}
+@media (max-width: 960px) {
+  .sidebar { max-height: 48vh; border-right: none; border-bottom: 1px solid var(--timber); }
+}
+
+.sidebar-controls {
+  padding: 13px 15px 11px;
+  border-bottom: 1px solid var(--timber);
+  background: rgba(14, 11, 9, 0.85);
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.scope-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--parchment-dim);
+}
+.scope-row .count { color: var(--gold); font-weight: 600; }
+
+.search-input, .select-input {
+  background: #0c0908;
+  border: 1px solid var(--timber);
+  border-radius: 3px;
+  color: var(--parchment);
+  padding: 8px 10px;
+  font-family: 'Crimson Pro', serif;
+  font-size: 14.5px;
+  outline: none;
+  width: 100%;
+}
+.search-input::placeholder { color: var(--parchment-dim); font-style: italic; }
+.search-input:focus, .select-input:focus { border-color: var(--gold); }
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.sidebar-tools {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.mini-toggle {
+  background: transparent;
+  border: 1px solid var(--timber);
+  border-radius: 2px;
+  color: var(--parchment-soft);
+  padding: 4px 9px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.mini-toggle:hover, .mini-toggle.active {
+  border-color: var(--gold);
+  background: rgba(176, 141, 87, 0.16);
+  color: var(--gold);
+}
+
+.album-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 10px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.album-list.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  align-content: start;
+}
+
+.row {
+  padding: 8px 10px;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  border-left: 2px solid transparent;
+  background: rgba(24, 19, 16, 0.56);
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 46px 1fr 22px;
+  gap: 10px;
+  align-items: center;
+  transition: all 0.15s var(--ease);
+}
+.row:hover {
+  background: rgba(36, 28, 23, 0.85);
+  border-color: var(--timber);
+  border-left-color: var(--brass);
+}
+.row.active {
+  background: rgba(122, 31, 36, 0.28);
+  border-color: var(--brass);
+  border-left: 3px solid var(--gold);
+}
+
+.thumb {
+  width: 46px;
+  height: 46px;
+  border-radius: 2px;
+  object-fit: cover;
+  background: #0b0908;
+  border: 1px solid var(--timber);
+}
+.row .info { min-width: 0; }
+.row-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--parchment);
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.row-artist {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 13.5px;
+  color: var(--gold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.row-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.8px;
+  color: var(--parchment-dim);
+  text-transform: uppercase;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fav-star {
+  background: transparent;
+  border: none;
+  color: var(--parchment-dim);
+  font-size: 15px;
+  cursor: pointer;
+  line-height: 1;
+}
+.fav-star:hover { color: var(--gold); }
+.fav-star.saved { color: var(--oxblood-hi); }
+
+.grid-tile {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid var(--timber);
+  background: #0b0908;
+  transition: transform 0.18s var(--ease), border-color 0.18s;
+}
+.grid-tile:hover { transform: scale(1.04); border-color: var(--gold); z-index: 2; }
+.grid-tile.active { border-color: var(--gold); box-shadow: 0 0 14px rgba(212, 175, 106, 0.45); }
+.grid-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.grid-tile-cap {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 16px 6px 5px;
+  background: linear-gradient(180deg, transparent, rgba(8,6,5,0.95));
+  font-size: 10.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--parchment);
+}
+
+/* DETAIL SPLIT DECK */
+.detail {
+  padding: 24px 34px 60px;
+  overflow-y: auto;
+  max-height: calc(100vh - 80px);
+}
+@media (max-width: 960px) {
+  .detail { max-height: none; padding: 18px 16px 48px; }
+}
+
+.detail-stage {
+  max-width: 980px;
+  margin: 0 auto;
+  animation: fadeRise 0.3s var(--ease);
+}
+
+/* RECENTLY PLAYED STRIP */
+.history-strip {
+  background: var(--parlor-strong);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--timber);
+  border-radius: 3px;
+  padding: 10px 14px;
+  margin-bottom: 18px;
+}
+.history-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.history-clear {
+  background: transparent;
+  border: none;
+  color: var(--parchment-dim);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.history-clear:hover { color: var(--oxblood-hi); }
+.history-items {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.history-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(26, 20, 17, 0.9);
+  border: 1px solid var(--timber);
+  border-radius: 3px;
+  padding: 4px 10px 4px 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+  max-width: 215px;
+  transition: border-color 0.15s, background 0.15s;
+}
+.history-chip:hover { border-color: var(--gold); background: rgba(122, 31, 36, 0.22); }
+.history-chip.active { border-color: var(--gold); }
+.history-chip img {
+  width: 30px;
+  height: 30px;
+  border-radius: 2px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.history-chip-text { min-width: 0; }
+.history-chip-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--parchment);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.history-chip-artist {
+  font-style: italic;
+  font-size: 11.5px;
+  color: var(--parchment-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* HERO HYMNAL RECORD CARD */
+.hero-card {
+  background: var(--parlor);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--brass);
+  outline: 1px solid rgba(176, 141, 87, 0.2);
+  outline-offset: -5px;
+  border-radius: 3px;
+  padding: 22px 26px;
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 152px 1fr;
+  gap: 24px;
+  align-items: center;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.65);
+}
+@media (max-width: 680px) {
+  .hero-card { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+}
+.hero-art {
+  width: 152px;
+  height: 152px;
+  border-radius: 2px;
+  object-fit: cover;
+  border: 1px solid var(--brass);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.75);
+}
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 8px;
+}
+@media (max-width: 680px) {
+  .hero-badges { justify-content: center; }
+}
+.stamp {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border: 1px solid var(--timber);
+  background: #0c0908;
+  color: var(--parchment-soft);
+}
+.stamp.gold { border-color: var(--brass); color: var(--gold); }
+.stamp.sage { border-color: var(--sage); color: #9db8a3; }
+
+.hero-title {
+  font-family: 'IM Fell English', serif;
+  font-size: clamp(26px, 3.4vw, 40px);
+  line-height: 1.04;
+  color: var(--parchment);
+}
+.hero-artist {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 24px;
+  color: var(--gold);
+  margin-top: 4px;
+}
+.hero-featured {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--parchment-soft);
+  margin-top: 8px;
+}
+.hero-featured b { color: var(--parchment); }
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+@media (max-width: 680px) {
+  .hero-actions { justify-content: center; }
+}
+
+/* BANDCAMP DECK */
+.deck-grid {
+  display: grid;
+  grid-template-columns: minmax(310px, 420px) 1fr;
+  gap: 22px;
+  align-items: start;
+}
+@media (max-width: 820px) {
+  .deck-grid { grid-template-columns: 1fr; }
+}
+
+.iframe-shell {
+  background: var(--parlor-strong);
+  border: 1px solid var(--brass);
+  border-radius: 3px;
+  padding: 10px;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.7);
+}
+.iframe-shell iframe {
+  display: block;
+  width: 100%;
+  height: 470px;
+  border: 0;
+  background: #120e0c;
+}
+
+.companion-card {
+  background: var(--parlor);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--timber);
+  border-radius: 3px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.card-kicker {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  border-bottom: 1px solid var(--timber);
+  padding-bottom: 8px;
+}
+.mini-collage {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.mini-collage-item {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid var(--timber);
+  transition: transform 0.18s var(--ease), border-color 0.18s;
+}
+.mini-collage-item:hover { transform: translateY(-2px) scale(1.03); border-color: var(--gold); }
+.mini-collage-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mini-collage-item span {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 14px 6px 5px;
+  background: linear-gradient(180deg, transparent, rgba(8,6,5,0.95));
+  font-size: 10.5px;
+  color: var(--parchment);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* NAV BAR */
+.detail-nav {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+.nav-btn {
+  flex: 1;
+  background: var(--parlor);
+  border: 1px solid var(--timber);
+  border-radius: 3px;
+  color: var(--parchment);
+  padding: 12px 16px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.16s var(--ease);
+}
+.nav-btn:hover:not(:disabled) {
+  border-color: var(--gold);
+  background: rgba(122, 31, 36, 0.24);
+  transform: translateY(-1px);
+}
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-btn.next { text-align: right; }
+.nav-btn small {
+  display: block;
+  font-size: 9px;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.nav-btn span {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.kbd-bar {
+  margin-top: 14px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 1.3px;
+  color: var(--parchment-dim);
+  text-transform: uppercase;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+/* FULL COVER WALL VIEW */
+.wall-view {
+  position: relative;
+  z-index: 12;
+  display: none;
+  padding: 20px 24px 60px;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+.wall-view.open { display: block; }
+.app.hidden { display: none; }
+
+.wall-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px 18px;
+  background: var(--parlor-strong);
+  border: 1px solid var(--brass);
+  border-radius: 3px;
+}
+.wall-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+.wall-card {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid var(--timber);
+  background: #0b0908;
+  transition: transform 0.2s var(--ease), border-color 0.2s, box-shadow 0.2s;
+}
+.wall-card:hover {
+  transform: translateY(-3px) scale(1.03);
+  border-color: var(--gold);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.75);
+  z-index: 3;
+}
+.wall-card.active {
+  border-color: var(--oxblood-hi);
+  box-shadow: 0 0 18px rgba(161, 43, 50, 0.65);
+}
+.wall-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.wall-cap {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 22px 8px 7px;
+  background: linear-gradient(180deg, transparent, rgba(8,6,5,0.95));
+}
+.wall-cap-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--parchment);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wall-cap-artist {
+  font-style: italic;
+  font-size: 11.5px;
+  color: var(--gold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  background: #14100d;
+  border: 1px solid var(--gold);
+  border-radius: 3px;
+  color: var(--parchment);
+  padding: 10px 16px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  z-index: 300;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: all 0.2s var(--ease);
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* SCROLLBARS */
+::-webkit-scrollbar { width: 8px; height: 6px; }
+::-webkit-scrollbar-track { background: #0b0908; }
+::-webkit-scrollbar-thumb { background: var(--timber); }
+::-webkit-scrollbar-thumb:hover { background: var(--brass); }
+</style>
+</head>
+<body>
+
+<div class="collage-bg" aria-hidden="true">
+  <div class="collage-grid" id="collageGrid"></div>
+</div>
+<div class="active-bloom" id="activeBloom" aria-hidden="true"></div>
+<div class="parlor-veil" aria-hidden="true"></div>
+
+<header class="header">
+  <div class="brand-wrap">
+    <div class="woodcut-mark">†</div>
+    <div>
+      <div class="brand">Gothic Americana &amp; Dark Folk</div>
+      <div class="subbrand">73 Bandcamp Releases · 25 Artists &amp; Labels · Murder Ballads, Dust &amp; Timber</div>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="parlor-btn primary" id="randomBtn" title="Jump to a random album (R)">✦ Random</button>
+    <button class="parlor-btn" id="favFilterBtn" title="Show saved favorites">★ Saved <span class="badge" id="favCount">0</span></button>
+    <button class="parlor-btn" id="wallToggleBtn" title="Toggle 73-Cover Collage Wall (W)">❖ Cover Wall</button>
+    <button class="parlor-btn" id="remixCollageBtn" title="Shuffle background collage tiles">↻ Collage</button>
+    <a class="parlor-btn" href="https://bandcamp.com/discover/gothic-americana+dark-folk" target="_blank" rel="noopener">↗ Discover</a>
+  </div>
+</header>
+
+<div class="app" id="splitApp">
+  <aside class="sidebar">
+    <div class="sidebar-controls">
+      <div class="scope-row">
+        <span><span class="count" id="visibleCount">73</span> / 73 Releases</span>
+        <span id="scopeLabel">Discover Top</span>
+      </div>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search artist, album, track, or city...">
+      <div class="controls-grid">
+        <select class="select-input" id="sortSelect" aria-label="Sort releases">
+          <option value="top">Sort: Discover Top</option>
+          <option value="newest">Sort: Newest Year</option>
+          <option value="artist">Sort: Artist A–Z</option>
+          <option value="album">Sort: Album A–Z</option>
+        </select>
+        <select class="select-input" id="bandSelect" aria-label="Filter by artist or label">
+          <option value="ALL">All Artists &amp; Labels</option>
+        </select>
+      </div>
+      <div class="sidebar-tools">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--parchment-dim);letter-spacing:1px;">CATALOG VIEW</span>
+        <div style="display:flex;gap:6px;">
+          <button class="mini-toggle active" id="viewListBtn">≡ List</button>
+          <button class="mini-toggle" id="viewGridBtn">⊞ Covers</button>
+        </div>
+      </div>
+    </div>
+    <div class="album-list" id="albumList"></div>
+  </aside>
+
+  <main class="detail" id="detail"></main>
+</div>
+
+<section class="wall-view" id="wallView">
+  <div class="wall-header">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);">
+      ❖ Gothic Americana &amp; Dark Folk Cover Wall · <span id="wallCount">73</span> Releases
+    </div>
+    <button class="parlor-btn" id="closeWallBtn">↤ Back to Split Deck</button>
+  </div>
+  <div class="wall-grid" id="wallGrid"></div>
+</section>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+// Compact tuple: [idx, albumId, artId, artist, title, url, featured, location, year, trackCount, bandName]
+const RAW = [[1,1054903576,3291468911,"DAEMON JENNINGS","Joyful Praises To Lift The Spirit","https://daemonjennings.bandcamp.com/album/joyful-praises-to-lift-the-spirit","The Gathering","","2026",11,"DAEMON JENNINGS"],[2,2218658289,1539923440,"LUX INTERNA","New Wilderness Gospel (Deluxe Edition)","https://luxinterna.bandcamp.com/album/new-wilderness-gospel-deluxe-edition","No Arrow","San Francisco, California","2025",19,"LUX INTERNA"],[3,2477511093,2550623296,"DAEMON JENNINGS","Demo 2025","https://daemonjennings.bandcamp.com/album/demo-2025-2","Lucifer, Sex & Drugs","","2025",6,"DAEMON JENNINGS"],[4,1437684556,1631065062,"Various Artists (Musica Tenebris)","Polish Dark Country","https://musica-tenebris.bandcamp.com/album/polish-dark-country","Jedno spojrzenie (dla Ł.)","Warsaw, Poland","2026",14,"Musica Tenebris"],[5,2756352505,1158185139,"Francesca L.B.","No, you!","https://francescalb.bandcamp.com/album/no-you","Parting you","Reggio Emilia, Italy","2026",5,"Francesca L.B."],[6,1086323915,365269277,"Various Artists (Death Roots Syndicate)","The Death Roots Syndicate: Volume VIII","https://deathrootssyndicate.bandcamp.com/album/the-death-roots-syndicate-volume-viii","The End Of The World","California","2018",22,"Death Roots Syndicate"],[7,2610313189,2853014156,"Various Artists (Death Roots Syndicate)","The Death Roots Syndicate","https://deathrootssyndicate.bandcamp.com/album/the-death-roots-syndicate","Ride Careful","California","2013",23,"Death Roots Syndicate"],[8,999397113,2413279030,"Various Artists (Death Roots Syndicate)","The Death Roots Syndicate: Volume IV","https://deathrootssyndicate.bandcamp.com/album/the-death-roots-syndicate-volume-iv","Revolutionary","California","2016",23,"Death Roots Syndicate"],[9,2655778246,633148679,"Various Artists (Death Roots Syndicate)","The Death Roots Syndicate: Volume III","https://deathrootssyndicate.bandcamp.com/album/the-death-roots-syndicate-volume-iii","In the Air Tonight","California","2014",23,"Death Roots Syndicate"],[10,3352827733,3291673387,"LUX INTERNA","New Wilderness Gospel","https://luxinterna.bandcamp.com/album/new-wilderness-gospel","No Arrow","San Francisco, California","2025",9,"LUX INTERNA"],[11,2525154292,3721054608,"LUX INTERNA","there is light in the body, there is blood in the sun","https://luxinterna.bandcamp.com/album/there-is-light-in-the-body-there-is-blood-in-the-sun","wounded stag","San Francisco, California","2013",9,"LUX INTERNA"],[12,4083032024,2494187063,"Silas J. Dirge","The Poor Devil","https://silasjdirge.bandcamp.com/album/the-poor-devil","Flowers on her Grave","Amsterdam, Netherlands","2021",10,"Silas J. Dirge"],[13,4214904612,208814064,"Silas J. Dirge","Swan Songs","https://silasjdirge.bandcamp.com/album/swan-songs","The Saddest Girl","Amsterdam, Netherlands","2024",10,"Silas J. Dirge"],[14,2113487603,2703443005,"Various Artists (Death Roots Syndicate)","The Death Roots Syndicate: Volume XI","https://deathrootssyndicate.bandcamp.com/album/the-death-roots-syndicate-volume-xi","A Vision of Beauty and Destruction","California","2019",29,"Death Roots Syndicate"],[15,3214902330,853930014,"Black Bird Rising","Black Bird Rising","https://blackbirdrising.bandcamp.com/album/black-bird-rising","Fire Into The Cosmic Sun","Melbourne, Australia","2017",3,"Black Bird Rising"],[16,3211922310,938128292,"Various Artists (Death Roots Syndicate)","The Death Roots Syndicate: Volume X","https://deathrootssyndicate.bandcamp.com/album/the-death-roots-syndicate-volume-x","There's A Place In Hell","California","2019",36,"Death Roots Syndicate"],[17,1691921954,2423526515,"Various Artists (Death Roots Syndicate)","The Death Roots Syndicate: Volume IX","https://deathrootssyndicate.bandcamp.com/album/the-death-roots-syndicate-volume-ix","Nicotine, Liquor & Blasphemy","California","2018",35,"Death Roots Syndicate"],[18,2123169756,1606552517,"JB Nelson (Cheap Wine Records)","Envelopes of Dirt","https://cheapwinerecords.bandcamp.com/album/envelopes-of-dirt","Human Trash","UK","2020",11,"Cheap Wine Records"],[19,3284926927,1124177379,"Silas J. Dirge","Tales of Woe","https://silasjdirge.bandcamp.com/album/tales-of-woe","On the Train of Aches","Amsterdam, Netherlands","2018",10,"Silas J. Dirge"],[20,1402836110,1551477874,"MORNING BRIDE","Goodbye, Seaside Danny Wilde (album)","https://morningbride.bandcamp.com/album/goodbye-seaside-danny-wilde-album","The Storm Clouds","Filey, UK","2021",8,"MORNING BRIDE"],[21,3359929217,499785709,"Various Artists (Death Roots Syndicate)","The End","https://deathrootssyndicate.bandcamp.com/album/the-end","Revelation","California","2015",46,"Death Roots Syndicate"],[22,2831837587,3054368836,"Various Artists (Death Roots Syndicate)","The Death Roots Syndicate: Volume V","https://deathrootssyndicate.bandcamp.com/album/the-death-roots-syndicate-volume-v","Stack Them Bones","California","2016",22,"Death Roots Syndicate"],[23,1831882592,1015228405,"Various Artists (Death Roots Syndicate)","The Death Roots Syndicate: Volume VI","https://deathrootssyndicate.bandcamp.com/album/the-death-roots-syndicate-volume-vi","Burn It Down","California","2017",37,"Death Roots Syndicate"],[24,1313181471,399519110,"JB Nelson (Cheap Wine Records)","The Season of Flies","https://cheapwinerecords.bandcamp.com/album/the-season-of-flies","The wind was cold but the blood was Warm","UK","2018",13,"Cheap Wine Records"],[25,2367403278,1506356972,"LUX INTERNA","[a lantern carried in blood and skin]","https://luxinterna.bandcamp.com/album/a-lantern-carried-in-blood-and-skin","fallen","San Francisco, California","2008",10,"LUX INTERNA"],[26,2766603723,2793456865,"Black Bird Rising","Eleven Years","https://blackbirdrising.bandcamp.com/album/eleven-years","Eleven Years","Melbourne, Australia","2017",1,"Black Bird Rising"],[27,307610971,2250561700,"Blues For Neighbors","Rivers Of Living Water","https://bluesfn.bandcamp.com/album/rivers-of-living-water","Make Me A Bird","Wrocław, Poland","2025",13,"Blues For Neighbors"],[28,2701506232,2023857884,"Blues For Neighbors","Cursed Songs","https://bluesfn.bandcamp.com/album/cursed-songs","We, the sinners","Wrocław, Poland","2021",9,"Blues For Neighbors"],[29,519988710,344532111,"Various Artists (Death Roots Syndicate)","The Death Roots Syndicate: Volume VII","https://deathrootssyndicate.bandcamp.com/album/the-death-roots-syndicate-volume-vii","Burning Sky","California","2018",23,"Death Roots Syndicate"],[30,4252065648,248283074,"Various Artists (Death Roots Syndicate)","The Death Roots Syndicate: Volume II","https://deathrootssyndicate.bandcamp.com/album/the-death-roots-syndicate-volume-ii","Paying My Debts","California","2014",22,"Death Roots Syndicate"],[31,2420425873,3065503803,"Blues For Neighbors","From Roaming About","https://bluesfn.bandcamp.com/album/from-roaming-about","Mr. Ike","Wrocław, Poland","2022",8,"Blues For Neighbors"],[32,2377234881,288426286,"Blues For Neighbors","Funeral Piles And Gallows","https://bluesfn.bandcamp.com/album/funeral-piles-and-gallows","Before The Rooster Crows At Dawn","Wrocław, Poland","2023",12,"Blues For Neighbors"],[33,2291976090,230407537,"Various Artists (Aldora Britain Records)","Late At Night","https://thealdorabritainrecords.bandcamp.com/album/late-at-night","The River","Rothley, UK","2025",5,"Aldora Britain Records"],[34,1935951136,2343268535,"Sasha Boole","Too Old To Sell My Soul","https://sashaboole.bandcamp.com/album/too-old-to-sell-my-soul","Nothing But Sand","Ukraine","2020",9,"Sasha Boole"],[35,2464012526,2447390768,"Vivita And The Sufferings (COD label and distribution)","The Last Song Of The Ear","https://codmusicdistro.bandcamp.com/album/the-last-song-of-the-ear","River","Moscow, Russia","2018",11,"COD label and distribution"],[36,409114460,1960343891,"Christian Williams","Built with Bones - 13th Anniversary Deluxe Edition","https://christianwilliams.bandcamp.com/album/built-with-bones-13th-anniversary-deluxe-edition","When Its Roar Woke Me Up","New York","2020",20,"Christian Williams"],[37,60255665,3989516700,"JB Nelson (Cheap Wine Records)","Plain in Appearance","https://cheapwinerecords.bandcamp.com/album/plain-in-appearance","Noise Upstairs","UK","2015",10,"Cheap Wine Records"],[38,424228548,2135208180,"LUX INTERNA",":god is not dead for the birds:","https://luxinterna.bandcamp.com/album/god-is-not-dead-for-the-birds","into nothing (blackwatersong)","San Francisco, California","2007",10,"LUX INTERNA"],[39,3534026775,3371153621,"JB Nelson (Cheap Wine Records)","A JB Nelson Collection","https://cheapwinerecords.bandcamp.com/album/a-jb-nelson-collection","Glasgow Made Me Strange","UK","2014",18,"Cheap Wine Records"],[40,1210764115,1413171069,"Vivita And The Sufferings (COD label and distribution)","7 Nails in the Coffin / A Hex","https://codmusicdistro.bandcamp.com/album/7-nails-in-the-coffin-a-hex","Opening","Moscow, Russia","2020",13,"COD label and distribution"],[41,3918976126,3758712791,"MORNING BRIDE","The North Sea Rising (album)","https://morningbride.bandcamp.com/album/the-north-sea-rising-album","Death Rattle","Filey, UK","2013",6,"MORNING BRIDE"],[42,3061553016,1062216492,"MORNING BRIDE","Lea Valley Delta Blues (album)","https://morningbride.bandcamp.com/album/lea-valley-delta-blues-album","This Place Is No Place For Harbouring Angels","Filey, UK","2008",9,"MORNING BRIDE"],[43,2374929997,3741859931,"Open Casket Road Show (Open Casket Roadshow)","Funeral Songs","https://opencasketroadshow.bandcamp.com/album/funeral-songs","The Lone Road","Provo, Utah","2026",17,"Open Casket Roadshow"],[44,81292073,3430748706,"Sasha Boole","Survival Folk","https://sashaboole.bandcamp.com/album/survival-folk","Would You Give Me a Hand?","Ukraine","2014",11,"Sasha Boole"],[45,3677568540,1163269064,"Blues For Neighbors","Blues For Neighbors","https://bluesfn.bandcamp.com/album/blues-for-neighbors","How I lost my faith","Wrocław, Poland","2020",6,"Blues For Neighbors"],[46,820616864,3262768781,"Sasha Boole","Vol. 1","https://sashaboole.bandcamp.com/album/vol-1","Koly Prijde Tvij Chas (When Your Time Comes)","Ukraine","2013",11,"Sasha Boole"],[47,2130354085,4228824428,"Blues For Neighbors","Kitchen Sessions Live: Feb. 8th, 2024","https://bluesfn.bandcamp.com/album/kitchen-sessions-live-feb-8th-2024","The Devil Went Down To The Town","Wrocław, Poland","2024",4,"Blues For Neighbors"],[48,1752355835,854179691,"Sasha Boole","Golden Tooth","https://sashaboole.bandcamp.com/album/golden-tooth","Play and Pray","Ukraine","2017",9,"Sasha Boole"],[49,2470892621,260904706,"Longshot Nelson and the Disjoints (Cheap Wine Records)","The Hairy Tree","https://cheapwinerecords.bandcamp.com/album/the-hairy-tree","The Haunted Tea Room","UK","2013",5,"Cheap Wine Records"],[50,2117403252,4130175072,"Black Claw (COD label and distribution)","As The Fires Descend","https://codmusicdistro.bandcamp.com/album/as-the-fires-descend","Nothing (from Black CLaw EP)","Moscow, Russia","2018",12,"COD label and distribution"],[51,1668225107,2074889049,"Plymouth Furies","Plymouth Furies","https://plymouthfuries.bandcamp.com/album/plymouth-furies","Where the Spook Light Glows","Kansas City, Missouri","2020",2,"Plymouth Furies"],[52,464319146,1869598288,"Wild Dust","Wild Dust","https://wilddust.bandcamp.com/album/wild-dust","Mojave Flower","New Jersey","2017",5,"Wild Dust"],[53,1038355682,3797426565,"Blues For Neighbors","Kitchen Sessions vol.2: Oh Lord, Have Mercy On My Soul","https://bluesfn.bandcamp.com/album/kitchen-sessions-vol-2-oh-lord-have-mercy-on-my-soul","Oh Lord, Have Mercy On My Soul","Wrocław, Poland","2024",2,"Blues For Neighbors"],[54,985694412,3445144973,"Various (Howlin' Anton Bleak)","Country Stranger","https://howlinanton.bandcamp.com/album/country-stranger","On The 23rd Floor - Oblivion Guest remix","England, UK","2021",8,"Howlin' Anton Bleak"],[55,2739414566,3582148964,"Jeff Linden and the Black Spot Society (Jeff Linden)","County Line","https://jefflinden.bandcamp.com/album/county-line","County Line","New Jersey","2018",1,"Jeff Linden"],[56,2210110451,3484934691,"Zeresh featuring Euski, LYS (Zeresh)","Excelsior","https://zeresh.bandcamp.com/album/excelsior","Excelsior","Israel","2025",1,"Zeresh"],[57,1691265861,3833779472,"The Willing Victims","The Willing Victims","https://thewillingvictims.bandcamp.com/album/the-willing-victims","Darklands","UK","2020",8,"The Willing Victims"],[58,934731757,514219814,"secret south","retrospectral","https://secretsouth.bandcamp.com/album/retrospectral","only the owls have been heard to inquire","Philadelphia, Pennsylvania","2013",9,"secret south"],[59,4183918131,1984141832,"Michael Plater","Those City Lights E.P","https://michaelplater.bandcamp.com/album/those-city-lights-e-p","Those City Lights","Melbourne, Australia","2020",3,"Michael Plater"],[60,1601602024,1653583853,"Wild Dust","The Death of Lottery","https://wilddust.bandcamp.com/album/the-death-of-lottery","They Heard About the Mountain Around Here","New Jersey","2023",9,"Wild Dust"],[61,2347259652,3235228597,"Black Claw (COD label and distribution)","Thieving Bones","https://codmusicdistro.bandcamp.com/album/thieving-bones","Praelocutio","Moscow, Russia","2016",8,"COD label and distribution"],[62,3589856216,2191180310,"Blues For Neighbors","Living Water Live","https://bluesfn.bandcamp.com/album/living-water-live","Gallows Pole","Wrocław, Poland","2026",13,"Blues For Neighbors"],[63,3187161678,3283044219,"Blues For Neighbors","Three Songs Live","https://bluesfn.bandcamp.com/album/three-songs-live","Mr. Ike","Wrocław, Poland","2026",3,"Blues For Neighbors"],[64,2639336,168057005,"Blues For Neighbors (Aldora Britain Records)","Make Me A Bird","https://thealdorabritainrecords.bandcamp.com/album/make-me-a-bird","Make Me A Bird","Rothley, UK","2025",1,"Aldora Britain Records"],[65,2355217769,2435153723,"Rafał Przewłocki & Blues For Neighbors (Blues For Neighbors)","Shaggy Mane and Two Other Songs","https://bluesfn.bandcamp.com/album/shaggy-mane-and-two-other-songs","Shaggy Mane","Wrocław, Poland","2025",3,"Blues For Neighbors"],[66,69309391,2897559073,"Blues For Neighbors","Kitchen Sessions Live: Song For Dylan","https://bluesfn.bandcamp.com/album/kitchen-sessions-live-song-for-dylan","Song For Dylan","Wrocław, Poland","2024",1,"Blues For Neighbors"],[67,4227186607,14196232,"The Meadowlurks","The Devil Within. The Devil Without.","https://themeadowlurks.bandcamp.com/album/the-devil-within-the-devil-without","Foul Season","","2024",6,"The Meadowlurks"],[68,2157353543,3432785969,"The Willing Victims","I Sat Beauty On My Knee","https://thewillingvictims.bandcamp.com/album/i-sat-beauty-on-my-knee","I Sat Beauty On My Knee","UK","2022",2,"The Willing Victims"],[69,1147781806,551045078,"The Willing Victims","Our Bastard Child","https://thewillingvictims.bandcamp.com/album/our-bastard-child","Our Bastard Child","UK","2022",3,"The Willing Victims"],[70,3962434989,1050506328,"Black Claw / T.K. Bollinger & That Sinking Feeling (COD label and distribution)","Sinking Claws","https://codmusicdistro.bandcamp.com/album/sinking-claws","Black Claw - Shallow Death","Moscow, Russia","2015",2,"COD label and distribution"],[71,2144066006,1783124666,"The Willing Victims","The Hand at Play E.P","https://thewillingvictims.bandcamp.com/album/the-hand-at-play-e-p","The Hand At Play","UK","2020",3,"The Willing Victims"],[72,295616008,2300207583,"Wild Dust","Wild Dust II","https://wilddust.bandcamp.com/album/wild-dust-ii","Kneel to Pray","New Jersey","2019",2,"Wild Dust"],[73,3636243817,2192306427,"Jens Hvalsang","Whale songs in the mountain lake","https://hvalsang.bandcamp.com/album/whale-songs-in-the-mountain-lake","Strychnine in my rum","Marsicovetere, Italy","2014",5,"Jens Hvalsang"]];
+const TOP_BANDS = [["Death Roots Syndicate",12],["Blues For Neighbors",11],["Cheap Wine Records",5],["COD label and distribution",5],["LUX INTERNA",5],["Sasha Boole",4],["The Willing Victims",4],["MORNING BRIDE",3],["Silas J. Dirge",3],["Wild Dust",3],["Aldora Britain Records",2],["Black Bird Rising",2],["DAEMON JENNINGS",2],["Christian Williams",1],["Francesca L.B.",1],["Howlin' Anton Bleak",1],["Jeff Linden",1],["Jens Hvalsang",1],["Michael Plater",1],["Musica Tenebris",1],["Open Casket Roadshow",1],["Plymouth Furies",1],["secret south",1],["The Meadowlurks",1],["Zeresh",1]];
+
+const ALBUMS = RAW.map(r => ({
+  idx: r[0],
+  id: r[1],
+  artId: r[2],
+  artist: r[3],
+  title: r[4],
+  url: r[5],
+  featured: r[6],
+  location: r[7],
+  year: r[8],
+  tracks: r[9],
+  bandName: r[10],
+  thumb: `https://f4.bcbits.com/img/a${r[2]}_9.jpg`,
+  cover: `https://f4.bcbits.com/img/a${r[2]}_16.jpg`
+}));
+
+const STORAGE_FAVS = "gothic_folk_favs_v1";
+const STORAGE_HIST = "gothic_folk_hist_v1";
+
+const state = {
+  search: "",
+  sortBy: "top",
+  bandFilter: "ALL",
+  favoritesOnly: false,
+  sidebarMode: "list",
+  wallOpen: false,
+  currentIdx: 1,
+  favorites: new Set(),
+  history: []
+};
+
+const $ = id => document.getElementById(id);
+
+function loadStorage() {
+  try {
+    const rawFavs = localStorage.getItem(STORAGE_FAVS);
+    if (rawFavs) JSON.parse(rawFavs).forEach(n => state.favorites.add(Number(n)));
+    const rawHist = localStorage.getItem(STORAGE_HIST);
+    if (rawHist) {
+      const parsed = JSON.parse(rawHist);
+      if (Array.isArray(parsed)) state.history = parsed.map(Number).filter(n => n >= 1 && n <= ALBUMS.length).slice(0, 14);
+    }
+  } catch (_) {}
+}
+
+function saveStorage() {
+  try {
+    localStorage.setItem(STORAGE_FAVS, JSON.stringify([...state.favorites]));
+    localStorage.setItem(STORAGE_HIST, JSON.stringify(state.history));
+  } catch (_) {}
+}
+
+function recordHistory(idx) {
+  const n = Number(idx);
+  state.history = [n, ...state.history.filter(x => x !== n)].slice(0, 14);
+  saveStorage();
+}
+
+function escapeHtml(s) {
+  if (s == null) return "";
+  return String(s).replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[c]));
+}
+
+let toastTimer = null;
+function showToast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2500);
+}
+
+function fisherYates(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function buildBackdropCollage() {
+  const sample = fisherYates(ALBUMS).slice(0, 48);
+  $("collageGrid").innerHTML = sample.map(a => `<img class="collage-tile" src="${a.thumb}" alt="" loading="lazy">`).join("");
+}
+
+function populateBands() {
+  const sel = $("bandSelect");
+  TOP_BANDS.forEach(([name, count]) => {
+    const opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = `${name} (${count})`;
+    sel.appendChild(opt);
+  });
+}
+
+function getFilteredSorted() {
+  const q = state.search.trim().toLowerCase();
+  let list = ALBUMS.filter(a => {
+    if (state.favoritesOnly && !state.favorites.has(a.idx)) return false;
+    if (state.bandFilter !== "ALL" && a.bandName !== state.bandFilter) return false;
+    if (q) {
+      const hay = `${a.idx} ${a.artist} ${a.title} ${a.featured} ${a.location} ${a.year}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  if (state.sortBy === "newest") {
+    list = list.slice().sort((a, b) => (Number(b.year) || 0) - (Number(a.year) || 0) || a.idx - b.idx);
+  } else if (state.sortBy === "artist") {
+    list = list.slice().sort((a, b) => a.artist.localeCompare(b.artist, undefined, { sensitivity: "base" }) || a.title.localeCompare(b.title));
+  } else if (state.sortBy === "album") {
+    list = list.slice().sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base" }) || a.artist.localeCompare(b.artist));
+  }
+  return list;
+}
+
+function pickRandomAlbum() {
+  const pool = getFilteredSorted();
+  const base = pool.length ? pool : ALBUMS;
+  const choices = base.filter(a => a.idx !== state.currentIdx);
+  const pick = choices.length ? choices[Math.floor(Math.random() * choices.length)] : base[0];
+  selectAlbum(pick.idx);
+}
+
+function updateHeaderBadges() {
+  $("favCount").textContent = String(state.favorites.size);
+  $("favFilterBtn").classList.toggle("active", state.favoritesOnly);
+  $("wallToggleBtn").classList.toggle("active", state.wallOpen);
+}
+
+function renderSidebar() {
+  const listEl = $("albumList");
+  const filtered = getFilteredSorted();
+  $("visibleCount").textContent = String(filtered.length);
+
+  if (state.favoritesOnly) $("scopeLabel").textContent = "Saved Favorites";
+  else if (state.bandFilter !== "ALL") $("scopeLabel").textContent = state.bandFilter;
+  else if (state.sortBy === "newest") $("scopeLabel").textContent = "Newest Year";
+  else if (state.sortBy === "artist") $("scopeLabel").textContent = "Artist A–Z";
+  else if (state.sortBy === "album") $("scopeLabel").textContent = "Album A–Z";
+  else $("scopeLabel").textContent = "Discover Top";
+
+  listEl.classList.toggle("mini-grid", state.sidebarMode === "grid");
+
+  if (!filtered.length) {
+    listEl.innerHTML = `<div style="padding:36px 16px;text-align:center;color:var(--parchment-dim);font-style:italic;grid-column:1/-1;">No releases match this filter.</div>`;
+    return;
+  }
+
+  if (state.sidebarMode === "grid") {
+    listEl.innerHTML = filtered.map(a => `
+      <div class="grid-tile${a.idx === state.currentIdx ? " active" : ""}" data-idx="${a.idx}" title="${escapeHtml(a.title)} — ${escapeHtml(a.artist)}">
+        <img src="${a.thumb}" alt="${escapeHtml(a.title)}" loading="lazy">
+        <div class="grid-tile-cap">${escapeHtml(a.title)}</div>
+      </div>
+    `).join("");
+    return;
+  }
+
+  listEl.innerHTML = filtered.map(a => {
+    const isFav = state.favorites.has(a.idx);
+    const isActive = a.idx === state.currentIdx;
+    const subParts = [`#${String(a.idx).padStart(2, "0")}`];
+    if (a.year) subParts.push(a.year);
+    if (a.location) subParts.push(a.location);
+    return `
+      <div class="row${isActive ? " active" : ""}" data-idx="${a.idx}">
+        <img class="thumb" src="${a.thumb}" alt="" loading="lazy">
+        <div class="info">
+          <div class="row-title">${escapeHtml(a.title)}</div>
+          <div class="row-artist">${escapeHtml(a.artist)}</div>
+          <div class="row-meta">${escapeHtml(subParts.join(" · "))}</div>
+        </div>
+        <button class="fav-star${isFav ? " saved" : ""}" data-fav="${a.idx}" title="Save release">${isFav ? "★" : "☆"}</button>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderWall() {
+  const filtered = getFilteredSorted();
+  $("wallCount").textContent = String(filtered.length);
+  $("wallGrid").innerHTML = filtered.map(a => `
+    <div class="wall-card${a.idx === state.currentIdx ? " active" : ""}" data-idx="${a.idx}">
+      <img src="${a.thumb}" alt="${escapeHtml(a.title)}" loading="lazy">
+      <div class="wall-cap">
+        <div class="wall-cap-title">${escapeHtml(a.title)}</div>
+        <div class="wall-cap-artist">${escapeHtml(a.artist)}</div>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderDetail() {
+  const a = ALBUMS.find(x => x.idx === state.currentIdx) || ALBUMS[0];
+  state.currentIdx = a.idx;
+  const isFav = state.favorites.has(a.idx);
+
+  $("activeBloom").style.backgroundImage = `url('${a.cover}')`;
+
+  const pool = getFilteredSorted();
+  const navList = pool.length ? pool : ALBUMS;
+  const pos = navList.findIndex(x => x.idx === a.idx);
+  const prev = pos > 0 ? navList[pos - 1] : null;
+  const next = pos >= 0 && pos < navList.length - 1 ? navList[pos + 1] : null;
+
+  const iframeSrc = `https://bandcamp.com/EmbeddedPlayer/album=${a.id}/size=large/bgcol=120e0c/linkcol=d4af6a/tracklist=true/artwork=small/transparent=true/`;
+
+  const sameBand = ALBUMS.filter(x => x.bandName === a.bandName && x.idx !== a.idx);
+  const others = fisherYates(ALBUMS.filter(x => x.idx !== a.idx && x.bandName !== a.bandName));
+  const collageItems = sameBand.concat(others).slice(0, 6);
+  const collageLabel = sameBand.length ? `More from ${a.bandName} &amp; Parlour Neighbors` : "Gothic Americana &amp; Dark Folk Neighbors";
+
+  const histAlbums = state.history.map(id => ALBUMS[id - 1]).filter(Boolean);
+  const historyHtml = histAlbums.length ? `
+    <div class="history-strip">
+      <div class="history-head">
+        <span>↺ Recently Played (${histAlbums.length})</span>
+        <button class="history-clear" id="clearHistBtn">Clear</button>
+      </div>
+      <div class="history-items" id="historyItems">
+        ${histAlbums.map(h => `
+          <div class="history-chip${h.idx === a.idx ? " active" : ""}" data-idx="${h.idx}" title="${escapeHtml(h.title)} — ${escapeHtml(h.artist)}">
+            <img src="${h.thumb}" alt="" loading="lazy">
+            <div class="history-chip-text">
+              <div class="history-chip-title">${escapeHtml(h.title)}</div>
+              <div class="history-chip-artist">${escapeHtml(h.artist)}</div>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  ` : "";
+
+  $("detail").innerHTML = `
+    <div class="detail-stage">
+      ${historyHtml}
+
+      <div class="hero-card">
+        <img class="hero-art" src="${a.cover}" alt="${escapeHtml(a.title)}">
+        <div>
+          <div class="hero-badges">
+            <span class="stamp gold">№ ${String(a.idx).padStart(2, "0")} / 73</span>
+            ${a.year ? `<span class="stamp">${escapeHtml(a.year)}</span>` : ""}
+            ${a.tracks ? `<span class="stamp">${a.tracks} TRACKS</span>` : ""}
+            ${a.location ? `<span class="stamp sage">${escapeHtml(a.location)}</span>` : ""}
+          </div>
+          <div class="hero-title">${escapeHtml(a.title)}</div>
+          <div class="hero-artist">${escapeHtml(a.artist)}</div>
+          ${a.featured ? `<div class="hero-featured">Featured Track: <b>${escapeHtml(a.featured)}</b></div>` : ""}
+          <div class="hero-actions">
+            <button class="parlor-btn primary" id="deckRandomBtn">✦ Random Album</button>
+            <button class="parlor-btn${isFav ? " active" : ""}" id="detailFavBtn">${isFav ? "★ Saved" : "☆ Save Release"}</button>
+            <a class="parlor-btn" href="${escapeHtml(a.url)}" target="_blank" rel="noopener">↗ Open on Bandcamp</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="deck-grid">
+        <div class="iframe-shell">
+          <iframe src="${iframeSrc}" title="${escapeHtml(a.artist)} — ${escapeHtml(a.title)}" seamless allow="autoplay"></iframe>
+        </div>
+
+        <div class="companion-card">
+          <div class="card-kicker">${collageLabel}</div>
+          <div class="mini-collage" id="miniCollage">
+            ${collageItems.map(c => `
+              <div class="mini-collage-item" data-idx="${c.idx}" title="${escapeHtml(c.title)} — ${escapeHtml(c.artist)}">
+                <img src="${c.thumb}" alt="${escapeHtml(c.title)}" loading="lazy">
+                <span>${escapeHtml(c.title)}</span>
+              </div>
+            `).join("")}
+          </div>
+          <div style="font-size:14px;color:var(--parchment-soft);line-height:1.55;">
+            Curated directly from Bandcamp’s <em>gothic-americana + dark-folk</em> discover archive. Use the built-in <strong>⏮ / ⏭</strong> controls inside the Bandcamp deck to step through tracks, or open <strong>❖ Cover Wall</strong> to browse all 73 sleeves.
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-nav">
+        <button class="nav-btn prev" id="prevBtn" ${!prev ? "disabled" : ""}>
+          <small>↤ Previous Album</small>
+          <span>${prev ? `№ ${String(prev.idx).padStart(2, "0")} · ${escapeHtml(prev.title)}` : "—"}</span>
+        </button>
+        <button class="nav-btn next" id="nextBtn" ${!next ? "disabled" : ""}>
+          <small>Next Album ↦</small>
+          <span>${next ? `№ ${String(next.idx).padStart(2, "0")} · ${escapeHtml(next.title)}` : "—"}</span>
+        </button>
+      </div>
+
+      <div class="kbd-bar">
+        <span>↑ / K Prev Album</span>
+        <span>↓ / J Next Album</span>
+        <span>R Random</span>
+        <span>W Cover Wall</span>
+        <span>F Save</span>
+      </div>
+    </div>
+  `;
+
+  $("deckRandomBtn").addEventListener("click", pickRandomAlbum);
+  $("detailFavBtn").addEventListener("click", () => toggleFavorite(a.idx));
+  $("miniCollage").addEventListener("click", (e) => {
+    const card = e.target.closest(".mini-collage-item");
+    if (card) selectAlbum(Number(card.dataset.idx));
+  });
+  if (prev) $("prevBtn").addEventListener("click", () => selectAlbum(prev.idx));
+  if (next) $("nextBtn").addEventListener("click", () => selectAlbum(next.idx));
+
+  const histEl = $("historyItems");
+  if (histEl) {
+    histEl.addEventListener("click", (e) => {
+      const chip = e.target.closest(".history-chip");
+      if (chip) selectAlbum(Number(chip.dataset.idx));
+    });
+  }
+  const clearHistBtn = $("clearHistBtn");
+  if (clearHistBtn) {
+    clearHistBtn.addEventListener("click", () => {
+      state.history = [state.currentIdx];
+      saveStorage();
+      renderDetail();
+      showToast("Cleared Recently Played history");
+    });
+  }
+
+  $("detail").scrollTop = 0;
+  const activeRow = document.querySelector(".row.active, .grid-tile.active");
+  if (activeRow) activeRow.scrollIntoView({ block: "nearest", behavior: "smooth" });
+}
+
+function selectAlbum(idx) {
+  state.currentIdx = Number(idx);
+  recordHistory(state.currentIdx);
+  if (state.wallOpen) {
+    state.wallOpen = false;
+    $("wallView").classList.remove("open");
+    $("splitApp").classList.remove("hidden");
+  }
+  updateHeaderBadges();
+  renderSidebar();
+  renderDetail();
+}
+
+function toggleFavorite(idx) {
+  const n = Number(idx);
+  if (state.favorites.has(n)) {
+    state.favorites.delete(n);
+    showToast(`Removed № ${String(n).padStart(2, "0")} from Saved`);
+  } else {
+    state.favorites.add(n);
+    showToast(`Saved № ${String(n).padStart(2, "0")}`);
+  }
+  saveStorage();
+  updateHeaderBadges();
+  renderSidebar();
+  const favBtn = $("detailFavBtn");
+  if (favBtn && state.currentIdx === n) {
+    const isFav = state.favorites.has(n);
+    favBtn.classList.toggle("active", isFav);
+    favBtn.textContent = isFav ? "★ Saved" : "☆ Save Release";
+  }
+}
+
+function toggleWall(force) {
+  state.wallOpen = typeof force === "boolean" ? force : !state.wallOpen;
+  $("wallView").classList.toggle("open", state.wallOpen);
+  $("splitApp").classList.toggle("hidden", state.wallOpen);
+  updateHeaderBadges();
+  if (state.wallOpen) renderWall();
+}
+
+// Header & Sidebar Listeners
+$("randomBtn").addEventListener("click", pickRandomAlbum);
+$("favFilterBtn").addEventListener("click", () => {
+  state.favoritesOnly = !state.favoritesOnly;
+  updateHeaderBadges();
+  renderSidebar();
+  if (state.wallOpen) renderWall();
+});
+$("wallToggleBtn").addEventListener("click", () => toggleWall());
+$("closeWallBtn").addEventListener("click", () => toggleWall(false));
+$("remixCollageBtn").addEventListener("click", () => {
+  buildBackdropCollage();
+  showToast("Remixed 48-cover backdrop collage");
+});
+
+$("searchInput").addEventListener("input", (e) => {
+  state.search = e.target.value;
+  renderSidebar();
+  if (state.wallOpen) renderWall();
+});
+
+$("sortSelect").addEventListener("change", (e) => {
+  state.sortBy = e.target.value;
+  renderSidebar();
+  if (state.wallOpen) renderWall();
+});
+
+$("bandSelect").addEventListener("change", (e) => {
+  state.bandFilter = e.target.value;
+  renderSidebar();
+  if (state.wallOpen) renderWall();
+});
+
+$("viewListBtn").addEventListener("click", () => {
+  state.sidebarMode = "list";
+  $("viewListBtn").classList.add("active");
+  $("viewGridBtn").classList.remove("active");
+  renderSidebar();
+});
+$("viewGridBtn").addEventListener("click", () => {
+  state.sidebarMode = "grid";
+  $("viewGridBtn").classList.add("active");
+  $("viewListBtn").classList.remove("active");
+  renderSidebar();
+});
+
+$("albumList").addEventListener("click", (e) => {
+  const star = e.target.closest(".fav-star");
+  if (star) {
+    e.stopPropagation();
+    toggleFavorite(star.dataset.fav);
+    return;
+  }
+  const item = e.target.closest(".row, .grid-tile");
+  if (item) selectAlbum(Number(item.dataset.idx));
+});
+
+$("wallGrid").addEventListener("click", (e) => {
+  const card = e.target.closest(".wall-card");
+  if (card) selectAlbum(Number(card.dataset.idx));
+});
+
+document.addEventListener("keydown", (e) => {
+  const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
+  if (tag === "input" || tag === "select" || tag === "textarea") {
+    if (e.key === "Escape") e.target.blur();
+    return;
+  }
+  if (e.key === "Escape" && state.wallOpen) {
+    toggleWall(false);
+    return;
+  }
+  const pool = getFilteredSorted();
+  const list = pool.length ? pool : ALBUMS;
+  const pos = list.findIndex(x => x.idx === state.currentIdx);
+
+  if (e.key === "ArrowDown" || e.key === "j") {
+    e.preventDefault();
+    if (pos >= 0 && pos < list.length - 1) selectAlbum(list[pos + 1].idx);
+  } else if (e.key === "ArrowUp" || e.key === "k") {
+    e.preventDefault();
+    if (pos > 0) selectAlbum(list[pos - 1].idx);
+  } else if (e.key === "r" || e.key === "R") {
+    pickRandomAlbum();
+  } else if (e.key === "w" || e.key === "W") {
+    toggleWall();
+  } else if (e.key === "f" || e.key === "F") {
+    toggleFavorite(state.currentIdx);
+  }
+});
+
+// Init
+loadStorage();
+if (!state.history.length) recordHistory(1);
+populateBands();
+buildBackdropCollage();
+updateHeaderBadges();
+renderSidebar();
+renderDetail();
+</script>
+</body>
+</html>
