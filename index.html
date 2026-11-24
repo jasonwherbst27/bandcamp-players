@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bandcamp Players</title>
+  <style>
+    :root {
+      --bg: #0c0f14;
+      --surface: #151a23;
+      --surface-hover: #1c2330;
+      --border: rgba(255, 255, 255, 0.09);
+      --text: #eef2f7;
+      --muted: #9aa5b4;
+      --accent-slush: #b39ddb;
+      --accent-slush-2: #4dd0e1;
+      --accent-googie: #e09f3e;
+      --accent-googie-2: #3d7a78;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(77, 208, 225, 0.10), transparent 42%),
+        radial-gradient(circle at 85% 20%, rgba(224, 159, 62, 0.10), transparent 45%),
+        var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 4rem 1.5rem 3rem;
+      line-height: 1.5;
+    }
+    main {
+      width: 100%;
+      max-width: 900px;
+    }
+    header {
+      margin-bottom: 2.5rem;
+    }
+    .eyebrow {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+    h1 {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.02rem;
+      max-width: 58ch;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+    .card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-decoration: none;
+      color: inherit;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.6rem;
+      overflow: hidden;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 4px;
+      background: var(--card-accent, linear-gradient(90deg, #4dd0e1, #b39ddb));
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      background: var(--surface-hover);
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+    .meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.9rem;
+    }
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--text);
+    }
+    .count {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .card h2 {
+      font-size: 1.32rem;
+      font-weight: 650;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.01em;
+    }
+    .card p {
+      font-size: 0.94rem;
+      color: var(--muted);
+      margin-bottom: 1.4rem;
+    }
+    .cta {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    footer {
+      margin-top: 3rem;
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="eyebrow">Audio Archive</div>
+      <h1>Bandcamp Players</h1>
+      <p class="subtitle">Self-contained web players streaming directly from Bandcamp. Pick a collection below to listen.</p>
+    </header>
+
+    <section class="grid" id="player-grid" aria-label="Available players"></section>
+
+    <footer>
+      All audio streams directly from Bandcamp.
+    </footer>
+  </main>
+
+  <script>
+    // To add a new player: upload its .html file to this repo and add an entry here.
+    const PLAYERS = [
+      {
+        title: "Slushwave Megalith",
+        file: "./slushwave-megalith.html",
+        tag: "Slushwave",
+        count: "424 releases",
+        description: "Dreamy nocturnal Bandcamp player with a drifting cover-art collage backdrop, frosted-glass split deck, and full-screen Cover Wall.",
+        accent: "linear-gradient(90deg, #b39ddb, #4dd0e1)"
+      },
+      {
+        title: "The Heavy Underground ’25",
+        file: "./doom-charts-2025.html",
+        tag: "Doom Charts",
+        count: "50 tracks",
+        description: "Googie retro-modern hi-fi archive featuring 50 Bandcamp picks across Volumes I–V with liner notes, filters, and archive stats.",
+        accent: "linear-gradient(90deg, #e09f3e, #3d7a78)"
+      }
+    ];
+
+    const grid = document.getElementById("player-grid");
+    PLAYERS.forEach((p) => {
+      const a = document.createElement("a");
+      a.className = "card";
+      a.href = p.file;
+      a.style.setProperty("--card-accent", p.accent);
+      a.innerHTML = `
+        <div>
+          <div class="meta">
+            <span class="badge">${p.tag}</span>
+            <span class="count">${p.count}</span>
+          </div>
+          <h2>${p.title}</h2>
+          <p>${p.description}</p>
+        </div>
+        <span class="cta">Open player →</span>
+      `;
+      grid.appendChild(a);
+    });
+  </script>
+</body>
+</html>

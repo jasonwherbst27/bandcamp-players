@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SLUSHWAVE MEGALITH · 424 Releases</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,400;1,600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void: #06050e;
+  --night: #0c0a1a;
+  --glass: rgba(13, 11, 28, 0.72);
+  --glass-strong: rgba(12, 10, 26, 0.86);
+  --glass-card: rgba(22, 18, 44, 0.66);
+  --border: rgba(196, 181, 253, 0.18);
+  --border-hi: rgba(103, 232, 249, 0.48);
+  --mist: #efeaff;
+  --mist-soft: #b9b1d8;
+  --mist-dim: #7f77a6;
+  --lavender: #c4b5fd;
+  --cyan: #67e8f9;
+  --magenta: #f472b6;
+  --violet: #8b5cf6;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--void);
+  color: var(--mist);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* FULL-BLEED HAZY COVER-ART COLLAGE BACKDROP */
+.collage-bg {
+  position: fixed;
+  inset: -40px;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.collage-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 6px;
+  width: calc(100% + 80px);
+  height: calc(100% + 80px);
+  filter: blur(5px) saturate(1.3) brightness(0.42);
+  animation: slowDrift 38s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+@media (max-width: 900px) {
+  .collage-grid { grid-template-columns: repeat(5, 1fr); }
+}
+.collage-tile {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  opacity: 0.92;
+  transition: opacity 0.8s ease;
+}
+
+/* Active album color bloom */
+.active-bloom {
+  position: fixed;
+  inset: -60px;
+  z-index: 1;
+  pointer-events: none;
+  background-size: cover;
+  background-position: center;
+  filter: blur(65px) saturate(1.5) brightness(0.38);
+  opacity: 0.55;
+  transition: background-image 0.9s ease, opacity 0.9s ease;
+}
+
+/* Nocturnal mist + subtle VHS scanline sheen */
+.mist-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 75% 60% at 15% 15%, rgba(139, 92, 246, 0.24), transparent 65%),
+    radial-gradient(ellipse 70% 60% at 85% 82%, rgba(103, 232, 249, 0.16), transparent 65%),
+    radial-gradient(ellipse 60% 50% at 75% 20%, rgba(244, 114, 182, 0.14), transparent 60%),
+    linear-gradient(180deg, rgba(6, 5, 14, 0.58) 0%, rgba(6, 5, 14, 0.78) 100%);
+}
+.mist-veil::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.018) 0px,
+    rgba(255, 255, 255, 0.018) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+@keyframes slowDrift {
+  0% { transform: translate3d(-12px, -10px, 0) scale(1.04); }
+  100% { transform: translate3d(14px, 12px, 0) scale(1.09); }
+}
+@keyframes softFadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes driftGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(103, 232, 249, 0.45); }
+  50% { box-shadow: 0 0 18px 2px rgba(244, 114, 182, 0.45); }
+}
+
+/* HEADER */
+.header {
+  position: relative;
+  z-index: 20;
+  padding: 16px 28px;
+  background: var(--glass-strong);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.brand-sigil {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.35), rgba(103, 232, 249, 0.28));
+  border: 1px solid var(--border-hi);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--cyan);
+  text-shadow: 0 0 14px rgba(103, 232, 249, 0.7);
+  flex-shrink: 0;
+}
+.brand {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(20px, 2.6vw, 30px);
+  letter-spacing: 3px;
+  line-height: 1;
+  background: linear-gradient(90deg, #f5f0ff 0%, var(--lavender) 45%, var(--cyan) 85%, var(--magenta) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.subbrand {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  color: var(--mist-soft);
+  margin-top: 5px;
+}
+
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.pill-btn {
+  background: rgba(25, 20, 48, 0.72);
+  color: var(--mist);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s var(--ease);
+}
+.pill-btn:hover {
+  border-color: var(--cyan);
+  background: rgba(103, 232, 249, 0.14);
+  transform: translateY(-1px);
+}
+.pill-btn.active {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.45), rgba(244, 114, 182, 0.35));
+  border-color: var(--cyan);
+  color: #fff;
+}
+.pill-btn.drifting {
+  background: linear-gradient(135deg, rgba(103, 232, 249, 0.32), rgba(244, 114, 182, 0.35));
+  border-color: var(--cyan);
+  animation: driftGlow 2.8s ease-in-out infinite;
+}
+.pill-btn .badge {
+  background: rgba(6, 5, 14, 0.7);
+  color: var(--cyan);
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* MAIN LAYOUT */
+.app {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  min-height: calc(100vh - 78px);
+}
+@media (max-width: 960px) {
+  .header { padding: 14px 16px; }
+  .app { grid-template-columns: 1fr; }
+}
+
+/* SIDEBAR */
+.sidebar {
+  background: var(--glass);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 78px);
+  overflow: hidden;
+}
+@media (max-width: 960px) {
+  .sidebar { max-height: 48vh; border-right: none; border-bottom: 1px solid var(--border); }
+}
+
+.sidebar-controls {
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(10, 8, 22, 0.72);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.scope-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--mist-dim);
+}
+.scope-row .count { color: var(--cyan); font-weight: 600; }
+
+.source-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.source-tab {
+  background: rgba(20, 16, 40, 0.7);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--mist-soft);
+  padding: 7px 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.source-tab:hover { border-color: var(--lavender); color: #fff; }
+.source-tab.active {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.42), rgba(103, 232, 249, 0.25));
+  border-color: var(--cyan);
+  color: #fff;
+  font-weight: 600;
+}
+
+.filter-row {
+  display: grid;
+  grid-template-columns: 1fr 122px;
+  gap: 6px;
+}
+.search-input, .artist-select {
+  background: rgba(6, 5, 14, 0.72);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--mist);
+  padding: 8px 11px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12.5px;
+  outline: none;
+  width: 100%;
+}
+.search-input::placeholder { color: var(--mist-dim); }
+.search-input:focus, .artist-select:focus { border-color: var(--cyan); }
+
+.sidebar-tools {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.mini-toggle {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--mist-soft);
+  padding: 4px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.mini-toggle:hover, .mini-toggle.active {
+  border-color: var(--magenta);
+  color: var(--mist);
+  background: rgba(244, 114, 182, 0.16);
+}
+
+.album-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 10px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.album-list.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  align-content: start;
+}
+
+.row {
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: rgba(22, 18, 44, 0.45);
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 46px 1fr 22px;
+  gap: 10px;
+  align-items: center;
+  transition: all 0.18s var(--ease);
+}
+.row:hover {
+  background: rgba(34, 28, 66, 0.72);
+  border-color: var(--border);
+  transform: translateX(3px);
+}
+.row.active {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.34), rgba(103, 232, 249, 0.20));
+  border-color: var(--cyan);
+  box-shadow: 0 0 18px rgba(103, 232, 249, 0.18);
+}
+
+.thumb {
+  width: 46px;
+  height: 46px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--night);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.row .info { min-width: 0; }
+.row-title {
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--mist);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.row-artist {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 13.5px;
+  color: var(--lavender);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+.row-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--mist-dim);
+  text-transform: uppercase;
+  margin-top: 3px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.tag-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  flex-shrink: 0;
+}
+.tag-dot.w { background: var(--magenta); }
+
+.fav-star {
+  background: transparent;
+  border: none;
+  color: var(--mist-dim);
+  font-size: 15px;
+  cursor: pointer;
+  line-height: 1;
+  transition: transform 0.15s, color 0.15s;
+}
+.fav-star:hover { color: var(--cyan); transform: scale(1.2); }
+.fav-star.saved { color: var(--magenta); }
+
+/* Mini-grid tile inside sidebar */
+.grid-tile {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  background: var(--night);
+  transition: transform 0.2s var(--ease), border-color 0.2s;
+}
+.grid-tile:hover { transform: scale(1.04); border-color: var(--lavender); z-index: 2; }
+.grid-tile.active { border-color: var(--cyan); box-shadow: 0 0 16px rgba(103, 232, 249, 0.45); }
+.grid-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.grid-tile-cap {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 16px 6px 5px;
+  background: linear-gradient(180deg, transparent, rgba(6,5,14,0.92));
+  font-size: 10px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--mist);
+}
+
+/* DETAIL SPLIT DECK */
+.detail {
+  padding: 24px 34px 60px;
+  overflow-y: auto;
+  max-height: calc(100vh - 78px);
+}
+@media (max-width: 960px) {
+  .detail { max-height: none; padding: 18px 16px 48px; }
+}
+
+.detail-stage {
+  max-width: 980px;
+  margin: 0 auto;
+  animation: softFadeUp 0.34s var(--ease);
+}
+
+/* HERO ALBUM CARD */
+.hero-card {
+  background: var(--glass);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 22px 24px;
+  margin-bottom: 22px;
+  display: grid;
+  grid-template-columns: 148px 1fr;
+  gap: 22px;
+  align-items: center;
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.48);
+}
+@media (max-width: 680px) {
+  .hero-card { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+}
+.hero-art {
+  width: 148px;
+  height: 148px;
+  border-radius: 14px;
+  object-fit: cover;
+  border: 1.5px solid rgba(196, 181, 253, 0.32);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 28px rgba(139, 92, 246, 0.25);
+}
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+@media (max-width: 680px) {
+  .hero-badges { justify-content: center; }
+}
+.chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(6, 5, 14, 0.55);
+  color: var(--lavender);
+}
+.chip.col { border-color: rgba(103, 232, 249, 0.45); color: var(--cyan); }
+.chip.wish { border-color: rgba(244, 114, 182, 0.45); color: var(--magenta); }
+
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: clamp(22px, 3vw, 32px);
+  line-height: 1.12;
+  color: #fff;
+}
+.hero-artist {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 22px;
+  color: var(--lavender);
+  margin-top: 5px;
+}
+.hero-featured {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--mist-soft);
+  margin-top: 10px;
+}
+.hero-featured b { color: var(--cyan); font-weight: 600; }
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+@media (max-width: 680px) {
+  .hero-actions { justify-content: center; }
+}
+
+/* BANDCAMP PLAYER DECK */
+.deck-grid {
+  display: grid;
+  grid-template-columns: minmax(310px, 420px) 1fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 820px) {
+  .deck-grid { grid-template-columns: 1fr; }
+}
+
+.iframe-shell {
+  background: var(--glass-strong);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-hi);
+  border-radius: 18px;
+  padding: 10px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55), 0 0 24px rgba(103, 232, 249, 0.12);
+}
+.iframe-shell iframe {
+  display: block;
+  width: 100%;
+  height: 470px;
+  border: 0;
+  border-radius: 12px;
+  background: #0c0a1a;
+}
+
+/* Right companion collage card: Related / Same Artist + Ambient Artwork Strip */
+.companion-card {
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.card-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+.mini-collage {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.mini-collage-item {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  transition: transform 0.2s var(--ease), border-color 0.2s;
+}
+.mini-collage-item:hover { transform: translateY(-2px) scale(1.03); border-color: var(--cyan); }
+.mini-collage-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mini-collage-item span {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 14px 6px 5px;
+  background: linear-gradient(180deg, transparent, rgba(6,5,14,0.92));
+  font-size: 10px;
+  color: var(--mist);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* NAV BAR */
+.detail-nav {
+  display: flex;
+  gap: 12px;
+  margin-top: 22px;
+}
+.nav-btn {
+  flex: 1;
+  background: var(--glass);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  color: var(--mist);
+  padding: 12px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.18s var(--ease);
+}
+.nav-btn:hover:not(:disabled) {
+  border-color: var(--cyan);
+  background: rgba(103, 232, 249, 0.12);
+  transform: translateY(-2px);
+}
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-btn.next { text-align: right; }
+.nav-btn small {
+  display: block;
+  font-size: 9px;
+  color: var(--lavender);
+  margin-bottom: 4px;
+}
+.nav-btn span {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.kbd-bar {
+  margin-top: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 1.3px;
+  color: var(--mist-dim);
+  text-transform: uppercase;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+/* FULL COVER WALL OVERLAY VIEW */
+.wall-view {
+  position: relative;
+  z-index: 12;
+  display: none;
+  padding: 20px 24px 60px;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+.wall-view.open { display: block; }
+.app.hidden { display: none; }
+
+.wall-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px 18px;
+  background: var(--glass-strong);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+.wall-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+  gap: 10px;
+}
+.wall-card {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1.5px solid var(--border);
+  background: var(--night);
+  transition: transform 0.22s var(--ease), border-color 0.2s, box-shadow 0.2s;
+}
+.wall-card:hover {
+  transform: translateY(-4px) scale(1.03);
+  border-color: var(--cyan);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.6), 0 0 20px rgba(103, 232, 249, 0.25);
+  z-index: 3;
+}
+.wall-card.active {
+  border-color: var(--magenta);
+  box-shadow: 0 0 22px rgba(244, 114, 182, 0.55);
+}
+.wall-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.wall-cap {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 24px 8px 7px;
+  background: linear-gradient(180deg, transparent, rgba(6,5,14,0.94));
+}
+.wall-cap-title {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wall-cap-artist {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 11.5px;
+  color: var(--lavender);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  background: var(--glass-strong);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--cyan);
+  border-radius: 999px;
+  color: #fff;
+  padding: 10px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  z-index: 300;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: all 0.22s var(--ease);
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* SCROLLBARS */
+::-webkit-scrollbar { width: 7px; }
+::-webkit-scrollbar-track { background: rgba(6, 5, 14, 0.6); }
+::-webkit-scrollbar-thumb { background: rgba(196, 181, 253, 0.24); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
+</style>
+</head>
+<body>
+
+<div class="collage-bg" aria-hidden="true">
+  <div class="collage-grid" id="collageGrid"></div>
+</div>
+<div class="active-bloom" id="activeBloom" aria-hidden="true"></div>
+<div class="mist-veil" aria-hidden="true"></div>
+
+<header class="header">
+  <div class="brand-wrap">
+    <div class="brand-sigil">⁂</div>
+    <div>
+      <div class="brand">SLUSHWAVE MEGALITH</div>
+      <div class="subbrand">424 Releases · 59 Collection · 365 Wishlist · Bandcamp.com/slushwave</div>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="pill-btn" id="randomBtn" title="Jump to a random album (R)">✦ Random</button>
+    <button class="pill-btn" id="favFilterBtn" title="Show saved favorites">★ Saved <span class="badge" id="favCount">0</span></button>
+    <button class="pill-btn" id="wallToggleBtn" title="Toggle 424-Cover Collage Wall (W)">❖ Cover Wall</button>
+    <button class="pill-btn" id="remixCollageBtn" title="Shuffle background collage tiles">↻ Collage</button>
+    <a class="pill-btn" href="https://bandcamp.com/slushwave" target="_blank" rel="noopener">↗ Profile</a>
+  </div>
+</header>
+
+<div class="app" id="splitApp">
+  <aside class="sidebar">
+    <div class="sidebar-controls">
+      <div class="scope-row">
+        <span><span class="count" id="visibleCount">424</span> / 424 Releases</span>
+        <span id="scopeLabel">All Releases</span>
+      </div>
+      <div class="source-tabs" id="sourceTabs">
+        <button class="source-tab active" data-src="ALL">All (424)</button>
+        <button class="source-tab" data-src="c">Collection (59)</button>
+        <button class="source-tab" data-src="w">Wishlist (365)</button>
+      </div>
+      <div class="filter-row">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search artist, album, track...">
+        <select class="artist-select" id="artistSelect" aria-label="Filter by artist">
+          <option value="ALL">Top Artists</option>
+        </select>
+      </div>
+      <div class="sidebar-tools">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--mist-dim);letter-spacing:1px;">SIDEBAR VIEW</span>
+        <div style="display:flex;gap:6px;">
+          <button class="mini-toggle active" id="viewListBtn">≡ List</button>
+          <button class="mini-toggle" id="viewGridBtn">⊞ Covers</button>
+        </div>
+      </div>
+    </div>
+    <div class="album-list" id="albumList"></div>
+  </aside>
+
+  <main class="detail" id="detail"></main>
+</div>
+
+<section class="wall-view" id="wallView">
+  <div class="wall-header">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);">
+      ❖ Slushwave Cover Collage · <span id="wallCount">424</span> Albums (Click any cover to play)
+    </div>
+    <button class="pill-btn" id="closeWallBtn">↤ Back to Split Deck</button>
+  </div>
+  <div class="wall-grid" id="wallGrid"></div>
+</section>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+// Compact tuple: [idx, src('c'|'w'), type('a'|'t'), tralbum_id, art_id, artist, title, url, featured_track]
+const RAW = [[1,"c","a",3231023101,2069194115,"M y s t e r yミステリー","インパルス","https://globalpattern.bandcamp.com/album/--9","私と一緒にいて"],[2,"c","a",2585690349,221110317,"MindSpring Memories","❄☁❄☁❄☁❄☁❄","https://shatterfoilindustries.bandcamp.com/album/--26","tears of 28.8kbps snow"],[3,"c","a",90332122,1155879594,"Webinar™","w w w . d e e p d i v e . c o m","https://whitespaceaudio.net/album/w-w-w-d-e-e-p-d-i-v-e-c-o-m","フィジーSunburst"],[4,"c","a",971855834,1447671109,"818181","SLUSHWAVE 2024","https://818181.bandcamp.com/album/slushwave-2024","SLUSHWAVE 2024"],[5,"c","a",1627817047,1069870522,"浏览梦想","水下呼吸","https://browsingdreams.bandcamp.com/album/-","它冷"],[6,"c","a",47713121,1537628272,"沙漠里的沙子晚上很温暖","FLOOR—122","https://desertsand.bandcamp.com/album/floor-122","坐电梯"],[7,"c","a",109038040,1370038415,"desert sand feels warm at night","雲海に漂う","https://desertsand.bandcamp.com/album/--20","永遠にさようなら？"],[8,"c","a",169609954,2632140496,"desert sand feels warm at night","０：２３","https://desertsand.bandcamp.com/album/--22","eternal sleep"],[9,"c","a",228494845,3573932853,"desert sand feels warm at night","０：２１","https://desertsand.bandcamp.com/album/--5","sleep"],[10,"c","a",341677428,3217300928,"VAW & desert sand feels warm at night","『l』『o』『n』『e』『l』『y』","https://desertsand.bandcamp.com/album/l-o-n-e-l-y","『r』『o』『t』『t』『i』『n』『g』 『f』『l』『o』『o』『r』『b』『o』『a』『r』『d』『s』"],[11,"c","a",477051161,1078918665,"沙漠里的沙子晚上很温暖","Tomorrow, 2096","https://desertsand.bandcamp.com/album/tomorrow-2096","第一次"],[12,"c","a",629973394,3583041638,"desert sand feels warm at night","常夏","https://desertsand.bandcamp.com/album/--19","さらば春"],[13,"c","a",930640105,3478148128,"desert sand feels warm at night","ピアノの独り言","https://desertsand.bandcamp.com/album/--26","ソナタ"],[14,"c","a",963767752,2240425274,"desert sand feels warm at night","夜道","https://desertsand.bandcamp.com/album/--14","暮れ"],[15,"c","a",1232026411,4234694040,"desert sand feels warm at night","濃霧","https://desertsand.bandcamp.com/album/--6","微か"],[16,"c","a",1380781724,3250604502,"desert sand feels warm at night","新世界の弟子たち","https://desertsand.bandcamp.com/album/--25","永遠の希望"],[17,"c","a",1517580397,2949239683,"desert sand feels warm at night","激しい感情","https://desertsand.bandcamp.com/album/-","一目ぼれ"],[18,"c","a",1682171939,1176020716,"desert sand feels warm at night","sparkling water","https://desertsand.bandcamp.com/album/sparkling-water","pink lemonade"],[19,"c","a",1745629660,1117692186,"desert sand feels warm at night","သေမင်းတမန်","https://desertsand.bandcamp.com/album/--32","မင်းရဲ့အချိန်ရောက်လာပြီ။"],[20,"c","a",1764230353,2884381047,"desert sand feels warm at night","囚人","https://desertsand.bandcamp.com/album/--3","入る"],[21,"c","a",1775677362,3545542485,"desert sand feels warm at night","溺死","https://desertsand.bandcamp.com/album/--2","水"],[22,"c","a",1963114278,3561606714,"desert sand feels warm at night & days of blue skies","Perli tal-Passat","https://desertsand.bandcamp.com/album/perli-tal-passat","Mintix"],[23,"c","a",2080518960,873288931,"desert sand feels warm at night","バビロンの空中庭園 下","https://desertsand.bandcamp.com/album/--9","大理石"],[24,"c","a",2112117045,155357889,"desert sand feels warm at night","水に流す","https://desertsand.bandcamp.com/album/--10","謳う"],[25,"c","t",2169122959,1570921201,"desert sand feels warm at night","ｃｉｔｙ　ｄｒｅａｍ","https://desertsand.bandcamp.com/track/--39","ｃｉｔｙ　ｄｒｅａｍ"],[26,"c","a",2344146011,2157363643,"desert sand feels warm at night","バビロンの空中庭園 上","https://desertsand.bandcamp.com/album/--7","銅像"],[27,"c","a",2603265516,419667730,"desert sand feels warm at night","天に召される","https://desertsand.bandcamp.com/album/--8","シルエット"],[28,"c","a",2723449078,3109795748,"desert sand feels warm at night","暗涙に咽ぶ","https://desertsand.bandcamp.com/album/--27","威圧的な闇"],[29,"c","a",3271028076,229126121,"desert sand feels warm at night","☯","https://desertsand.bandcamp.com/album/--16","安心してください，なんとかなるよ"],[30,"c","a",3570104526,118440924,"desert sand feels warm at night","一人で","https://desertsand.bandcamp.com/album/--11","無言"],[31,"c","a",3859378203,2879536842,"desert sand feels warm at night","ユートピアへの旅","https://desertsand.bandcamp.com/album/--17","世界のビジョン"],[32,"c","a",3870997220,1228465478,"desert sand feels warm at night","０：２２","https://desertsand.bandcamp.com/album/--15","deep sleep"],[33,"c","a",3899224888,3999708892,"desert sand feels warm at night","我思う、ゆえに我あり","https://desertsand.bandcamp.com/album/--24","夜の街をさまよう／シミュレーション仮説"],[34,"c","a",3911631524,1219702380,"desert sand feels warm at night","夢の滝","https://desertsand.bandcamp.com/album/--13","最も柔らかい水"],[35,"c","a",3996593580,4090039047,"desert sand feels warm at night","Ambivisionᴴᴰ","https://desertsand.bandcamp.com/album/ambivision","Online"],[36,"c","a",4003494215,2681935442,"desert sand feels warm at night","夢の砂漠","https://desertsand.bandcamp.com/album/--30","指を流れる砂"],[37,"c","a",4137823814,1254877516,"desert sand feels warm at night & IndyAdvant","アストラル","https://desertsand.bandcamp.com/album/--23","自由落下"],[38,"c","a",944667390,613720591,"Slushwave Social Club","SSCC Volume 6: Autumn Memories","https://slushwavesocialclub.bandcamp.com/album/sscc-volume-6-autumn-memories","Ħarifa"],[39,"c","a",3227274125,2184325097,"t e l e p a t h テレパシー能力者","星​間​性​交","https://geometriclullaby.bandcamp.com/album/--38","心を入力して"],[40,"c","a",626803175,1992391315,"Your Bestest Friend :)","ℐ 𝓂𝒾𝓈𝓈 𝓎𝑜𝓊","https://thefaeriecircle.bandcamp.com/album/--3","ℐ 𝓂𝒾𝓈𝓈 𝓎𝑜𝓊"],[41,"c","a",446734719,2728980428,"三陸復興国立公園","寝​付​く","https://egoscapes.bandcamp.com/album/--11","朝寝坊"],[42,"c","a",4277160716,1863956826,"德羅斯 & 定常 w a n d e r e r","徘徊於夢境之間","https://waveracerscollective.bandcamp.com/album/--34","心神游移和催眠夢境"],[43,"c","a",2130282367,2449248138,"t e l e p a t h テレパシー能力者","星間性交","https://music.spirit.love/album/--40","心を入力して"],[44,"c","a",1595650048,419987483,"M y s t e r yミステリー & desert sand feels warm at night","人生は幻想です","https://noproblematapes.bandcamp.com/album/--23","怖いです"],[45,"c","a",1042204300,673032701,"The Signalwave Community","The Gas Station MegaCompilation","https://hitachihomevideo.bandcamp.com/album/the-gas-station-megacompilation","M1 t e l e v í z i ó - C a r r i e r M A X I M O L 9 9"],[46,"c","a",4281458699,3102562696,"818181","लिम्बो","https://egoscapes.bandcamp.com/album/--10","लिम्बो1"],[47,"c","a",2461743530,3885294170,"天気予報","CMブレーク 「Complete Volume」","https://asutenki-archive.bandcamp.com/album/cm-complete-volume","CMブレーク 「Vol. I」"],[48,"c","a",900579044,2837624775,"t e l e p a t h テレパシー能力者","アンタラ通信","https://geometriclullaby.bandcamp.com/album/--25","愛の多くの顔"],[49,"c","t",3574920117,2584339009,"定常 w a n d e r e r","霧の女神","https://stationarywanderer.bandcamp.com/track/--4","霧の女神"],[50,"c","a",2260047560,340533597,"memorykeeper7 & 818181","81 memories kept","https://egoscapes.bandcamp.com/album/81-memories-kept","人情"],[51,"c","a",1517128435,1749843423,"德羅斯","已​經​很​久​了","https://pac0m0ren0.bandcamp.com/album/--11","梦见你"],[52,"c","a",3124190004,3084711913,"░▒▓新しいデラックスライフ▓▒░","▣世界から解放され▣ / SPEED DIALER !","https://geometriclullaby.bandcamp.com/album/speed-dialer","☼サンライズTODAY☀"],[53,"c","a",3887870763,4251287707,"CHANCE デラソウル","Goodbye Future Funk","https://tigerbloodtapes.bandcamp.com/album/goodbye-future-funk","Mysteries On The Dancefloor"],[54,"c","a",2449962021,775659247,"░計◈画░","♥​♥​♥​テ​レ​ヒ​゙​√​接​続​✈","https://tigerbloodtapes.bandcamp.com/album/--19","⌭⌭ユニコード⋤╳ゴミ◛☑"],[55,"c","a",2975917393,3477522100,"desert sand feels warm at night","溺死","https://shatterfoilindustries.bandcamp.com/album/--23","水"],[56,"c","a",2476527723,799429785,"Nmesh and t e l e p a t h テレパシー能力者","ロ​ス​ト​エ​デ​ン​へ​の​パ​ス","https://geometriclullaby.bandcamp.com/album/--37","Nmesh - 心痛を受け入れます"],[57,"c","a",1106452949,3280310601,"レム SLEEP","静けさ","https://remsleep.bandcamp.com/album/-","静​け​さ"],[58,"c","a",3458364907,2129718999,"猫 シ Corp. & t e l e p a t h テレパシー能力者","Building a Better World","https://citymanproductions.bandcamp.com/album/building-a-better-world","目覚め"],[59,"c","a",399869620,2479856267,"死夢VANITY","遺​却​す​る p l a z a","https://gorgeouslights.bandcamp.com/album/p-l-a-z-a","Arrival"],[60,"w","a",814244874,3451140915,"Jxxl3s",".MP5","https://theexpandingearth.bandcamp.com/album/mp5","Antihistamine"],[61,"w","a",1247911664,3947553051,"Illusionary ドリーミング","Redolence","https://illusionarydreaming.bandcamp.com/album/redolence","Redolence"],[62,"w","a",678069485,2125605949,"TURQUOISEDEATH","Kaleidoscope","https://turquoisedeath.bandcamp.com/album/kaleidoscope","Glimmer (with vmrrobotic)"],[63,"w","a",2621991657,557545621,"Macroblank","美容師 COLLECTION","https://barbercut.bandcamp.com/album/collection-2","cursed memories"],[64,"w","a",1391401324,2095141389,"º•便當boy•º","水池","https://tigerbloodtapes.bandcamp.com/album/--17","歡迎"],[65,"w","a",1224359974,1923896822,"Flare of Transcendence","犬の天国","https://flareoftranscendence.bandcamp.com/album/--3","二十二十"],[66,"w","a",876268540,2408465202,"パチンコ天国","ＧＯＬＤＥＮ ＣＯＩＮ","https://thevapourlibrary.bandcamp.com/album/-","桁かる[開始]★ＳＴＡＲＴ"],[67,"w","a",1605883776,2098149840,"18 DAYS, gopha","Sunkissed","https://gopha.bandcamp.com/album/sunkissed","Solar Flare"],[68,"w","a",2485420030,832094706,"818181","𝔤𝔯𝔦𝔢𝔣","https://dreamshoretapes.bandcamp.com/album/-","𝔩𝔬𝔰𝔰"],[69,"w","a",1597759864,4212537612,"iacon","不協和音 D I S S O N A N C E","https://iaconofficial.bandcamp.com/album/d-i-s-s-o-n-a-n-c-e","自T殺IのM手E紙"],[70,"w","a",4120452396,1657229145,"M y s t e r yミステリー","GEO - C11; メッセージトラベル","https://geometriclullaby.bandcamp.com/album/geo-c11","星で書かれた"],[71,"w","a",1177372275,706501859,"ｔ ú ｌｖｉｌ á ｇｉ－２０００","Elveszett Lélek","https://hallworthcollective.bandcamp.com/album/elveszett-l-lek","Reménytelenség És Kétségbeesés"],[72,"w","a",2869816014,1615101146,"Psicadence","GEO - C12; Psicadence: 夜の中へ","https://geometriclullaby.bandcamp.com/album/geo-c12-psicadence","後で"],[73,"w","a",4117254721,2528067097,"𝓼𝓸𝓾𝓵𝓶𝓪𝓽𝓮","君フリークェンシー","https://nagligijaqarniq.bandcamp.com/album/-","出会ったあの日と同じくらい新鮮な愛"],[74,"w","a",1683095176,1642759187,"潜在的溺愛者","潛󠄃扗旳󠄀㲸爱者","https://potentialdote.bandcamp.com/album/--14","最愛"],[75,"w","a",4105810500,3549297086,"Lil Kevo 303","Falling Leaf","https://lilkevo303.bandcamp.com/album/falling-leaf-2","Zombie Talk 194iv"],[76,"w","a",634913191,1618034302,"OKTOMEDIA","M E G A C H U R C H","https://oktomedia.bandcamp.com/album/m-e-g-a-c-h-u-r-c-h","n i n t e n d o n ' t"],[77,"w","a",3929489930,2731240491,"死夢VANITY","daydream pleasures","https://gorgeouslights.bandcamp.com/album/daydream-pleasures","wonderful"],[78,"w","a",1288854691,2284765501,"ΣΣ","RAINMALL","https://hallworthcollective.bandcamp.com/album/rainmall","㍕"],[79,"w","a",1081118315,599201045,"CHEMICAL石綿","力","https://hallworthcollective.bandcamp.com/album/--3","ヨセミテ国立公園"],[80,"w","a",1570837576,396305324,"Psicadence & ｅｍｚｉｌ エムジル","Superstar!","https://psicadence.bandcamp.com/album/superstar","Superstar!"],[81,"w","a",3582212228,377942305,"M y s t e r yミステリー","インパルス","https://geometriclullaby.bandcamp.com/album/--24","私と一緒にいて (remastered)"],[82,"w","a",4091070539,359882919,"Eternal Dream System","夢02","https://eternaldreamsystem.bandcamp.com/album/02","森"],[83,"w","a",2855831349,1051794791,"スケートボードに乗った猫","ｐｓｉｃａｄｅｎｃｅ ｓｌｕｓｈｆｕｎｋ  ｍｉｘ","https://s00000.bandcamp.com/album/--86","夢"],[84,"w","a",72622749,1943152409,"Starlight Temple","Starlight Shines Through the Veil of Clouds Like Chimes Jangling in the Howling Winds of Love, Oh How I Wish You Would Stay…","https://music.spirit.love/album/starlight-shines-through-the-veil-of-clouds-like-chimes-jangling-in-the-howling-winds-of-love-oh-how-i-wish-you-would-stay","Starlight Shines Through the Veil of Clouds Like Chimes Jangling in the Howling Winds of Love, Oh How I Wish You Would Stay…"],[85,"w","a",1259103935,3883230889,"夢想家 bliss","鯉","https://utopianbliss.bandcamp.com/album/-","水面の夢"],[86,"w","a",851057592,1007270890,"骨架的","Sunset Melody","https://virtualarchives.bandcamp.com/album/sunset-melody","Gold"],[87,"w","a",1728299171,3327408070,"World Switcher","仮想メモリプール","https://occasionallytapes.bandcamp.com/album/--6","動き回ります"],[88,"w","a",3242090394,3419988566,"LIFTヘリポート","GETAWAY✰","https://netcentury.bandcamp.com/album/getaway","水中 ☯ GALLERIA"],[89,"w","a",3770153345,120984046,"memorykeeper7","・𝐒𝐄𝐀 𝐎𝐅 𝐃𝐄𝐂𝐀𝐘・","https://memorykeeper7.bandcamp.com/album/--47","森の中心"],[90,"w","a",1958100351,624001740,"t e l e p a t h テレパシー能力者","君のいない世界でまた一日が過ぎた","https://music.spirit.love/album/--50","君のもとへ還るその日を夢見て"],[91,"w","a",4113323857,2134195588,"夢想家 bliss","ORCA.zip","https://deepsea-nostalgia.bandcamp.com/album/orca-zip","アクアウォーター"],[92,"w","a",813979390,2131598805,"Psicadence & ｅｍｚｉｌ エムジル","夢の島","https://psicadence.bandcamp.com/album/--11","６：３０ＰＭ ｉｎ Ｔａｈｉｔｉ"],[93,"w","a",1503733025,2582893203,"ｅｍｚｉｌ エムジル and Psicadence","夢の島","https://emzil.bandcamp.com/album/--12","６：３０ＰＭ ｉｎ Ｔａｈｉｔｉ"],[94,"w","a",356035142,2321690867,"MindSpring Memories","نشوة","https://deepsea-nostalgia.bandcamp.com/album/--8","(╯︵╰,)"],[95,"w","a",1236331852,2266383161,"t e l e p a t h テレパシー能力者","夜明けが訪れる","https://music.spirit.love/album/--49","運命の縁から跳び立つ私を、白い鳳凰の翼が抱きしめる"],[96,"w","a",3097072427,2033018367,"陶酔エンジン","まだ","https://euphoriaengine.bandcamp.com/album/--7","最初のプログラム"],[97,"w","a",2115377493,3474348775,"Mabisyo","My Sensei Nujabes","https://mabisyo.bandcamp.com/album/my-sensei-nujabes","Fragments of Yesterday"],[98,"w","a",368562078,844175903,"夢のチャンネル","終わりまで","https://channelofdreams.bandcamp.com/album/--18","無意識に接続"],[99,"w","a",997549311,1297210759,"Fading Dreamer","Devil or Angel?","https://aloecitywrld.bandcamp.com/album/devil-or-angel","Celestial Dilemma"],[100,"w","a",571776614,2832561552,"DVR illusion","天體","https://forgettingsound.bandcamp.com/album/--40","可視性"],[101,"w","a",1978763274,3433189917,"天堂山","最精美的收藏 (No Problema presents... Hallworth Collective)","https://noproblematapes.bandcamp.com/album/no-problema-presents-hallworth-collective","清脆的山区水"],[102,"w","a",1239483725,2674006292,"夢想家 bliss","VIRTUAL美しさDREAMS","https://utopianbliss.bandcamp.com/album/virtual-dreams","至福"],[103,"w","a",537913334,856511230,"cade parker","YCFM 2024","https://cadeparker.bandcamp.com/album/ycfm-2024","GA400"],[104,"w","a",3639041363,1977332253,"OSCOB","説明なしで提示","https://oscob.bandcamp.com/album/--6","色気"],[105,"w","a",4251220453,119517223,"Psicadence","夏の愛","https://psicadence.bandcamp.com/album/--9","朝から午後への移行"],[106,"w","a",2868233095,1333916174,"Remember","Route Back Home","https://remember48.bandcamp.com/album/route-back-home","Love Me"],[107,"w","a",1412954530,2315789461,"roadman","O V O J A M S ⁶𓅓 六​ヶ​所​か​ら​の​眺​め","https://bottlecollection.bandcamp.com/album/o-v-o-j-a-m-s","I N T R O 恋人の少年"],[108,"w","a",2720580950,185604845,"cade parker","cade parker mix vol. 1","https://cadeparker.bandcamp.com/album/cade-parker-mix-vol-1","angellls"],[109,"w","a",3019417927,85081563,"Mom and Dad's Computer","Free HD Wallpaper","https://mdcvapor.bandcamp.com/album/free-hd-wallpaper","This may take a few minutes..."],[110,"w","a",3557702272,736053422,"Mom and Dad's Computer","Employee Module 02: Understanding Outerworld Technology","https://mdcvapor.bandcamp.com/album/employee-module-02-understanding-outerworld-technology-2","Infinite Memory Viewer"],[111,"w","a",1784650818,1014130342,"夢想家 bliss","VirtualElysium","https://whitespaceaudio.net/album/virtualelysium","Transcendentalオアシス"],[112,"w","a",460758919,1753411300,"夢達無制限","ＤＲＥＡＭＳ ＵＮＬＩＭＩＴＥＤ","https://whitespaceaudio.net/album/--8","接断"],[113,"w","a",2433678059,2327601967,"夢達無制限","ＭＩＲＡＧＥ ＳＥＱＵＥＮＣＥ","https://whitespaceaudio.net/album/--7","Ｖｉｄｅｏ２０００"],[114,"w","a",3651461622,1433580610,"夢達無制限","ＭＥＭＯＲＹ ＣＹＣＬＥ","https://whitespaceaudio.net/album/--13","Intro"],[115,"w","a",3343069436,3363533038,"デジタル楽園都市","002 - 01 彼​女​は​天​使","https://digitalparadisecity.bandcamp.com/album/002-01","彼​女​は​天​使"],[116,"w","a",3202257320,1452608093,"デジタル楽園都市","003 - 02 明日の夜","https://digitalparadisecity.bandcamp.com/album/003-02","明日の夜"],[117,"w","a",3865943499,2121742403,"デジタル楽園都市","003 - 01 日常のリズム","https://digitalparadisecity.bandcamp.com/album/003-01","日常のリズム"],[118,"w","a",785090989,1980423540,"定常 w a n d e r e r","最初の旅","https://stationarywanderer.bandcamp.com/album/--5","紫色の空"],[119,"w","a",1537370022,4147668427,"Psicadence","過去の共鳴","https://psicadence.bandcamp.com/album/--8","案内板"],[120,"w","a",30114236,3700615835,"Illusionary ドリーミング & memorykeeper7","Våra Minnen","https://memorykeeper7.bandcamp.com/album/v-ra-minnen","Gnistra"],[121,"w","a",1581607965,1490149803,"仮想夢プラザ","愛の探求","https://virtualdreamplaza.bandcamp.com/album/--68","愛の探求"],[122,"w","a",187174868,3624213933,"世界リフレクター","愛 ᡣ𐭩 •​｡​ꪆ​ৎ ˚⋅","https://sekairifurekuta.bandcamp.com/album/-","温もり"],[123,"w","a",2022605895,1490542350,"定常 w a n d e r e r & ｔｅｐｈ　ｃｏ. 愛","永遠の季節","https://tephco.bandcamp.com/album/--12","永遠の季節"],[124,"w","a",1025069751,2737040038,"cade parker","pillsplitter- septic","https://cadeparker.bandcamp.com/album/pillsplitter-septic","septic 1"],[125,"w","a",1443515260,3976133787,"Psicadence","繋がり","https://psicadence.bandcamp.com/album/--5","夢"],[126,"w","a",1974945720,3753812641,"haircuts for men","蒸気スロップ","https://genomrecords.bandcamp.com/album/--25","Southern Comfort"],[127,"w","a",950392257,2606421568,"デジタル楽園都市","001 - 02 期待","https://digitalparadisecity.bandcamp.com/album/001-02","期待"],[128,"w","a",1400398905,3706986960,"デジタル楽園都市","001 - 01 幻​想​の​輝​き","https://digitalparadisecity.bandcamp.com/album/001-01","幻​想​の​輝​き"],[129,"w","a",1049527379,3362636285,"特別な友人","果てしない日々","https://s00000.bandcamp.com/album/--44","私の声が聞こえる？"],[130,"w","a",753274552,124046508,"ابدی","کھو پیار","https://eternal-dream.bandcamp.com/album/-","کھو پیار"],[131,"w","a",1860470521,1196755926,"TV Girl & George Clanton","Fauxllennium","https://georgeclanton.bandcamp.com/album/fauxllennium","Summer 2000 Baby"],[132,"w","a",3588939276,1447211265,"SunsetSkies™","快適。","https://sunsetskies.bandcamp.com/album/-","Lobby"],[133,"w","a",1705304955,2198244023,"Infinity Frequencies","The first machine","https://computer-gaze.bandcamp.com/album/the-first-machine","Buildings fell, darkness swept"],[134,"w","a",757699208,3789639361,"Cute Aesthetics / ɱα૨ყ ʝαყ","Kid at Heart","https://fotoshoppe.bandcamp.com/album/kid-at-heart","ɱα૨ყ ʝαყ - Blinker"],[135,"w","a",3041657426,856287526,"waterfront dining/La Trace","Bed & Breakfast ／／ DMT-197","https://dmttapes.bandcamp.com/album/bed-breakfast-dmt-197","horse"],[136,"w","a",1719741340,4142099808,"Mom and Dad's Computer","昨日の夕日 ᵉᵖ","https://mdcvapor.bandcamp.com/album/--51","日没 1"],[137,"w","a",2352600305,4259943846,"Mom and Dad's Computer","clubhouse","https://mdcvapor.bandcamp.com/album/clubhouse","☏"],[138,"w","a",1503569759,2410012218,"memorykeeper7","˚⋅˖* ⊱ 𝓫𝓵𝓸𝓸𝓶 ⊰ *˖⋅˚","https://memorykeeper7.bandcamp.com/album/--44","˖ . ݁༄. ݁ᯓ. ݁₊࿐𓏲࿔𓂃. ݁ˎˊ˗𓍼ོ"],[139,"w","a",432484441,1147142569,"Illusionary ドリーミング","シルエット","https://illusionarydreaming.bandcamp.com/album/--42","彼女のシルエット"],[140,"w","a",860423457,3673744581,"猫 シ Corp.","Oasys✓✓✓☞❐計算 ソフトウェア & Hi​-​Fi","https://underwater-computing.bandcamp.com/album/oasys-hi-fi","《♨✺》"],[141,"w","a",2048635973,421271154,"溶けた壁","新時代の地獄世界","https://forgettingsound.bandcamp.com/album/--14","甘い肌"],[142,"w","a",2629563639,187234364,"Pizza Hotline","LEVEL SELECT","https://pizzahotline.bandcamp.com/album/level-select","LEVEL SELECT"],[143,"w","a",2758117097,2081161041,"永遠の悪魔 Eternity Devil","豪華の万能薬","https://liminalgarden.bandcamp.com/album/--4","静穏 (Tranquility)"],[144,"w","a",1169122121,1629931582,"HYDROPLANED INTO A FALSE REALITY!","Interact with the world!","https://hiafr.bandcamp.com/album/interact-with-the-world","Connect online!"],[145,"w","a",2904791833,3434492486,"Alex Stolze","Raash ve Ruach רעש ו רוח Noise and Wind","https://alexstolze.bandcamp.com/album/raash-ve-ruach-noise-and-wind","Tumult שאון"],[146,"w","a",2986617302,2927431215,"haircuts for men","flesh and soul (​理​​​​​​​髪​​​​​​​店 Beat Version)","https://genomrecords.bandcamp.com/album/flesh-and-soul-beat-version","もう嘘はない"],[147,"w","a",351287778,645917436,"ｓｅｎｓｏｒｙ宮殿","暗闇の中で解体された","https://sensorypalace.bandcamp.com/album/--4","シバルバー"],[148,"w","a",1519821176,21293941,"R E A L I T Y テレビ","New Nectar","https://realitytelevision98.bandcamp.com/album/new-nectar","this is just like a dream i had"],[149,"w","a",929052972,1316300374,"Holographic Technologies","Great Neck Recreation Center Virtual Tour 2002","https://occasionallytapes.bandcamp.com/album/great-neck-recreation-center-virtual-tour-2002","Check in Area"],[150,"w","a",1372438072,2944664798,"Cardownloader.exe","Deep Internet Sales Event","https://occasionallytapes.bandcamp.com/album/deep-internet-sales-event-2","Welcome!"],[151,"w","a",979905119,2259210030,"Claudia","Exit","https://claudia.bandcamp.com/album/exit","i don't wanna know"],[152,"w","a",3814063406,3305758070,"𝘰𝘶𝘯𝘥𝘷𝘪𝘬𝘭𝘪𝘨𝘵 ∞","huset på landet","https://oundvikligt.bandcamp.com/album/huset-p-landet","nära skogen"],[153,"w","a",4005027282,4070613623,"夢のチャンネル","情熱の記憶","https://channelofdreams.bandcamp.com/album/--11","一緒に立ち上がる"],[154,"w","a",3619140554,1450556191,"Proton 強尼質子","玉階怨","https://jpro.bandcamp.com/album/--31","玲瓏望秋月"],[155,"w","a",3379648671,2705261060,"Glaciology","桟橋で一人で","https://glaciology.bandcamp.com/album/--50","あなたと話せたらなと思います"],[156,"w","a",1694931719,3938530232,"GOLDEN LIVING ROOM and t e l e p a t h テレパシー能力者","ＶＩＲＴＵＡＬ ＰＨＡＮＴＡＳＹ ２０９７ （ＵＬＴＲＡ ＥＤＩＴＩＯＮ）","https://goldenlivingroom.bandcamp.com/album/-","スカイプラットフォーム"],[157,"w","a",3474178892,2766005694,"四肢の骨折","ウィー","https://brokenextremities.bandcamp.com/album/-","テニスコート"],[158,"w","a",3010843501,2142902412,"四肢の骨折","The Philosophy Of Shuzo Matsuoka","https://brokenextremities.bandcamp.com/album/the-philosophy-of-shuzo-matsuoka","jeshii"],[159,"w","a",1167155631,971082170,"溶けた壁","impersonation","https://forgettingsound.bandcamp.com/album/impersonation","155753"],[160,"w","a",1491697765,3051821265,"Kanal 8 & Yodobashi Camera ヨドバシカメラ","Огляд погоди на каналі 8 - テレビ天気","https://geometriclullaby.bandcamp.com/album/8","Овпенінґ"],[161,"w","a",305537919,2780772511,"memorykeeper7","≪ ◦ 𝙒𝙤𝙪𝙣𝙙𝙚𝙙 𝙃𝙚𝙖𝙡𝙚𝙧 ◦ ≫","https://memorykeeper7.bandcamp.com/album/--39","⋅𝚝𝚑𝚎 𝚕𝚘𝚟𝚎, 𝚕𝚘𝚜𝚝 𝚝𝚘 𝚊 𝚙𝚊𝚛𝚊𝚍𝚒𝚜𝚎 𝚘𝚏 𝚎𝚝𝚎𝚛𝚗𝚊𝚕 𝚋𝚒𝚗𝚊𝚛𝚢 𝚑𝚊𝚣𝚎⋅"],[162,"w","a",4176045666,2715328380,"CONTOSO","WEBCAM GALORE","https://sonospectrum.bandcamp.com/album/webcam-galore","FRANKFURT"],[163,"w","a",2868019146,379214571,"チェスマスター","真の愛","https://dreamcatalogue.bandcamp.com/album/--4","王手"],[164,"w","a",2452299075,27835686,"1999","12 : 98","https://brokenextremities.bandcamp.com/album/12-98","ׂׂૢ: ̗̀➛ just wish things were better"],[165,"w","t",1697344764,2199607721,"ｗｉｎｄｏｗｓ","日光浴","https://spiritworld.bandcamp.com/track/--3","日光浴"],[166,"w","a",2443192375,931155557,"အိပ်မက်မက်ခြင်း။5","꙰꙰ꚞ ۖ꙰꙰ꚞ ۖ꙰꙰ꚞ ۖ ᷊᷄ ━ *⃝̣◌̥˚̣̣̣͙꙰꙰ꚞ ‧₊◜·°˖˚ᝢᝐᝂ`·. ⃟ ⃟ ⃟ஓீۣۣۣۣ፝ۜ፝ۜ͜͜͡͡ ۣۣ፝ۜ͜͡ஓீ ⃠ ꙰ ╱╳╲⁩༽ ᵔ˞┑┙┒┚┓៹̷͇ ᭪ ̶̵̲̺̫̌̋̇͊͘͘͜͟ ༢༘ ᭔ᬼ ࿆ ᬉ ༾៚","https://s00000.bandcamp.com/album/--38","𓄰⊹ ꉂ˓ 𒀭 ˖ ࣪ ꉂ𓄰 ִֶָ 𓄹 ࣪ ִֶָ ♡̷͎ ᵎᵎ 𑁍˖࣪ ˓ ִֶָ ♡̸꒷꒦˓ ༿ ⸒˖ ⩩𓄧 𖤐˚.𓂅٬ ⁶࣪˖՞៸៸ ◟.᪥`ﾞʾ ╱╳╲ˀ𓏲! ִֶָ ꒱𓂃✦៹ 𓏰𓏰ՙ۪ 𖥔 ⌇. ݁₊ ⊹ . ݁˖  ࣭֗̇₊ ｡༴ ॄ‘⌔ ⌇˚.༄ #◞  .. ݁ ♡ ❜ 𓏲 ⩨ 𖤐 ҂ ⊹ ִֶָ ⌗ ִֶָ 𓏲 𒀭﹫  ۖ ᷊᷄ ━ *⃝̣◌̥˚̣̣̣͙༄* ̡͌ ᭝̟  ۫։ຼ𓄹˖❫ ɞ𖥔 ،،̲ ◖ 𖣠 ˖ 𒀭→ ،̲،̲◖ ▸ˑ ִֶָ𓂅˖ ࣪꒷𖤐 ʕ•̫͡•ʔ ִֶָ ˖ 𖥔⠈°.꒦꒷:¨·.·°｡→ ༄ ‧₊˚"],[167,"w","a",2494986321,294115652,"M1 t e l e v í z i ó","November","https://m1televizio.bandcamp.com/album/november","auburn and ochre"],[168,"w","a",254034870,2300050719,"desert sand feels warm at night","囚人","https://nightlighttapes.bandcamp.com/album/--5","入る"],[169,"w","a",2933238411,3370407584,"crt paralysis","\"Slideshow\"","https://crtparalysis.bandcamp.com/album/slideshow","\"Screenshot\" 2006/08/17"],[170,"w","a",1374728346,4140949179,"Illusionary ドリーミング","私の素敵な花束","https://illusionarydreaming.bandcamp.com/album/--38","雲と一緒に浮かぶ"],[171,"w","a",3441931969,1346048997,"潜在的溺愛者","永丰","https://potentialdote.bandcamp.com/album/--10","永豊"],[172,"w","a",2617621705,4217050185,"HYDROPLANED INTO A FALSE REALITY!","Friendly Work Environment","https://bottlecollection.bandcamp.com/album/friendly-work-environment","Paperwork"],[173,"w","a",4041184929,2631349746,"Looking Through Sheets","▣THIS WORLD▣","https://lookingthroughsheets.bandcamp.com/album/this-world","7221986"],[174,"w","a",3626742024,1928387017,"Rooms Without Doors","PLAY!","https://roomswithoutdoors.bandcamp.com/album/play","Bug report"],[175,"w","a",1265208211,2871097116,"u v . e x e","あなたにはもっと良い価値がある","https://waveracerscollective.bandcamp.com/album/--30","それでも私は待ちます"],[176,"w","a",2065744769,2755728874,"Sangam","You Forget This","https://dreamcatalogue.bandcamp.com/album/you-forget-this","11pm, Friday Night"],[177,"w","a",708264978,3136727422,"shlanȶ & SPHERICAL CUBE","ꪜ 𝘦𝘮𝘶𝘭𝘢𝘵𝘰𝘳","https://hallworthcollective.bandcamp.com/album/--45","𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝘁𝗼 ꪜ 𝘦𝘮𝘶𝘭𝘢𝘵𝘰𝘳.ᐟ"],[178,"w","a",366637904,1039685580,"JESUSTHEMILLIONAIRE & BLANK ENTOURAGE","TALK SH!T GET H!T","https://egoscapes.bandcamp.com/album/talk-sh-t-get-h-t","Bloodmoney - JTM"],[179,"w","a",2332064556,3027124064,"仮想夢プラザ","共生","https://virtualdreamplaza.bandcamp.com/album/--77","共生"],[180,"w","a",488705988,3538706939,"ｅｍｚｉｌ エムジル","THE LAST PARTY ON EARTH","https://emzil.bandcamp.com/album/the-last-party-on-earth","THE LAST PARTY ON EARTH"],[181,"w","a",2459432724,1493050970,"直子coed","lost broadcast","https://naokocoed.bandcamp.com/album/lost-broadcast","movie date (in your room!)"],[182,"w","a",1336194305,783596243,"秋","サ​ン​シ​ャ​イ​ン​ポ​ッ​プ​ス","https://miamipalm.bandcamp.com/album/--9","開始"],[183,"w","a",3657275820,2755028491,"Dreamcastle™","Lego Castle: 1979-1998","https://dreamcastletm.bandcamp.com/album/lego-castle-1979-1998","Majisto’s book of hours"],[184,"w","a",3074270662,1320443110,"同の字点々々","巴邑火锅按摩浴缸","https://donojiiten.bandcamp.com/album/--7","海̼鷗蠨蠪蠩蠖海鸥̼"],[185,"w","a",1081431580,3648280211,"同の字点々々","ドーノジテンテンテン","https://donojiiten.bandcamp.com/album/--3","IIIIIIIIIIIII"],[186,"w","a",2290149713,87239588,"同の字点々々","塑亿美健海狗牡蛎片","https://donojiiten.bandcamp.com/album/-","⃝裈┴裊裉⎡蠼⃝"],[187,"w","a",3312279441,2183502336,"優しい愛","夕空","https://tenderlylove.bandcamp.com/album/--3","I"],[188,"w","a",73154509,2782892591,"Vision Girl","デッドデッドデッドデッド","https://tkxvault.bandcamp.com/album/--6","シネマティック気持ち"],[189,"w","a",1986192636,1560219537,"𝕞𝕖𝕞𝕠𝕣𝕪𝕜𝕖𝕖𝕡𝕖𝕣𝟟","𝕠̈𝕜𝕖𝕟𝕤𝕒𝕟𝕕 𝕜𝕒̈𝕟𝕟𝕤 𝕧𝕒𝕣𝕞𝕥 𝕡𝕒̊ 𝕟𝕒𝕥𝕥𝕖𝕟","https://s00000.bandcamp.com/album/--34","𝕧𝕒̈𝕣𝕝𝕕𝕖𝕟 𝕒̈𝕣 𝕠̈𝕧𝕖𝕣 𝕕𝕚𝕘 𝕟𝕦."],[190,"w","a",52060710,1280567915,"陶酔エンジン","回廊 II: 霊的な心の試練","https://euphoriaengine.bandcamp.com/album/ii","第1幕"],[191,"w","a",4095607800,1858145610,"Mom and Dad's Computer","C i r c u i t C i t y","https://mdcvapor.bandcamp.com/album/c-i-r-c-u-i-t-c-i-t-y","hush 市 III"],[192,"w","a",2094516789,2733450848,"Sleepless City","VCPR [／ J. Freeloader & M. Montanius／]","https://fotoshoppe.bandcamp.com/album/vcpr-j-freeloader-m-montanius","The $1000 Level"],[193,"w","a",309940988,2974755360,"Psicadence","結果的な現在","https://psicadence.bandcamp.com/album/--2","一人で"],[194,"w","a",3743820532,4125088974,"夢想的頻道","最后一封信","https://channelofdreams.bandcamp.com/album/--24","分离的路径"],[195,"w","a",2505381747,2037976974,"世界リフレクター","これだ、ありがとう","https://s00000.bandcamp.com/album/--28","どこか遠くの影"],[196,"w","a",1297395819,2425147972,"tek800","無限の宇宙","https://cyberdream.bandcamp.com/album/--3","Hand Of Zei"],[197,"w","a",3801844248,3295045060,"ℍUM♥ℕIGHTM♥RE","Cyber Dream","https://humanightmare.bandcamp.com/album/cyber-dream-2","Lullaby"],[198,"w","a",3242525835,2332410,"⋆｡°✩ロストガール✩°｡⋆","SSK (Sweet Soft Kiss)","https://rosutogaru.bandcamp.com/album/ssk-sweet-soft-kiss","Why Must I?"],[199,"w","a",2002900064,1491452496,"Haunted Ghost","Music For Ketamine Therapy","https://hauntedghost.bandcamp.com/album/music-for-ketamine-therapy","The Come Up"],[200,"w","a",1736231115,1483775503,"Nyetscape","After","https://nyetscape.bandcamp.com/album/after","$$$$live$$$$"],[201,"w","a",2587631257,415097850,"Emerald 夢","Emerald 夢","https://dreamrepository.bandcamp.com/album/emerald","軽さ"],[202,"w","a",2039927251,2839596034,"Aero Corp","Thalasso Division タラソ地区","https://aerocorp.bandcamp.com/album/thalasso-division","This Feels Good ! !「いい気分です ♡♥︎」"],[203,"w","a",362029675,926483679,"endlesswaters無限の海","endlesswaters無限の海","https://endlesswaters.bandcamp.com/album/endlesswaters","crystalclear結晶晴れ"],[204,"w","a",979704639,41014223,"endlesswaters無限の海","inparadise楽園で","https://endlesswaters.bandcamp.com/album/inparadise","inparadise楽園で"],[205,"w","a",1730445635,3012240884,"ファンタジー","オウムガイ","https://virtualplaza.bandcamp.com/album/-","オウムガイ"],[206,"w","a",1426512790,405845183,"陶酔エンジン","回廊 I: 目​覚​め​よ​、​あ​な​た​は​今​こ​こ​に​い​る","https://euphoriaengine.bandcamp.com/album/i","第1幕"],[207,"w","a",2271079314,3920724174,"HYDROPLANED INTO A FALSE REALITY!","Weather Vane","https://egoscapes.bandcamp.com/album/weather-vane","Weather Vane"],[208,"w","a",3749224637,2471896414,"溶けた壁","witch hypnosis programme","https://forgettingsound.bandcamp.com/album/witch-hypnosis-programme","虚空に入る"],[209,"w","a",3256042552,739242924,"羊を数える","ミッドナイトコンパニオン","https://theexpandingearth.bandcamp.com/album/--11","ミッドナイトイルミネーション"],[210,"w","a",245693436,3925154119,"ｔｅｐｈ　ｃｏ. 愛","ᴀᴍᴏʀ ᴇɴ ᴇʟ ᴛʀᴀʙᴀᴊᴏ [ 𝙉𝙐 𝘾𝙊𝙈𝙋𝘼𝙉𝙔 𝙀𝙓𝙋𝘼𝙉𝙎𝙄𝙊𝙉𝙎 ] 社員生活","https://tephco.bandcamp.com/album/-","ᗩᖇᑕᕼITEᑕTᑌᖇᗩᒪ ＭＡＳＴＥＲＰＩＥＣＥ"],[211,"w","a",179808312,3425726171,"from tokyo to honolulu","楽園の喜び","https://fromtokyotohonolulu.bandcamp.com/album/--24","野生生物学"],[212,"w","a",4050995355,3259188913,"秋 & 恋人の夢","切望永久","https://autum-memory.bandcamp.com/album/--39","長い夜"],[213,"w","a",3699441016,618562169,"dream professor","Night (Slushtember Vol. 1)","https://dreamprofessor.bandcamp.com/album/night-slushtember-vol-1","Staring at the Stars"],[214,"w","a",3996369172,3843562999,"𝘰𝘶𝘯𝘥𝘷𝘪𝘬𝘭𝘪𝘨𝘵 ∞","🌍 den här världen 🌍","https://s00000.bandcamp.com/album/den-h-r-v-rlden","𖦹⋆ ˚ 𑁍 ✧°."],[215,"w","a",2612236801,1889522366,"Tito Machete ティトマチェーテ","France '98 World Cup","https://cultureagency.net/album/france-98-world-cup","World Cup Starts"],[216,"w","a",2814233406,2478857625,"PERCUSSION OF A SOUND MIND","GANG★STAR","https://percussionofasoundmind.bandcamp.com/album/gang-star","HE HAS THAT KIND OF STRENGTH?"],[217,"w","a",2018048176,3649778951,"Mostly Cloudy","A Bright Cold Day In April","https://mostlycloudy.bandcamp.com/album/a-bright-cold-day-in-april-2","Mr. Door"],[218,"w","a",1884744148,71065174,"SLEEP CENTER™","DISK 1","https://sleepcenter.bandcamp.com/album/disk-1","SLEEP CENTER SIGNATURE & DISK 1 WELCOME"],[219,"w","t",2709009959,4141078698,"夢のシーケンス","シーケンス起動","https://yumesequence.bandcamp.com/track/-","シーケンス起動"],[220,"w","a",3673216575,1107634535,"絡み合った運命","Behind The Mask","https://intertwinedfate.bandcamp.com/album/behind-the-mask","Unknown Identity"],[221,"w","a",3814190096,2849168372,"絡み合った運命","意識的","https://intertwinedfate.bandcamp.com/album/--25","半減期"],[222,"w","a",1017579217,342965211,"佚名","歸宿","https://xianlian.bandcamp.com/album/--36","無窮"],[223,"w","a",2771183222,1187746918,"هذا غير محدود إلى الأبد","FASHIONGUIDE TV (P17023400571L.asf)","https://whatexplosionsdotothebody.bandcamp.com/album/fashionguide-tv-p17023400571l-asf","FASHIONGUIDE TV (P17023400571L.asf)"],[224,"w","a",165529051,2520606722,"Channel 505","データ無効","https://channel505.bandcamp.com/album/-","いい天気"],[225,"w","a",2058963096,3418803942,"Illusionary ドリーミング","夢花嫁","https://illusionarydreaming.bandcamp.com/album/-","夢花嫁"],[226,"w","a",625414431,1748834815,"夢想家 bliss","VirtualElysium","https://utopianbliss.bandcamp.com/album/virtualelysium","Transcendentalオアシス"],[227,"w","a",363164579,3077499790,"ふまれ","天気予報へ愛を込めて","https://fumare.bandcamp.com/album/--12","おやすみなさい"],[228,"w","a",205501122,1198446400,"░▒▓ḵugóosʼ","08 31 2024 :: archived live set","https://kugoos.bandcamp.com/album/08-31-2024-archived-live-set","08 31 2024"],[229,"w","a",4170566322,382387939,"夢へのポータル","毎日の空","https://channelofdreams.bandcamp.com/album/--20","もうここにはいない"],[230,"w","a",2524711173,3680843657,"M y s t e r yミステリー","地球に到着","https://delusivemystery.bandcamp.com/album/--4","わーい"],[231,"w","a",352827112,2018407242,"ギャラクティックノヴァ","銀河にねがいを","https://hairsablazin.bandcamp.com/album/--2","核"],[232,"w","a",3521395113,1880978764,"Mick Rudry","Lavender Poolhouse","https://midnightfrequency.bandcamp.com/album/lavender-poolhouse","underwater meditation pt.1"],[233,"w","a",1845487399,4130347512,"M1 t e l e v í z i ó","t r a n s i t [night]","https://m1televizio.bandcamp.com/album/t-r-a-n-s-i-t-night","h e a d l i g h t s"],[234,"w","a",1115685412,1878418281,"t e l e p a t h テレパシー能力者","肉体からの離脱","https://dreamcatalogue.bandcamp.com/album/--11","わたしはあなたと共に時は時間がありません"],[235,"w","a",3224765998,2307680407,"dstnt & Vektordrum","Night Signals II","https://vektroid.bandcamp.com/album/night-signals-ii","sh9h"],[236,"w","a",3755760182,1574280410,"仮想夢プラザ","解放感","https://virtualdreamplaza.bandcamp.com/album/--80","解放感"],[237,"w","a",4247263319,1342035507,"送電塔","切断再接続","https://souden.bandcamp.com/album/--4","10.24 ch"],[238,"w","a",3037250191,3197044124,"memorykeeper7 & u v . e x e","புற ஊதா நினைவுகள்","https://memorykeeper7.bandcamp.com/album/--28","ஆவி"],[239,"w","a",2763432491,3381675810,"夢范例","精疲力盡","https://dreamparadigm.bandcamp.com/album/--8","精疲力盡"],[240,"w","a",4266237458,2920767000,"Various Artists","TIDE-020 - 氷河氷","https://thedreamsphere.bandcamp.com/album/tide-020","frost mirage"],[241,"w","a",845569672,3556519465,"中空魂、何か冗長な","孤立の生涯","https://nirvanaport.bandcamp.com/album/--4","そして必然的に冷凍"],[242,"w","a",3470243268,454755964,"crafter2011","minecraft vol. 1","https://deskrat.bandcamp.com/album/minecraft-vol-1","the end"],[243,"w","a",362801988,885188445,"Lotus Flowers","वार्युद्भव","https://lotus-flowers.bandcamp.com/album/-","युष्मोत"],[244,"w","a",2903920802,4274121729,"視聴者","アナログ停波","https://identt.bandcamp.com/album/--3","カウントダウン"],[245,"w","a",2705350344,1682284145,"M1 t e l e v í z i ó","ｎｉｇｈｔｆａｌｌ","https://m1televizio.bandcamp.com/album/-","ｎｉｇｈｔｆａｌｌ"],[246,"w","t",3959677747,3325827195,"t e l e p a t h テレパシー能力者","あなたなしで別の日","https://music.spirit.love/track/--105","あなたなしで別の日"],[247,"w","a",1496897471,1749409141,"death's dynamic shroud.wmv","世界大戦OLYMPICS","https://deathsdynamicshroud.bandcamp.com/album/olympics","ǤØLƉ // ℳΞƉAŁ // WİƝƝΞ℞"],[248,"w","a",2030436748,4084849305,"​​空気系","​​Day​-​by​-​Day","https://dailycm.bandcamp.com/album/day-by-day","4月1日(月)"],[249,"w","a",698094912,462515839,"潜在的溺愛者","流丽","https://potentialdote.bandcamp.com/album/--4","流麗"],[250,"w","a",1665028063,2868453658,"潜在的溺愛者","最爱","https://potentialdote.bandcamp.com/album/--3","最愛"],[251,"w","a",2376102399,3735584151,"歪んだ記憶","輝度","https://f209.bandcamp.com/album/--14","レコーディング"],[252,"w","a",3923617596,238718587,"歪んだ記憶","遠距離放送","https://f209.bandcamp.com/album/--18","天気の紹介"],[253,"w","a",508834459,1600018210,"天気予報","あすの天気","https://asutenki-archive.bandcamp.com/album/--29","11:00"],[254,"w","a",1020030336,1380721925,"セルシオ & CANAL+","Solstice","https://canalplus.bandcamp.com/album/solstice","tranquil"],[255,"w","a",3670373915,1683856908,"CANAL+","Systématique","https://canalplus.bandcamp.com/album/syst-matique","Réalisations"],[256,"w","a",1951186857,3672986998,"天気予報","現在の地域条件","https://asutenki-archive.bandcamp.com/album/--5","靄"],[257,"w","a",3331891076,415225558,"Ｋａｎａｌ Ｖｉｅｒ & FUJIWARA INTERCOM","Synthetik / PROGRESSIVE REGRESSION","https://darkwebrecordings.bandcamp.com/album/synthetik-progressive-regression","Eleganz der Zeit"],[258,"w","a",2184666979,2965022630,"仮想夢世の中","あなただけと一緒に","https://vdpworld.bandcamp.com/album/--23","あなただけと一緒に"],[259,"w","a",88783157,1105150791,"Illusionary ドリーミング","宇宙での悲鳴は誰にも聞こえない","https://illusionarydreaming.bandcamp.com/album/--20","主は救世主ではない"],[260,"w","a",1621060222,2147667492,"デザインの","多くの願いを込めて","https://ofdesign.bandcamp.com/album/-","太陽が沈むのを見ながら"],[261,"w","a",3596658150,1599075154,"絡み合った運命","『継続する』","https://intertwinedfate.bandcamp.com/album/--31","最後まで"],[262,"w","a",3241553490,3425374047,"James Ferraro","Hacker Track","https://riveditions.bandcamp.com/album/hacker-track","Hack Your Mind (excerpt A)"],[263,"w","a",1383372051,547920971,"Diskette Romances","Diskette Romances","https://midnightmoontapes.bandcamp.com/album/diskette-romances","Eden"],[264,"w","a",1599613265,3839926424,"ＶＨＳ ნ ი ღ ბ ე ბ ი","ვ ა რ დ ი","https://hallworthcollective.bandcamp.com/album/--13","ლ უ რ ჯ ი"],[265,"w","a",863538676,498343543,"Lindsheaven Virtual Plaza","超越愛","https://lindsheavenvirtualplaza.bandcamp.com/album/-","燈台"],[266,"w","a",276331738,227861707,"l u c i d 夢のリサーチャー","明晰夢の雨","https://luciddreamresearcher.bandcamp.com/album/-","明晰夢の雨"],[267,"w","a",4029296024,12323409,"仮想夢プラザ","愛の傾き","https://virtualdreamplaza.bandcamp.com/album/--47","愛の傾き"],[268,"w","a",776679054,4181770136,"memorykeeper7 & 818181","81 memories kept","https://memorykeeper7.bandcamp.com/album/81-memories-kept","人情"],[269,"w","a",2121532386,2278932096,"潜在的溺愛者","再歸","https://potentialdote.bandcamp.com/album/--11","再帰"],[270,"w","a",1698097903,701439265,"F i b o n a c c i","Forever","https://illuminatedpaths.bandcamp.com/album/forever","Forever on my mind"],[271,"w","a",4206550478,1645167741,"F i b o n a c c i & M y s t e r yミステリー","ラブファンタジー","https://delusivemystery.bandcamp.com/album/--2","あなたなしで"],[272,"w","a",2376909930,4062116954,"TRANSMITTER.","冬の精霊 (From SSCC: A Very Slushwave Christmas) (Single)","https://soshinki.bandcamp.com/album/from-sscc-a-very-slushwave-christmas-single","冬の精霊"],[273,"w","t",2944268034,3742436489,"秋","紫陽花","https://slushwavesocialclub.bandcamp.com/track/--43","紫陽花"],[274,"w","a",1731146595,3137090358,"Sangam","Distance Amongst Us","https://kudatah.bandcamp.com/album/distance-amongst-us","Pipeline Ice Trails"],[275,"w","a",2533214158,4089492092,"South Korean Hydrometeorological Center","비","https://south-korean-hydrometeorological-center.bandcamp.com/album/--2","동안 / 서해안"],[276,"w","a",3393415084,944018175,"事務室 Lift","Elevator 厚底 / Ascending Rooms 上昇","https://tigerbloodtapes.bandcamp.com/album/elevator-ascending-rooms","Office Supplies 事務用品"],[277,"w","a",3614482668,1748388932,"奥宮祐子","無","https://nikolaimitchell.bandcamp.com/album/--44","無"],[278,"w","a",136720742,2599578225,"THIRDWORLD DREAMPLACE","ОМРІЯНА РЕЛАКСАЦІЯ","https://globalpattern.bandcamp.com/album/--16","НІЧНЕ ПОВІТРЯ ТАКЕ СВІЖЕ"],[279,"w","a",4210943522,3218352603,"魂文書館","魂文書館","https://spiritarchive.bandcamp.com/album/-","ロコモーションの夢"],[280,"w","a",2886339248,1050390396,"記憶消去+","時​間​の​庭​園","https://egoscapes.bandcamp.com/album/-","記憶 1 - その夜に"],[281,"w","a",1409502213,3655407192,"4departing4","JADE及其BECK//BECK及其JADE","https://4departing4.bandcamp.com/album/jade-beck-beck-jade","ベックBeCK"],[282,"w","t",338899539,3686249116,"モノマティズム","あなたの中に私を見ている","https://internetbonsoirlabel.bandcamp.com/track/-","あなたの中に私を見ている"],[283,"w","a",4081806329,491087412,"花穰步","夢的離析","https://internetbonsoirlabel.bandcamp.com/album/--4","繫"],[284,"w","a",2883122951,2873826526,"Transmissible Girl","Spectral Transience","https://boguscollective.bandcamp.com/album/spectral-transience","ｓｈｅ ｅｘｉｓｔｓ ｗｉｔｈｉｎ ｔｈｅ ｆｒｅｑｕｅｎｃｉｅｓ"],[285,"w","a",3857939909,978497204,"t e l e p a t h テレパシー能力者","永遠の愛","https://music.spirit.love/album/--28","あなたを残す"],[286,"w","a",3032775877,3790312780,"夕方の犬(U ･ｪ･)","ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʔ•̫͡•ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ♡","https://dogintheevening.bandcamp.com/album/-","[壁] ʕ•̫͡•ʔ•̫͡•ʕ•̫͡•ʔ•̫͡•ʕ•̫͡•ʔ5"],[287,"w","a",2813389914,2283531625,"夕方の犬(U ･ｪ･)","ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʔ•̫͡•ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ♡","https://ctatsu.bandcamp.com/album/-","ʕ•̫͡•ʔzZZZ1"],[288,"w","a",1314129706,4268455971,"夕方の犬(U ・ｪ・)","Paint Room","https://noproblematapes.bandcamp.com/album/paint-room","Charcoal (Caaage)"],[289,"w","a",2217627222,2335505467,"a200xeaf","ENDLESS AND FOREVER 1 (UNLIMITED EDITION) - [2020-2024]","https://a200xeaf.bandcamp.com/album/endless-and-forever-1-unlimited-edition-2020-2024","56 - IMMENSITYEXPORT0"],[290,"w","a",1798281691,1509743044,"コディ","Sounds For The Office","https://kodyjaja.bandcamp.com/album/sounds-for-the-office","Corporate Troubles"],[291,"w","a",2731731748,2977336332,"夢へのポータル","夢のような天使","https://portaltodreams.bandcamp.com/album/-","隠された通路"],[292,"w","a",1329596844,2023712235,"輕描淡寫","小圈子","https://vill4in.bandcamp.com/album/--5","我永远不会忘记你"],[293,"w","a",3016441787,2985976196,"虛擬夢想廣場","沉魚落雁閉月羞花","https://virtualdreamplaza.bandcamp.com/album/--81","沉魚落雁閉月羞花"],[294,"w","a",2519985360,1064597613,"卫星广播","测试","https://satelliteguangbo.bandcamp.com/album/-","测试 1"],[295,"w","a",1733769855,3203975581,"​​空気系","1月14日","https://dailycm.bandcamp.com/album/1-14","1月14日(火)"],[296,"w","a",761688001,4260637764,"死亡頻道","超越灵魂","https://geometriclullaby.bandcamp.com/album/--21","破碎的记忆"],[297,"w","a",376292778,3548832644,"仮想コックとボールの拷問","シグマナット","https://bvftg.bandcamp.com/album/--12","実際のm8の場合 誰が気にする"],[298,"w","a",2458283213,4176293581,"マグダラのショッピングモール","Frederik's 聖なる庭","https://magdalenevapor.bandcamp.com/album/frederiks","Utopian Visions"],[299,"w","a",2396554827,1877688784,"Mom and Dad's Computer","Jambo Navi","https://mdcvapor.bandcamp.com/album/jambo-navi","Field Guide"],[300,"w","a",3841246326,289761142,"Liminal Winter","ラッププール  9:07 pm","https://liminalwinter.bandcamp.com/album/9-07-pm-2","Backstroke"],[301,"w","a",2197662129,1860232480,"haircuts for men","理​​​髪​​​店 Beat 1987​​​-​​​1989","https://genomrecords.bandcamp.com/album/beat-1987-1989","1 伝染する (hfm barber chop edit)"],[302,"w","a",2125972609,1170905813,"縮地","我们热","https://shukuchijutsu.bandcamp.com/album/--49","像在眺"],[303,"w","a",1289341064,2098430363,"sonnov","井底之蛙","https://sonnovdrone.bandcamp.com/album/--74","画饼充饥"],[304,"w","a",494589405,280267672,"Male Alchemy","魂の憎しみの本質","https://malealchemy.bandcamp.com/album/--8","目を閉じてダイビング"],[305,"w","a",3339292549,1974245375,"衛星テレビ","忘れ物","https://eiseiterebi.bandcamp.com/album/--3","____________O____________"],[306,"w","a",1102666524,3791324490,"sonnov","ᑎ","https://sonnovdrone.bandcamp.com/album/--510","zanuz"],[307,"w","a",3398842947,3481205045,"E U P H O R I A 永遠の","魔法の夜","https://gorgeouslights.bandcamp.com/album/--18","星空"],[308,"w","a",1370708542,1944790706,"🔴-🟡-🟢[{[{💧💧失⏳️っ⌛️た💧💧]}]}🔴-🟡-🟢","🌼𝔐𝓲𝕤Ⓔ𝕣𝓎  ❤️  Ⓒ𝐎𝕞𝐏Δη¥🌼","https://miserycorperation.bandcamp.com/album/-","ⓓ𝐨 у𝕠υ ℝ𝒆ϻ𝐄๓𝕓έŘ"],[309,"w","a",834710423,2449974768,"猫 シ Corp.","[지오 프론트] v3.1","https://catsystemcorp.bandcamp.com/album/v31","층~003"],[310,"w","a",3521111836,1404665444,"猫 シ Corp.","太陽。慰安。楽園。","https://catsystemcorp.bandcamp.com/album/--11","ドバイ دبي"],[311,"w","a",3425043054,2409474106,"dream professor","夜中ランデブー","https://dreamprofessor.bandcamp.com/album/--5","月光"],[312,"w","a",501401670,2111942998,"絡み合った運命","あなたが恋しい","https://intertwinedfate.bandcamp.com/album/--33","手放す"],[313,"w","a",1821957381,3874731792,"Illusionary ドリーミング","欲望に満ちた星","https://illusionarydreaming.bandcamp.com/album/--5","欲望に満ちた星"],[314,"w","a",74706090,547369217,"Origami Girl","Lonely Star","https://virtualdreamplazashop.bandcamp.com/album/lonely-star","Out of Body"],[315,"w","a",3635020267,1282541152,"被遗忘的时光","forgotten time","https://tetrasystems.bandcamp.com/album/forgotten-time","内从R"],[316,"w","t",622233869,1603151945,"眠り玩具","ある夏の日","https://fromtokyotohonolulu.bandcamp.com/track/--798","ある夏の日"],[317,"w","a",2499269471,1981411572,"from tokyo to honolulu","ユートピア","https://fromtokyotohonolulu.bandcamp.com/album/--8","気体化"],[318,"w","a",2826222542,895028754,"from tokyo to honolulu","interior design ideas","https://fromtokyotohonolulu.bandcamp.com/album/interior-design-ideas","フォア"],[319,"w","a",3804270184,2182234539,"Local News","Channel 8","https://localnews1.bandcamp.com/album/channel-8","Channel 8"],[320,"w","a",1029334739,451624251,"New Dreams Ltd.","Fuji Grid TV EX","https://vektroid.bandcamp.com/album/fuji-grid-tv-ex","GOML"],[321,"w","a",2815692304,2154576066,"victory over death & 溶けた壁","商業的自滅 (signalcon 2024)","https://vod123.bandcamp.com/album/signalcon-2024","忘却のイメージ"],[322,"w","a",1239000670,1326509371,"̵͎͚̲͛ ̶̡̒́̉ ̴̛̯̞̳̾͝ ̸͓͍̍͒͘ ̷̩͇͈͖͝ ̴̜̺̤̰͒̄ ̴̨̡̯̭̿ ̶̨̩͕̀͊͘ ̶͔̆͒ ̴̰̈́͛","̶͈̻̔ ̴̰̘̍͊ ̶̓͜ ̸̼͎͊͘ ̴̺͒ ̵̯̦̌͆ ̴̦̤́ ̴̝̺͂͐ ̴̨͉͐ ̷̭̂͝ ̵̟̆ ̴̮̗̽ ̸͖̳͗ ̷̧͗̀ ̸̢̆ͅ ̶͕͖͌ ̵̡̀̈́ ̶̩̣͊̀ ̵̬̃͘ ̶̼͠","https://duga.bandcamp.com/album/--12","̵̧̢̦̹̳̖̤̝̻̘̭̝̱̬̠̹̯̝͉̻̾̄͗̄̓̔̔̎̏ ̵̧̢̰̦͈̳̗̯̥̩͙̥̜͕̖̼̖͙̖̦̘̇̏̄̓̉̿̃̇̋̾̌̕͝ ̵̡̡̯̠̲͖̻̖̱̫̭͉̜̠͍̤͚͗͛̔̀̌͐͜ ̴̛̛̛͚̥͉̬̪̯̊̌͆͋̅̿̐̔͆̄̈́̕̚̕̕͠ ̶̛̼̪̦̈́̈́̑̓̈́̍̚͝ ̴̺͎̙̝̹͔̯̖͚͇͓̮͔̮̗̾̀͑̋̅̿́̄̈̕͜ ̶̡͇̜̯̦͎͚͔͍͚̳̬̣̾͛̄̕̕ ̷̫͎̽́̽̒̿͗̽̑́̓̋̓̎́̓̆́̕ ̵̧̲̬̱̩̗̯̯̪̰̘̮̖͖̯̰͈͎͚̮̀̄̀̅̈̓͗̔̑̓ ̶̨̧̨͚̟͎̣̣̳̫̳̫̺̲̤͙̏̄̈̈́̈́̋̿͐͒͌͐̽̈̐̏̕͝"],[323,"w","a",4256642306,3318612249,"การสำรวจสาธารณะ","⓵","https://syurga.bandcamp.com/album/-","เมื่อไร?"],[324,"w","a",2136297984,2496369559,"２８ : ４４","あなたの名前を呼ぶ","https://nightcoverage.bandcamp.com/album/--31","あなたの名前を呼ぶ"],[325,"w","a",2079226204,2522733967,"days of blue skies","As The Days Go By....","https://daysofblue.bandcamp.com/album/as-the-days-go-by","The Beauty of Life"],[326,"w","a",2985348477,3000668919,"MindSpring Memories","% 2 0","https://mindspringmemories.bandcamp.com/album/2-0","സൂരാസ്തമയം"],[327,"w","a",3663647739,3412730817,"luv自爱","mind's flavors","https://luvmusic.bandcamp.com/album/minds-flavors","c u m i n -  実現"],[328,"w","a",3874470473,3559786259,"Devon Hendryx","THE GHOST~POP TAPE (オリジナル)","https://dvonhendryx.bandcamp.com/album/the-ghost-pop-tape","Call Me Maybe"],[329,"w","a",1677626798,893832355,"Devon Hendryx","DREAMCAST SUMMER SONGS","https://dvonhendryx.bandcamp.com/album/dreamcast-summer-songs","Power Stone ☀"],[330,"w","a",3274572572,2810655700,"夜間視力NIGHT VISION.Corp","私​は​あ​な​た​の​絶​望​に​溺​れ​て​い​ま​す","https://phantom-tapes.bandcamp.com/album/--8","シルエットの中でお会いしましょう"],[331,"w","a",3283714129,3352682202,"ghosttjockey","yearofttherabbitttt","https://202023.bandcamp.com/album/yearofttherabbitttt","believeme"],[332,"w","a",2944814635,1955859387,"💧 debby ryan disney star 💧","♡伝説に栄光あれ♡DEBBY RYAN SAVES THE MEMORIES☆","https://damppmaximalistfuturesoon202042.bandcamp.com/album/debby-ryan-saves-the-memories","私の過去で♡DEBBY RYAN MAKES HISTORY♡私の過去で"],[333,"w","a",2884278025,106776683,"アバドン","ブルー","https://underwater-computing.bandcamp.com/album/--42","スイートメモリー"],[334,"w","a",2537813609,4186152385,"Psicadence","超越的欲望","https://psicadence.bandcamp.com/album/-","風が導くところ"],[335,"w","a",2683963620,2540801170,"明晰夢のキャッチャー","ブロードキャスト","https://luciddreamcatcher.bandcamp.com/album/--19","映画"],[336,"w","a",2569250430,3416399802,"明晰夢のキャッチャー","地球外流星群","https://luciddreamcatcher.bandcamp.com/album/--25","嵐"],[337,"w","a",3055554100,2935258640,"4d4","moving on","https://dreamcorprecordsinc.bandcamp.com/album/moving-on","oh yeah"],[338,"w","a",3280602087,185916125,"4departing4","戻るforever","https://4departing4.bandcamp.com/album/forever","同氏囁きの..."],[339,"w","a",2883711069,2120592928,"天堂山","金的棕色","https://hallworthcollective.bandcamp.com/album/--23","金的棕色"],[340,"w","a",1597652489,4205100833,"Glaciology","夢の庭園","https://waveracerscollective.bandcamp.com/album/--8","最先端"],[341,"w","t",2621686374,1447800395,"定常 w a n d e r e r","幼稚な喜び","https://stationarywanderer.bandcamp.com/track/--3","幼稚な喜び"],[342,"w","a",1789465404,516086554,"𝓱𝓮𝓪𝓻𝓽𝓱𝓼𝓸𝓷𝓰𝓼","❄️","https://thefaeriecircle.bandcamp.com/album/--2","🌨"],[343,"w","a",4282953561,1639718671,"Soft Replica","Only Ever In Dreams","https://softreplica.bandcamp.com/album/only-ever-in-dreams","Valerie's Dream"],[344,"w","a",3969931723,4116405608,"u v . e x e","残念なタイミング","https://egoscapes.bandcamp.com/album/--4","私たちはとても長い間待ちました"],[345,"w","a",859895796,2439818314,"絡み合った運命","ダークムーン","https://intertwinedfate.bandcamp.com/album/--16","時間"],[346,"w","t",757440318,3559531022,"夢のシーケンス","存在","https://yumesequence.bandcamp.com/track/--2","存在"],[347,"w","a",2927506203,2740623303,"​​空気系","Cherished Memories","https://dailycm.bandcamp.com/album/cherished-memories","First hello"],[348,"w","a",2192072363,2093578544,"天気予報","ひまわり画像","https://asutenki-archive.bandcamp.com/album/-","高層タワー「Introduction」"],[349,"w","a",216984122,2131602220,"天気予報","巡","https://asutenki-archive.bandcamp.com/album/--10","芦屋"],[350,"w","a",1996972764,372186442,"幻 想 風 景","夜帆","https://gensofukei.bandcamp.com/album/--3","らせん階段"],[351,"w","a",3286461891,4233819755,"50% Discount","Underwater Plaza","https://intertwinedfate.bandcamp.com/album/underwater-plaza","Latin Lounge"],[352,"w","a",632850400,562678226,"仮想コックとボールの拷問","クールラップ2069","https://bvftg.bandcamp.com/album/2069","兼ベンダー"],[353,"w","a",364660484,633947645,"ծիածանի հիբիսկուս & කොළ අතර හිරු එළිය","քաղաքային միասնություն ◆ නාගරික එකමුතුකම","https://hallworthcollective.bandcamp.com/album/--44","මැඩිසන් චතුරශ්රය"],[354,"w","a",3327208284,2784104190,"tek800","grids光制御","https://cyberdream.bandcamp.com/album/grids","tones"],[355,"w","a",2221296327,3509745780,"u v . e x e","卒業","https://uvexe.bandcamp.com/album/--17","迷子"],[356,"w","a",3031502006,243691679,"t e l e p a t h テレパシー能力者","あなたの愛","https://music.spirit.love/album/--25","私はあなたのことをいつまでも愛します"],[357,"w","a",781004158,3356433601,"Lindsheaven Virtual Plaza","Sign-Off Meditations, 1982","https://lindsheavenvirtualplaza.bandcamp.com/album/sign-off-meditations-1982-2","Sign-Off Meditations, 1982"],[358,"w","a",19800415,2971464538,"優しい愛","長い","https://tenderlylove.bandcamp.com/album/-","I / II"],[359,"w","a",1098591410,4115597212,"仮想夢プラザ","私にはあなたが必要です","https://virtualdreamplaza.bandcamp.com/album/--16","私にはあなたが必要です"],[360,"w","a",4207420325,719205318,"cure id 92","​​​​​​​​​​​​​​​​​​​​","https://cureid92.bandcamp.com/album/-","​​​​​​​​​​​​​​​​​​​​"],[361,"w","a",941786034,3127306152,"放浪者","牧歌的な生き方","https://wandererdream.bandcamp.com/album/--2","最初の深い眠り"],[362,"w","a",3770644407,1145624145,"朽ちていくSPECTRE","untitled","https://midnightfrequency.bandcamp.com/album/untitled","𓅯"],[363,"w","a",3901235548,2432842863,"Euphoria Engine","Cloudfall","https://noproblematapes.bandcamp.com/album/cloudfall","エピソード Ⅰ"],[364,"w","a",440442763,3272469839,"天堂山","双双","https://hallworthcollective.bandcamp.com/album/--43","协同效应"],[365,"w","a",2928719480,3861389743,"夢研究センター","Dream Research Center, Vol. 1","https://noproblematapes.bandcamp.com/album/dream-research-center-vol-1","夢研究センター"],[366,"w","a",121630619,1991932984,"egoscapes","Sounds of the Mind™ Vol. 1","https://egoscapes.bandcamp.com/album/sounds-of-the-mind-vol-1","egoscapes: Sounds of the Mind™"],[367,"w","a",481183257,2503418415,"chris†††","7年后","https://christtt.bandcamp.com/album/7","ホーリーゴースト"],[368,"w","a",4048068728,4127561782,"卡死缇娜","圣诞特别","https://kastrinakastrina.bandcamp.com/album/--7","圣诞色色"],[369,"w","a",3350334276,1157853536,"DISEASE","愛情のある関係","https://d1sease.bandcamp.com/album/--3","地獄への降下"],[370,"w","a",102792160,1714989284,"bliss∞","m","https://bliss3three.bandcamp.com/album/m","rosy's aqua garden of pure love and ecstasy"],[371,"w","a",2337547964,1389445166,"羊を数える","幻想に身を委ねる","https://countingsheep00.bandcamp.com/album/--16","幻想に身を委ねる"],[372,"w","a",3097552419,2588376362,"卫星广播","早安中国","https://satelliteguangbo.bandcamp.com/album/--2","早安中国"],[373,"w","a",249962150,3656114498,"恋人の夢","薔薇","https://loversdream.bandcamp.com/album/--20","仄"],[374,"w","a",1281338094,4182491035,"羊を数える","選​ば​れ​た​作​品 II","https://countingsheep00.bandcamp.com/album/ii","あなたの愛のない人生"],[375,"w","a",1144806864,433853896,"Leisure Centre","High Fashion","https://leisurecentre.bandcamp.com/album/high-fashion","反省"],[376,"w","a",2706806647,4020020035,"t e l e p a t h テレパシー能力者","Secret Lover","https://music.spirit.love/album/secret-lover","Secret Lover"],[377,"w","a",1584787883,2942374306,"泰合志恒","神秘的情人","https://tkxvault.bandcamp.com/album/--4","没有你"],[378,"w","a",4107983841,3119779520,"響く夢","水​面​に​太​陽​光​線","https://corporateddreams.bandcamp.com/album/--2","深海"],[379,"w","a",3147157449,2387347440,"天気予報","Shimokitazawa Blues","https://asutenki-archive.bandcamp.com/album/shimokitazawa-blues","Beyond The Skies"],[380,"w","a",1329281242,2538742527,"ホテル shampoo","ヤ​リ​友","https://waveracerscollective.bandcamp.com/album/--23","シロップ"],[381,"w","a",1753960148,1755677927,"kyuujuuichinen","cold heart","https://mei91.bandcamp.com/album/cold-heart","remains"],[382,"w","a",179822418,2547555491,"絡み合った運命","要素","https://intertwinedfate.bandcamp.com/album/--13","水面下"],[383,"w","a",2783951117,518821275,"三陸復興国立公園","寝付く","https://sanriku.bandcamp.com/album/--2","朝寝坊"],[384,"w","a",2114173844,2550852983,"氷河 and 空気系","Scenic Route","https://hyouga.bandcamp.com/album/scenic-route","Scenic Route"],[385,"w","a",1692122770,2917142492,"ファンタジー","恒星間の美しさ","https://gateway.bandcamp.com/album/--6","蜃気楼塔"],[386,"w","a",4260881873,2679193573,"Jaiden Macintosh","천국 / ☆ your quest starts here ☆","https://riveditions.bandcamp.com/album/your-quest-starts-here","천국"],[387,"w","a",458876947,2369857700,"emoticon (>w<)","POSTIRONIC HELLSCAPE","https://uwu-uwu.bandcamp.com/album/postironic-hellscape","INTRO / REBIRTH"],[388,"w","a",386575386,3288091819,"Aot Lam","Life Giving Ritual","https://vaultxyo.bandcamp.com/album/life-giving-ritual","Coming Together"],[389,"w","a",3298897823,1267381724,"衛星テレビ","🌫","https://eiseiterebi.bandcamp.com/album/--5","🔷🔹🔹📡🔹🔹🔷"],[390,"w","a",2325843257,205571942,"恋人の夢","once","https://loversdream.bandcamp.com/album/once","watching your world fall beneath your feet"],[391,"w","a",821968468,1284222264,"Illusionary ドリーミング & ネザーnether​","夕暮れから夜明けまで","https://illusionarydreaming.bandcamp.com/album/--35","夕暮れ"],[392,"w","a",2381939086,3350367392,"魚魚","fishスプリット","https://fishfishglub.bandcamp.com/album/fish","octopus"],[393,"w","a",1999426111,1413724316,"骨架的 2","Holograms 2","https://dreamcatalogue.bandcamp.com/album/holograms-2","鳩"],[394,"w","a",2928183647,1677498636,"Mom and Dad's Computer","₀ ₆ . ₀ ₄ . ₂ ₃","https://mdcvapor.bandcamp.com/album/--19","Press OK to finish rendering."],[395,"w","a",4266956615,4208665160,"秋","永遠の愛曲","https://autum-memory.bandcamp.com/album/--6","今晩"],[396,"w","a",3255928477,3508246247,"三陸復興国立公園","雪崩","https://sanriku.bandcamp.com/album/--3","秋田駒ヶ岳"],[397,"w","a",3397110111,2792452798,"秋","サンシャインポップス","https://autum-memory.bandcamp.com/album/--14","開始"],[398,"w","a",3086652689,3787573065,"魚魚","海洋探査","https://fishfishglub.bandcamp.com/album/-","ocean exploration"],[399,"w","a",1563087744,2745019358,"Infinity Frequencies","Computer Death","https://computer-gaze.bandcamp.com/album/computer-death","Hall Of The Forgotten"],[400,"w","a",3501115599,2986450375,"テレヴァペ","永","https://plus100.bandcamp.com/album/--6","接合"],[401,"w","a",1648100529,1207122203,"Illusionary ドリーミング & ネザーnether​","夕暮れから夜明けまで","https://nethervapor.bandcamp.com/album/--10","夕暮れ"],[402,"w","a",4085176119,2830933198,"王阳明","屯蒙","https://wangyangming.bandcamp.com/album/--2","䷂ 初九"],[403,"w","t",982969801,5756088,"e t e r n a l","永遠に抱きしめる","https://eternal984.bandcamp.com/track/--2","永遠に抱きしめる"],[404,"w","a",1325548538,1776792679,"silence sky genesis","BETWEEN SPIRITS","https://silenceskygenesis.bandcamp.com/album/between-spirits","誰かを待っている?"],[405,"w","a",388491691,1250295373,"トリニティー無限大","ＢＬＵＥ 光","https://trinityinfinity.bandcamp.com/album/-","ＤＯＮ＇Ｔ  ＬＥＴ  ＧＯ"],[406,"w","t",1140346742,1769279020,"交织的命运","夢のシーケンス","https://intertwinedfate.bandcamp.com/track/--273","夢のシーケンス"],[407,"w","a",4247481492,966597081,"ទីក្រុងនៃសុភមង្គល","លងកនងសេចកតត្រេកអរងច្បាសលាស","https://j-smoke.bandcamp.com/album/-","សុបិន្តស្ថានសួគ៌ជារៀងរហូត"],[408,"w","a",1344133984,3956784049,"交织的命运","ビジョン","https://intertwinedfate.bandcamp.com/album/--35","白くフェード"],[409,"w","a",387244285,525942644,"交织的命运","在你旁边","https://intertwinedfate.bandcamp.com/album/--38","属于我的"],[410,"w","a",305611118,3564075228,"目的地","目的地","https://thedestination.bandcamp.com/album/--4","同期された愛"],[411,"w","a",2248522509,3227175231,"目的地","p l e a s e s t a n d b y . . .","https://geometriclullaby.bandcamp.com/album/p-l-e-a-s-e-s-t-a-n-d-b-y",". . ."],[412,"w","a",1683435524,1869648039,"私の物語の断片","薄暗い部屋で未来について疑問に思う","https://thedestination.bandcamp.com/album/--7","外で運転する車"],[413,"w","a",1954346904,2728611024,"トリニティー無限大","二​二​二​七","https://geometriclullaby.bandcamp.com/album/--48","あなたは一で"],[414,"w","a",3720012855,219429152,"haircuts for men","ダウンタンブルと死にます ep (tape edition)","https://haircutsformen.bandcamp.com/album/ep-tape-edition","空き家"],[415,"w","a",4003202719,2036178332,"沙漠鱿鱼","上海／香港","https://hiraeth-records.bandcamp.com/album/--3","廟街"],[416,"w","a",200310378,3309638359,"天堂山","在黑暗的掩护下","https://hallworthcollective.bandcamp.com/album/--40","夜行"],[417,"w","a",1116531999,3325827195,"t e l e p a t h テレパシー能力者","向かい合って","https://music.spirit.love/album/--20","夢は継続さ"],[418,"w","a",872009236,2320695985,"仮想夢プラザ","夢愛","https://music.spirit.love/album/--41","輝き"],[419,"w","a",1679840794,438969091,"仮想夢プラザ","再びお会い","https://virtualdreamplaza.bandcamp.com/album/--23","再びお会い"],[420,"w","a",425691426,2360414801,"仮想夢プラザ","テレパシー愛好家","https://virtualdreamplaza.bandcamp.com/album/--19","テレパシー愛好家"],[421,"w","a",2700119583,2745026709,"虛擬夢想廣場","一見鍾情","https://virtualdreamplaza.bandcamp.com/album/--34","一見鍾情"],[422,"w","a",2329204985,2770203628,"ծիածանի հիբիսկուս","զգալ կենդանի","https://hallworthcollective.bandcamp.com/album/--22","սիրված"],[423,"w","a",1691363079,1052418706,"M y s t e r yミステリー & desert sand feels warm at night","人生は幻想です","https://junkmakersounds.bandcamp.com/album/--11","怖いです"],[424,"w","a",156467153,880075965,"自然な感情","楽天主義","https://escapezone.bandcamp.com/album/--6","結晶交換"]];
+const TOP_ARTISTS = [["desert sand feels warm at night",29],["t e l e p a t h テレパシー能力者",11],["仮想夢プラザ",8],["Mom and Dad's Computer",7],["Illusionary ドリーミング",6],["Psicadence",6],["天気予報",6],["絡み合った運命",6],["デジタル楽園都市",5],["夢想家 bliss",5],["潜在的溺愛者",5],["haircuts for men",4],["M y s t e r yミステリー",4],["天堂山",4],["秋",4],["818181",3],["cade parker",3],["from tokyo to honolulu",3],["HYDROPLANED INTO A FALSE REALITY!",3],["M1 t e l e v í z i ó",3],["memorykeeper7",3],["MindSpring Memories",3],["u v . e x e",3],["​​空気系",3],["三陸復興国立公園",3]];
+
+const ALBUMS = RAW.map(r => ({
+  idx: r[0],
+  src: r[1],
+  type: r[2],
+  id: r[3],
+  artId: r[4],
+  artist: r[5],
+  title: r[6],
+  url: r[7],
+  featured: r[8],
+  thumb: `https://f4.bcbits.com/img/a${r[4]}_9.jpg`,
+  cover: `https://f4.bcbits.com/img/a${r[4]}_16.jpg`
+}));
+
+const STORAGE_FAVS = "slushwave_megalith_favs_v1";
+
+const state = {
+  source: "ALL",
+  search: "",
+  artistFilter: "ALL",
+  favoritesOnly: false,
+  sidebarMode: "list",
+  wallOpen: false,
+  currentIdx: 1,
+  favorites: new Set()
+};
+
+const $ = id => document.getElementById(id);
+
+function loadStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_FAVS);
+    if (raw) JSON.parse(raw).forEach(n => state.favorites.add(Number(n)));
+  } catch (_) {}
+}
+function saveStorage() {
+  try {
+    localStorage.setItem(STORAGE_FAVS, JSON.stringify([...state.favorites]));
+  } catch (_) {}
+}
+
+function escapeHtml(s) {
+  if (s == null) return "";
+  return String(s).replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[c]));
+}
+
+let toastTimer = null;
+function showToast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
+}
+
+function fisherYates(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function buildBackdropCollage() {
+  const grid = $("collageGrid");
+  const sample = fisherYates(ALBUMS).slice(0, 48);
+  grid.innerHTML = sample.map(a => `<img class="collage-tile" src="${a.thumb}" alt="" loading="lazy">`).join("");
+}
+
+function populateArtists() {
+  const sel = $("artistSelect");
+  TOP_ARTISTS.forEach(([name, count]) => {
+    const opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = `${name} (${count})`;
+    sel.appendChild(opt);
+  });
+}
+
+function getFiltered() {
+  const q = state.search.trim().toLowerCase();
+  return ALBUMS.filter(a => {
+    if (state.source !== "ALL" && a.src !== state.source) return false;
+    if (state.favoritesOnly && !state.favorites.has(a.idx)) return false;
+    if (state.artistFilter !== "ALL" && a.artist !== state.artistFilter) return false;
+    if (q) {
+      const hay = `${a.idx} ${a.artist} ${a.title} ${a.featured}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+function pickRandomAlbum() {
+  const pool = getFiltered();
+  const base = pool.length ? pool : ALBUMS;
+  const choices = base.filter(a => a.idx !== state.currentIdx);
+  const pick = choices.length ? choices[Math.floor(Math.random() * choices.length)] : base[0];
+  selectAlbum(pick.idx);
+}
+
+function updateHeaderBadges() {
+  $("favCount").textContent = String(state.favorites.size);
+  $("favFilterBtn").classList.toggle("active", state.favoritesOnly);
+  $("wallToggleBtn").classList.toggle("active", state.wallOpen);
+}
+
+function renderSidebar() {
+  const listEl = $("albumList");
+  const filtered = getFiltered();
+  $("visibleCount").textContent = String(filtered.length);
+
+  if (state.favoritesOnly) $("scopeLabel").textContent = "Saved Favorites";
+  else if (state.artistFilter !== "ALL") $("scopeLabel").textContent = state.artistFilter;
+  else if (state.source === "c") $("scopeLabel").textContent = "Collection";
+  else if (state.source === "w") $("scopeLabel").textContent = "Wishlist";
+  else $("scopeLabel").textContent = "All Releases";
+
+  listEl.classList.toggle("mini-grid", state.sidebarMode === "grid");
+
+  if (!filtered.length) {
+    listEl.innerHTML = `<div style="padding:36px 16px;text-align:center;color:var(--mist-dim);font-style:italic;">No releases match this filter.</div>`;
+    return;
+  }
+
+  if (state.sidebarMode === "grid") {
+    listEl.innerHTML = filtered.map(a => `
+      <div class="grid-tile${a.idx === state.currentIdx ? " active" : ""}" data-idx="${a.idx}" title="${escapeHtml(a.title)} — ${escapeHtml(a.artist)}">
+        <img src="${a.thumb}" alt="${escapeHtml(a.title)}" loading="lazy">
+        <div class="grid-tile-cap">${escapeHtml(a.title)}</div>
+      </div>
+    `).join("");
+    return;
+  }
+
+  listEl.innerHTML = filtered.map(a => {
+    const isFav = state.favorites.has(a.idx);
+    const isActive = a.idx === state.currentIdx;
+    return `
+      <div class="row${isActive ? " active" : ""}" data-idx="${a.idx}">
+        <img class="thumb" src="${a.thumb}" alt="" loading="lazy">
+        <div class="info">
+          <div class="row-title">${escapeHtml(a.title)}</div>
+          <div class="row-artist">${escapeHtml(a.artist)}</div>
+          <div class="row-meta">
+            <span class="tag-dot ${a.src}"></span>
+            <span>#${String(a.idx).padStart(3, "0")}</span>
+            <span>·</span>
+            <span>${a.src === "c" ? "Collection" : "Wishlist"}</span>
+          </div>
+        </div>
+        <button class="fav-star${isFav ? " saved" : ""}" data-fav="${a.idx}" title="Save release">${isFav ? "★" : "☆"}</button>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderWall() {
+  const filtered = getFiltered();
+  $("wallCount").textContent = String(filtered.length);
+  $("wallGrid").innerHTML = filtered.map(a => `
+    <div class="wall-card${a.idx === state.currentIdx ? " active" : ""}" data-idx="${a.idx}">
+      <img src="${a.thumb}" alt="${escapeHtml(a.title)}" loading="lazy">
+      <div class="wall-cap">
+        <div class="wall-cap-title">${escapeHtml(a.title)}</div>
+        <div class="wall-cap-artist">${escapeHtml(a.artist)}</div>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderDetail() {
+  const a = ALBUMS.find(x => x.idx === state.currentIdx) || ALBUMS[0];
+  state.currentIdx = a.idx;
+  const isFav = state.favorites.has(a.idx);
+
+  $("activeBloom").style.backgroundImage = `url('${a.cover}')`;
+
+  const pool = getFiltered();
+  const navList = pool.length ? pool : ALBUMS;
+  const pos = navList.findIndex(x => x.idx === a.idx);
+  const prev = pos > 0 ? navList[pos - 1] : null;
+  const next = pos >= 0 && pos < navList.length - 1 ? navList[pos + 1] : null;
+
+  const embedKey = a.type === "t" ? `track=${a.id}` : `album=${a.id}`;
+  const iframeSrc = `https://bandcamp.com/EmbeddedPlayer/${embedKey}/size=large/bgcol=0c0a1a/linkcol=67e8f9/tracklist=true/artwork=small/transparent=true/`;
+
+  const sameArtist = ALBUMS.filter(x => x.artist === a.artist && x.idx !== a.idx);
+  const others = fisherYates(ALBUMS.filter(x => x.idx !== a.idx && x.artist !== a.artist));
+  const collageItems = sameArtist.concat(others).slice(0, 6);
+  const collageLabel = sameArtist.length ? `More from ${a.artist} &amp; Slushwave Neighbors` : "Slushwave Cover Neighbors";
+
+  $("detail").innerHTML = `
+    <div class="detail-stage">
+      <div class="hero-card">
+        <img class="hero-art" src="${a.cover}" alt="${escapeHtml(a.title)}">
+        <div>
+          <div class="hero-badges">
+            <span class="chip">#${String(a.idx).padStart(3, "0")} / 424</span>
+            <span class="chip ${a.src === "c" ? "col" : "wish"}">${a.src === "c" ? "Collection" : "Wishlist"}</span>
+            <span class="chip">${a.type === "t" ? "Single Track" : "Full Album"}</span>
+          </div>
+          <div class="hero-title">${escapeHtml(a.title)}</div>
+          <div class="hero-artist">${escapeHtml(a.artist)}</div>
+          ${a.featured ? `<div class="hero-featured">Featured Track: <b>${escapeHtml(a.featured)}</b></div>` : ""}
+          <div class="hero-actions">
+            <button class="pill-btn" id="deckRandomBtn">✦ Random Album</button>
+            <button class="pill-btn${isFav ? " active" : ""}" id="detailFavBtn">${isFav ? "★ Saved" : "☆ Save Release"}</button>
+            <a class="pill-btn" href="${escapeHtml(a.url)}" target="_blank" rel="noopener">↗ Open on Bandcamp</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="deck-grid">
+        <div class="iframe-shell">
+          <iframe src="${iframeSrc}" title="${escapeHtml(a.artist)} — ${escapeHtml(a.title)}" seamless allow="autoplay"></iframe>
+        </div>
+
+        <div class="companion-card">
+          <div class="card-kicker">${collageLabel}</div>
+          <div class="mini-collage" id="miniCollage">
+            ${collageItems.map(c => `
+              <div class="mini-collage-item" data-idx="${c.idx}" title="${escapeHtml(c.title)} — ${escapeHtml(c.artist)}">
+                <img src="${c.thumb}" alt="${escapeHtml(c.title)}" loading="lazy">
+                <span>${escapeHtml(c.title)}</span>
+              </div>
+            `).join("")}
+          </div>
+          <div style="font-size:12.5px;color:var(--mist-soft);line-height:1.5;">
+            Use the built-in <strong>⏮ / ⏭</strong> buttons and tracklist inside the Bandcamp player to skip tracks, or click <strong>✦ Random</strong> / <strong>❖ Cover Wall</strong> to jump to another release.
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-nav">
+        <button class="nav-btn prev" id="prevBtn" ${!prev ? "disabled" : ""}>
+          <small>↤ Previous Album</small>
+          <span>${prev ? `#${String(prev.idx).padStart(3, "0")} · ${escapeHtml(prev.title)}` : "—"}</span>
+        </button>
+        <button class="nav-btn next" id="nextBtn" ${!next ? "disabled" : ""}>
+          <small>Next Album ↦</small>
+          <span>${next ? `#${String(next.idx).padStart(3, "0")} · ${escapeHtml(next.title)}` : "—"}</span>
+        </button>
+      </div>
+
+      <div class="kbd-bar">
+        <span>↑ / K Prev Album</span>
+        <span>↓ / J Next Album</span>
+        <span>R Random</span>
+        <span>W Cover Wall</span>
+        <span>F Save</span>
+      </div>
+    </div>
+  `;
+
+  $("deckRandomBtn").addEventListener("click", pickRandomAlbum);
+  $("detailFavBtn").addEventListener("click", () => toggleFavorite(a.idx));
+  $("miniCollage").addEventListener("click", (e) => {
+    const card = e.target.closest(".mini-collage-item");
+    if (card) selectAlbum(Number(card.dataset.idx));
+  });
+  if (prev) $("prevBtn").addEventListener("click", () => selectAlbum(prev.idx));
+  if (next) $("nextBtn").addEventListener("click", () => selectAlbum(next.idx));
+
+  $("detail").scrollTop = 0;
+  const activeRow = document.querySelector(".row.active, .grid-tile.active");
+  if (activeRow) activeRow.scrollIntoView({ block: "nearest", behavior: "smooth" });
+}
+
+function selectAlbum(idx) {
+  state.currentIdx = Number(idx);
+  if (state.wallOpen) {
+    state.wallOpen = false;
+    $("wallView").classList.remove("open");
+    $("splitApp").classList.remove("hidden");
+  }
+  updateHeaderBadges();
+  renderSidebar();
+  renderDetail();
+}
+
+function toggleFavorite(idx) {
+  const n = Number(idx);
+  if (state.favorites.has(n)) {
+    state.favorites.delete(n);
+    showToast(`Removed #${String(n).padStart(3, "0")} from Saved`);
+  } else {
+    state.favorites.add(n);
+    showToast(`Saved #${String(n).padStart(3, "0")}`);
+  }
+  saveStorage();
+  updateHeaderBadges();
+  renderSidebar();
+  const favBtn = $("detailFavBtn");
+  if (favBtn && state.currentIdx === n) {
+    const isFav = state.favorites.has(n);
+    favBtn.classList.toggle("active", isFav);
+    favBtn.textContent = isFav ? "★ Saved" : "☆ Save Release";
+  }
+}
+
+function toggleWall(force) {
+  state.wallOpen = typeof force === "boolean" ? force : !state.wallOpen;
+  $("wallView").classList.toggle("open", state.wallOpen);
+  $("splitApp").classList.toggle("hidden", state.wallOpen);
+  updateHeaderBadges();
+  if (state.wallOpen) renderWall();
+}
+
+// Header & Sidebar Listeners
+$("randomBtn").addEventListener("click", pickRandomAlbum);
+$("favFilterBtn").addEventListener("click", () => {
+  state.favoritesOnly = !state.favoritesOnly;
+  updateHeaderBadges();
+  renderSidebar();
+  if (state.wallOpen) renderWall();
+});
+$("wallToggleBtn").addEventListener("click", () => toggleWall());
+$("closeWallBtn").addEventListener("click", () => toggleWall(false));
+$("remixCollageBtn").addEventListener("click", () => {
+  buildBackdropCollage();
+  showToast("Remixed 48-cover backdrop collage");
+});
+
+$("sourceTabs").addEventListener("click", (e) => {
+  const btn = e.target.closest(".source-tab");
+  if (!btn) return;
+  state.source = btn.dataset.src;
+  document.querySelectorAll(".source-tab").forEach(b => b.classList.toggle("active", b === btn));
+  renderSidebar();
+  if (state.wallOpen) renderWall();
+});
+
+$("searchInput").addEventListener("input", (e) => {
+  state.search = e.target.value;
+  renderSidebar();
+  if (state.wallOpen) renderWall();
+});
+
+$("artistSelect").addEventListener("change", (e) => {
+  state.artistFilter = e.target.value;
+  renderSidebar();
+  if (state.wallOpen) renderWall();
+});
+
+$("viewListBtn").addEventListener("click", () => {
+  state.sidebarMode = "list";
+  $("viewListBtn").classList.add("active");
+  $("viewGridBtn").classList.remove("active");
+  renderSidebar();
+});
+$("viewGridBtn").addEventListener("click", () => {
+  state.sidebarMode = "grid";
+  $("viewGridBtn").classList.add("active");
+  $("viewListBtn").classList.remove("active");
+  renderSidebar();
+});
+
+$("albumList").addEventListener("click", (e) => {
+  const star = e.target.closest(".fav-star");
+  if (star) {
+    e.stopPropagation();
+    toggleFavorite(star.dataset.fav);
+    return;
+  }
+  const item = e.target.closest(".row, .grid-tile");
+  if (item) selectAlbum(Number(item.dataset.idx));
+});
+
+$("wallGrid").addEventListener("click", (e) => {
+  const card = e.target.closest(".wall-card");
+  if (card) selectAlbum(Number(card.dataset.idx));
+});
+
+document.addEventListener("keydown", (e) => {
+  const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
+  if (tag === "input" || tag === "select" || tag === "textarea") {
+    if (e.key === "Escape") e.target.blur();
+    return;
+  }
+  const pool = getFiltered();
+  const list = pool.length ? pool : ALBUMS;
+  const pos = list.findIndex(x => x.idx === state.currentIdx);
+
+  if (e.key === "ArrowDown" || e.key === "j") {
+    e.preventDefault();
+    if (pos >= 0 && pos < list.length - 1) selectAlbum(list[pos + 1].idx);
+  } else if (e.key === "ArrowUp" || e.key === "k") {
+    e.preventDefault();
+    if (pos > 0) selectAlbum(list[pos - 1].idx);
+  } else if (e.key === "r" || e.key === "R") {
+    pickRandomAlbum();
+  } else if (e.key === "w" || e.key === "W") {
+    toggleWall();
+  } else if (e.key === "f" || e.key === "F") {
+    toggleFavorite(state.currentIdx);
+  } else if (e.key === "Escape" && state.wallOpen) {
+    toggleWall(false);
+  }
+});
+
+// Init
+loadStorage();
+populateArtists();
+buildBackdropCollage();
+updateHeaderBadges();
+renderSidebar();
+renderDetail();
+</script>
+</body>
+</html>
