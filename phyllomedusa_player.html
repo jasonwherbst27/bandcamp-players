@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phyllomedusa · Amphibian Worship Archive (493 Bandcamp Releases)</title>
+<meta name="description" content="Nocturnal terrarium & herpetology field-specimen Bandcamp player housing 493 Phyllomedusa releases (2007–2026) with habitat filters, Cover Wall, Favorites, Recently Played, and official Bandcamp embeds.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bog: #070c09;
+  --terrarium: rgba(12, 20, 15, 0.87);
+  --terrarium-strong: rgba(9, 15, 11, 0.94);
+  --canopy: #132018;
+  --rule: rgba(164, 214, 150, 0.16);
+  --rule-strong: rgba(164, 214, 150, 0.30);
+
+  /* Phyllomedusa (Waxy Monkey & Red-Eyed Tree Frog) biological accents */
+  --leaf: #8ce052;
+  --leaf-soft: #63b534;
+  --vermilion: #e84c35;
+  --amber: #d9b54a;
+
+  --bone: #edf2e8;
+  --lichen: #aec0aa;
+  --moss-dim: #738770;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bog);
+  color: var(--bone);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input, select, a { font-family: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--leaf);
+  outline-offset: 2px;
+}
+
+/* FULL-BLEED NOCTURNAL COVER-ART COLLAGE BACKDROP */
+.collage-bg {
+  position: fixed;
+  inset: -42px;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.collage-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 5px;
+  width: calc(100% + 84px);
+  height: calc(100% + 84px);
+  filter: blur(5px) saturate(0.85) hue-rotate(-6deg) contrast(1.12) brightness(0.28);
+  animation: pondDrift 48s ease-in-out infinite alternate;
+  transform-origin: center;
+  will-change: transform;
+}
+@media (max-width: 900px) {
+  .collage-grid { grid-template-columns: repeat(5, 1fr); }
+}
+.collage-tile {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  opacity: 0.9;
+  background: #0d1610;
+}
+
+/* Active album nocturnal bioluminescent bloom */
+.active-bloom {
+  position: fixed;
+  inset: -60px;
+  z-index: 1;
+  pointer-events: none;
+  background-size: cover;
+  background-position: center;
+  filter: blur(76px) saturate(1.25) brightness(0.26);
+  opacity: 0.56;
+  transition: background-image 0.8s ease;
+}
+
+/* Wet terrarium glass mist + concentric pond ripple topography + grain */
+.terrarium-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 68% 54% at 16% 12%, rgba(140, 224, 82, 0.13), transparent 64%),
+    radial-gradient(ellipse 55% 48% at 86% 84%, rgba(232, 76, 53, 0.09), transparent 62%),
+    radial-gradient(ellipse at center, rgba(7, 12, 9, 0.42) 20%, rgba(4, 8, 5, 0.92) 100%);
+}
+.terrarium-veil::before {
+  content: '';
+  position: absolute;
+  right: -120px;
+  bottom: -120px;
+  width: 540px;
+  height: 540px;
+  border-radius: 50%;
+  opacity: 0.09;
+  background:
+    repeating-radial-gradient(
+      circle at center,
+      transparent 0 26px,
+      rgba(140, 224, 82, 0.55) 26px 27px
+    );
+  mask-image: radial-gradient(circle at center, rgba(0,0,0,0.85), transparent 72%);
+  -webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,0.85), transparent 72%);
+}
+.terrarium-veil::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.10;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.05' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+@keyframes pondDrift {
+  0% { transform: translate3d(-10px, -8px, 0) scale(1.04); }
+  100% { transform: translate3d(14px, 10px, 0) scale(1.09); }
+}
+
+@keyframes fadeRise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collage-grid { animation: none; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+/* HEADER */
+.header {
+  position: relative;
+  z-index: 20;
+  padding: 14px 28px;
+  background: var(--terrarium-strong);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+.header::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--leaf), var(--amber), var(--vermilion), transparent);
+  opacity: 0.72;
+}
+
+.brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.specimen-crest {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 3px;
+  background: rgba(140, 224, 82, 0.10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--leaf);
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: var(--bone);
+  white-space: nowrap;
+}
+
+.subbrand {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--moss-dim);
+  margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.back-link {
+  color: var(--lichen);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 4px;
+  margin-right: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s var(--ease), border-color 0.15s var(--ease);
+}
+.back-link:hover {
+  color: var(--bone);
+  border-bottom-color: var(--leaf);
+}
+
+.field-btn {
+  background: rgba(16, 27, 20, 0.9);
+  color: var(--bone);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 8px 13px;
+  min-height: 38px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: border-color 0.16s var(--ease), background 0.16s var(--ease), color 0.16s var(--ease), transform 0.16s var(--ease);
+}
+.field-btn:hover {
+  border-color: var(--leaf);
+  background: rgba(140, 224, 82, 0.14);
+  color: #fff;
+  transform: translateY(-1px);
+}
+.field-btn.primary {
+  background: var(--leaf);
+  border-color: var(--leaf);
+  color: #061008;
+  font-weight: 600;
+}
+.field-btn.primary:hover {
+  background: #a0eb6c;
+  border-color: #a0eb6c;
+  color: #040b05;
+}
+.field-btn.active {
+  background: rgba(232, 76, 53, 0.22);
+  border-color: var(--vermilion);
+  color: #fff;
+}
+.field-btn .count-num {
+  font-variant-numeric: tabular-nums;
+  color: var(--leaf);
+  font-weight: 600;
+}
+.field-btn.active .count-num,
+.field-btn.primary .count-num {
+  color: inherit;
+}
+
+/* MAIN SPLIT LAYOUT */
+.app {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 410px 1fr;
+  min-height: calc(100vh - 76px);
+}
+.app.hidden { display: none; }
+
+@media (max-width: 980px) {
+  .header { padding: 12px 16px; }
+  .app { grid-template-columns: 1fr; }
+}
+
+/* SIDEBAR CATALOG */
+.sidebar {
+  background: var(--terrarium);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 76px);
+  overflow: hidden;
+}
+@media (max-width: 980px) {
+  .sidebar {
+    max-height: 52vh;
+    border-right: none;
+    border-bottom: 1px solid var(--rule);
+  }
+}
+
+.sidebar-controls {
+  padding: 14px 15px 12px;
+  border-bottom: 1px solid var(--rule);
+  background: rgba(8, 14, 10, 0.86);
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.scope-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--moss-dim);
+  font-variant-numeric: tabular-nums;
+}
+.scope-row .count-hi {
+  color: var(--leaf);
+  font-weight: 600;
+}
+
+.search-input {
+  width: 100%;
+  background: rgba(13, 22, 16, 0.95);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  color: var(--bone);
+  padding: 9px 12px;
+  font-size: 13.5px;
+  transition: border-color 0.15s var(--ease);
+}
+.search-input::placeholder { color: var(--moss-dim); }
+.search-input:focus {
+  outline: none;
+  border-color: var(--leaf);
+}
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.select-input {
+  width: 100%;
+  background: rgba(13, 22, 16, 0.95);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  color: var(--lichen);
+  padding: 7px 9px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+}
+.select-input:focus {
+  outline: none;
+  border-color: var(--leaf);
+  color: var(--bone);
+}
+
+/* Interactive Amphibian Habitat / Series Filter Strip */
+.habitat-filters {
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: thin;
+}
+.habitat-btn {
+  background: rgba(15, 25, 19, 0.85);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  color: var(--lichen);
+  padding: 5px 9px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease), border-color 0.15s var(--ease);
+}
+.habitat-btn:hover {
+  border-color: var(--rule-strong);
+  color: var(--bone);
+}
+.habitat-btn.active {
+  background: var(--leaf);
+  border-color: var(--leaf);
+  color: #061008;
+  font-weight: 600;
+}
+
+.sidebar-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 2px;
+}
+.sidebar-tools-label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--moss-dim);
+}
+.view-segmented {
+  display: inline-flex;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.mini-toggle {
+  background: transparent;
+  border: none;
+  color: var(--moss-dim);
+  padding: 5px 10px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+.mini-toggle:hover { color: var(--bone); }
+.mini-toggle.active {
+  background: var(--leaf);
+  color: #061008;
+  font-weight: 600;
+}
+
+/* ALBUM LIST */
+.album-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 10px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.album-list.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  align-content: start;
+  padding: 10px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 50px 1fr 32px;
+  align-items: center;
+  gap: 11px;
+  padding: 7px 9px;
+  background: rgba(13, 22, 16, 0.56);
+  border: 1px solid transparent;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.15s var(--ease), border-color 0.15s var(--ease), transform 0.15s var(--ease);
+}
+.row:hover {
+  background: rgba(21, 35, 26, 0.88);
+  border-color: var(--rule);
+  transform: translateX(2px);
+}
+.row.active {
+  background: rgba(140, 224, 82, 0.14);
+  border-color: var(--leaf);
+}
+
+.thumb {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  display: block;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  background: #0d1610;
+}
+
+.info { min-width: 0; }
+.row-title {
+  font-family: var(--font-display);
+  font-size: 15.5px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--bone);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.row.active .row-title { color: #fff; }
+.row-meta {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--moss-dim);
+  margin-top: 3px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fav-star {
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: var(--moss-dim);
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, border-color 0.15s, transform 0.15s;
+}
+.fav-star:hover {
+  color: var(--vermilion);
+  border-color: var(--rule);
+  transform: scale(1.08);
+}
+.fav-star.saved { color: var(--vermilion); }
+
+.grid-tile {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #0d1610;
+  transition: transform 0.16s var(--ease), border-color 0.16s var(--ease);
+}
+.grid-tile:hover {
+  transform: translateY(-2px);
+  border-color: var(--leaf);
+}
+.grid-tile.active {
+  border-color: var(--vermilion);
+  box-shadow: 0 0 0 1px var(--vermilion);
+}
+.grid-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.grid-tile-cap {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 18px 6px 5px;
+  background: linear-gradient(180deg, transparent, rgba(5, 10, 7, 0.95));
+  font-size: 10.5px;
+  color: var(--bone);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.load-more-wrap {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 8px;
+  padding: 10px 2px 4px;
+}
+.load-more-btn {
+  flex: 1;
+  background: rgba(16, 27, 20, 0.92);
+  border: 1px solid var(--rule-strong);
+  border-radius: 3px;
+  color: var(--leaf);
+  padding: 9px 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.load-more-btn:hover {
+  background: rgba(140, 224, 82, 0.14);
+  border-color: var(--leaf);
+}
+
+/* DETAIL STAGE */
+.detail {
+  overflow-y: auto;
+  max-height: calc(100vh - 76px);
+  padding: 24px 30px 48px;
+}
+@media (max-width: 980px) {
+  .detail { max-height: none; padding: 18px 16px 40px; }
+}
+
+.detail-stage {
+  max-width: 1040px;
+  margin: 0 auto;
+  animation: fadeRise 0.24s var(--ease);
+}
+
+/* RECENTLY PLAYED STRIP */
+.history-strip {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  background: var(--terrarium);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+}
+.history-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 9px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--moss-dim);
+  font-variant-numeric: tabular-nums;
+}
+.history-clear {
+  background: transparent;
+  border: none;
+  color: var(--lichen);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+.history-clear:hover {
+  color: var(--vermilion);
+  border-bottom-color: var(--vermilion);
+}
+.history-items {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+.history-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px 5px 5px;
+  background: rgba(11, 19, 14, 0.9);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  cursor: pointer;
+  flex-shrink: 0;
+  max-width: 220px;
+  transition: border-color 0.15s, background 0.15s;
+}
+.history-chip:hover {
+  border-color: var(--rule-strong);
+  background: rgba(18, 31, 23, 0.95);
+}
+.history-chip.active {
+  border-color: var(--leaf);
+  background: rgba(140, 224, 82, 0.14);
+}
+.history-chip img {
+  width: 34px;
+  height: 34px;
+  object-fit: cover;
+  display: block;
+  background: #0d1610;
+  flex-shrink: 0;
+}
+.history-chip-text { min-width: 0; }
+.history-chip-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--bone);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.history-chip-year {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--moss-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* HERO SPECIMEN PLATE */
+.hero-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 236px 1fr;
+  gap: 26px;
+  align-items: center;
+  padding: 22px 24px;
+  background: var(--terrarium-strong);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--rule-strong);
+  border-radius: 3px;
+  margin-bottom: 18px;
+}
+@media (max-width: 720px) {
+  .hero-card {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 18px;
+  }
+}
+
+.hero-art {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  background: #0d1610;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65);
+}
+
+.hero-content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hero-meta-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--lichen);
+  font-variant-numeric: tabular-nums;
+}
+.hero-meta-line .spec-num {
+  color: var(--leaf);
+  font-weight: 600;
+}
+.hero-meta-line .sep {
+  color: var(--moss-dim);
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.6vw, 44px);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-wrap: balance;
+}
+
+.hero-sub {
+  font-size: 14px;
+  color: var(--lichen);
+}
+.hero-sub strong {
+  color: var(--amber);
+  font-weight: 600;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  padding-top: 6px;
+}
+
+/* LISTENING DECK SPLIT */
+.deck-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 1.05fr) minmax(290px, 0.95fr);
+  gap: 18px;
+  align-items: start;
+}
+@media (max-width: 1060px) {
+  .deck-grid { grid-template-columns: 1fr; }
+}
+
+.iframe-shell {
+  background: var(--terrarium-strong);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 12px;
+  min-height: 496px;
+  display: flex;
+  flex-direction: column;
+}
+.iframe-shell iframe {
+  width: 100%;
+  flex: 1;
+  min-height: 472px;
+  border: 0;
+  background: #090f0b;
+}
+
+.companion-card {
+  background: var(--terrarium);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card-kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--leaf);
+}
+
+.mini-collage {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.mini-collage-item {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #0d1610;
+  transition: transform 0.16s var(--ease), border-color 0.16s var(--ease);
+}
+.mini-collage-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--leaf);
+}
+.mini-collage-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.mini-collage-item span {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 16px 6px 5px;
+  background: linear-gradient(180deg, transparent, rgba(5, 10, 7, 0.95));
+  font-size: 11px;
+  color: var(--bone);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.field-note {
+  font-size: 13.5px;
+  color: var(--lichen);
+  line-height: 1.55;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
+}
+.field-note strong {
+  color: var(--bone);
+  font-weight: 600;
+}
+
+.era-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* PREV / NEXT NAV BAR */
+.detail-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 18px;
+}
+@media (max-width: 600px) {
+  .detail-nav { grid-template-columns: 1fr; }
+}
+.nav-btn {
+  background: var(--terrarium);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  color: var(--bone);
+  padding: 12px 16px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s var(--ease), background 0.15s var(--ease), transform 0.15s var(--ease);
+}
+.nav-btn:hover:not(:disabled) {
+  border-color: var(--leaf);
+  background: rgba(140, 224, 82, 0.10);
+  transform: translateY(-1px);
+}
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-btn.next { text-align: right; }
+.nav-btn small {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--leaf);
+  margin-bottom: 4px;
+}
+.nav-btn span {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kbd-bar {
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--moss-dim);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+/* FULL COVER WALL VIEW */
+.wall-view {
+  position: relative;
+  z-index: 12;
+  display: none;
+  padding: 20px 26px 64px;
+  max-width: 1520px;
+  margin: 0 auto;
+}
+.wall-view.open { display: block; }
+
+.wall-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 13px 18px;
+  background: var(--terrarium-strong);
+  border: 1px solid var(--rule-strong);
+  border-radius: 3px;
+}
+.wall-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--bone);
+}
+.wall-sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--moss-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.wall-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(156px, 1fr));
+  gap: 10px;
+}
+.wall-card {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid var(--rule);
+  background: #0d1610;
+  transition: transform 0.18s var(--ease), border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+.wall-card:hover {
+  transform: translateY(-3px) scale(1.02);
+  border-color: var(--leaf);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.72);
+  z-index: 3;
+}
+.wall-card.active {
+  border-color: var(--vermilion);
+  box-shadow: 0 0 0 1px var(--vermilion);
+}
+.wall-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.wall-cap {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 24px 8px 7px;
+  background: linear-gradient(180deg, transparent, rgba(5, 10, 7, 0.96));
+}
+.wall-cap-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--bone);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wall-cap-year {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--leaf);
+  font-variant-numeric: tabular-nums;
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  background: #0d1610;
+  border: 1px solid var(--leaf);
+  border-radius: 3px;
+  color: var(--bone);
+  padding: 10px 16px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  z-index: 300;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* SCROLLBARS */
+::-webkit-scrollbar { width: 8px; height: 6px; }
+::-webkit-scrollbar-track { background: #070c09; }
+::-webkit-scrollbar-thumb { background: rgba(164, 214, 150, 0.22); }
+::-webkit-scrollbar-thumb:hover { background: var(--leaf); }
+</style>
+</head>
+<body>
+
+<div class="collage-bg" aria-hidden="true">
+  <div class="collage-grid" id="collageGrid"></div>
+</div>
+<div class="active-bloom" id="activeBloom" aria-hidden="true"></div>
+<div class="terrarium-veil" aria-hidden="true"></div>
+
+<header class="header">
+  <div class="brand-wrap">
+    <div class="specimen-crest" aria-hidden="true">
+      <!-- Stylized Phyllomedusa monkey tree-frog natural-history specimen emblem -->
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 7C11.4 7 8 10.6 7.5 15.2C7.2 18.2 9 20.9 11.4 22.1L9.2 26.2L12.6 25.1L14.2 23.2H17.8L19.4 25.1L22.8 26.2L20.6 22.1C23 20.9 24.8 18.2 24.5 15.2C24 10.6 20.6 7 16 7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M7.6 15.4C5.4 16.4 4.2 18.4 4.5 21.1L7.3 20.2M24.4 15.4C26.6 16.4 27.8 18.4 27.5 21.1L24.7 20.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="11.8" cy="11.6" r="2.1" fill="#e84c35"/>
+        <circle cx="20.2" cy="11.6" r="2.1" fill="#e84c35"/>
+        <circle cx="11.8" cy="11.6" r="0.7" fill="#070c09"/>
+        <circle cx="20.2" cy="11.6" r="0.7" fill="#070c09"/>
+        <path d="M13 17.5C14.8 18.4 17.2 18.4 19 17.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div>
+      <div class="brand">Phyllomedusa</div>
+      <div class="subbrand">493 Bandcamp Releases · Amphibian Worship · New York, NY · 2007–2026</div>
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <a class="back-link" href="./index.html">← All Players</a>
+    <button class="field-btn primary" id="randomBtn" type="button" title="Jump to a random release (R)">Random</button>
+    <button class="field-btn" id="favFilterBtn" type="button" title="Show saved releases">Saved <span class="count-num" id="favCount">0</span></button>
+    <button class="field-btn" id="wallToggleBtn" type="button" title="Toggle 493-cover Specimen Wall (W)">Cover Wall</button>
+    <button class="field-btn" id="remixCollageBtn" type="button" title="Shuffle 48-cover backdrop">Shuffle Backdrop</button>
+    <a class="field-btn" href="https://phyllomedusa.bandcamp.com/music" target="_blank" rel="noopener">Bandcamp ↗</a>
+  </div>
+</header>
+
+<div class="app" id="splitApp">
+  <aside class="sidebar">
+    <div class="sidebar-controls">
+      <div class="scope-row">
+        <span><span class="count-hi" id="visibleCount">493</span> / 493 Releases</span>
+        <span id="scopeLabel">Newest First</span>
+      </div>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search 493 titles, species, or years...">
+      <div class="controls-grid">
+        <select class="select-input" id="sortSelect" aria-label="Sort releases">
+          <option value="newest">Sort: Newest First</option>
+          <option value="oldest">Sort: Chronological (2007+)</option>
+          <option value="title">Sort: Title A–Z</option>
+          <option value="titleDesc">Sort: Title Z–A</option>
+        </select>
+        <select class="select-input" id="yearSelect" aria-label="Filter by release year">
+          <option value="ALL">All Years (2007–2026)</option>
+        </select>
+      </div>
+      <div class="habitat-filters" id="habitatFilters" role="group" aria-label="Filter by theme"></div>
+      <div class="sidebar-tools">
+        <span class="sidebar-tools-label">Specimen Catalog</span>
+        <div class="view-segmented" role="group" aria-label="Catalog view mode">
+          <button class="mini-toggle active" id="viewListBtn" type="button">List</button>
+          <button class="mini-toggle" id="viewGridBtn" type="button">Covers</button>
+        </div>
+      </div>
+    </div>
+    <div class="album-list" id="albumList"></div>
+  </aside>
+
+  <main class="detail" id="detail"></main>
+</div>
+
+<section class="wall-view" id="wallView" aria-label="Cover Wall">
+  <div class="wall-header">
+    <div>
+      <div class="wall-title">Phyllomedusa · Specimen Cover Wall</div>
+      <div class="wall-sub"><span id="wallCount">493</span> Matching Releases · Click any sleeve to open its Bandcamp deck</div>
+    </div>
+    <button class="field-btn" id="closeWallBtn" type="button">← Back to Player</button>
+  </div>
+  <div class="wall-grid" id="wallGrid"></div>
+</section>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+// Compact tuple: [idx, albumId, artId, title, slug, year, isoDate]
+const RAW = [[1,3641785151,1011874114,"Amphibians Performing Surgery: Oovulian Septics","/album/amphibians-performing-surgery-oovulian-septics",2026,"2026-11-07"],[2,4177260999,3264367953,"The Dark Side of the Amazon Part 2: Wax & Waterfalls","/album/the-dark-side-of-the-amazon-part-2-wax-waterfalls",2026,"2026-10-31"],[3,1253613656,357645514,".traumaclouds (yield the frost of estivation)","/album/traumaclouds-yield-the-frost-of-estivation",2026,"2026-05-12"],[4,1375471671,3058205826,"Chesapeake Heat","/album/chesapeake-heat",2026,"2026-10-26"],[5,2878552552,3815340421,"Amphibians Performing Surgery: Xoeqkrittish Poise","/album/amphibians-performing-surgery-xoeqkrittish-poise",2025,"2025-11-21"],[6,2333873573,244435102,"Violated to Deaf (Kambô Deranged)","/album/violated-to-deaf-kamb-deranged",2026,"2026-10-11"],[7,4271063737,2419756651,"My 9th Strangulation This Year","/album/my-9th-strangulation-this-year",2024,"2024-03-01"],[8,2022791275,499296903,"My Eyes Feel So Heavy Right Now","/album/my-eyes-feel-so-heavy-right-now",2026,"2026-07-01"],[9,4148558802,3686561292,"Amphibians Performing Surgery III: Murrexic Behaviour","/album/amphibians-performing-surgery-iii-murrexic-behaviour-2",2024,"2024-08-24"],[10,3518509419,3707524373,"Warm Water Wruckus","/album/warm-water-wruckus",2015,"2015-10-27"],[11,219398653,1096964925,"The Cunt's in the Drain, Officer","/album/the-cunts-in-the-drain-officer",2026,"2026-09-25"],[12,2100916068,1115534523,"Every Day Is Frog Day","/album/every-day-is-frog-day",2026,"2026-05-30"],[13,3746684344,955413345,"Evading The Cauldron (One Fret ov Death)","/album/evading-the-cauldron-one-fret-ov-death",2025,"2025-05-23"],[14,1660586526,3145736184,"p i n k i s h 1","/album/p-i-n-k-i-s-h-1",2024,"2024-01-06"],[15,3453997089,2743773623,"Hard Tigerstyle","/album/hard-tigerstyle",2023,"2023-07-28"],[16,3776780521,2422295646,"Sightings In January","/album/sightings-in-january",2016,"2016-01-22"],[17,84471548,3788952565,"make me a handsome corpse when i die","/album/make-me-a-handsome-corpse-when-i-die",2026,"2026-10-03"],[18,1853992393,2387177,"I'm Fend To Fucking Chirp","/album/im-fend-to-fucking-chirp",2024,"2024-10-14"],[19,3642460205,3250878756,"HATE RUNS GREEN","/album/hate-runs-green",2023,"2023-04-07"],[20,865954623,161811846,"D.A.R.K.N.E.S.S.","/album/d-a-r-k-n-e-s-s",2025,"2025-10-24"],[21,3028384440,781863719,"The Dark Side of the Amazon","/album/the-dark-side-of-the-amazon",2026,"2026-09-12"],[22,2980475058,2403377513,"Negative Thoughts & Sad Facts About Frogs","/album/negative-thoughts-sad-facts-about-frogs",2026,"2026-10-30"],[23,4032346667,1464513927,"Against The Widest Roads","/album/against-the-widest-roads",2014,"2014-08-08"],[24,4237422122,3062048107,"Fijian Moondriez (D L C)","/album/fijian-moondriez-d-l-c",2026,"2026-10-28"],[25,1531086364,637434448,"yearning for the gullet from which i came","/album/yearning-for-the-gullet-from-which-i-came",2026,"2026-10-28"],[26,2083889978,3796349299,"Wretching At The Sight Of The Pregnant","/album/wretching-at-the-sight-of-the-pregnant",2022,"2022-02-26"],[27,2004745465,300064208,"ovm","/album/ovm",2024,"2024-10-26"],[28,2935410811,3174495269,"Mammalistically Inebriated","/album/mammalistically-inebriated",2024,"2024-10-25"],[29,12159384,223565520,"Reglazer","/album/reglazer",2024,"2024-08-25"],[30,2157152484,1285023571,"There Are 21 Chicken Frogs Left In This World","/album/there-are-21-chicken-frogs-left-in-this-world",2023,"2023-11-01"],[31,442038223,2100078063,"Hope Floats (Kambo Unhinged)","/album/hope-floats-kambo-unhinged",2026,"2026-04-06"],[32,2041344030,1258142101,"Spurn Gully","/album/spurn-gully",2025,"2025-03-28"],[33,4054971784,588588622,"Fijian Sundries","/album/fijian-sundries",2026,"2026-06-22"],[34,2776695251,2291746659,"Fijian Rot","/album/fijian-rot",2025,"2025-08-17"],[35,1211381308,141966700,"Fijian Nightmare","/album/fijian-nightmare",2024,"2024-02-02"],[36,2593165749,2393457262,"Fijian Fantasies","/album/fijian-fantasies",2019,"2019-04-01"],[37,1787207590,3727307749,"A Quest To Fiji (Preylude To The Storm)","/album/a-quest-to-fiji-preylude-to-the-storm",2019,"2019-03-23"],[38,1732326582,1413967476,"Fijian Effluvium","/album/fijian-effluvium",2017,"2017-09-11"],[39,3271801573,1747794062,"Fijian Holiday","/album/fijian-holiday",2016,"2016-04-01"],[40,3455857776,2054515465,"Rough Night in Kadavu","/album/rough-night-in-kadavu",2025,"2025-10-24"],[41,982832949,1806392633,"A Rift In The Family Tree","/album/a-rift-in-the-family-tree",2026,"2026-09-27"],[42,770105516,4275733277,"Only To Some Is It A Beautiful Day","/album/only-to-some-is-it-a-beautiful-day",2025,"2025-09-23"],[43,1038520482,2534175676,"In League With Uperoleia","/album/in-league-with-uperoleia-2",2024,"2024-03-10"],[44,1775126837,3620242231,"B O T S W A N A N E C K T I E","/album/b-o-t-s-w-a-n-a-n-e-c-k-t-i-e",2026,"2026-06-12"],[45,1977197362,2551177447,"Death Is No Laughing Matter","/album/death-is-no-laughing-matter",2024,"2024-05-11"],[46,1787724427,1301029509,"Spent My Day Rotting Away","/album/spent-my-day-rotting-away",2022,"2022-03-11"],[47,1996094889,287023481,"Silkgrip","/album/silkgrip-2",2025,"2025-10-20"],[48,1745935622,1464320354,"I Murder Hunters","/album/i-murder-hunters",2026,"2026-05-31"],[49,35397936,1184806361,"Amphibious Jim Jones","/album/amphibious-jim-jones",2026,"2026-04-25"],[50,2694674913,2306837062,"The World Is Urspelerpes","/album/the-world-is-urspelerpes",2023,"2023-03-17"],[51,2316736202,1160099317,"Mane Made Of Gill","/album/mane-made-of-gill-2",2024,"2024-04-26"],[52,2071808670,2150497934,"Mince of the Frog Prince","/album/mince-of-the-frog-prince",2025,"2025-08-29"],[53,957820285,1400228802,"Hope Floats","/album/hope-floats-4",2025,"2025-11-24"],[54,1455616120,4279413020,"FUCKING BULLFROGDOZER","/album/fucking-bullfrogdozer",2024,"2024-08-29"],[55,1571673881,3827936835,"Greener Than Thou","/album/greener-than-thou-2",2025,"2025-07-24"],[56,779459538,2763745391,"Leap into Euphoric Violence","/album/leap-into-euphoric-violence",2026,"2026-03-04"],[57,1426602141,383609815,"Sluxcher Slushing Through Tepid Bathwater","/album/sluxcher-slushing-through-tepid-bathwater",2026,"2026-10-29"],[58,448109967,2856213289,"Swimming Is Prohibited Beyond This Point","/album/swimming-is-prohibited-beyond-this-point",2026,"2026-10-25"],[59,2163214007,1140667072,"I'm a Feihyla Man","/album/im-a-feihyla-man",2026,"2026-10-24"],[60,127485635,4069409968,"I Gave The Fiberglass A Secret","/album/i-gave-the-fiberglass-a-secret",2026,"2026-10-24"],[61,233104024,3507743873,"The Short Life Of An Amphibian","/album/the-short-life-of-an-amphibian-5",2025,"2025-10-27"],[62,3564954818,3660261723,"The Margin Of Bizarre Elements","/album/the-margin-of-bizarre-elements",2024,"2024-08-31"],[63,2519823096,3824989228,"Herpetology","/album/herpetology",2025,"2025-10-06"],[64,3162506110,3098828521,"G O R E W A V E V O M I T P O P","/album/g-o-r-e-w-a-v-e-v-o-m-i-t-p-o-p",2026,"2026-05-09"],[65,3500171572,900377961,"Shovelhead","/album/shovelhead",2019,"2019-08-09"],[66,2230877757,1605788551,"Air, Land & Sea (Speciesnoise War Split)","/album/air-land-sea-speciesnoise-war-split",2025,"2025-04-17"],[67,2096264663,1167950523,"Violated To Deaf","/album/violated-to-deaf",2024,"2024-10-23"],[68,1152612509,4082804119,"XENOPUS","/album/xenopus",2026,"2026-10-29"],[69,2969643730,991314105,"Trampled Under Throat","/album/trampled-under-throat",2017,"2017-06-01"],[70,1795338382,1448842863,"Jungle 2 Jungle","/album/jungle-2-jungle",2026,"2026-01-06"],[71,2924704861,420965651,"Klutch ov Ova (vomitnoise wall)","/album/klutch-ov-ova-vomitnoise-wall",2025,"2025-10-28"],[72,1879459580,527597946,"BEAST OF THE EAST","/album/beast-of-the-east",2017,"2017-04-29"],[73,583409437,2916064453,"ORPHAN OF MOTHER EARTH","/album/orphan-of-mother-earth",2025,"2025-10-22"],[74,2190835736,1760844708,"Wig Busting A Dangle Delight Scintillation That Embodies Natural Hyperdysbalanolysis Androshuttiling The Spermatophore & Spurtblood Softening Wellhead Creating A Vanilla Red Shade of Dribblemollient From Breedfusion, Spateropes & Goister Glister","/album/wig-busting-a-dangle-delight-scintillation-that-embodies-natural-hyperdysbalanolysis-androshuttiling-the-spermatophore-spurtblood-softening-wellhead-creating-a-vanilla-red-shade-of-dribblemollien",2023,"2023-12-14"],[75,3739599015,2274022036,"Mastigophora Natural Varix-Setaceousciasphasia Wryuninovitiusvirile for Me to Become a Man-eater Chaperon for Adult Circumcision to Ensure Scrotimbricate Iliolumbajuxtaglomerula Apparatus Reassuring the Spongioblastivacant Umbilicuses Lustful First-to-Carrion Xanthogranulomaluteinzatiomaziaflapemsme","/album/mastigophora-natural-varix-setaceousciasphasia-wryuninovitiusvirile-for-me-to-become-a-man-eater-chaperon-for-adult-circumcision-to-ensure-scrotimbricate-iliolumbajuxtaglomerula-apparatus-reassur",2024,"2024-04-13"],[76,489665919,331327468,"2 Vomit Frogs (Castrate & Flay)","/album/2-vomit-frogs-castrate-flay",2025,"2025-09-16"],[77,1547951209,896854972,"The Second Croakening Of Glurp","/album/the-second-croakening-of-glurp",2024,"2024-09-21"],[78,1287385290,2447247430,"frog gigger wig splitter","/album/frog-gigger-wig-splitter",2025,"2025-06-17"],[79,4167359261,399891566,"Our Vines Have Tender Frogs","/album/our-vines-have-tender-frogs",2025,"2025-10-25"],[80,3405981446,1993939636,"Pond Enjoyer","/album/pond-enjoyer",2025,"2025-10-21"],[81,294616238,1117746477,"the side leaks","/album/the-side-leaks",2025,"2025-10-23"],[82,3661179705,3710386394,"Birth & War","/album/birth-war",2025,"2025-05-05"],[83,1054760139,3225798423,"Steady Froggin'","/album/steady-froggin",2025,"2025-10-26"],[84,167659507,168940799,"Surra Brasileira","/album/surra-brasileira",2025,"2025-08-06"],[85,1335127235,1923072225,"Vertical Quotidian Respiration","/album/vertical-quotidian-respiration",2025,"2025-10-29"],[86,4021849571,1078510992,"FRGGOT","/album/frggot",2025,"2025-10-22"],[87,3133731373,2437399629,"Intensifying Girdle Anatomy","/album/intensifying-girdle-anatomy-2",2025,"2025-10-27"],[88,2958521085,1953337474,"Deep Fried Tinnitus","/album/deep-fried-tinnitus",2023,"2023-02-03"],[89,2643076341,2346566737,"Gape The Holes Of The Virgin Clouds","/album/gape-the-holes-of-the-virgin-clouds",2025,"2025-10-21"],[90,1142250488,1962595485,"ScreenRecording_4","/album/screenrecording-4",2026,"2026-10-27"],[91,802469236,3446168394,"My Stomachache Came Back","/album/my-stomachache-came-back",2025,"2025-10-30"],[92,3960913271,2280113607,"No Debris","/album/no-debris",2025,"2025-10-23"],[93,3150820809,2699114157,"Soft Rancid Underbelly","/album/soft-rancid-underbelly",2026,"2026-03-02"],[94,2382203525,2383035602,"Predator Of Predators","/album/predator-of-predators",2024,"2024-07-24"],[95,73134893,2691435688,"Playing With My Food, Death's Head Salamander","/album/playing-with-my-food-deaths-head-salamander",2025,"2025-11-06"],[96,3726090374,2328010711,"Sodomizing the Followers ov Light","/album/sodomizing-the-followers-ov-light",2026,"2026-10-25"],[97,3472114313,241299025,"Slaughter The Witches Who Think They Run The Forest","/album/slaughter-the-witches-who-think-they-run-the-forest-3",2022,"2022-10-27"],[98,1718324537,3561478915,"A Farewell To Thunderstorms","/album/a-farewell-to-thunderstorms",2023,"2023-10-30"],[99,3307933005,2391901865,"KAMBO OVERDOSE","/album/kambo-overdose",2023,"2023-10-29"],[100,2737574263,1015307413,"Midsommar","/album/midsommar",2024,"2024-09-01"],[101,1434918764,4134431738,"Harlequin's Night","/album/harlequins-night",2024,"2024-07-16"],[102,1330629776,1532761078,"Displacing","/album/displacing",2024,"2024-10-06"],[103,2480528655,3086332170,"African Mist Part 2: Emeralds In The Muk","/album/african-mist-part-2-emeralds-in-the-muk",2026,"2026-08-07"],[104,797030582,858796679,"African Mist","/album/african-mist",2024,"2024-03-18"],[105,3340024720,206287423,"Where Everyone Is Not Is Where I Want To Be","/album/where-everyone-is-not-is-where-i-want-to-be",2023,"2023-10-23"],[106,2642355938,1417720312,"Buried In The Caecilian Vermiforme Lie The Lack Of Functional Marrow And Alternate Hematopoiesis","/album/buried-in-the-caecilian-vermiforme-lie-the-lack-of-functional-marrow-and-alternate-hematopoiesis",2023,"2023-11-12"],[107,2079005063,4050889591,"Wax Boy in a Tree (лягушки в россии)","/album/wax-boy-in-a-tree",2024,"2024-06-01"],[108,2862958522,104569571,"Harsh Remnants Of A Delicate Birth","/album/harsh-remnants-of-a-delicate-birth",2023,"2023-10-27"],[109,1493502064,961320588,"Tonk Camor Strain The Ceiquic Anuran Thousand","/album/tonk-camor-strain-the-ceiquic-anuran-thousand",2024,"2024-10-07"],[110,3537558987,3827334287,"Asterisked* Taxon","/album/asterisked-taxon",2024,"2024-08-22"],[111,1878801190,3249906133,"Such Fertile Ground For The Seeds Of Torment","/album/such-fertile-ground-for-the-seeds-of-torment",2024,"2024-07-14"],[112,1292553016,67439637,"Spray","/album/spray",2024,"2024-03-23"],[113,442887120,1717231885,"WHEN IT HURTS IT FEELS RIGHT","/album/when-it-hurts-it-feels-right",2025,"2025-11-05"],[114,2385166856,2435566020,"Ascending The Hopeless Path Of Exhaustion","/album/ascending-the-hopeless-path-of-exhaustion",2024,"2024-08-18"],[115,565639850,95029265,"Jungle Life Is The Life For Me","/album/jungle-life-is-the-life-for-me",2025,"2025-05-16"],[116,1756972284,3983836861,"Oddities The Nuchal Region Provide","/album/oddities-the-nuchal-region-provide",2025,"2025-10-20"],[117,2169879511,1803486567,"*Actual Size","/album/actual-size",2022,"2022-05-28"],[118,3711906019,821029105,"Two​​​-​​​Lined Dechorum","/album/two-lined-dechorum-2",2024,"2024-08-22"],[119,703018661,393096923,"Newt Nepotism","/album/newt-nepotism",2024,"2024-07-06"],[120,2407657303,4133293378,"Your Lesson In Frognoise","/album/your-lesson-in-frognoise",2021,"2021-02-13"],[121,662154729,261963889,"Phyllorooms","/album/phyllorooms",2025,"2025-10-31"],[122,8942477,3547031698,"Fuck Frequencies","/album/fuck-frequencies-3",2024,"2024-03-02"],[123,3034203159,61433710,"People Are Nothing But Expendable Defilement","/album/people-are-nothing-but-expendable-defilement",2023,"2023-10-28"],[124,172032272,131686338,"STRESSFREE","/album/stressfree-2",2024,"2024-07-31"],[125,1349174651,2875840575,"Death to All but Frognoise","/album/death-to-all-but-frognoise",2024,"2024-01-13"],[126,3020894844,3528707795,"Hop & Chop","/album/hop-chop",2023,"2023-10-25"],[127,1294866383,411898197,"The Foam Nest III","/album/the-foam-nest-iii",2016,"2016-10-31"],[128,3029379282,1367915823,"Fear The Rhino","/album/fear-the-rhino",2018,"2018-12-19"],[129,2820609170,3925462339,"All Green Everything","/album/all-green-everything",2024,"2024-08-30"],[130,2756629675,1917803392,"Rudis vs Phyllomedusa","/album/rudis-vs-phyllomedusa",2022,"2022-10-30"],[131,1300779834,285352177,"8 HEADS IN A BACK","/album/8-heads-in-a-back",2022,"2022-10-25"],[132,1183789500,60304954,"Oospherespurt","/album/oospherespurt",2024,"2024-09-22"],[133,898472971,1310107225,"Biodiver","/album/biodiver",2014,"2014-10-10"],[134,1275441055,404003618,"Lustral Hungyr (Banjo Profanity)","/album/lustral-hungyr-banjo-profanity",2023,"2023-10-24"],[135,3622290600,1143311233,"The Fuscus Frolic","/album/the-fuscus-frolic",2024,"2024-09-20"],[136,1222426278,3328643735,"Earth, Wind & Frognoise","/album/earth-wind-frognoise",2025,"2025-05-11"],[137,3510531098,2751794268,"WOODLORE (Subgenera I & II)","/album/woodlore-subgenera-i-ii",2023,"2023-08-25"],[138,2101882116,4142799245,"Drought & Misery","/album/drought-misery",2015,"2015-07-04"],[139,1032647707,3668952894,"The Ennobling Of Vibrasonic Throatorture","/album/the-ennobling-of-vibrasonic-throatorture",2024,"2024-10-29"],[140,1262965711,1218887440,"The Demise Of White Grub (Single)","/album/the-demise-of-white-grub-single",2025,"2025-03-31"],[141,1725085728,3588983365,"I'll Never Forget The Sound The Head Made When I Threw It Down The Stairs","/album/ill-never-forget-the-sound-the-head-made-when-i-threw-it-down-the-stairs",2022,"2022-02-07"],[142,49656202,2367580420,"Rigorous Red-eyed Feeding Habits (Slimethunder Version)","/album/rigorous-red-eyed-feeding-habits-slimethunder-version",2024,"2024-09-01"],[143,290792962,1925450723,"Necropescatarian Snowfall Ebbing Atop The Warmest Waters In Which We Dwell","/album/necropescatarian-snowfall-ebbing-atop-the-warmest-waters-in-which-we-dwell",2024,"2024-01-01"],[144,2866731817,1764576065,"Native Demonstration","/album/native-demonstration",2022,"2022-10-31"],[145,1384363631,1400689550,"The Glider That Does Not Fly","/album/the-glider-that-does-not-fly",2025,"2025-01-11"],[146,3574050080,2238432624,"Live At Blair Witch","/album/live-at-blair-witch",2023,"2023-07-14"],[147,3515848839,1250532311,"Do You Know What It's Like To Eat Your Children?","/album/do-you-know-what-its-like-to-eat-your-children",2025,"2025-08-23"],[148,3146921798,2497015198,"BITCH FROAT","/album/bitch-froat",2022,"2022-04-22"],[149,1162561222,1252268901,"My Soulmate Is Death","/album/my-soulmate-is-death-2",2022,"2022-10-26"],[150,3190097376,2933145290,"Suburban Pest: Premeditated","/album/suburban-pest-premeditated",2025,"2025-06-12"],[151,948304761,860342731,"Bulbous•ish","/album/bulbous-ish",2023,"2023-10-22"],[152,1018722227,2453977095,"Been Caught Herping (Amphibian split)","/album/been-caught-herping-amphibian-split",2012,"2012-08-05"],[153,136674192,1528203436,"Frog and Toad All Year (read by big frog)","/album/frog-and-toad-all-year-read-by-big-frog",2023,"2023-10-26"],[154,542179783,2845589247,"Struggling With The Weight Of Life","/album/struggling-with-the-weight-of-life",2023,"2023-10-23"],[155,1514075940,248967882,"Suburban Pest(s)","/album/suburban-pest-s",2023,"2023-03-03"],[156,3275020754,3627807773,"scienceclassgonewrong","/album/scienceclassgonewrong",2023,"2023-08-29"],[157,2040064071,714083962,"The Five Species Of Crossodactylodes","/album/the-five-species-of-crossodactylodes",2023,"2023-09-09"],[158,2961381332,3778483943,"Glass To Face Avocation","/album/glass-to-face-avocation",2016,"2016-04-30"],[159,569449437,743442520,"Pet Store Riot","/album/pet-store-riot",2024,"2024-05-10"],[160,1223352660,3872090790,"Suburban Pest","/album/suburban-pest",2015,"2015-11-23"],[161,3662024485,1830037554,"Deprecations (Passage One)","/album/deprecations-passage-one",2022,"2022-06-24"],[162,2471620262,4041738217,"Inguinal Recency A Ologn Viren Mirth","/album/inguinal-recency-a-ologn-viren-mirth",2015,"2015-10-23"],[163,1606577174,2390157430,"Wastebasket Taxa","/album/wastebasket-taxa",2023,"2023-10-22"],[164,580163040,4060592949,"0% Survival Rate","/album/0-survival-rate",2020,"2020-05-15"],[165,555566654,1877580268,"Caecilians In Memphis","/album/caecilians-in-memphis",2024,"2024-05-09"],[166,307002096,2993189749,"Tadpole Cicada Fight (Demo)","/album/tadpole-cicada-fight-demo-2",2023,"2023-04-14"],[167,4062696384,591906300,"Turning Away From The Overthrow/The Macrocosm Deteriorate","/album/turning-away-from-the-overthrow-the-macrocosm-deteriorate",2015,"2015-06-07"],[168,2967611155,3093266679,"Andean Oxy-Sag","/album/andean-oxy-sag",2019,"2019-10-28"],[169,3365036855,3177175600,"Frog & Hammer","/album/frog-hammer",2023,"2023-12-28"],[170,2283161645,2557137354,"Phyllomedusa, The Destroyer","/album/phyllomedusa-the-destroyer",2019,"2019-05-25"],[171,351492622,3777635984,"Yin & Yunganastes","/album/yin-yunganastes",2022,"2022-04-16"],[172,2551839425,2515620728,"MURKWATERS DEEP","/album/murkwaters-deep",2023,"2023-09-18"],[173,3124008349,899942376,"You Cannot Escape The Mouth","/album/you-cannot-escape-the-mouth-2",2024,"2024-08-22"],[174,2773576859,575889152,"Augmentation Of A Neck","/album/augmentation-of-a-neck",2024,"2024-11-12"],[175,2634578852,2395012991,"Wax Poetic","/album/wax-poetic",2017,"2017-09-04"],[176,754546063,1342691686,"The Deflowering Of Concrete","/album/the-deflowering-of-concrete",2023,"2023-11-10"],[177,1640309032,3946419904,"Dehumidifying Is Assisted Termination","/album/dehumidifying-is-assisted-termination",2022,"2022-10-28"],[178,1684738123,4289158725,"Nobody Rules These Swamps At Night But Me","/album/nobody-rules-these-swamps-at-night-but-me",2021,"2021-10-29"],[179,1588087985,2050853315,"A Triplet Murder In Maryland","/album/a-triplet-murder-in-maryland",2021,"2021-10-31"],[180,3268558327,905137099,"THE HARDEST AMPHIBIAN","/album/the-hardest-amphibian",2022,"2022-07-31"],[181,944178920,4187710710,"Eyes That See In The Dark","/album/eyes-that-see-in-the-dark",2018,"2018-12-08"],[182,4193646384,349722133,"Xocer (Demo)","/album/xocer-demo",2024,"2024-04-05"],[183,196196765,2778529937,"Desiccation In Progress (Version I)","/album/desiccation-in-progress-version-i",2011,"2011-10-26"],[184,3358928893,2979686802,"Desiccation In Progress (Version II)","/album/desiccation-in-progress-version-ii",2011,"2011-10-27"],[185,2297601561,3118607337,"The Purity In Stomach Ejection (Grostunde Slouch Mound)","/album/the-purity-in-stomach-ejection-grostunde-slouch-mound",2021,"2021-04-24"],[186,2659090837,2170826404,"FACIAL COLLAPSE","/album/facial-collapse",2021,"2021-12-25"],[187,4255484549,3720509686,"You Are The Giants That Bring Destruction","/album/you-are-the-giants-that-bring-destruction",2021,"2021-07-17"],[188,2054868986,3420193297,"yerg","/album/yerg",2026,"2026-10-30"],[189,360487340,535664954,"Murderfrog Blues","/album/murderfrog-blues",2023,"2023-04-14"],[190,1121576539,2401036129,"200 (Species Gone Extinct)","/album/200-species-gone-extinct",2022,"2022-03-27"],[191,3053489692,1819747767,"Frog And Toad Are Friends (read by big frog)","/album/frog-and-toad-are-friends-read-by-big-frog",2020,"2020-10-28"],[192,1113278653,938891043,"Within Night Lay The Prey","/album/within-night-lay-the-prey",2022,"2022-02-12"],[193,402100800,1536267437,"oIIIm","/album/oiiim",2015,"2015-10-27"],[194,3983192198,1228519985,"Grimm Blind Dwellers?","/album/grimm-blind-dwellers",2010,"2010-11-22"],[195,3883571988,3604324311,"olm","/album/olm",2011,"2011-04-14"],[196,884977423,1236440243,"olvm Forminge","/album/olvm-forminge",2019,"2019-04-22"],[197,3531473270,1247364185,"Whisper Of The King","/album/whisper-of-the-king",2022,"2022-04-30"],[198,3945829907,2476930882,"Humanity Shall Never Rise","/album/humanity-shall-never-rise",2023,"2023-04-21"],[199,2183785285,2546392106,"PHYLLOMORPHS","/album/phyllomorphs",2024,"2024-08-31"],[200,3274322332,2860518333,"The Great White","/album/the-great-white",2016,"2016-10-19"],[201,1308351276,2199676138,"LUMPBREATH OF e/XCRETOR","/album/lumpbreath-of-e-xcretor",2022,"2022-07-15"],[202,4219233620,817001279,"The Stubfoot","/album/the-stubfoot",2022,"2022-05-06"],[203,1341480365,2812069985,"A Bug's Life","/album/a-bugs-life",2022,"2022-10-28"],[204,2242279587,2928107061,"A Genus Is A Prison","/album/a-genus-is-a-prison",2021,"2021-10-27"],[205,1331103474,3264916876,"Confront To Deter (A Collection Of Territorial Battle Hymns)","/album/confront-to-deter-a-collection-of-territorial-battle-hymns",2019,"2019-10-31"],[206,2750304569,1699742023,"Fierce Young Cannibals","/album/fierce-young-cannibals",2019,"2019-12-01"],[207,471533861,3988314163,"Weather's A Thorn In My Side","/album/weathers-a-thorn-in-my-side",2015,"2015-09-25"],[208,1753124104,162701172,"Eggsit Wounds (The Brijnger Of Birth)","/album/eggsit-wounds-the-brijnger-of-birth",2019,"2019-09-28"],[209,2473751291,992754485,"Lifestylez Ov Da Calm & Nondangerous","/album/lifestylez-ov-da-calm-nondangerous",2020,"2020-10-29"],[210,2122018534,4265345871,"Turtle & Frog","/album/turtle-frog",2020,"2020-10-24"],[211,4189675555,1587003919,"Spikeballs & Monklets","/album/spikeballs-monklets",2017,"2017-08-01"],[212,3929064199,1478855292,"DARK NOISE MONOLITH","/album/dark-noise-monolith",2022,"2022-02-14"],[213,1047649441,343549636,"Heavy Foam From Brain Liquids","/album/heavy-foam-from-brain-liquids",2020,"2020-05-22"],[214,2105778851,1026549253,"Strung Out On The Bubble","/album/strung-out-on-the-bubble",2021,"2021-10-23"],[215,4172127791,1739793315,"Spring Theory","/album/spring-theory",2021,"2021-10-28"],[216,3817455517,2338155293,"never succeed (demo)","/album/never-succeed-demo",2026,"2026-08-07"],[217,538997927,115320545,"Salmonella Sickness","/album/salmonella-sickness",2009,"2009-07-14"],[218,2076733927,2337022227,"Gulp Fiction Vol. 2: Bay Area Butchery","/album/gulp-fiction-vol-2-bay-area-butchery",2019,"2019-02-18"],[219,587278541,3686259587,"Everything's Fine","/album/everythings-fine",2015,"2015-09-05"],[220,2391848047,3038002364,"MOUTH MURDER","/album/mouth-murder",2021,"2021-02-11"],[221,210999191,2474765106,"Nor'easter (Seeing Red)","/album/noreaster-seeing-red",2022,"2022-10-29"],[222,3641098414,3205163687,"Lunatic Girl And Her Frog, Part 2","/album/lunatic-girl-and-her-frog-part-2",2020,"2020-10-31"],[223,1135381032,96430677,"Mama Hates Me, She Ate Me","/album/mama-hates-me-she-ate-me-3",2024,"2024-09-20"],[224,2183417858,127148934,"M U D L I N E","/album/m-u-d-l-i-n-e",2020,"2020-04-07"],[225,2918709754,1563039050,"Thy Peerless Ameerega (A Cleansing)","/album/thy-peerless-ameerega-a-cleansing",2016,"2016-03-19"],[226,2143483786,3213998042,"Muskeg Love","/album/muskeg-love",2020,"2020-06-08"],[227,2798577986,2235910820,"To Feed Is To Grow","/album/to-feed-is-to-grow",2019,"2019-07-20"],[228,2387289943,1402898701,"Copse Cavities","/album/copse-cavities-3",2021,"2021-11-27"],[229,668180809,1700967456,"Arboreal Apprehension","/album/arboreal-apprehension",2020,"2020-10-26"],[230,17795215,3311067308,"I'm Not The Tadpole I Used To Be","/album/im-not-the-tadpole-i-used-to-be",2019,"2019-12-29"],[231,3844610651,2256509921,"Requign The Soak Up","/album/requign-the-soak-up",2019,"2019-12-08"],[232,1068337152,4214071160,"Greenlaw (Eremetic Leap)","/album/greenlaw-eremetic-leap",2020,"2020-02-29"],[233,1640502940,1728981664,"Gulp Phiction Vol. 1","/album/gulp-phiction-vol-1",2019,"2019-02-02"],[234,2964764835,1049679323,"Midwifer (They Slough)","/album/midwifer-they-slough-2",2018,"2018-10-28"],[235,493671736,92671811,"Heirloomian Uncoupling","/album/heirloomian-uncoupling",2020,"2020-10-30"],[236,2038054799,2306337423,"Inept Breviceps Amplex","/album/inept-breviceps-amplex",2010,"2010-12-18"],[237,2611011645,1423912743,"In Vivarium. Is Torture. (Astylosternus Interpretation)","/album/in-vivarium-is-torture-astylosternus-interpretation",2015,"2015-12-31"],[238,3498499997,3952557202,"Empty Inside This Clear Skin","/album/empty-inside-this-clear-skin",2014,"2014-01-01"],[239,3912025143,2321011026,"DROP A FROG BOMB","/album/drop-a-frog-bomb",2021,"2021-08-20"],[240,1789464429,2762803796,"Tactile Organ Horror Story","/album/tactile-organ-horror-story",2013,"2013-11-16"],[241,2797998604,1049187783,"In Vivarium. Is Bliss.","/album/in-vivarium-is-bliss",2014,"2014-10-01"],[242,3439277128,2134127088,"The Foam Nest IV","/album/the-foam-nest-iv",2019,"2019-09-13"],[243,3732983839,1799037595,"Peach Goo Pleasantries","/album/peach-goo-pleasantries",2019,"2019-12-06"],[244,1067011698,1390221866,"Stankraiser (Frogs And Flies)","/album/stankraiser-frogs-and-flies",2019,"2019-06-16"],[245,938546080,4254085581,"In Vivarium. Is Torture.","/album/in-vivarium-is-torture",2014,"2014-10-04"],[246,3117833326,563053857,"Girty Splurge Jazz","/album/girty-splurge-jazz",2020,"2020-10-27"],[247,1402307397,979599479,"Algaeicntopia II: Harsh Times At Sludgemont High","/album/algaeicntopia-ii-harsh-times-at-sludgemont-high",2019,"2019-02-15"],[248,342640347,1428019513,"Neutralizing Luminosity","/album/neutralizing-luminosity-2",2019,"2019-12-16"],[249,3228300646,1980682519,"Hind Legs Of Steel (Live On WQZH Radio)","/album/hind-legs-of-steel-live-on-wqzh-radio",2014,"2014-01-11"],[250,2505305559,1483236044,"Spinal Insurrection","/album/spinal-insurrection",2019,"2019-10-30"],[251,1172953067,2453699193,"The Relictivomer Illusion","/album/the-relictivomer-illusion",2020,"2020-05-29"],[252,2246851226,1866177734,"October After The Storm","/album/october-after-the-storm",2019,"2019-10-01"],[253,3731096436,1062672463,"Calling With A Response (Demo)","/album/calling-with-a-response-demo",2019,"2019-04-08"],[254,2846156549,544844012,"Gill Ciliation","/album/gill-ciliation",2019,"2019-10-26"],[255,3207982551,13277068,"O. .O Disturb My Slumber O. .O","/album/o-o-disturb-my-slumber-o-o",2021,"2021-09-18"],[256,2370867968,1097886742,"Youngins Carryall","/album/youngins-carryall",2019,"2019-10-25"],[257,2291536780,1122835725,"Seven Legged Freaks","/album/seven-legged-freaks",2019,"2019-10-26"],[258,2336964160,3893161314,"Tympanum Trepidation","/album/tympanum-trepidation",2019,"2019-10-27"],[259,3616577648,1408516441,"The Desolation Of Phraug","/album/the-desolation-of-phraug",2021,"2021-10-26"],[260,3927519773,2605465965,"It's Foul Out Here/Double Negative","/album/its-foul-out-here-double-negative",2014,"2014-10-31"],[261,2044455435,3249734274,"Croak Rate Sky High (deep frognoise)","/album/croak-rate-sky-high-deep-frognoise",2024,"2024-08-01"],[262,3290621241,3707678176,"Over The Corpse Of A Study","/album/over-the-corpse-of-a-study",2018,"2018-03-14"],[263,1384516717,2135770968,"Purple Frog Cult","/album/purple-frog-cult",2013,"2013-11-26"],[264,2602258182,2331924549,"Drinking The Vomit Of Thorius","/album/drinking-the-vomit-of-thorius",2017,"2017-01-20"],[265,3513517886,2564485655,"Basking In Antipredator","/album/basking-in-antipredator",2019,"2019-05-11"],[266,463975763,1124718074,"Cloaking Efforts In Delicate Violence","/album/cloaking-efforts-in-delicate-violence",2018,"2018-12-24"],[267,980532263,3742698428,"This Area Will Be Confirmed With Rambunctious Calls Or Through Physical Combat","/album/this-area-will-be-confirmed-with-rambunctious-calls-or-through-physical-combat",2015,"2015-07-31"],[268,485127378,3594901488,"Unriled Selection (The Moustache Of Emei)","/album/unriled-selection-the-moustache-of-emei",2019,"2019-06-15"],[269,778855595,2417349525,"Pobblebonk In A Crick","/album/pobblebonk-in-a-crick",2017,"2017-11-06"],[270,3981353819,3640017921,"Biology Reparations","/album/biology-reparations",2019,"2019-10-24"],[271,2737362681,4117368881,"Myco-Glyphos","/album/myco-glyphos",2016,"2016-10-18"],[272,1621713429,2178732599,"Let Them Gnaw Me Apart, And I Love It","/album/let-them-gnaw-me-apart-and-i-love-it",2014,"2014-05-04"],[273,1962439089,2864554625,"Gods Of The Mourning","/album/gods-of-the-mourning",2017,"2017-01-13"],[274,263384900,651194109,"A Wroscloh In Magris","/album/a-wroscloh-in-magris",2019,"2019-06-30"],[275,4251507991,2383431201,"Green Mothaur","/album/green-mothaur",2017,"2017-09-07"],[276,3150691330,2455137405,"nub","/album/nub",2018,"2018-12-27"],[277,2517522943,2449608624,"Bravery Is Contagious","/album/bravery-is-contagious",2018,"2018-10-31"],[278,76683460,2812401296,"Leafwalker Primitive","/album/leafwalker-primitive",2019,"2019-01-28"],[279,2615094167,1258856357,"Stumpy Josephine","/album/stumpy-josephine",2019,"2019-01-22"],[280,3728815367,99798000,"Puddle Dependency","/album/puddle-dependency",2014,"2014-01-27"],[281,3358864867,2242942665,"The Munz Grove Incident","/album/the-munz-grove-incident",2015,"2015-01-01"],[282,3954056888,2104738746,"What's Your Favorite Animal?","/album/whats-your-favorite-animal",2012,"2012-11-23"],[283,786584942,4130573137,"Frogshead Rowar","/album/frogshead-rowar",2016,"2016-09-04"],[284,517404900,2748882786,"Save The Frogs & Toads In Mexico","/album/save-the-frogs-toads-in-mexico",2012,"2012-02-18"],[285,3101188487,2179926340,"Blood Drawn The Adelotus Way","/album/blood-drawn-the-adelotus-way",2018,"2018-10-26"],[286,2271805064,1222416677,"Let Sleeping Frogs Lie","/album/let-sleeping-frogs-lie",2018,"2018-12-20"],[287,4292393165,1902011816,"Triprion Medial Notchgander","/album/triprion-medial-notchgander",2025,"2025-01-10"],[288,2582864790,4121451901,"Gepytto's Guillotine","/album/gepyttos-guillotine",2020,"2020-10-27"],[289,1301069340,2548681041,"Purposely Inflicting Ranidaphobia","/album/purposely-inflicting-ranidaphobia",2013,"2013-02-06"],[290,3138775001,3769194588,"Fluidity In Despair","/album/fluidity-in-despair",2018,"2018-03-03"],[291,1898527672,4052385668,"Schnewn Incrustic Ghinslab","/album/schnewn-incrustic-ghinslab",2017,"2017-03-14"],[292,936423703,741407903,"The Frankixalus","/album/the-frankixalus",2017,"2017-10-19"],[293,1653454699,1310632758,"Porous Adpresson","/album/porous-adpresson",2019,"2019-06-15"],[294,1399808060,1346246585,"Quöblin Beak","/album/qu-blin-beak",2016,"2016-10-20"],[295,1698281947,2359576168,"Eye Of The Becroaker","/album/eye-of-the-becroaker",2019,"2019-01-17"],[296,2610787485,3936068235,"Marbles","/album/marbles",2016,"2016-10-22"],[297,2878571513,3274843769,"To Serve Frog","/album/to-serve-frog",2018,"2018-01-21"],[298,2711845226,4089917485,"Mossishintertrial Quietude","/album/mossishintertrial-quietude",2018,"2018-10-25"],[299,3846733140,1934587991,"Infectious Conceit","/album/infectious-conceit",2018,"2018-07-22"],[300,3026583177,80214539,"Rainforests Are Only Pretty On The Outside","/album/rainforests-are-only-pretty-on-the-outside",2014,"2014-01-20"],[301,4182926326,1718951710,"Cacophony Clumps The Melodiphysical Strings","/album/cacophony-clumps-the-melodiphysical-strings",2018,"2018-10-18"],[302,436088312,3375873698,"Sprig-Sagjellic Pellucidity","/album/sprig-sagjellic-pellucidity",2018,"2018-10-30"],[303,173540596,2963593361,"State Of São Paulo Immaculate","/album/state-of-s-o-paulo-immaculate",2018,"2018-06-17"],[304,1386745247,2960172186,"To Intimidate With Rearest Exhortatory","/album/to-intimidate-with-rearest-exhortatory",2018,"2018-10-20"],[305,4231062348,381162255,"Support Your Local Serial Killer","/album/support-your-local-serial-killer",2018,"2018-12-08"],[306,405248525,3331434234,"Sledge In Place Of Strength","/album/sledge-in-place-of-strength",2017,"2017-12-11"],[307,1067899415,3082461936,"Ebony Annexe","/album/ebony-annexe",2017,"2017-10-23"],[308,3126359573,102087204,"Banalwomb't (An Assortment)","/album/banalwombt-an-assortment",2016,"2016-10-30"],[309,2314353312,2357647741,"Harsh Noise Movement vs Phyllomedusa","/album/harsh-noise-movement-vs-phyllomedusa",2016,"2016-06-22"],[310,295874619,819694782,"Lumberjack Killer (Regressor)","/album/lumberjack-killer-regressor",2019,"2019-06-16"],[311,3473326128,1561635037,"Spiracle Sinistrally Mask Menguled","/album/spiracle-sinistrally-mask-menguled",2019,"2019-06-16"],[312,3467489606,1916322207,"Sensitive Caudata Chaos","/album/sensitive-caudata-chaos",2012,"2012-10-04"],[313,2985142664,948758360,"Ivory Stoed In Orange Bequeath (Phurstbourne Version)","/album/ivory-stoed-in-orange-bequeath-phurstbourne-version",2017,"2017-12-11"],[314,2514880501,2540389,"Khloud Zedimentation","/album/khloud-zedimentation",2018,"2018-10-17"],[315,508028743,733132083,"The Stonesitter","/album/the-stonesitter",2016,"2016-11-22"],[316,4122277378,1511468309,"Morass Marks The Vertebrate","/album/morass-marks-the-vertebrate",2018,"2018-04-13"],[317,2168087352,2516130228,"Empyrean Feed","/album/empyrean-feed",2018,"2018-10-22"],[318,654022147,1181606085,"Forest And Fynbos","/album/forest-and-fynbos",2019,"2019-05-15"],[319,1669360535,2660353385,"Raised By Tadpoles","/album/raised-by-tadpoles",2011,"2011-04-15"],[320,4096587243,2023112173,"Layehmn Eek​-​Erroneous","/album/layehmn-eek-erroneous",2017,"2017-10-21"],[321,2195435989,1668398788,"Envisage A Collembolans Catenator","/album/envisage-a-collembolans-catenator",2016,"2016-10-27"],[322,989957008,524355105,"Frog Thrower (Single)","/album/frog-thrower-single",2015,"2015-09-05"],[323,2035927669,2046624896,"Emergence I: Emanation For The Proper Reasoning","/album/emergence-i-emanation-for-the-proper-reasoning",2018,"2018-04-14"],[324,1131107686,1775109149,"Piss Junkie vs TOAD BIRTH","/album/piss-junkie-vs-toad-birth",2013,"2013-04-13"],[325,2981235845,2102676299,"Trenching","/album/trenching",2017,"2017-05-16"],[326,3655868026,1324662980,"Geminarte Subordinal Localities","/album/geminarte-subordinal-localities",2018,"2018-05-10"],[327,666798714,1215913535,"Primal Subaquatic Fright","/album/primal-subaquatic-fright",2018,"2018-10-23"],[328,2160606559,3513160338,"Cirpis Doorway Of Fragmente (Phurstbourne Version)","/album/cirpis-doorway-of-fragmente-phurstbourne-version",2017,"2017-12-11"],[329,3397529421,2195142818,"Relictmaker","/album/relictmaker-2",2019,"2019-07-12"],[330,3713571336,473249740,"Kalimantan Sun","/album/kalimantan-sun-2",2024,"2024-09-21"],[331,3916525302,3334992372,"Rume Epitome Betwixt Wormentangled Quarrvomit","/album/rume-epitome-betwixt-wormentangled-quarrvomit",2015,"2015-10-31"],[332,3575459034,2786017709,"The Chikila Architecture","/album/the-chikila-architecture",2014,"2014-07-31"],[333,3361026226,1640786247,"Bi​-​Ram​-​Bo Sapo (Vocal Only)","/album/bi-ram-bo-sapo-vocal-only",2019,"2019-07-07"],[334,3817654279,4227758012,"Slime Life (Single)","/album/slime-life-single",2015,"2015-04-25"],[335,1505870037,3514919468,"Snakeharmer","/album/snakeharmer",2018,"2018-01-19"],[336,4235516219,3029102206,"Somnolent Metacarpus","/album/somnolent-metacarpus",2018,"2018-04-12"],[337,3765434069,2927261273,"Burlgonia Poachewrelic","/album/burlgonia-poachewrelic",2019,"2019-07-13"],[338,1520912777,1764899549,"By The Diamond Of Posterior","/album/by-the-diamond-of-posterior",2017,"2017-02-01"],[339,2127711322,1814335480,"The Amplexic Equitable","/album/the-amplexic-equitable",2018,"2018-04-16"],[340,980442363,4154477367,"Swampdigger (Agglomeration Of Rendition)","/album/swampdigger-agglomeration-of-rendition",2016,"2016-06-12"],[341,1052509151,3696244962,"Intrusive Teachings Of An Irrational Conservation Biologist (The True Amphibian Collection)","/album/intrusive-teachings-of-an-irrational-conservation-biologist-the-true-amphibian-collection",2012,"2012-09-17"],[342,782832831,1984201320,"The Gurrem Gthoe","/album/the-gurrem-gthoe",2015,"2015-09-13"],[343,2318663583,1199502811,"The Chaos The Skin Brings","/album/the-chaos-the-skin-brings-2",2015,"2015-12-13"],[344,323883437,1040528196,"I Kill Hunters","/album/i-kill-hunters",2014,"2014-12-08"],[345,2173070829,1102153916,"Agroinduced Biophilia","/album/agroinduced-biophilia",2019,"2019-06-14"],[346,1404537935,289859863,"Catch Me If You Can","/album/catch-me-if-you-can",2013,"2013-02-11"],[347,123706365,116178524,"Algaeicntopia","/album/algaeicntopia",2018,"2018-08-06"],[348,1103776426,1526526717,"Untitled Demo I","/album/untitled-demo-i",2008,"2008-03-10"],[349,4095808727,246838716,"The Hatchet (Asysiaa)","/album/the-hatchet-asysiaa",2019,"2019-07-07"],[350,4229767250,4010783802,"K.E.R.M.I.T.","/album/k-e-r-m-i-t",2018,"2018-04-09"],[351,3702340295,4099117026,"Nymphaeaceae Relations","/album/nymphaeaceae-relations",2018,"2018-04-08"],[352,947343090,4036270841,"Concluding Respire Within The Bowl","/album/concluding-respire-within-the-bowl",2019,"2019-08-23"],[353,2900405687,2356242619,"Blood Leaves","/album/blood-leaves",2013,"2013-06-03"],[354,377288995,248401555,"Gimpburl","/album/gimpburl",2015,"2015-12-09"],[355,1552250510,1741090356,"N.A.R.E.S.","/album/n-a-r-e-s",2017,"2017-11-12"],[356,3425176951,3236468614,"Amphibians Vs Reptiles (Full Split)","/album/amphibians-vs-reptiles-full-split",2012,"2012-04-01"],[357,3179582921,3623915169,"Transatlantic Frogsplash","/album/transatlantic-frogsplash",2018,"2018-03-17"],[358,3662443396,609350553,"I Felt I Was Followed","/album/i-felt-i-was-followed",2016,"2016-10-13"],[359,3800483055,3067162926,"Spruce Of Tomb","/album/spruce-of-tomb",2015,"2015-10-18"],[360,511413549,497246998,"Environ​-​Mental Illness Dept.","/album/environ-mental-illness-dept",2018,"2018-05-06"],[361,1410894329,3497260208,"The Foam Nest II","/album/the-foam-nest-ii",2015,"2015-03-20"],[362,3838040823,2410634942,"Let His Throat Blot Out The Sun","/album/let-his-throat-blot-out-the-sun",2018,"2018-03-23"],[363,1796823315,2708003303,"It's Not Easy Being Green","/album/its-not-easy-being-green",2015,"2015-02-11"],[364,854999176,3869101604,"The Hellbender Shallow","/album/the-hellbender-shallow",2014,"2014-07-31"],[365,611568391,762506761,"The Bait Of My Existence","/album/the-bait-of-my-existence",2016,"2016-10-26"],[366,2411003532,1743951264,"The Pink Belly (Part 2)","/album/the-pink-belly-part-2",2018,"2018-12-21"],[367,3282476777,3162314847,"The Mudgician","/album/the-mudgician",2017,"2017-07-08"],[368,3332537290,818912201,"The Nil Of Suspension Below Fauces","/album/the-nil-of-suspension-below-fauces",2017,"2017-08-18"],[369,745445018,3100112818,"The Unken Reflex","/album/the-unken-reflex",2011,"2011-08-16"],[370,797384253,3295183729,"Shallow Parts Of Perennial","/album/shallow-parts-of-perennial",2015,"2015-10-20"],[371,1047270113,2793173869,"Mental State Of Shedding Hylids","/album/mental-state-of-shedding-hylids",2013,"2013-03-09"],[372,2481325425,4288155844,"Frog Killed The Radio Star (Live At NGS! Radio)","/album/frog-killed-the-radio-star-live-at-ngs-radio",2012,"2012-10-08"],[373,1386911385,2909016945,"Gestation In Hillock","/album/gestation-in-hillock",2017,"2017-04-22"],[374,1664449033,802722464,"Dissect The Frog Dissector","/album/dissect-the-frog-dissector",2010,"2010-07-26"],[375,3959147003,3596988815,"Death By Corpulence","/album/death-by-corpulence",2018,"2018-10-21"],[376,3945810938,1547051351,"Speed Up Civilianlife Crossing (Original Version)","/album/speed-up-civilianlife-crossing-original-version",2025,"2025-03-31"],[377,1789270298,1659267906,"Low Latitudes, High Disdain","/album/low-latitudes-high-disdain",2015,"2015-10-19"],[378,2180054432,3142136982,"To Regenerate Limbs","/album/to-regenerate-limbs",2011,"2011-04-15"],[379,3478560832,3752974303,"Batglutton","/album/batglutton",2017,"2017-04-12"],[380,858070,1883018460,"Puddle Independency​/​Desiccation Yet In Progress (Demo Vs Demo)","/album/puddle-independency-desiccation-yet-in-progress-demo-vs-demo",2014,"2014-08-23"],[381,2055278875,905431648,"Local Gray To Green Rendezvous","/album/local-gray-to-green-rendezvous",2014,"2014-03-12"],[382,817184833,545870722,"7 Mintue Tadpole Hatch II","/album/7-mintue-tadpole-hatch-ii",2016,"2016-01-25"],[383,1315870531,923716704,"N.Y.C.","/album/n-y-c",2017,"2017-12-11"],[384,1457482210,2975339824,"The Non​-​Hopping Fossorial Breviceps","/album/the-non-hopping-fossorial-breviceps-2",2013,"2013-07-31"],[385,1466272421,3758581465,"Gleaming The Hermit","/album/gleaming-the-hermit",2017,"2017-10-24"],[386,4276232886,3238202605,"Lycopodiopsidd Sidt","/album/lycopodiopsidd-sidt",2017,"2017-01-01"],[387,2652533217,2600014159,"Lunatic Girl And Her Frog","/album/lunatic-girl-and-her-frog",2011,"2011-09-16"],[388,2665112516,1975315768,"Greenhand","/album/greenhand",2013,"2013-04-22"],[389,1190803397,2315540079,"Amphibians Performing Surgery II","/album/amphibians-performing-surgery-ii",2010,"2010-10-19"],[390,2396534369,3142568233,"The Subterranae Frogmen","/album/the-subterranae-frogmen",2010,"2010-02-06"],[391,2762528822,3609287074,"Staring At Endangerment","/album/staring-at-endangerment",2014,"2014-10-17"],[392,428482921,1219970289,"Please​!​! Do Not Tap On The Glass","/album/please-do-not-tap-on-the-glass",2012,"2012-02-06"],[393,1401315145,638053241,"soundTrack for the Reptile House","/album/soundtrack-for-the-reptile-house",2011,"2011-03-17"],[394,2300068809,2389891033,"The Foam Nest","/album/the-foam-nest",2010,"2010-02-06"],[395,3055614774,3920031318,"At Karst (Live On Regland's Podcast)","/album/at-karst-live-on-reglands-podcast",2013,"2013-11-10"],[396,2508782646,3764472253,"Frogma","/album/frogma",2016,"2016-10-14"],[397,2143371908,3550462654,"Caecilian Country","/album/caecilian-country",2018,"2018-01-16"],[398,1231561643,946163609,"Girth Fundaments","/album/girth-fundaments",2016,"2016-05-26"],[399,2878748268,1106040278,"Phyllomedusa vs Unconcentrated Faeces Otengeny","/album/phyllomedusa-vs-unconcentrated-faeces-otengeny",2008,"2008-03-23"],[400,1330369304,156943356,"A True Coalesce Of Sound & Species: The Definitive Phyllomedusa Collection","/album/a-true-coalesce-of-sound-species-the-definitive-phyllomedusa-collection",2012,"2012-05-09"],[401,850278864,3726154979,"Camp Bufo (Copiula Lives)","/album/camp-bufo-copiula-lives",2015,"2015-10-28"],[402,3007452254,720735347,"Ecomonster","/album/ecomonster",2011,"2011-04-14"],[403,831764494,1144579851,"Environment & Adaptation","/album/environment-adaptation",2012,"2012-10-31"],[404,4175654163,3445335997,"Rana Injusto","/album/rana-injusto",2013,"2013-04-22"],[405,846821195,3794150587,"The Amphibious Realm","/album/the-amphibious-realm",2010,"2010-01-07"],[406,2552871329,1258282463,"Darkgams","/album/darkgams",2018,"2018-10-29"],[407,3589884492,2696529376,"5 Inch Graves (Single)","/album/5-inch-graves-single",2013,"2013-08-07"],[408,1033053510,74408241,"Songs For Frogwatching","/album/songs-for-frogwatching",2012,"2012-01-05"],[409,2276041111,2829859042,"Rhinoderma Phylogeny","/album/rhinoderma-phylogeny",2013,"2013-07-27"],[410,2210294725,3655259375,"The Gurrem","/album/the-gurrem",2013,"2013-07-11"],[411,4167305147,3700850314,"DESTROY DESTRUCCIÓN HUMANA","/album/destroy-destrucci-n-humana",2009,"2009-04-27"],[412,2489900540,4154688581,"How Stella Got Her Head Back (Ecuadorian Ritualism)","/album/how-stella-got-her-head-back-ecuadorian-ritualism",2014,"2014-02-24"],[413,3853299933,2427078024,"Amphibians Performing Surgery","/album/amphibians-performing-surgery",2010,"2010-03-31"],[414,1190637835,4030117628,"Molesting The Frogeater","/album/molesting-the-frogeater",2010,"2010-10-11"],[415,2350563330,756781761,"Rana Kin","/album/rana-kin",2015,"2015-01-01"],[416,600399068,2220826300,"Intimate Occurrence Of The Lesser Seen","/album/intimate-occurrence-of-the-lesser-seen",2015,"2015-01-17"],[417,3858498114,1602856988,"The Frogs At Crystal Lake","/album/the-frogs-at-crystal-lake",2010,"2010-10-31"],[418,126954730,2998534357,"Purposely Inflicting Ranidaphobia (Version I)","/album/purposely-inflicting-ranidaphobia-version-i",2011,"2011-03-20"],[419,2145147333,2270183814,"We Are Carnivores And Cannibals","/album/we-are-carnivores-and-cannibals",2011,"2011-03-05"],[420,1746416979,2830444405,"Pdri","/album/pdri",2015,"2015-08-21"],[421,2982264336,824218740,"Zooborn","/album/zooborn",2010,"2010-04-21"],[422,3521382396,3122955677,"BIRDKILLER","/album/birdkiller",2012,"2012-10-04"],[423,1799068615,1832964499,"Antrorseion Glance","/album/antrorseion-glance",2015,"2015-10-21"],[424,4013062856,93234027,"The Opykec's Heap","/album/the-opykecs-heap",2015,"2015-10-20"],[425,2902920700,797770582,"The Pink Belly","/album/the-pink-belly",2013,"2013-07-26"],[426,1313963469,924761915,"Lewaf","/album/lewaf",2015,"2015-09-13"],[427,919469919,2335654272,"A Most Familiar Tumult","/album/a-most-familiar-tumult",2015,"2015-10-29"],[428,359540308,2221741101,"The Croakening Of Glurp","/album/the-croakening-of-glurp",2019,"2019-07-26"],[429,587784493,726426176,"Where Frogs Learn to Croak on Command/Sadofrogsmo","/album/where-frogs-learn-to-croak-on-command-sadofrogsmo",2010,"2010-08-22"],[430,1963819270,3261293353,"Empty Inside This Clear Skin (Demo)","/album/empty-inside-this-clear-skin-demo",2014,"2014-01-07"],[431,3823529268,646157260,"Misshapen Semblance","/album/misshapen-semblance",2015,"2015-10-26"],[432,3744013360,2011371614,"Calling With No Response","/album/calling-with-no-response-2",2013,"2013-10-26"],[433,1732383964,1248270558,"Chopped Up Hunter Gunt","/album/chopped-up-hunter-gunt",2010,"2010-09-28"],[434,1311513933,2355923903,"The Hunchback","/album/the-hunchback",2014,"2014-10-24"],[435,1689856757,3944616983,"Air Duct Potpourri/I Used To Pole Vault","/album/air-duct-potpourri-i-used-to-pole-vault",2012,"2012-01-09"],[436,1251508987,2560833036,"Facial Dephormae","/album/facial-dephormae",2015,"2015-09-05"],[437,2638013655,2851479688,"Non​-​Melodic Trills of Rattling Quality Seldom","/album/non-melodic-trills-of-rattling-quality-seldom",2015,"2015-10-22"],[438,1517924549,1712096272,"Deny Being A Human","/album/deny-being-a-human",2010,"2010-09-29"],[439,326436899,3202757112,"Glorify The Plump","/album/glorify-the-plump",2013,"2013-10-12"],[440,2906381441,3850858228,"Hand Of Sloom (White Noisian Encumber)","/album/hand-of-sloom-white-noisian-encumber",2018,"2018-02-27"],[441,3533791928,849418357,"Cadavers In Pond Water","/album/cadavers-in-pond-water",2010,"2010-12-29"],[442,3130242633,194398856,"Correct Dissect","/album/correct-dissect",2014,"2014-06-08"],[443,1609857074,2016371101,"(human) Species Eruption","/album/human-species-eruption",2011,"2011-09-12"],[444,1583049525,2942680034,"Ylid","/album/ylid",2016,"2016-02-18"],[445,1042335405,1984944958,"The Vecsh","/album/the-vecsh",2015,"2015-09-13"],[446,4018209851,650413691,"The Slime Justifies The Means","/album/the-slime-justifies-the-means",2010,"2010-04-10"],[447,2583010082,3612543572,"Marshviolence","/album/marshviolence",2012,"2012-07-18"],[448,1194939147,501384150,"Vanishing Act","/album/vanishing-act",2015,"2015-10-28"],[449,3899342318,1185769786,"How Long Can A Human Last In Captivity?","/album/how-long-can-a-human-last-in-captivity",2010,"2010-05-02"],[450,3475962518,4165888845,"Doivo Chlenn","/album/doivo-chlenn",2015,"2015-10-01"],[451,2598850176,3939476218,"Untitled Frog Worship","/album/untitled-frog-worship",2010,"2010-12-18"],[452,2479284175,2798434324,"Humanbutchering","/album/humanbutchering",2011,"2011-04-11"],[453,2519026230,4102982495,"Pail Vulgari","/album/pail-vulgari",2015,"2015-10-24"],[454,3319878789,2962771380,"The Foremother","/album/the-foremother-2",2015,"2015-10-30"],[455,3920930728,825538297,"The Green Reaper","/album/the-green-reaper",2010,"2010-09-19"],[456,608616641,2271230698,"Hyalinobatrachium Fleischmanni Adoration","/album/hyalinobatrachium-fleischmanni-adoration",2010,"2010-03-20"],[457,1042465492,4120051668,"Newtails","/album/newtails",2013,"2013-12-14"],[458,3738933507,3743432622,"Three Shades Of Green","/album/three-shades-of-green",2012,"2012-09-06"],[459,48243005,1838922548,"Green Skin Mummification","/album/green-skin-mummification",2010,"2010-05-12"],[460,1418128250,2996515404,"The Battle Of Everless","/album/the-battle-of-everless",2015,"2015-09-13"],[461,869145970,4231130717,"Death - Croak Me","/album/death-croak-me",2011,"2011-04-04"],[462,4224390964,3209074806,"Blommersia","/album/blommersia",2010,"2010-12-18"],[463,631805390,988767059,"Adequate Bombina","/album/adequate-bombina",2012,"2012-06-04"],[464,3180891451,836530726,"Bryophryne Fermentation","/album/bryophryne-fermentation",2010,"2010-06-13"],[465,696400002,458058940,"Litoria's Victim","/album/litorias-victim",2011,"2011-10-27"],[466,3723637731,3078730674,"The Frog Whisperer","/album/the-frog-whisperer",2012,"2012-04-30"],[467,1744726545,1795083996,"Pond Anarchy","/album/pond-anarchy",2012,"2012-07-22"],[468,2516341309,1609016331,"Crepitate In Raorchestes Idiom","/album/crepitate-in-raorchestes-idiom",2011,"2011-10-24"],[469,4026202374,2281245556,"Feral Ophryophryne","/album/feral-ophryophryne",2011,"2011-06-02"],[470,2002881217,2024582697,"The Fight For Territory","/album/the-fight-for-territory",2012,"2012-05-20"],[471,1895016997,3254430988,"Anuran Slime Transplant","/album/anuran-slime-transplant",2008,"2008-09-15"],[472,466314964,1558866358,"You Had Me At Ribbit","/album/you-had-me-at-ribbit",2009,"2009-04-11"],[473,2762103892,1589021752,"Crüsty 'Phibs","/album/cr-sty-phibs",2011,"2011-04-10"],[474,1988610758,3446939273,"The Toad Essence Session","/album/the-toad-essence-session",2018,"2018-02-17"],[475,2001692,736758783,"The Final Mistbath Session","/album/the-final-mistbath-session",2009,"2009-05-10"],[476,1579863946,4061740897,"Chubtemplum","/album/chubtemplum",2010,"2010-06-02"],[477,4029868143,1263216470,"7 Minute Tadpole Hatch","/album/7-minute-tadpole-hatch",2008,"2008-09-16"],[478,2055952453,1906374841,"Abrupt Metamorphosis","/album/abrupt-metamorphosis",2011,"2011-01-07"],[479,3796126553,3361562393,"R.A.W. #1 Gorenoise 5-Way Split","/album/r-a-w-1-gorenoise-5-way-split",2011,"2011-01-29"],[480,2036195307,1241270000,"Avenge A Mutilation","/album/avenge-a-mutilation",2010,"2010-07-10"],[481,3564203650,418729034,"Antifrench","/album/antifrench",2009,"2009-10-24"],[482,3963853249,1264056522,"Down​-​Tuned Frog Worship","/album/down-tuned-frog-worship",2010,"2010-03-31"],[483,2881317777,1402354532,"Lack Of Ribs (Demo)","/album/lack-of-ribs-demo",2008,"2008-11-28"],[484,2094373746,3503724058,"The Lilypad Rehearsals","/album/the-lilypad-rehearsals",2010,"2010-05-17"],[485,4187542108,1046877376,"Blending Litoria Enclave","/album/blending-litoria-enclave",2008,"2008-10-24"],[486,68051894,2443857199,"Disturbances Upstream!","/album/disturbances-upstream",2013,"2013-04-13"],[487,2837168297,2105549324,"Slime Immersion","/album/slime-immersion",2007,"2007-12-15"],[488,657031678,1874943865,"Humanity...Haha","/album/humanity-haha",2010,"2010-04-01"],[489,1494726395,2640159104,"Innard & Frog Worship","/album/innard-frog-worship",2010,"2010-03-23"],[490,1649661911,3286007224,"Toadthrone","/album/toadthrone",2009,"2009-03-01"],[491,2305238221,745484681,"Balandesogestrel Reflex/Frogs","/album/balandesogestrel-reflex-frogs",2007,"2007-03-15"],[492,2462632418,2425695878,"Docile In Water","/album/docile-in-water",2009,"2009-03-30"],[493,3743621831,3006325806,"Eggs Of The Monkey Frog","/album/eggs-of-the-monkey-frog",2007,"2007-01-08"]];
+
+const BASE_URL = "https://phyllomedusa.bandcamp.com";
+const ALBUMS = RAW.map(r => ({
+  idx: r[0],
+  id: r[1],
+  artId: r[2],
+  title: r[3],
+  url: BASE_URL + r[4],
+  year: r[5],
+  iso: r[6],
+  thumb: `https://f4.bcbits.com/img/a${r[2]}_9.jpg`,
+  cover: `https://f4.bcbits.com/img/a${r[2]}_16.jpg`
+}));
+
+const YEAR_COUNTS = {};
+ALBUMS.forEach(a => {
+  if (a.year) YEAR_COUNTS[a.year] = (YEAR_COUNTS[a.year] || 0) + 1;
+});
+
+const HABITATS = [
+  { key: "ALL", label: "All", test: () => true },
+  { key: "FROG", label: "Frog", test: a => /frog/i.test(a.title) },
+  { key: "AMPHIB", label: "Amphibian", test: a => /amphib/i.test(a.title) },
+  { key: "TOAD", label: "Toad & Tadpole", test: a => /toad|tadpole|newt|salamander/i.test(a.title) },
+  { key: "FIJIAN", label: "Fijian", test: a => /fijian/i.test(a.title) },
+  { key: "SLIME", label: "Slime & Water", test: a => /slime|swamp|pond|mud|rain|water|wax|bog|puddle/i.test(a.title) },
+  { key: "SURGERY", label: "Surgery", test: a => /surgery/i.test(a.title) },
+  { key: "LIVE", label: "Splits & Live", test: a => /split|live/i.test(a.title) },
+  { key: "DEMO", label: "Demos", test: a => /demo/i.test(a.title) }
+];
+
+const PAGE_SIZE = 80;
+const WALL_PAGE_SIZE = 120;
+const STORAGE_FAVS = "phyllomedusa_favs_v1";
+const STORAGE_HIST = "phyllomedusa_hist_v1";
+
+const state = {
+  search: "",
+  sortBy: "newest",
+  yearFilter: "ALL",
+  habitat: "ALL",
+  favoritesOnly: false,
+  sidebarMode: "list",
+  wallOpen: false,
+  currentIdx: 1,
+  listLimit: PAGE_SIZE,
+  wallLimit: WALL_PAGE_SIZE,
+  favorites: new Set(),
+  history: []
+};
+
+const $ = id => document.getElementById(id);
+
+function loadStorage() {
+  try {
+    const rawFavs = localStorage.getItem(STORAGE_FAVS);
+    if (rawFavs) JSON.parse(rawFavs).forEach(n => state.favorites.add(Number(n)));
+    const rawHist = localStorage.getItem(STORAGE_HIST);
+    if (rawHist) {
+      const parsed = JSON.parse(rawHist);
+      if (Array.isArray(parsed)) {
+        state.history = parsed.map(Number).filter(n => n >= 1 && n <= ALBUMS.length).slice(0, 14);
+      }
+    }
+  } catch (_) {}
+}
+
+function saveStorage() {
+  try {
+    localStorage.setItem(STORAGE_FAVS, JSON.stringify([...state.favorites]));
+    localStorage.setItem(STORAGE_HIST, JSON.stringify(state.history));
+  } catch (_) {}
+}
+
+function recordHistory(idx) {
+  const n = Number(idx);
+  state.history = [n, ...state.history.filter(x => x !== n)].slice(0, 14);
+  saveStorage();
+}
+
+function escapeHtml(s) {
+  if (s == null) return "";
+  return String(s).replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[c]));
+}
+
+function formatDate(iso) {
+  if (!iso) return "";
+  const parts = iso.split("-");
+  if (parts.length !== 3) return iso;
+  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const m = months[Number(parts[1]) - 1] || parts[1];
+  return `${m} ${Number(parts[2])}, ${parts[0]}`;
+}
+
+let toastTimer = null;
+function showToast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2400);
+}
+
+function fisherYates(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function buildBackdropCollage() {
+  const sample = fisherYates(ALBUMS).slice(0, 48);
+  $("collageGrid").innerHTML = sample.map(a =>
+    `<img class="collage-tile" src="${a.thumb}" alt="" loading="lazy" referrerpolicy="no-referrer">`
+  ).join("");
+}
+
+function populateYears() {
+  const sel = $("yearSelect");
+  Object.keys(YEAR_COUNTS)
+    .map(Number)
+    .sort((a, b) => b - a)
+    .forEach(yr => {
+      const opt = document.createElement("option");
+      opt.value = String(yr);
+      opt.textContent = `${yr} (${YEAR_COUNTS[yr]})`;
+      sel.appendChild(opt);
+    });
+}
+
+function renderHabitatButtons() {
+  $("habitatFilters").innerHTML = HABITATS.map(h => {
+    const count = h.key === "ALL" ? ALBUMS.length : ALBUMS.filter(h.test).length;
+    const active = state.habitat === h.key;
+    return `<button type="button" class="habitat-btn${active ? " active" : ""}" data-hab="${h.key}">${h.label} (${count})</button>`;
+  }).join("");
+}
+
+function getFilteredSorted() {
+  const q = state.search.trim().toLowerCase();
+  const habObj = HABITATS.find(h => h.key === state.habitat) || HABITATS[0];
+
+  let list = ALBUMS.filter(a => {
+    if (state.favoritesOnly && !state.favorites.has(a.idx)) return false;
+    if (state.yearFilter !== "ALL" && String(a.year) !== state.yearFilter) return false;
+    if (!habObj.test(a)) return false;
+    if (q) {
+      const hay = `${a.idx} ${a.title} ${a.year} ${a.iso}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  if (state.sortBy === "oldest") {
+    list = list.slice().sort((a, b) => (a.iso || "9999").localeCompare(b.iso || "9999") || b.idx - a.idx);
+  } else if (state.sortBy === "newest") {
+    list = list.slice().sort((a, b) => (b.iso || "").localeCompare(a.iso || "") || a.idx - b.idx);
+  } else if (state.sortBy === "title") {
+    list = list.slice().sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
+  } else if (state.sortBy === "titleDesc") {
+    list = list.slice().sort((a, b) => b.title.localeCompare(a.title, undefined, { sensitivity: "base" }));
+  }
+  return list;
+}
+
+function pickRandomAlbum() {
+  const pool = getFilteredSorted();
+  const base = pool.length ? pool : ALBUMS;
+  const choices = base.filter(a => a.idx !== state.currentIdx);
+  const pick = choices.length ? choices[Math.floor(Math.random() * choices.length)] : base[0];
+  selectAlbum(pick.idx);
+}
+
+function updateHeaderBadges() {
+  $("favCount").textContent = String(state.favorites.size);
+  $("favFilterBtn").classList.toggle("active", state.favoritesOnly);
+  $("wallToggleBtn").classList.toggle("active", state.wallOpen);
+}
+
+function renderSidebar() {
+  const listEl = $("albumList");
+  const filtered = getFilteredSorted();
+  $("visibleCount").textContent = String(filtered.length);
+
+  const habObj = HABITATS.find(h => h.key === state.habitat);
+  if (state.favoritesOnly) $("scopeLabel").textContent = "Saved Releases";
+  else if (state.yearFilter !== "ALL") $("scopeLabel").textContent = `Year ${state.yearFilter}`;
+  else if (state.habitat !== "ALL" && habObj) $("scopeLabel").textContent = habObj.label;
+  else if (state.sortBy === "oldest") $("scopeLabel").textContent = "2007 → 2026";
+  else if (state.sortBy === "title") $("scopeLabel").textContent = "Title A–Z";
+  else if (state.sortBy === "titleDesc") $("scopeLabel").textContent = "Title Z–A";
+  else $("scopeLabel").textContent = "Newest First";
+
+  listEl.classList.toggle("mini-grid", state.sidebarMode === "grid");
+
+  if (!filtered.length) {
+    listEl.innerHTML = `<div style="padding:36px 16px;text-align:center;color:var(--moss-dim);grid-column:1/-1;">No releases match this filter.</div>`;
+    return;
+  }
+
+  const slice = filtered.slice(0, state.listLimit);
+  const remaining = filtered.length - slice.length;
+
+  let html = "";
+  if (state.sidebarMode === "grid") {
+    html = slice.map(a => `
+      <div class="grid-tile${a.idx === state.currentIdx ? " active" : ""}" data-idx="${a.idx}" title="${escapeHtml(a.title)} (${a.year})">
+        <img src="${a.thumb}" alt="${escapeHtml(a.title)}" loading="lazy" referrerpolicy="no-referrer">
+        <div class="grid-tile-cap">${escapeHtml(a.title)}</div>
+      </div>
+    `).join("");
+  } else {
+    html = slice.map(a => {
+      const isFav = state.favorites.has(a.idx);
+      const isActive = a.idx === state.currentIdx;
+      return `
+        <div class="row${isActive ? " active" : ""}" data-idx="${a.idx}">
+          <img class="thumb" src="${a.thumb}" alt="" loading="lazy" referrerpolicy="no-referrer">
+          <div class="info">
+            <div class="row-title">${escapeHtml(a.title)}</div>
+            <div class="row-meta">#${String(a.idx).padStart(3, "0")} · ${a.year || "Archive"} · ${formatDate(a.iso) || "Phyllomedusa"}</div>
+          </div>
+          <button class="fav-star${isFav ? " saved" : ""}" type="button" data-fav="${a.idx}" aria-label="Save ${escapeHtml(a.title)}" title="Save release">${isFav ? "★" : "☆"}</button>
+        </div>
+      `;
+    }).join("");
+  }
+
+  if (remaining > 0) {
+    const nextBatch = Math.min(PAGE_SIZE, remaining);
+    html += `
+      <div class="load-more-wrap">
+        <button type="button" class="load-more-btn" id="loadMoreListBtn">Load ${nextBatch} More (${remaining} left)</button>
+        <button type="button" class="load-more-btn" id="loadAllListBtn">Show All ${filtered.length}</button>
+      </div>
+    `;
+  }
+
+  listEl.innerHTML = html;
+}
+
+function renderWall() {
+  const filtered = getFilteredSorted();
+  $("wallCount").textContent = String(filtered.length);
+  const slice = filtered.slice(0, state.wallLimit);
+  const remaining = filtered.length - slice.length;
+
+  let html = slice.map(a => `
+    <div class="wall-card${a.idx === state.currentIdx ? " active" : ""}" data-idx="${a.idx}">
+      <img src="${a.thumb}" alt="${escapeHtml(a.title)}" loading="lazy" referrerpolicy="no-referrer">
+      <div class="wall-cap">
+        <div class="wall-cap-title">${escapeHtml(a.title)}</div>
+        <div class="wall-cap-year">#${String(a.idx).padStart(3, "0")} · ${a.year || "Archive"}</div>
+      </div>
+    </div>
+  `).join("");
+
+  if (remaining > 0) {
+    const nextBatch = Math.min(WALL_PAGE_SIZE, remaining);
+    html += `
+      <div class="load-more-wrap">
+        <button type="button" class="load-more-btn" id="loadMoreWallBtn">Load ${nextBatch} More Sleeves (${remaining} left)</button>
+        <button type="button" class="load-more-btn" id="loadAllWallBtn">Show All ${filtered.length}</button>
+      </div>
+    `;
+  }
+
+  $("wallGrid").innerHTML = html;
+}
+
+function renderDetail() {
+  const a = ALBUMS.find(x => x.idx === state.currentIdx) || ALBUMS[0];
+  state.currentIdx = a.idx;
+  const isFav = state.favorites.has(a.idx);
+
+  $("activeBloom").style.backgroundImage = `url('${a.cover}')`;
+
+  const pool = getFilteredSorted();
+  const navList = pool.length ? pool : ALBUMS;
+  const pos = navList.findIndex(x => x.idx === a.idx);
+  const prev = pos > 0 ? navList[pos - 1] : null;
+  const next = pos >= 0 && pos < navList.length - 1 ? navList[pos + 1] : null;
+
+  const iframeSrc = `https://bandcamp.com/EmbeddedPlayer/album=${a.id}/size=large/bgcol=090f0b/linkcol=8ce052/tracklist=true/artwork=small/transparent=true/`;
+
+  const sameYear = fisherYates(ALBUMS.filter(x => x.year === a.year && x.idx !== a.idx));
+  const others = fisherYates(ALBUMS.filter(x => x.year !== a.year && x.idx !== a.idx));
+  const neighbors = sameYear.concat(others).slice(0, 6);
+  const yearTotal = YEAR_COUNTS[a.year] || 1;
+
+  const histAlbums = state.history.map(id => ALBUMS[id - 1]).filter(Boolean);
+  const historyHtml = histAlbums.length ? `
+    <div class="history-strip">
+      <div class="history-head">
+        <span>Recently Played · ${histAlbums.length}</span>
+        <button class="history-clear" id="clearHistBtn" type="button">Clear</button>
+      </div>
+      <div class="history-items" id="historyItems">
+        ${histAlbums.map(h => `
+          <div class="history-chip${h.idx === a.idx ? " active" : ""}" data-idx="${h.idx}" title="${escapeHtml(h.title)} (${h.year})">
+            <img src="${h.thumb}" alt="" loading="lazy" referrerpolicy="no-referrer">
+            <div class="history-chip-text">
+              <div class="history-chip-title">${escapeHtml(h.title)}</div>
+              <div class="history-chip-year">#${String(h.idx).padStart(3, "0")} · ${h.year || "Archive"}</div>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  ` : "";
+
+  $("detail").innerHTML = `
+    <div class="detail-stage">
+      ${historyHtml}
+
+      <section class="hero-card" aria-label="Selected release">
+        <img class="hero-art" src="${a.cover}" alt="${escapeHtml(a.title)} cover art" referrerpolicy="no-referrer">
+        <div class="hero-content">
+          <div class="hero-meta-line">
+            <span class="spec-num">Specimen ${String(a.idx).padStart(3, "0")} / 493</span>
+            <span class="sep" aria-hidden="true">·</span>
+            <span>${formatDate(a.iso) || a.year || "Archive"}</span>
+            <span class="sep" aria-hidden="true">·</span>
+            <span>Phyllomedusa</span>
+            <span class="sep" aria-hidden="true">·</span>
+            <span>New York, NY</span>
+          </div>
+          <h1 class="hero-title">${escapeHtml(a.title)}</h1>
+          <div class="hero-sub">
+            Amphibian Worship catalog · <strong>${yearTotal} ${yearTotal === 1 ? "release" : "releases"}</strong> documented from ${a.year}
+          </div>
+          <div class="hero-actions">
+            <button class="field-btn primary" id="deckRandomBtn" type="button">Random Release</button>
+            <button class="field-btn${isFav ? " active" : ""}" id="detailFavBtn" type="button">${isFav ? "★ Saved" : "☆ Save Release"}</button>
+            <a class="field-btn" href="${escapeHtml(a.url)}" target="_blank" rel="noopener">Open on Bandcamp ↗</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="deck-grid">
+        <div class="iframe-shell">
+          <iframe src="${iframeSrc}" title="Phyllomedusa — ${escapeHtml(a.title)}" seamless allow="autoplay"></iframe>
+        </div>
+
+        <div class="companion-card">
+          <div class="card-kicker">${sameYear.length ? `More from ${a.year} &amp; Pond Neighbors` : "Pond Neighbors from the Archive"}</div>
+          <div class="mini-collage" id="miniCollage">
+            ${neighbors.map(c => `
+              <div class="mini-collage-item" data-idx="${c.idx}" title="${escapeHtml(c.title)} (${c.year})">
+                <img src="${c.thumb}" alt="${escapeHtml(c.title)}" loading="lazy" referrerpolicy="no-referrer">
+                <span>${escapeHtml(c.title)}</span>
+              </div>
+            `).join("")}
+          </div>
+          <div class="field-note">
+            Every release from <strong>phyllomedusa.bandcamp.com</strong> (493 albums spanning 2007–2026) is loaded with its official Bandcamp embed. Use the deck controls to skip tracks, filter by year or amphibian motif on the left, or press <strong>R</strong> to dive deeper into the marsh.
+          </div>
+          ${a.year ? `
+            <div class="era-action-row">
+              <button type="button" class="field-btn" id="filterYearBtn">Filter to ${a.year} (${yearTotal})</button>
+              <button type="button" class="field-btn" id="openWallInlineBtn">Browse Cover Wall</button>
+            </div>
+          ` : ""}
+        </div>
+      </div>
+
+      <div class="detail-nav">
+        <button class="nav-btn prev" id="prevBtn" type="button" ${!prev ? "disabled" : ""}>
+          <small>← Previous Release</small>
+          <span>${prev ? `#${String(prev.idx).padStart(3, "0")} · ${escapeHtml(prev.title)}` : "—"}</span>
+        </button>
+        <button class="nav-btn next" id="nextBtn" type="button" ${!next ? "disabled" : ""}>
+          <small>Next Release →</small>
+          <span>${next ? `#${String(next.idx).padStart(3, "0")} · ${escapeHtml(next.title)}` : "—"}</span>
+        </button>
+      </div>
+
+      <div class="kbd-bar">
+        <span>↑ / K Prev</span>
+        <span>↓ / J Next</span>
+        <span>R Random</span>
+        <span>W Cover Wall</span>
+        <span>F Save</span>
+      </div>
+    </div>
+  `;
+
+  $("deckRandomBtn").addEventListener("click", pickRandomAlbum);
+  $("detailFavBtn").addEventListener("click", () => toggleFavorite(a.idx));
+  $("miniCollage").addEventListener("click", (e) => {
+    const card = e.target.closest(".mini-collage-item");
+    if (card) selectAlbum(Number(card.dataset.idx));
+  });
+  if (prev) $("prevBtn").addEventListener("click", () => selectAlbum(prev.idx));
+  if (next) $("nextBtn").addEventListener("click", () => selectAlbum(next.idx));
+
+  const filterYearBtn = $("filterYearBtn");
+  if (filterYearBtn) {
+    filterYearBtn.addEventListener("click", () => {
+      state.yearFilter = String(a.year);
+      state.listLimit = PAGE_SIZE;
+      $("yearSelect").value = state.yearFilter;
+      renderSidebar();
+      showToast(`Filtered catalog to ${a.year} (${yearTotal} releases)`);
+    });
+  }
+  const openWallInlineBtn = $("openWallInlineBtn");
+  if (openWallInlineBtn) {
+    openWallInlineBtn.addEventListener("click", () => toggleWall(true));
+  }
+
+  const histEl = $("historyItems");
+  if (histEl) {
+    histEl.addEventListener("click", (e) => {
+      const chip = e.target.closest(".history-chip");
+      if (chip) selectAlbum(Number(chip.dataset.idx));
+    });
+  }
+  const clearHistBtn = $("clearHistBtn");
+  if (clearHistBtn) {
+    clearHistBtn.addEventListener("click", () => {
+      state.history = [state.currentIdx];
+      saveStorage();
+      renderDetail();
+      showToast("Cleared Recently Played history");
+    });
+  }
+
+  $("detail").scrollTop = 0;
+  const activeRow = document.querySelector(".row.active, .grid-tile.active");
+  if (activeRow) activeRow.scrollIntoView({ block: "nearest", behavior: "smooth" });
+}
+
+function selectAlbum(idx) {
+  state.currentIdx = Number(idx);
+  recordHistory(state.currentIdx);
+  if (state.wallOpen) {
+    state.wallOpen = false;
+    $("wallView").classList.remove("open");
+    $("splitApp").classList.remove("hidden");
+  }
+  updateHeaderBadges();
+  renderSidebar();
+  renderDetail();
+}
+
+function toggleFavorite(idx) {
+  const n = Number(idx);
+  const rel = ALBUMS.find(x => x.idx === n);
+  const name = rel ? rel.title : `#${n}`;
+  if (state.favorites.has(n)) {
+    state.favorites.delete(n);
+    showToast(`Removed “${name}” from Saved`);
+  } else {
+    state.favorites.add(n);
+    showToast(`Saved “${name}”`);
+  }
+  saveStorage();
+  updateHeaderBadges();
+  renderSidebar();
+  const favBtn = $("detailFavBtn");
+  if (favBtn && state.currentIdx === n) {
+    const isFav = state.favorites.has(n);
+    favBtn.classList.toggle("active", isFav);
+    favBtn.textContent = isFav ? "★ Saved" : "☆ Save Release";
+  }
+}
+
+function toggleWall(force) {
+  state.wallOpen = typeof force === "boolean" ? force : !state.wallOpen;
+  $("wallView").classList.toggle("open", state.wallOpen);
+  $("splitApp").classList.toggle("hidden", state.wallOpen);
+  updateHeaderBadges();
+  if (state.wallOpen) {
+    state.wallLimit = WALL_PAGE_SIZE;
+    renderWall();
+  }
+}
+
+// Listeners
+$("randomBtn").addEventListener("click", pickRandomAlbum);
+$("favFilterBtn").addEventListener("click", () => {
+  state.favoritesOnly = !state.favoritesOnly;
+  state.listLimit = PAGE_SIZE;
+  updateHeaderBadges();
+  renderSidebar();
+  if (state.wallOpen) renderWall();
+});
+$("wallToggleBtn").addEventListener("click", () => toggleWall());
+$("closeWallBtn").addEventListener("click", () => toggleWall(false));
+$("remixCollageBtn").addEventListener("click", () => {
+  buildBackdropCollage();
+  showToast("Shuffled 48-cover nocturnal backdrop");
+});
+
+$("searchInput").addEventListener("input", (e) => {
+  state.search = e.target.value;
+  state.listLimit = PAGE_SIZE;
+  state.wallLimit = WALL_PAGE_SIZE;
+  renderSidebar();
+  if (state.wallOpen) renderWall();
+});
+
+$("sortSelect").addEventListener("change", (e) => {
+  state.sortBy = e.target.value;
+  state.listLimit = PAGE_SIZE;
+  renderSidebar();
+  if (state.wallOpen) renderWall();
+});
+
+$("yearSelect").addEventListener("change", (e) => {
+  state.yearFilter = e.target.value;
+  state.listLimit = PAGE_SIZE;
+  state.wallLimit = WALL_PAGE_SIZE;
+  renderSidebar();
+  if (state.wallOpen) renderWall();
+});
+
+$("habitatFilters").addEventListener("click", (e) => {
+  const btn = e.target.closest(".habitat-btn");
+  if (!btn) return;
+  state.habitat = btn.dataset.hab;
+  state.listLimit = PAGE_SIZE;
+  state.wallLimit = WALL_PAGE_SIZE;
+  renderHabitatButtons();
+  renderSidebar();
+  if (state.wallOpen) renderWall();
+});
+
+$("viewListBtn").addEventListener("click", () => {
+  state.sidebarMode = "list";
+  $("viewListBtn").classList.add("active");
+  $("viewGridBtn").classList.remove("active");
+  renderSidebar();
+});
+$("viewGridBtn").addEventListener("click", () => {
+  state.sidebarMode = "grid";
+  $("viewGridBtn").classList.add("active");
+  $("viewListBtn").classList.remove("active");
+  renderSidebar();
+});
+
+$("albumList").addEventListener("click", (e) => {
+  if (e.target.id === "loadMoreListBtn") {
+    state.listLimit += PAGE_SIZE;
+    renderSidebar();
+    return;
+  }
+  if (e.target.id === "loadAllListBtn") {
+    state.listLimit = ALBUMS.length;
+    renderSidebar();
+    return;
+  }
+  const star = e.target.closest(".fav-star");
+  if (star) {
+    e.stopPropagation();
+    toggleFavorite(star.dataset.fav);
+    return;
+  }
+  const item = e.target.closest(".row, .grid-tile");
+  if (item) selectAlbum(Number(item.dataset.idx));
+});
+
+$("wallGrid").addEventListener("click", (e) => {
+  if (e.target.id === "loadMoreWallBtn") {
+    state.wallLimit += WALL_PAGE_SIZE;
+    renderWall();
+    return;
+  }
+  if (e.target.id === "loadAllWallBtn") {
+    state.wallLimit = ALBUMS.length;
+    renderWall();
+    return;
+  }
+  const card = e.target.closest(".wall-card");
+  if (card) selectAlbum(Number(card.dataset.idx));
+});
+
+document.addEventListener("keydown", (e) => {
+  const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
+  if (tag === "input" || tag === "select" || tag === "textarea") {
+    if (e.key === "Escape") e.target.blur();
+    return;
+  }
+  if (e.key === "Escape" && state.wallOpen) {
+    toggleWall(false);
+    return;
+  }
+  const pool = getFilteredSorted();
+  const list = pool.length ? pool : ALBUMS;
+  const pos = list.findIndex(x => x.idx === state.currentIdx);
+
+  if (e.key === "ArrowDown" || e.key === "j") {
+    e.preventDefault();
+    if (pos >= 0 && pos < list.length - 1) selectAlbum(list[pos + 1].idx);
+  } else if (e.key === "ArrowUp" || e.key === "k") {
+    e.preventDefault();
+    if (pos > 0) selectAlbum(list[pos - 1].idx);
+  } else if (e.key === "r" || e.key === "R") {
+    pickRandomAlbum();
+  } else if (e.key === "w" || e.key === "W") {
+    toggleWall();
+  } else if (e.key === "f" || e.key === "F") {
+    toggleFavorite(state.currentIdx);
+  }
+});
+
+// Init
+loadStorage();
+if (!state.history.length) recordHistory(1);
+populateYears();
+renderHabitatButtons();
+buildBackdropCollage();
+updateHeaderBadges();
+renderSidebar();
+renderDetail();
+</script>
+</body>
+</html>
