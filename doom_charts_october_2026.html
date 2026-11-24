@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doom Charts – October ’26 | Googie Hi-Fi Top 40</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Righteous&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal-deep: #0b1f24;
+  --teal-mid: #112d34;
+  --teal-panel: #15363f;
+  --teal-card: #1a424c;
+  --teal-line: #275864;
+  --cream: #f4ead5;
+  --cream-soft: #d7ccb4;
+  --cream-muted: #98aeb3;
+  --terracotta: #df5b38;
+  --terracotta-hi: #f2744e;
+  --ochre: #e3a83b;
+  --ochre-hi: #f4c158;
+  --seafoam: #52c2b6;
+  --coral: #e87a64;
+  --ink: #081518;
+  --ease-googie: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--teal-deep);
+  color: var(--cream);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 120;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+.googie-sky {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 50% at 85% 15%, rgba(82, 194, 182, 0.11) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 12% 88%, rgba(223, 91, 56, 0.10) 0%, transparent 70%),
+    linear-gradient(160deg, #0b1f24 0%, #0e272d 55%, #09191d 100%);
+}
+.googie-sky svg { width: 100%; height: 100%; opacity: 0.24; }
+.orbit-spin { transform-origin: 84% 22%; animation: orbitRotate 52s linear infinite; }
+.star-pulse-1 { animation: starPulse 4.6s ease-in-out infinite; transform-origin: center; }
+.star-pulse-2 { animation: starPulse 6.2s ease-in-out 1.4s infinite; transform-origin: center; }
+.star-pulse-3 { animation: starPulse 5.4s ease-in-out 2.5s infinite; transform-origin: center; }
+
+@keyframes orbitRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes starPulse {
+  0%, 100% { opacity: 0.45; transform: scale(0.92); }
+  50% { opacity: 1; transform: scale(1.12); }
+}
+@keyframes slideGlide {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* HEADER */
+.header {
+  position: relative;
+  z-index: 10;
+  padding: 20px 32px 22px;
+  background: linear-gradient(180deg, rgba(17, 45, 52, 0.96) 0%, rgba(11, 31, 36, 0.92) 100%);
+  border-bottom: 2px solid var(--ochre);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -40px;
+  width: 52%;
+  height: 6px;
+  background: linear-gradient(90deg, var(--terracotta), var(--ochre), var(--seafoam));
+  transform: skewX(-28deg);
+}
+.brand-wrap { display: flex; align-items: center; gap: 16px; position: relative; z-index: 2; }
+.brand-star { width: 46px; height: 46px; flex-shrink: 0; }
+.brand {
+  font-family: 'Righteous', cursive;
+  font-size: clamp(24px, 3.2vw, 38px);
+  line-height: 1;
+  color: var(--cream);
+  letter-spacing: 1px;
+  text-shadow: 3px 3px 0 var(--terracotta);
+}
+.subbrand {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2.8px;
+  text-transform: uppercase;
+  color: var(--ochre-hi);
+  margin-top: 6px;
+}
+
+.header-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; position: relative; z-index: 2; }
+.action {
+  background: var(--teal-panel);
+  color: var(--cream);
+  border: 1.5px solid var(--teal-line);
+  border-radius: 999px;
+  padding: 8px 15px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.22s var(--ease-googie), background 0.2s, border-color 0.2s, box-shadow 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.action:hover, .action.active, .action.primary {
+  background: var(--terracotta);
+  border-color: var(--ochre-hi);
+  color: var(--cream);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 0 var(--ink);
+}
+.action .badge {
+  background: var(--ink);
+  color: var(--ochre-hi);
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 10px;
+}
+
+/* MAIN GRID */
+.app {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: 395px 1fr;
+  min-height: calc(100vh - 94px);
+}
+@media (max-width: 960px) {
+  .header { padding: 16px 18px; }
+  .app { grid-template-columns: 1fr; }
+}
+
+/* SIDEBAR */
+.chart {
+  border-right: 2px solid var(--teal-line);
+  background: rgba(13, 35, 41, 0.92);
+  overflow-y: auto;
+  max-height: calc(100vh - 94px);
+  display: flex;
+  flex-direction: column;
+}
+@media (max-width: 960px) {
+  .chart { max-height: 46vh; border-right: none; border-bottom: 2px solid var(--teal-line); }
+}
+
+.chart-controls {
+  padding: 14px 16px 12px;
+  border-bottom: 1.5px solid var(--teal-line);
+  position: sticky;
+  top: 0;
+  background: var(--teal-mid);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.chart-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--cream-muted);
+}
+.chart-head .count { color: var(--ochre-hi); font-weight: 700; }
+
+.tier-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+}
+.tier-tab {
+  background: var(--teal-deep);
+  border: 1.5px solid var(--teal-line);
+  border-radius: 999px;
+  color: var(--cream-soft);
+  padding: 6px 4px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-googie);
+}
+.tier-tab:hover { border-color: var(--seafoam); color: var(--cream); }
+.tier-tab.active {
+  background: var(--ochre);
+  border-color: var(--cream);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.filter-row { display: grid; grid-template-columns: 1fr 126px; gap: 6px; }
+.search-input, .label-select {
+  background: var(--teal-deep);
+  border: 1.5px solid var(--teal-line);
+  border-radius: 10px;
+  color: var(--cream);
+  padding: 7px 11px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12.5px;
+  outline: none;
+  width: 100%;
+}
+.search-input::placeholder { color: var(--cream-muted); }
+.search-input:focus, .label-select:focus { border-color: var(--ochre); }
+
+.track-list {
+  flex: 1;
+  padding: 8px 10px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.row {
+  padding: 11px 12px;
+  border-radius: 14px;
+  border: 1.5px solid transparent;
+  background: rgba(21, 54, 63, 0.55);
+  cursor: pointer;
+  transition: transform 0.2s var(--ease-googie), background 0.18s, border-color 0.18s, box-shadow 0.18s;
+  display: grid;
+  grid-template-columns: 40px 1fr 24px;
+  gap: 10px;
+  align-items: center;
+}
+.row:hover { transform: translateX(4px); background: var(--teal-card); border-color: var(--teal-line); }
+.row.active {
+  background: var(--cream);
+  color: var(--ink);
+  border-color: var(--ochre);
+  box-shadow: 4px 4px 0 var(--terracotta);
+  transform: translateX(4px);
+}
+
+.rank {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Righteous', cursive;
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--seafoam);
+  flex-shrink: 0;
+}
+.row.top3 .rank { background: var(--terracotta-hi); color: var(--cream); }
+.row.top10 .rank { background: var(--ochre-hi); color: var(--ink); }
+.row.active .rank { background: var(--terracotta); color: var(--cream); }
+
+.row .info { min-width: 0; }
+.band-title {
+  font-weight: 700;
+  font-size: 14.5px;
+  color: var(--cream);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.row.active .band-title { color: var(--ink); }
+.album-sub {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 12.5px;
+  color: var(--ochre-hi);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.row.active .album-sub { color: #8c331b; }
+.row-meta {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--cream-muted);
+  margin-top: 3px;
+  text-transform: uppercase;
+}
+.row.active .row-meta { color: #2b4a52; }
+
+.fav-star {
+  background: transparent;
+  border: none;
+  color: var(--cream-muted);
+  font-size: 16px;
+  cursor: pointer;
+}
+.fav-star:hover { color: var(--ochre-hi); }
+.fav-star.saved { color: var(--terracotta-hi); }
+.row.active .fav-star { color: #4c646a; }
+.row.active .fav-star.saved { color: var(--terracotta); }
+
+/* DETAIL STAGE */
+.detail {
+  padding: 26px 36px 64px;
+  overflow-y: auto;
+  max-height: calc(100vh - 94px);
+}
+.detail-stage { max-width: 980px; margin: 0 auto; animation: slideGlide 0.34s var(--ease-googie); }
+@media (max-width: 960px) {
+  .detail { max-height: none; padding: 20px 16px 48px; }
+}
+
+/* RECENTLY PLAYED */
+.history-strip {
+  background: var(--teal-panel);
+  border: 1.5px solid var(--teal-line);
+  border-radius: 14px;
+  padding: 10px 14px;
+  margin-bottom: 18px;
+}
+.history-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--seafoam);
+}
+.history-clear {
+  background: transparent;
+  border: none;
+  color: var(--cream-muted);
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.history-items { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+.history-chip {
+  background: var(--teal-deep);
+  border: 1.5px solid var(--teal-line);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--cream);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.16s;
+}
+.history-chip:hover, .history-chip.active {
+  border-color: var(--ochre-hi);
+  background: var(--terracotta);
+}
+
+/* CANTILEVERED HERO CARD */
+.detail-meta {
+  background: var(--cream);
+  color: var(--ink);
+  border-radius: 22px 6px 22px 6px;
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  position: relative;
+  box-shadow: 7px 7px 0 var(--terracotta);
+  overflow: hidden;
+}
+.detail-meta::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 140px; height: 100%;
+  background: linear-gradient(115deg, transparent 48%, rgba(227, 168, 59, 0.28) 48%, rgba(227, 168, 59, 0.28) 62%, rgba(82, 194, 182, 0.22) 62%);
+  pointer-events: none;
+}
+.detail-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 2;
+}
+.detail-rank {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--ink);
+  color: var(--ochre-hi);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.detail-rank b { color: var(--cream); }
+.detail-fav-btn {
+  background: var(--ink);
+  color: var(--cream);
+  border: none;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.detail-fav-btn:hover, .detail-fav-btn.active { background: var(--terracotta); }
+
+.detail-band {
+  font-family: 'Righteous', cursive;
+  font-size: clamp(26px, 3.4vw, 40px);
+  line-height: 1.05;
+  color: var(--ink);
+  position: relative;
+  z-index: 2;
+}
+.detail-album {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 22px;
+  color: #7c2e19;
+  margin-top: 6px;
+  position: relative;
+  z-index: 2;
+}
+.detail-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; position: relative; z-index: 2; }
+.tag-pill {
+  background: rgba(11, 31, 36, 0.10);
+  border: 1px solid rgba(11, 31, 36, 0.22);
+  color: var(--ink);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+.tag-pill.accent {
+  background: rgba(223, 91, 56, 0.16);
+  border-color: rgba(223, 91, 56, 0.45);
+  color: #7c2610;
+}
+
+/* PLAYER & REVIEW GRID */
+.player-wrap {
+  display: grid;
+  grid-template-columns: minmax(300px, 395px) 1fr;
+  gap: 26px;
+  margin-bottom: 24px;
+  align-items: start;
+}
+@media (max-width: 820px) {
+  .player-wrap { grid-template-columns: 1fr; }
+}
+
+.iframe-wrap {
+  background: var(--teal-panel);
+  border: 2px solid var(--ochre);
+  border-radius: 20px;
+  padding: 10px;
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.iframe-wrap iframe {
+  display: block;
+  width: 100%;
+  height: 470px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--teal-mid);
+}
+
+.notes-card {
+  background: rgba(21, 54, 63, 0.76);
+  border: 1.5px solid var(--teal-line);
+  border-radius: 18px;
+  padding: 24px 26px;
+  box-shadow: 5px 5px 0 rgba(8, 21, 24, 0.45);
+}
+.notes-kicker {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--seafoam);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.notes-kicker::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--teal-line), transparent);
+}
+.review-block {
+  font-family: 'Fraunces', serif;
+  font-size: 16.5px;
+  line-height: 1.72;
+  color: var(--cream);
+}
+.review-block::first-letter {
+  font-family: 'Righteous', cursive;
+  font-size: 48px;
+  float: left;
+  line-height: 0.86;
+  margin: 4px 12px 0 0;
+  color: var(--ochre-hi);
+  text-shadow: 2px 2px 0 var(--terracotta);
+}
+.review-empty {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--cream-muted);
+  line-height: 1.6;
+}
+
+.detail-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.detail-link {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--ochre);
+  text-decoration: none;
+  border: 1.5px solid var(--cream);
+  border-radius: 999px;
+  padding: 9px 16px;
+  transition: transform 0.2s var(--ease-googie), background 0.15s;
+}
+.detail-link:hover { background: var(--ochre-hi); transform: translateY(-2px); }
+.detail-link.secondary { background: transparent; color: var(--cream); border-color: var(--seafoam); }
+.detail-link.secondary:hover { background: rgba(82, 194, 182, 0.18); }
+
+/* NAV */
+.detail-nav { display: flex; gap: 12px; margin-top: 20px; }
+.nav-btn {
+  flex: 1;
+  background: var(--teal-panel);
+  border: 1.5px solid var(--teal-line);
+  border-radius: 14px;
+  color: var(--cream);
+  padding: 13px 16px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.2s var(--ease-googie), border-color 0.18s;
+}
+.nav-btn:hover:not(:disabled) { border-color: var(--ochre); background: var(--teal-card); transform: translateY(-2px); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-btn.next { text-align: right; }
+.nav-btn small { display: block; font-size: 9.5px; color: var(--seafoam); margin-bottom: 4px; }
+.nav-btn span { font-family: 'Space Grotesk', sans-serif; font-weight: 600; text-transform: none; font-size: 14px; }
+
+.kbd-bar {
+  margin-top: 14px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  color: var(--cream-muted);
+  text-transform: uppercase;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--cream);
+  border: 2px solid var(--terracotta);
+  border-radius: 999px;
+  color: var(--ink);
+  padding: 10px 18px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  z-index: 300;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: all 0.22s var(--ease-googie);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+::-webkit-scrollbar { width: 8px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--teal-deep); }
+::-webkit-scrollbar-thumb { background: var(--teal-line); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ochre); }
+</style>
+</head>
+<body>
+
+<div class="googie-sky" aria-hidden="true">
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+    <g class="orbit-spin">
+      <ellipse cx="1210" cy="198" rx="220" ry="68" fill="none" stroke="#52c2b6" stroke-width="1.5" stroke-dasharray="8 8" transform="rotate(-24 1210 198)"/>
+      <ellipse cx="1210" cy="198" rx="150" ry="44" fill="none" stroke="#e3a83b" stroke-width="1.5" transform="rotate(28 1210 198)"/>
+      <circle cx="1376" cy="126" r="6" fill="#df5b38"/>
+      <circle cx="1086" cy="264" r="4.5" fill="#f4ead5"/>
+    </g>
+    <path d="M-40 820 Q 340 690 780 790 T 1500 710" fill="none" stroke="#e3a83b" stroke-width="1.5" opacity="0.5"/>
+    <path d="M-40 855 Q 380 735 820 825 T 1500 760" fill="none" stroke="#df5b38" stroke-width="1.5" opacity="0.45"/>
+    <g class="star-pulse-1" fill="#f4ead5"><path d="M1120 110 L1124 126 L1140 130 L1124 134 L1120 150 L1116 134 L1100 130 L1116 126 Z"/></g>
+    <g class="star-pulse-2" fill="#e3a83b"><path d="M1340 310 L1343 321 L1354 324 L1343 327 L1340 338 L1337 327 L1326 324 L1337 321 Z"/></g>
+    <g class="star-pulse-3" fill="#52c2b6"><path d="M520 790 L523 802 L535 805 L523 808 L520 820 L517 808 L505 805 L517 802 Z"/></g>
+  </svg>
+</div>
+
+<header class="header">
+  <div class="brand-wrap">
+    <svg class="brand-star" viewBox="0 0 64 64" aria-hidden="true">
+      <ellipse cx="32" cy="32" rx="28" ry="11" fill="none" stroke="#52c2b6" stroke-width="2" transform="rotate(-28 32 32)"/>
+      <ellipse cx="32" cy="32" rx="28" ry="11" fill="none" stroke="#e3a83b" stroke-width="2" transform="rotate(28 32 32)"/>
+      <path d="M32 6 L36 26 L56 32 L36 38 L32 58 L28 38 L8 32 L28 26 Z" fill="#f4ead5"/>
+      <circle cx="32" cy="32" r="5" fill="#df5b38"/>
+    </svg>
+    <div>
+      <div class="brand">Doom Charts – October ’26</div>
+      <div class="subbrand">Top 40 Heavy Underground · From 200 Voted Albums · Googie Hi-Fi Deck</div>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="action primary" id="randomBtn" title="Jump to a random album (R)">✦ Random</button>
+    <button class="action" id="favFilterBtn" title="Show saved favorites">★ Saved <span class="badge" id="favCount">0</span></button>
+    <a class="action" href="https://doomcharts.com/2026/11/06/doom-charts-october-2026/" target="_blank" rel="noopener">↗ Source Chart</a>
+  </div>
+</header>
+
+<div class="app">
+  <aside class="chart">
+    <div class="chart-controls">
+      <div class="chart-head">
+        <span><span class="count" id="visibleCount">40</span> / 40 Albums</span>
+        <span id="scopeLabel">Top 40</span>
+      </div>
+      <div class="tier-tabs" id="tierTabs">
+        <button class="tier-tab active" data-tier="ALL">All</button>
+        <button class="tier-tab" data-tier="TOP10">Top 10</button>
+        <button class="tier-tab" data-tier="MID">11–25</button>
+        <button class="tier-tab" data-tier="LOWER">26–40</button>
+      </div>
+      <div class="filter-row">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search band, album, genre, city...">
+        <select class="label-select" id="labelSelect" aria-label="Filter by record label">
+          <option value="ALL">All Labels</option>
+        </select>
+      </div>
+    </div>
+    <div class="track-list" id="trackList"></div>
+  </aside>
+
+  <main class="detail" id="detail"></main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const ALBUMS = [{"rank":1,"band":"GRAVEYARD","album":"FEVER","url":"https://graveyardofficial.bandcamp.com/album/fever","points":19888,"genre":"Heavy Rock, Psych, Blues Rock","location":"Gothenburg, Sweden","label":"Nuclear Blast","review":"While 6 left some fans underwhelmed and looking for more hard rocking songs, Fever seems to pick up the slack with a heavier, hard-hitting approach. Still, GRAVEYARD are one of those bands that strike gold every time, and this latest offering is every bit as golden as the rest of their catalogue. Fever may be somewhat of a slow burner, but it’s a rewarding album filled with clever lyrics, irresistible melodies, and the signature retro groove GRAVEYARD are known for. In what’s been a very busy year for music within the heavy underground, Fever will still likely find itself in the end-of-year conversation. ~ Jon McGough ( Stoner Rock Army, Stoner HiVe, Outlaws Of The Sun )","album_id":2579108233,"track_id":null},{"rank":2,"band":"ROBOT GOD","album":"CURSE OF THE DRIVEN","url":"https://robotgodband.bandcamp.com/album/curse-of-the-driven","points":16742,"genre":"Heavy Psych, Stoner Rock, Space Rock","location":"Sydney, Australia","label":"Kozmik Artifactz / Black Throne Productions","review":"From the very first track of Curse Of The Driven, I am hooked by the high quality of the mixing and arrangements. ROBOT GOD crafts a soundscape rich in texture and crystalline in atmosphere. Cosmic electronic effects sit alongside massive guitars and traditional bluesy vibes. The sophisticated production never stifles the raw power that courses through the music. ROBOT GOD holds nothing back: superb basslines and the occasional harmonica inject an irresistible groove, while mysterious sonic creatures mingle with heavy, Sabbathesque riffs. Strength, authenticity, and dreamlike wonder come together in this brilliant album! ~ Thierry “Pumpkin-T“ François ( Metal Intégral )","album_id":2476009352,"track_id":null},{"rank":3,"band":"HUMULUS","album":"SMUGGLER’S CAVE","url":"https://humulus.bandcamp.com/album/smugglers-cave","points":12443,"genre":"Stoner Rock, Psychedelic, Space Rock","location":"Brescia, Italy","label":"Ripple Music","review":"Everybody needs an album that is built for driving. If you don’t drive then whatever means of escape you may have. HUMULUS latest album SMUGGLER’S CAVE is one of those high octane albums that are perfect for the open road. With the classic stoner rock feeling and big on fuzz and atmosphere one might think HUMULUS is vying for an arena rock tour. ~ Turbo ( Rich & Turbo’s Heavy Half Hour )","album_id":1372605317,"track_id":null},{"rank":4,"band":"STEAK","album":"STEAK","url":"https://steakmusic.bandcamp.com/album/steak","points":12167,"genre":"Stoner Rock, Desert Rock","location":"London, UK","label":"Ripple Music / Stickman Records","review":"STEAK hits heavy with that sludgy weight, kind of like Tool but wrapped in atmosphere. There’s a hazy, almost shoegaze cloud over the riffs, and it feels thick and immersive without trying too hard. It’s the kind of record that sounds cool in the room and sticks with you after. ~ Michael D’Amato ( Playgroundz Rocks, D’Amato Production )","album_id":539276655,"track_id":null},{"rank":5,"band":"THE MACHINE","album":"ANOTHER SUN","url":"https://the-machine.bandcamp.com/album/another-sun-uk-north-american-version","points":10860,"genre":"Heavy Psych, Stoner Rock, Prog Rock","location":"Dordrecht, Netherlands","label":"Blues Funeral Recordings / Awe Records / Stickman Records","review":"Another Sun, the 8th album from the Dutch band THE MACHINE, is tailor-made for fans of a brand of psychedelia that channels both the 60s-70s vibe (with its languid, drawling vocals) and the massive riffage of contemporary stoner rock. In short, this album is a gem, crafted in the purest psych-stoner tradition! You’ll find delightful instrumental jams, relentless rhythms, and hypnotic, repetitive motifs. All is perfect for nodding my head along to while sitting cross-legged in a cloud of smoke. The stereo guitar solos swirl around me like fireflies… or are they flaming moths? I can’t quite tell anymore cause the floorboards are softening, and I’m already sinking in up to my neck. Damn, you’re harsh! Please, let me take one last drag! ~ Thierry “Pumpkin-T“ François ( Metal Intégral )","album_id":2202576148,"track_id":null},{"rank":6,"band":"MUSHROOM BEARD","album":"MUSHROOM BEARD","url":"https://mushroombeard.bandcamp.com/album/mushroom-beard","points":9139,"genre":"Psychedelic, Stoner, Doom Metal","location":"Stoke-on-Trent, Staffordshire, England","label":"Pale Wizard Records","review":"“I haven’t been this impressed by a (psychedelic) stonerdoom debut (that has clean vocals) since REZN released their first album in 2017 which ended up as my Album Of The Year!” was the text that I left on the bandcamp page of this English band which basically says it all. This is a BRILLANT debut that stood out in a week/month that was filled with fantastic releases. Time will tell if this goes down as a masterpiece, but it sure looks like that to me… ~ Rob Hammer ( Rob Hammer, Doom/Stoner/Sludge/Psychedelic )","album_id":4289937882,"track_id":null},{"rank":7,"band":"VALLEY OF THE SUN","album":"THE BLACKLIGHT SESSIONS","url":"https://heavypsychsoundsrecords.bandcamp.com/album/valley-of-the-sun-the-blacklight-sessions","points":7942,"genre":"Stoner Rock","location":"Cincinnati, Ohio, USA","label":"Heavy Psych Sounds","review":"Truly a band that needs no introduction, VALLEY OF THE SUN has proved multiple times over their 15+ year career that they have a solid command of stoner rock (and its subgenres). On their new album The Blacklight Sessions, the trio energetically vacillates among barreling stoner riffs, blues-infused heavy rock soul, eclectic alternative, the melodic angst of grunge, and desert-baked psychedelic oases. More than anything, I’m elated to see that VALLEY OF THE SUN continues to merge jammy instrumental expanses with the infectious, punchy energy of shorter-form tracks, all graced by soaring, expressive vocals. In short: VALLEY OF THE SUN has done it again! ~ Stephanie Zalta ( DoomCakes, Screaming From The Heavy Underground )","album_id":2446570914,"track_id":null},{"rank":8,"band":"KANT","album":"ECHOES OF UNFORTUNATE TIMES","url":"https://kantmusic.bandcamp.com/album/echoes-of-unfortunate-times","points":6528,"genre":"Psychedelic, Stoner","location":"Germany","label":"Sound of Liberation Records","review":"The darkness German heavy psych wizards KANT unearthed on their previous album Paranoia Pilgrimage still formidably looms over their latest release Echoes of Unfortunate Times, just in a different form: existential dread. The sharper, more modern sound KANT utilizes around this grimness is the perfect sonic paintbrush with which to paint scenes of maddening tension, apprehension, and edginess – feelings that are often all too familiar in our chaotic, unstable world. ~ Stephanie Zalta ( DoomCakes, Screaming From The Heavy Underground )","album_id":193719651,"track_id":null},{"rank":9,"band":"PHE","album":"CLOSER TO THE SUN","url":"https://phemusic2.bandcamp.com/album/closer-to-the-sun","points":5590,"genre":"Heavy Rock, Stoner Rock, Heavy Psych","location":"Helmond, Netherlands","label":"Self-released","review":"Some albums just have an indescribable power behind them, like a mystical force where everything comes together perfectly and the stars align. Well, PHE have accomplished this with Closer to the Sun. That’s pretty high praise and hype, huh? The album is full of hooks and grooves, but maybe even more importantly, there’s weight, substance, and meaning. The emotional depth of the vocal delivery creates a direct connection with the listener, making for an immersive experience. You don’t just hear the words; you feel them, and perhaps there’s a little magic sprinkled in as well… ~ Jon McGough ( Stoner Rock Army, Stoner HiVe, Outlaws Of The Sun )","album_id":1151470687,"track_id":null},{"rank":10,"band":"RICKSHAW BILLIE’S BURGER PATROL","album":"CA$H GRAB","url":"https://rickshawbilliesburgerpatrol.bandcamp.com/album/ca-h-grab","points":5408,"genre":"Stoner Rock, Groove Metal","location":"Austin, Texas, USA","label":"Permanent Teeth Records","review":"After nearly a decade of making a truly one-of-a-kind style of music and melting the faces off of a sea of fans at their live shows, the release of Ca$h Grab is a very natural next step for RICKSHAW BILLIE’S BURGER PATROL. The album is still as crushingly heavy as Big Dumb Riffs and as deceptively sweet as Doom Wop, but Ca$h Grab ‘s real intensity comes in its immensely personal, unfettered songwriting. It’s an album that anyone can relate to on a deep level as it relays a lifelong journey of survival, challenging things, asking the tough questions, healing, moving on, and most importantly, finally choosing oneself. ~ Stephanie Zalta ( DoomCakes, Screaming From The Heavy Underground )","album_id":1211112321,"track_id":null},{"rank":11,"band":"SNAKE MOUNTAIN REVIVAL","album":"THE DIVIDE","url":"https://ripplemusic.bandcamp.com/album/the-divide","points":5330,"genre":"Dark Folk, Surf Rock, Desert Rock","location":"Virginia Beach, Virginia, USA","label":"Ripple Music","review":"SNAKE MOUNTAIN REVIVAL slithers the aural canyons by way of surfy desert shoegaze meets tribal psychedelic groove. The vocals glimmer with mesmerizing grit and the subtle southern hook blooms with flower child force. ~ Bucky Brown ( The Ripple Effect, Doomed and Stoned Countdown Show )","album_id":356011945,"track_id":null},{"rank":12,"band":"FIREBREATHER","album":"BLOOD THAT I SPILL TURNS TO FIRE","url":"https://heavypsychsoundsrecords.bandcamp.com/album/firebreather-blood-that-i-spill-turns-to-fire","points":4750,"genre":"Sludge, Heavy Rock, Doom","location":"Gothenburg, Sweden","label":"Heavy Psych Sounds","review":"Ever get a call from an old friend asking for a favor and hopes you will travel across the country to help you out? Yeah, but only because I owned a truck. Thankfully, Swedes are really cool, and Tommy Hanning, who played with the band on the first album came through and captured the sound needed for FIREBREATHER ‘S fourth album BLOOD I SPILL TURNS TO FIRE. A visceral heavy bludgeoning that flows through the album that helps drive the FIREBREATHER flow. Blood I Spill Turns To Fire is a feel it in your bones experience, that is a little more melodic and expanding sound for the band. ~ Turbo ( Rich & Turbo’s Heavy Half Hour )","album_id":2095132881,"track_id":null},{"rank":13,"band":"STONED JESUS","album":"SONGS TO MOON","url":"https://stonedjesus.bandcamp.com/album/songs-to-moon","points":4710,"genre":"Heavy Psychedelic, Stoner","location":"Kyiv, Ukraine","label":"Season Of Mist","review":"STONED JESUS take a bold step into darker, more introspective territory with Songs To Moon, the second chapter of their ambitious trilogy. Blending crushing riffs, haunting melodies, psychedelic atmospheres and melancholic ballads, the Ukrainian trio delivers a deeply emotional and adventurous journey. From explosive post-metal passages to dreamy instrumentals and intimate acoustic moments, every track reveals a different shade of their evolving sound. Beautifully crafted and rich in contrasts, Songs To Moon is an immersive experience that rewards listeners from beginning to end. A captivating record that proves STONED JESUS have much more to offer than heavy riffs alone. ~ Edouard Dubuisson ( Les chroniques d’Eddy, MetalUniverse )","album_id":3532095143,"track_id":null},{"rank":14,"band":"IAN BLURTON’S FUTURE NOW","album":"IMPERIAL FILTH","url":"https://ianblurton.bandcamp.com/album/imperial-filth","points":4326,"genre":"Rock, heavy rock","location":"Toronto, Ontario, Canada","label":"Pajama Party Records","review":"This is a stacked batch of heavy rock jams! High-octane and ready to tap that ‘80s-era backyard kegger wide open. It gets heavier when it needs to, brings the chorus vocal style when it needs you to raise your fist in the air, and rips out some tasty thrash-style and twin-lead riffs when it’s time to slice you open. Everything about this album feels fresh while pulling elements from classics in the heavy music realm that we know and love. Imagine Black Sabbath, Judas Priest, and REO Speedwagon splitting their DNA into an unstoppable clone of good-time party jams. ~ Bobby Rayfield ( Monuments In Ruin, Inherent Records, Mystery Pick )","album_id":761260322,"track_id":null},{"rank":15,"band":"BIRDSTONE","album":"IV","url":"https://birdstoneband.bandcamp.com/album/iv","points":3612,"genre":"Blues Rock, Heavy Rock","location":"France","label":"Harpyes Records / DesTours Records / Alter K","review":"Some really good albums should have challenging parts for the listener. BIRDSTONE, with their fourth album aptly titled IV, is one of those albums. Recorded live in a country house away from the hustle and bustle each song is equally contrasting and complimenting with the rest of the album. And the band squeezes everything they can out of each of these songs. If you like your songs short, sweet and simple this may not be for you. IV could be likened to a Delta Blues artist playing everything they have to keep their soul from the Devil and BIRDSTONE makes you feel it on this album. ~ Turbo ( Rich & Turbo’s Heavy Half Hour )","album_id":26847686,"track_id":null},{"rank":16,"band":"MATERIALIZER","album":"AS THE BODY FLIES","url":"https://materializer.bandcamp.com/album/as-the-body-flies","points":3091,"genre":"Heavy Psych, Stoner","location":"Nashville, USA","label":"Self-released","review":"MATERIALIZER is the new project of brothers Conner and Chris Poole, formerly of The Swell Fellas. Now operating as a duo, they deliver a seriously heavy dose of twisted riffs, psychedelic madness and crushing grooves. As The Body Flies keeps shifting between sheer heaviness and spacious, hypnotic passages, making it impossible to pigeonhole after just a few minutes. I’ve played this album countless times already, and it still sounds fantastic! ~ Marek ( Dezarbuzator )","album_id":1681660264,"track_id":null},{"rank":17,"band":"BOSS KELOID","album":"FLOAT & APERTURE","url":"https://bosskeloid.bandcamp.com/album/float-aperture","points":3047,"genre":"Stoner, Prog, Post Metal","location":"Wigan, UK","label":"Church Road Records","review":"Back for their 6th album, BOSS KELOID present perhaps the most lush and cohesive version of their off-kilter stoner-prog yet with Float & Aperture. Splaying muscular, staccato riffing, angular arpeggios, and rhythms that refuse to comply across seven extended tracks, the band manage to sound wonderfully unlike anyone else in the heavy underground even as you hear them drawing from myriad influences. If you’ve heard BOSS KELOID before, don’t worry, the new one holds up. If you haven’t, this is a great place to start. ~ Ben Bellum ( The Greatest Thing You’ve Never Heard )","album_id":778648162,"track_id":null},{"rank":18,"band":"TRAVO","album":"WASTELAND","url":"https://travoband.bandcamp.com/album/wasteland","points":2899,"genre":"Krautrock, Prog, Psychedelic","location":"Braga Municipality, Portugal","label":"Fuzz Club / gig.rocks! / Spinda Records","review":"Prepare for a total meltdown. These tunes rip right through everything external to stare directly into your third eye. With a syringe full of adrenaline, they unlock the secrets of mankind, space, and mystery of the beyond. Imagine color and shape unlike anything on earth. This is the sound of becoming one with the unknown universe. ~ Bobby Rayfield ( Monuments In Ruin, Inherent Records, Mystery Pick )","album_id":3435379288,"track_id":null},{"rank":19,"band":"GOAT MAJOR","album":"DEATH COMES TWICE","url":"https://goatmajorband.bandcamp.com/album/death-comes-twice","points":2145,"genre":"Stoner, Doom, Metal","location":"Haverfordwest,Wales, UK","label":"Ripple Music","review":"GOAT MAJOR ‘s Death Comes Twice sees the band trading some of their raw, filthy, crushing heaviness of their debut Ritual for a cleaner, more melodic approach. Tom Shortt’s vocals are stronger and more refined. The songs feature greater depth, melody, and a faster pace. Although the polished production strips away some of the raw grit that made the debut so powerful, Death Comes Twice still showcases a band confidently expanding its sound and songwriting. Overall, it’s a step forward that highlights GOAT MAJOR ‘s growing musical maturity. ~ Remco van Hattum ( Riffsniffer )","album_id":489468356,"track_id":null},{"rank":20,"band":"HEXECUTIONER","album":"ASCENSION ROCK","url":"https://hexecutioner.bandcamp.com/album/ascension-rock","points":1980,"genre":"Hard Rock, Stoner, Doom","location":"Seattle, Washington, USA","label":"Sound Frequency Ritual","review":"Fuzzmatic hypnotic state of groove doom HEXECUTIONER is blossoming their sound into a force of doom to be celebrated. The six songs on ASCENSION ROCK are calling for one to come to a live show because it seems the full bluntal expanse of sound they are producing on this album needs an audience to stand and nod along as their bones are rattled. ~ Turbo ( Rich & Turbo’s Heavy Half Hour )","album_id":2021144310,"track_id":null},{"rank":21,"band":"EARTHBONG","album":"SALUTATIONS TO THE CULTIVATORS","url":"https://earthbong.bandcamp.com/album/salutations-to-the-cultivators","points":1962,"genre":"Doom, Sludge, Stoner","location":"Berlin, Germany","label":"The Lasting Dose Records / Evil Noise Recordings","review":"Slow, painful, crushing, and everything one needs to destroy an environment within earshot of this sonic monster. The vocals strain like a rabid beast on a diet of raw stone while the lumbering pulse of these songs stresses under their own tempo. At times, it feels suffocating. It is as if the beating heart is counting down to a final rhythmic tremor. Any fan of sludge/doom will welcome this resin-soaked behemoth with open arms. It certainly lands on my list of favorites from this month. ~ Bobby Rayfield ( Monuments In Ruin, Inherent Records, Mystery Pick )","album_id":3823612311,"track_id":null},{"rank":22,"band":"SECRETS OF LOST EMPIRES","album":"VELVET ABYSS","url":"https://secretsoflostempires.bandcamp.com/album/velvet-abyss","points":1617,"genre":"Progressive Rock, Psychedelic Doom, Stoner Doom","location":"Phoenix, Arizona","label":"Self-released","review":"I recently discovered SECRETS OF LOST EMPIRES with the release of their new album, Velvet Abyss. Even before pressing play, I was captivated by the artwork for this third LP from the Phoenix-based band which was created by Joshua Mathus, the band’s singer and guitarist. Inspired by that first visual impression, I surrendered to their music, letting it swallow me completely. The band’s long, progressive tracks took me on a dark yet comforting journey. Beginning on the shores of a misty, psychedelic stoner landscape, they gradually drew me deeper and deeper into the abyss, towards a resolutely telluric doom that never felt eerie. This is an album that arrived a little late to my playlist this month. Too late to make it into my monthly top picks, where it would have earned a solid spot, but not too late to encourage you not to miss out on this wonderful achievement. ~ Jay Baner ( La Capsule Stoner )","album_id":2207890216,"track_id":null},{"rank":23,"band":"WITCHTHROAT SERPENT","album":"DEMONS LEFT TO ROAM","url":"https://heavypsychsoundsrecords.bandcamp.com/album/witchthroat-serpent-demons-left-to-roam","points":1422,"genre":"Stoner, Doom","location":"Toulouse, France","label":"Heavy Psych Sounds","review":"French Doomsters WITCHTHROAT SERPENT serve up a heady and potent brew of sleazy Doom riffage and plaintive, wailing vocals on their HPS debut “ Demons Left To Roam “. Soaked in psychedelic melancholy and unholy intent across 6 tracks, this is a grizzling, brooding monster! ~ Steve De Rique ( Howls from The Hollows, Doomed & Stoned, Stoner HiVe )","album_id":2314048853,"track_id":null},{"rank":24,"band":"EROSIONS / PSALM","album":"EROSIONS / PSALM","url":"https://spacegoatrecords1.bandcamp.com/album/erosions-psalm","points":1284,"genre":"Doom, Stoner","location":"Freeport, Illinois/Las Vegas, Nevada","label":"Space Goat Records","review":"The Inaugural release from the newly formed and right-off-the-bat awesome Space Goat Records, EROSIONS and PSALM bring it on each of their sides of this killer split album. The Illinois boys from erosions exist to bury you in a fuzzy pile of riffs and spliffs, and manage to get you covered neck deep with their three tracks that will buzz in your head for days, while the dudes in PSALM keep trad doom alive with their old school Trouble worshiping metal goodness, and the balls to cover Psalm 9, and kill it. Jason Doome and S. Patrick Brooks are onto something special with Space Goat Records if this is how they set expectations for what the label is all about. ~ Rich Piva ( Musipedia of Metal, FuzzDoomRip, Rich & Turbo’s Heavy Half Hour )","album_id":3085579402,"track_id":null},{"rank":25,"band":"EARTHCASTER","album":"ANTEDILUVIAN","url":"https://earthcaster.bandcamp.com/album/antediluvian-digital","points":1152,"genre":"Stoner, Heavy Rock, Heavy Psych","location":"Fraserburgh, Aberdeenshire, Scotland","label":"Morningstar Records","review":"Upon first listen, the opening track ‘Water’ had me convinced this was an instrumental band. Turns out EARTHCASTER was warming us up with a drifting, space rock-oriented track. When the vocals are unveiled, they hit that certain sweet spot, matching the atmosphere of the instrumentation with plenty of character and a solid delivery. EARTHCASTER have a heavy rock identity rooted in heavy psych and 70’s hard rock inflections, and the album shifts through moods that incorporate various influences. The song ‘Too Big Gandalf’ has a raw hard-rock sound blended with an infectious punk-like backbone, whereas the track ‘Black Philip’ favors a slower tempo, leading to a more psychedelic excursion. EARTHCASTER have plenty of tricks up their sleeves, and Antediluvian is an excellent showcase of their versatility, one that Doom Charts readers should appreciate. ~ Jon McGough ( Stoner Rock Army, Stoner HiVe, Outlaws Of The Sun )","album_id":2668432673,"track_id":null},{"rank":26,"band":"KANAAN","album":"KANAAN","url":"https://kanaanband.bandcamp.com/album/kanaan","points":null,"genre":"","location":"","label":"","review":"","album_id":1818140296,"track_id":null},{"rank":27,"band":"PLASTIC WOODS","album":"MIRRORS","url":"https://spindarecords.bandcamp.com/album/mirrors","points":null,"genre":"","location":"","label":"","review":"","album_id":2223210004,"track_id":null},{"rank":28,"band":"DREAD WITCH","album":"CULT","url":"https://dreadwitch.bandcamp.com/album/cult","points":null,"genre":"","location":"","label":"","review":"","album_id":3439450964,"track_id":null},{"rank":29,"band":"QUEENS OF THE STONE AGE","album":"PERFECTH","url":"https://qotsa.bandcamp.com/album/perfecth","points":null,"genre":"","location":"","label":"","review":"","album_id":4247153155,"track_id":null},{"rank":30,"band":"BUZZARD","album":"HUSH NOW","url":"https://buzzarddoomfolk.bandcamp.com/album/hush-now","points":null,"genre":"","location":"","label":"","review":"","album_id":2785114707,"track_id":null},{"rank":31,"band":"GREAT FALLS","album":"THE BITE THAT GROWS UP","url":"https://greatfalls.bandcamp.com/album/the-bite-that-grows-up","points":null,"genre":"","location":"","label":"","review":"","album_id":4121401315,"track_id":null},{"rank":32,"band":"GODZILLA IN THE KITCHEN","album":"TERMINATION SEQUENCE","url":"https://godzillainthekitchen.bandcamp.com/album/termination-sequence","points":null,"genre":"","location":"","label":"","review":"","album_id":612772379,"track_id":null},{"rank":33,"band":"LASER DRACUL","album":"HIN HÅLE BLUES","url":"https://laserdracul.bandcamp.com/album/hin-h-le-blues","points":null,"genre":"","location":"","label":"","review":"","album_id":3355820713,"track_id":null},{"rank":34,"band":"PEACEPIPE","album":"EMERALD FLOOD","url":"https://peacepipe.bandcamp.com/album/emerald-flood","points":null,"genre":"","location":"","label":"","review":"","album_id":3565899048,"track_id":null},{"rank":35,"band":"WICKED TRIP","album":"MODERN WITCHCRAFT","url":"https://wickedtrip.bandcamp.com/album/modern-witchcraft","points":null,"genre":"","location":"","label":"","review":"","album_id":3098040640,"track_id":null},{"rank":36,"band":"BLACK ROYAL","album":"ABYSSIAN","url":"https://blackroyal.bandcamp.com/album/abyssian","points":null,"genre":"","location":"","label":"","review":"","album_id":1647118824,"track_id":null},{"rank":37,"band":"PEGZILLA","album":"DISOBEDIENCE","url":"https://ripplemusic.bandcamp.com/album/disobedience","points":null,"genre":"","location":"","label":"","review":"","album_id":440613876,"track_id":null},{"rank":38,"band":"FOREST HORSE","album":"BOTANY","url":"https://foresthorse.bandcamp.com/album/botany","points":null,"genre":"","location":"","label":"","review":"","album_id":2588141181,"track_id":null},{"rank":39,"band":"DEADEYE NAVIGATOR","album":"FEARNAUGHT","url":"https://deadeyenavigator.bandcamp.com/album/fearnaught","points":null,"genre":"","location":"","label":"","review":"","album_id":3613656184,"track_id":null},{"rank":40,"band":"JERKY DIRT","album":"BEDLAM","url":"https://jerkydirt.bandcamp.com/album/bedlam","points":null,"genre":"","location":"","label":"","review":"","album_id":3656401620,"track_id":null}];
+const TOP_LABELS = ["Heavy Psych Sounds","Ripple Music","Self-released","Blues Funeral Recordings / Awe Records / Stickman Records","Church Road Records","Fuzz Club / gig.rocks! / Spinda Records","Harpyes Records / DesTours Records / Alter K","Kozmik Artifactz / Black Throne Productions","Morningstar Records","Nuclear Blast","Pajama Party Records","Pale Wizard Records","Permanent Teeth Records","Ripple Music / Stickman Records","Season Of Mist"];
+
+const STORAGE_FAVS = "dc_oct2026_favs_v1";
+const STORAGE_HIST = "dc_oct2026_hist_v1";
+
+const state = {
+  tier: "ALL",
+  search: "",
+  labelFilter: "ALL",
+  favoritesOnly: false,
+  currentRank: 1,
+  favorites: new Set(),
+  history: []
+};
+
+const $ = id => document.getElementById(id);
+
+function loadStorage() {
+  try {
+    const rf = localStorage.getItem(STORAGE_FAVS);
+    if (rf) JSON.parse(rf).forEach(n => state.favorites.add(Number(n)));
+    const rh = localStorage.getItem(STORAGE_HIST);
+    if (rh) {
+      const p = JSON.parse(rh);
+      if (Array.isArray(p)) state.history = p.map(Number).filter(n => n >= 1 && n <= 40).slice(0, 12);
+    }
+  } catch (_) {}
+}
+function saveStorage() {
+  try {
+    localStorage.setItem(STORAGE_FAVS, JSON.stringify([...state.favorites]));
+    localStorage.setItem(STORAGE_HIST, JSON.stringify(state.history));
+  } catch (_) {}
+}
+function recordHistory(rank) {
+  const n = Number(rank);
+  state.history = [n, ...state.history.filter(x => x !== n)].slice(0, 12);
+  saveStorage();
+}
+
+function escapeHtml(s) {
+  if (s == null) return "";
+  return String(s).replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[c]));
+}
+
+let toastTimer = null;
+function showToast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2400);
+}
+
+function populateLabels() {
+  const sel = $("labelSelect");
+  TOP_LABELS.forEach(lbl => {
+    const opt = document.createElement("option");
+    opt.value = lbl;
+    opt.textContent = lbl;
+    sel.appendChild(opt);
+  });
+}
+
+function getFiltered() {
+  const q = state.search.trim().toLowerCase();
+  return ALBUMS.filter(a => {
+    if (state.tier === "TOP10" && a.rank > 10) return false;
+    if (state.tier === "MID" && (a.rank < 11 || a.rank > 25)) return false;
+    if (state.tier === "LOWER" && a.rank < 26) return false;
+    if (state.favoritesOnly && !state.favorites.has(a.rank)) return false;
+    if (state.labelFilter !== "ALL" && a.label !== state.labelFilter) return false;
+    if (q) {
+      const hay = `${a.rank} ${a.band} ${a.album} ${a.genre} ${a.location} ${a.label}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+function updateHeaderBadges() {
+  $("favCount").textContent = String(state.favorites.size);
+  $("favFilterBtn").classList.toggle("active", state.favoritesOnly);
+}
+
+function renderList() {
+  const listEl = $("trackList");
+  const filtered = getFiltered();
+  $("visibleCount").textContent = String(filtered.length);
+  if (state.favoritesOnly) $("scopeLabel").textContent = "Saved";
+  else if (state.tier === "TOP10") $("scopeLabel").textContent = "Top 10";
+  else if (state.tier === "MID") $("scopeLabel").textContent = "Ranks 11–25";
+  else if (state.tier === "LOWER") $("scopeLabel").textContent = "Ranks 26–40";
+  else $("scopeLabel").textContent = "Top 40";
+
+  if (!filtered.length) {
+    listEl.innerHTML = `<div style="padding:36px 16px;text-align:center;color:var(--cream-muted);font-style:italic;">No albums match this filter.</div>`;
+    return;
+  }
+
+  listEl.innerHTML = filtered.map(a => {
+    const isFav = state.favorites.has(a.rank);
+    const isActive = a.rank === state.currentRank;
+    const tierCls = a.rank <= 3 ? " top3" : a.rank <= 10 ? " top10" : "";
+    return `
+      <div class="row${tierCls}${isActive ? " active" : ""}" data-rank="${a.rank}">
+        <div class="rank">${String(a.rank).padStart(2, "0")}</div>
+        <div class="info">
+          <div class="band-title">${escapeHtml(a.band)}</div>
+          <div class="album-sub">${escapeHtml(a.album)}</div>
+          <div class="row-meta">${a.points ? `${a.points.toLocaleString()} PTS` : "TOP 40 CHART"}${a.location ? ` · ${escapeHtml(a.location.split(",").pop().trim())}` : ""}</div>
+        </div>
+        <button class="fav-star${isFav ? " saved" : ""}" data-fav="${a.rank}" title="Save album">${isFav ? "★" : "☆"}</button>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderDetail() {
+  const a = ALBUMS.find(x => x.rank === state.currentRank) || ALBUMS[0];
+  state.currentRank = a.rank;
+  const isFav = state.favorites.has(a.rank);
+
+  const pool = getFiltered();
+  const navList = pool.length ? pool : ALBUMS;
+  const pos = navList.findIndex(x => x.rank === a.rank);
+  const prev = pos > 0 ? navList[pos - 1] : null;
+  const next = pos >= 0 && pos < navList.length - 1 ? navList[pos + 1] : null;
+
+  const embedKey = a.track_id && !a.album_id ? `track=${a.track_id}` : `album=${a.album_id}`;
+  const iframeSrc = `https://bandcamp.com/EmbeddedPlayer/${embedKey}/size=large/bgcol=112d34/linkcol=e3a83b/tracklist=true/artwork=small/transparent=true/`;
+
+  const tags = [];
+  if (a.genre) tags.push(`<span class="tag-pill accent">${escapeHtml(a.genre)}</span>`);
+  if (a.location) tags.push(`<span class="tag-pill">${escapeHtml(a.location)}</span>`);
+  if (a.label) tags.push(`<span class="tag-pill">${escapeHtml(a.label)}</span>`);
+
+  const histItems = state.history.map(r => ALBUMS[r - 1]).filter(Boolean);
+  const historyHtml = histItems.length ? `
+    <div class="history-strip">
+      <div class="history-head">
+        <span>↺ Recently Played (${histItems.length})</span>
+        <button class="history-clear" id="clearHistBtn">Clear</button>
+      </div>
+      <div class="history-items" id="historyItems">
+        ${histItems.map(h => `
+          <button class="history-chip${h.rank === a.rank ? " active" : ""}" data-rank="${h.rank}">
+            #${String(h.rank).padStart(2, "0")} · ${escapeHtml(h.band)}
+          </button>
+        `).join("")}
+      </div>
+    </div>
+  ` : "";
+
+  const reviewHtml = a.review
+    ? `<div class="review-block">${escapeHtml(a.review)}</div>`
+    : `<div class="review-empty">Ranked #${a.rank} on the October 2026 Doom Charts Top 40. Spin the Bandcamp deck to discover this release.</div>`;
+
+  $("detail").innerHTML = `
+    <div class="detail-stage">
+      ${historyHtml}
+
+      <div class="detail-meta">
+        <div class="detail-top-row">
+          <div class="detail-rank">№ <b>${String(a.rank).padStart(2, "0")}</b> ${a.points ? `· ${a.points.toLocaleString()} POINTS` : "· OCTOBER 2026 TOP 40"}</div>
+          <button class="detail-fav-btn${isFav ? " active" : ""}" id="detailFavBtn">${isFav ? "★ Saved" : "☆ Save Album"}</button>
+        </div>
+        <div class="detail-band">${escapeHtml(a.band)}</div>
+        <div class="detail-album">${escapeHtml(a.album)}</div>
+        ${tags.length ? `<div class="detail-tags">${tags.join("")}</div>` : ""}
+      </div>
+
+      <div class="player-wrap">
+        <div class="iframe-wrap">
+          <iframe src="${iframeSrc}" title="${escapeHtml(a.band)} — ${escapeHtml(a.album)}" seamless allow="autoplay"></iframe>
+        </div>
+        <div class="notes-card">
+          <div class="notes-kicker">Doom Charts Contributor Notes</div>
+          ${reviewHtml}
+          <div class="detail-links">
+            <a class="detail-link" href="${escapeHtml(a.url)}" target="_blank" rel="noopener">↗ Visit on Bandcamp</a>
+            <a class="detail-link secondary" href="https://doomcharts.com/2026/11/06/doom-charts-october-2026/" target="_blank" rel="noopener">↗ October ’26 Chart</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-nav">
+        <button class="nav-btn prev" id="prevBtn" ${!prev ? "disabled" : ""}>
+          <small>↤ Higher Rank</small>
+          <span>${prev ? `№ ${String(prev.rank).padStart(2, "0")} · ${escapeHtml(prev.band)}` : "—"}</span>
+        </button>
+        <button class="nav-btn next" id="nextBtn" ${!next ? "disabled" : ""}>
+          <small>Lower Rank ↦</small>
+          <span>${next ? `№ ${String(next.rank).padStart(2, "0")} · ${escapeHtml(next.band)}` : "—"}</span>
+        </button>
+      </div>
+
+      <div class="kbd-bar">
+        <span>↑ / K Higher Rank</span>
+        <span>↓ / J Lower Rank</span>
+        <span>R Random</span>
+        <span>F Save</span>
+      </div>
+    </div>
+  `;
+
+  $("detailFavBtn").addEventListener("click", () => toggleFavorite(a.rank));
+  if (prev) $("prevBtn").addEventListener("click", () => selectRank(prev.rank));
+  if (next) $("nextBtn").addEventListener("click", () => selectRank(next.rank));
+  const hi = $("historyItems");
+  if (hi) hi.addEventListener("click", (e) => {
+    const chip = e.target.closest(".history-chip");
+    if (chip) selectRank(Number(chip.dataset.rank));
+  });
+  const ch = $("clearHistBtn");
+  if (ch) ch.addEventListener("click", () => {
+    state.history = [state.currentRank];
+    saveStorage();
+    renderDetail();
+    showToast("Cleared Recently Played");
+  });
+
+  $("detail").scrollTop = 0;
+  const activeRow = document.querySelector(".row.active");
+  if (activeRow) activeRow.scrollIntoView({ block: "nearest", behavior: "smooth" });
+}
+
+function selectRank(rank) {
+  state.currentRank = Number(rank);
+  recordHistory(state.currentRank);
+  renderList();
+  renderDetail();
+}
+
+function toggleFavorite(rank) {
+  const n = Number(rank);
+  if (state.favorites.has(n)) {
+    state.favorites.delete(n);
+    showToast(`Removed #${String(n).padStart(2, "0")} from Saved`);
+  } else {
+    state.favorites.add(n);
+    showToast(`Saved #${String(n).padStart(2, "0")}`);
+  }
+  saveStorage();
+  updateHeaderBadges();
+  renderList();
+  const btn = $("detailFavBtn");
+  if (btn && state.currentRank === n) {
+    const saved = state.favorites.has(n);
+    btn.classList.toggle("active", saved);
+    btn.textContent = saved ? "★ Saved" : "☆ Save Album";
+  }
+}
+
+$("tierTabs").addEventListener("click", (e) => {
+  const btn = e.target.closest(".tier-tab");
+  if (!btn) return;
+  state.tier = btn.dataset.tier;
+  document.querySelectorAll(".tier-tab").forEach(b => b.classList.toggle("active", b === btn));
+  renderList();
+});
+
+$("searchInput").addEventListener("input", (e) => {
+  state.search = e.target.value;
+  renderList();
+});
+
+$("labelSelect").addEventListener("change", (e) => {
+  state.labelFilter = e.target.value;
+  renderList();
+});
+
+$("trackList").addEventListener("click", (e) => {
+  const star = e.target.closest(".fav-star");
+  if (star) {
+    e.stopPropagation();
+    toggleFavorite(star.dataset.fav);
+    return;
+  }
+  const row = e.target.closest(".row");
+  if (row) selectRank(Number(row.dataset.rank));
+});
+
+$("randomBtn").addEventListener("click", () => {
+  const pool = getFiltered();
+  const base = pool.length ? pool : ALBUMS;
+  const choices = base.filter(a => a.rank !== state.currentRank);
+  const pick = choices.length ? choices[Math.floor(Math.random() * choices.length)] : base[0];
+  selectRank(pick.rank);
+});
+
+$("favFilterBtn").addEventListener("click", () => {
+  state.favoritesOnly = !state.favoritesOnly;
+  updateHeaderBadges();
+  renderList();
+});
+
+document.addEventListener("keydown", (e) => {
+  const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
+  if (tag === "input" || tag === "select" || tag === "textarea") {
+    if (e.key === "Escape") e.target.blur();
+    return;
+  }
+  const pool = getFiltered();
+  const list = pool.length ? pool : ALBUMS;
+  const pos = list.findIndex(x => x.rank === state.currentRank);
+  if (e.key === "ArrowDown" || e.key === "j") {
+    e.preventDefault();
+    if (pos >= 0 && pos < list.length - 1) selectRank(list[pos + 1].rank);
+  } else if (e.key === "ArrowUp" || e.key === "k") {
+    e.preventDefault();
+    if (pos > 0) selectRank(list[pos - 1].rank);
+  } else if (e.key === "r" || e.key === "R") {
+    const choices = list.filter(a => a.rank !== state.currentRank);
+    const pick = choices.length ? choices[Math.floor(Math.random() * choices.length)] : list[0];
+    selectRank(pick.rank);
+  } else if (e.key === "f" || e.key === "F") {
+    toggleFavorite(state.currentRank);
+  }
+});
+
+// Init
+loadStorage();
+if (!state.history.length) recordHistory(1);
+populateLabels();
+updateHeaderBadges();
+renderList();
+renderDetail();
+</script>
+</body>
+</html>
