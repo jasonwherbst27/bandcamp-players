@@ -1,0 +1,5 @@
+{
+  "name": "Bandcamp Players",
+  "description": "Self-contained web players streaming directly from Bandcamp.",
+  "requestFramePermissions": []
+}
