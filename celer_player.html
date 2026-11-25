@@ -1,0 +1,2316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Celer — 174 Bandcamp Releases · Ambient &amp; Field Monograph</title>
+<meta name="description" content="Self-contained archival Bandcamp player for Celer (Will Long &amp; Danielle Baquet), spanning 174 ambient, tape-loop, and field-recording releases from 2006 to 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Daylight Archival Paper — drawn from Capri lime plaster, Coral Sea slate, Poulaine rose emulsion & Perfectly Beneath Us sage */
+    --paper: #f3f1ec;
+    --paper-deep: #e8e4dc;
+    --surface: #faf9f6;
+    --surface-hover: #f1eee8;
+    --surface-active: #e7eef2;
+    --ink: #1b2025;
+    --ink-mid: #4a545d;
+    --ink-muted: #5f6871;
+    --rule: rgba(27, 32, 37, 0.12);
+    --rule-strong: rgba(27, 32, 37, 0.22);
+    --sea: #235472;
+    --sea-hover: #19425b;
+    --sea-soft: rgba(35, 84, 114, 0.10);
+    --emulsion: #9d443e;
+    --emulsion-soft: rgba(157, 68, 62, 0.11);
+    --sage: #466550;
+    --veil-top: rgba(243, 241, 236, 0.86);
+    --veil-bottom: rgba(243, 241, 236, 0.94);
+    --collage-opacity: 0.15;
+    --bloom-opacity: 0.14;
+    --shadow-card: 0 10px 30px rgba(27, 32, 37, 0.06);
+    --shadow-photo: 0 12px 32px rgba(27, 32, 37, 0.14);
+    --mat-bg: #ffffff;
+    --mat-border: rgba(27, 32, 37, 0.10);
+    --primary-text: #faf9f6;
+    --focus-ring: #235472;
+    --sprocket-light: #ebe7df;
+    --light-table: radial-gradient(circle at 50% 28%, #faf8f4 0%, #eae6de 100%);
+  }
+
+  :root.darkroom {
+    /* Evening Darkroom Mode — warm silver-gelatin slate for late-night ambient listening */
+    --paper: #101316;
+    --paper-deep: #161a1e;
+    --surface: #181c21;
+    --surface-hover: #1f252c;
+    --surface-active: #1c2832;
+    --ink: #ece9e2;
+    --ink-mid: #b2babf;
+    --ink-muted: #8c969f;
+    --rule: rgba(236, 233, 226, 0.11);
+    --rule-strong: rgba(236, 233, 226, 0.22);
+    --sea: #7ab3d4;
+    --sea-hover: #96c5e0;
+    --sea-soft: rgba(122, 179, 212, 0.14);
+    --emulsion: #de7d76;
+    --emulsion-soft: rgba(222, 125, 118, 0.15);
+    --sage: #8ab397;
+    --veil-top: rgba(16, 19, 22, 0.84);
+    --veil-bottom: rgba(16, 19, 22, 0.94);
+    --collage-opacity: 0.18;
+    --bloom-opacity: 0.20;
+    --shadow-card: 0 12px 36px rgba(0, 0, 0, 0.35);
+    --shadow-photo: 0 14px 38px rgba(0, 0, 0, 0.50);
+    --mat-bg: #22272e;
+    --mat-border: rgba(236, 233, 226, 0.12);
+    --primary-text: #0f1316;
+    --focus-ring: #7ab3d4;
+    --sprocket-light: #262d36;
+    --light-table: radial-gradient(circle at 50% 28%, #181d23 0%, #0d1014 100%);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.28s ease, color 0.28s ease;
+  }
+
+  button, input, select, a {
+    font-family: inherit;
+  }
+
+  button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  /* Subtle 35mm Contact-Sheet Backdrop */
+  .collage-bg {
+    position: fixed;
+    inset: -5%;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: var(--collage-opacity);
+    transition: opacity 0.35s ease;
+  }
+  .collage-grid {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 8px;
+    width: 112%;
+    height: 112%;
+    transform: translate3d(-4%, -4%, 0);
+    animation: slowDrift 72s ease-in-out infinite alternate;
+  }
+  .collage-tile {
+    aspect-ratio: 1;
+    background-size: cover;
+    background-position: center;
+    border-radius: 2px;
+    filter: saturate(0.72) contrast(0.95);
+    opacity: 0;
+    transition: opacity 0.9s ease;
+  }
+  .collage-tile.loaded { opacity: 1; }
+
+  @keyframes slowDrift {
+    0% { transform: translate3d(-4%, -4%, 0) scale(1); }
+    100% { transform: translate3d(-1%, -1.5%, 0) scale(1.03); }
+  }
+
+  /* Gentle cover-reactive ambient wash */
+  .active-bloom {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-size: cover;
+    background-position: center;
+    filter: blur(84px) saturate(1.15);
+    opacity: var(--bloom-opacity);
+    transform: scale(1.15);
+    transition: opacity 0.6s ease, background-image 0.6s ease;
+  }
+
+  /* Luminous baryta-paper / darkroom atmospheric veil */
+  .paper-veil {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, var(--veil-top) 0%, var(--veil-bottom) 100%);
+  }
+
+  /* Top Header */
+  .header {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 12px 24px;
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--rule);
+    flex-shrink: 0;
+  }
+
+  .brand-wrap {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  .tape-crest {
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--rule-strong);
+    border-radius: 4px;
+    background: var(--surface);
+    display: grid;
+    place-items: center;
+    color: var(--sea);
+    flex-shrink: 0;
+  }
+
+  .brand {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .subbrand {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--ink-mid);
+    text-decoration: none;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: color 0.16s ease, background-color 0.16s ease, border-color 0.16s ease;
+  }
+  .back-link:hover {
+    color: var(--ink);
+    background: var(--surface-hover);
+    border-color: var(--rule);
+  }
+
+  .desk-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 13px;
+    min-height: 36px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--rule-strong);
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .desk-btn:hover {
+    background: var(--surface-hover);
+    border-color: var(--sea);
+    color: var(--sea);
+  }
+  .desk-btn:active { transform: translateY(1px); }
+
+  .desk-btn.primary {
+    background: var(--sea);
+    border-color: var(--sea);
+    color: var(--primary-text);
+  }
+  .desk-btn.primary:hover {
+    background: var(--sea-hover);
+    border-color: var(--sea-hover);
+    color: var(--primary-text);
+  }
+
+  .desk-btn.active {
+    background: var(--sea-soft);
+    border-color: var(--sea);
+    color: var(--sea);
+  }
+
+  .count-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.85;
+  }
+
+  /* Main Split Workspace */
+  .app {
+    position: relative;
+    z-index: 5;
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 390px 1fr;
+    overflow: hidden;
+  }
+
+  /* Left Sidebar — Archival Tape Index */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    background: color-mix(in srgb, var(--surface) 84%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-right: 1px solid var(--rule);
+  }
+
+  .sidebar-controls {
+    padding: 16px 16px 12px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .scope-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .count-hi {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 9px 12px;
+    min-height: 40px;
+    font-size: 13.5px;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--rule-strong);
+    border-radius: 4px;
+    transition: border-color 0.16s ease, background-color 0.16s ease;
+  }
+  .search-input::placeholder { color: var(--ink-muted); }
+  .search-input:focus {
+    outline: none;
+    border-color: var(--sea);
+    background: var(--surface);
+  }
+
+  .controls-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .select-input {
+    width: 100%;
+    padding: 8px 10px;
+    min-height: 38px;
+    font-size: 12px;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--rule-strong);
+    border-radius: 4px;
+    cursor: pointer;
+    font-variant-numeric: tabular-nums;
+  }
+  .select-input:focus {
+    outline: none;
+    border-color: var(--sea);
+  }
+
+  /* Curated Era & Series Filter Strip (Interactive buttons, no static pills) */
+  .series-strip {
+    display: flex;
+    gap: 5px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: thin;
+  }
+  .series-btn {
+    padding: 5px 9px;
+    min-height: 30px;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--ink-mid);
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .series-btn:hover {
+    color: var(--ink);
+    background: var(--surface-hover);
+    border-color: var(--rule-strong);
+  }
+  .series-btn.active {
+    background: var(--sea);
+    border-color: var(--sea);
+    color: var(--primary-text);
+  }
+
+  .sidebar-tools {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 2px;
+  }
+
+  .loaded-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .view-group {
+    display: inline-flex;
+    border: 1px solid var(--rule-strong);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .mini-toggle {
+    padding: 4px 10px;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--ink-mid);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .mini-toggle + .mini-toggle {
+    border-left: 1px solid var(--rule);
+  }
+  .mini-toggle:hover { color: var(--ink); background: var(--surface-hover); }
+  .mini-toggle.active {
+    background: var(--sea-soft);
+    color: var(--sea);
+  }
+
+  /* Sidebar List */
+  .album-list {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 8px;
+  }
+
+  .album-row {
+    width: 100%;
+    text-align: left;
+    display: grid;
+    grid-template-columns: 46px 1fr auto;
+    align-items: center;
+    gap: 11px;
+    padding: 8px 10px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background-color 0.14s ease, border-color 0.14s ease;
+  }
+  .album-row:hover {
+    background: var(--surface-hover);
+  }
+  .album-row.active {
+    background: var(--surface-active);
+    border-color: color-mix(in srgb, var(--sea) 42%, transparent);
+  }
+
+  .row-thumb {
+    width: 46px;
+    height: 46px;
+    border-radius: 2px;
+    overflow: hidden;
+    background: var(--paper-deep);
+    border: 1px solid var(--rule);
+    flex-shrink: 0;
+  }
+  .row-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .row-meta { min-width: 0; }
+  .row-title {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+  }
+  .album-row.active .row-title { color: var(--sea); font-weight: 600; }
+
+  .row-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .row-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+  .row-saved {
+    color: var(--emulsion);
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  /* Sidebar Contact-Sheet Covers Mode (2-column, full square height, zero horizontal overflow) */
+  .album-list.grid-mode {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: max-content;
+    gap: 10px;
+    align-content: start;
+    padding: 10px;
+  }
+
+  .grid-card {
+    position: relative;
+    display: block;
+    min-width: 0;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    background: var(--mat-bg);
+    padding: 6px 6px 8px;
+    cursor: pointer;
+    text-align: left;
+    color: var(--ink);
+    transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.16s ease, box-shadow 0.18s ease;
+  }
+  .grid-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--sea);
+    box-shadow: 0 8px 20px rgba(27, 32, 37, 0.12);
+  }
+  .grid-card:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+  .grid-card.active {
+    border-color: var(--sea);
+    box-shadow: 0 0 0 1px var(--sea);
+  }
+  .grid-card-img {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: var(--paper-deep);
+    overflow: hidden;
+    border-radius: 2px;
+  }
+  .grid-card-img img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .grid-card:hover .grid-card-img img {
+    transform: scale(1.09);
+  }
+  .card-loupe {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 2;
+    width: 28px;
+    height: 28px;
+    border-radius: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    background: rgba(18, 22, 26, 0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: #faf9f6;
+    display: grid;
+    place-items: center;
+    cursor: zoom-in;
+    opacity: 0.48;
+    transition: opacity 0.16s ease, background-color 0.16s ease, transform 0.15s ease;
+  }
+  .grid-card:hover .card-loupe,
+  .grid-card:focus-within .card-loupe,
+  .film-frame:hover .card-loupe,
+  .film-frame:focus-within .card-loupe {
+    opacity: 0.96;
+  }
+  .card-loupe:hover {
+    background: var(--sea);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.06);
+  }
+  @media (hover: none) {
+    .card-loupe { opacity: 0.88; }
+  }
+  .grid-card-caption {
+    margin-top: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .grid-card-year {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--ink-muted);
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .load-more-wrap {
+    grid-column: 1 / -1;
+    padding: 12px 6px 16px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .empty-state {
+    grid-column: 1 / -1;
+    padding: 36px 20px;
+    text-align: center;
+    color: var(--ink-muted);
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+
+  /* Right Main Listening Desk */
+  .detail {
+    overflow-y: auto;
+    padding: 28px 36px 40px;
+    min-height: 0;
+  }
+
+  .detail-inner {
+    max-width: 980px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* Monograph Card */
+  .monograph-sheet {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 28px;
+    box-shadow: var(--shadow-card);
+  }
+
+  .monograph-top {
+    display: grid;
+    grid-template-columns: 276px 1fr;
+    gap: 30px;
+    align-items: start;
+  }
+
+  /* Matted 35mm Photographic Frame */
+  .photo-mat {
+    background: var(--mat-bg);
+    border: 1px solid var(--mat-border);
+    padding: 10px 10px 12px;
+    border-radius: 3px;
+    box-shadow: var(--shadow-photo);
+  }
+
+  .photo-btn {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: none;
+    background: var(--paper-deep);
+    cursor: zoom-in;
+    aspect-ratio: 1;
+    overflow: hidden;
+    position: relative;
+  }
+  .photo-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .photo-btn:hover img { transform: scale(1.025); }
+
+  .photo-fallback {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    text-align: center;
+    background: linear-gradient(145deg, var(--paper-deep), var(--surface));
+    color: var(--ink-mid);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 20px;
+    font-style: italic;
+  }
+
+  .photo-plate-caption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 9px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .meta-col {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* Clean Unboxed Archival Metadata (Zero Pills) */
+  .archival-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .archival-line .accent-text {
+    color: var(--sea);
+    font-weight: 500;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(2rem, 3.2vw, 3rem);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    text-wrap: balance;
+    word-break: break-word;
+  }
+  .hero-title.long-prose {
+    font-size: clamp(1.5rem, 2.2vw, 2.05rem);
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .artist-credit {
+    font-size: 14.5px;
+    color: var(--ink-mid);
+    line-height: 1.5;
+  }
+  .artist-credit strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .era-note {
+    font-size: 13.5px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+
+  .deck-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .save-btn.saved {
+    background: var(--emulsion-soft);
+    border-color: var(--emulsion);
+    color: var(--emulsion);
+  }
+
+  /* Subtle Analog Tape-Splice Rule Divider */
+  .tape-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 22px 0 18px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+  }
+  .tape-divider::before,
+  .tape-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  /* Bandcamp Listening Embed */
+  .player-frame-wrap {
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .bc-iframe {
+    display: block;
+    width: 100%;
+    height: 410px;
+    border: 0;
+  }
+  .bc-iframe.track-embed {
+    height: 120px;
+  }
+
+  /* Secondary Shelves (Same Year / Recently Played) */
+  .shelf-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 4px;
+  }
+
+  .shelf-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 8px;
+  }
+
+  .shelf-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .shelf-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .strip-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(136px, 1fr));
+    gap: 12px;
+  }
+
+  .strip-card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 7px 7px 9px;
+    cursor: pointer;
+    text-align: left;
+    color: var(--ink);
+    transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.16s ease;
+  }
+  .strip-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--sea);
+  }
+  .strip-thumb {
+    aspect-ratio: 1;
+    width: 100%;
+    border-radius: 2px;
+    overflow: hidden;
+    background: var(--paper-deep);
+  }
+  .strip-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .strip-name {
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 7px;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .strip-year {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--ink-muted);
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .shortcuts-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--rule);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+  }
+
+  /* Full-Screen 174-Frame Contact-Sheet Cover Wall */
+  .wall-view {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: var(--paper);
+    display: none;
+    flex-direction: column;
+  }
+  .wall-view.open { display: flex; }
+
+  .wall-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--rule);
+    flex-shrink: 0;
+  }
+
+  .wall-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .wall-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+    margin-left: 10px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .wall-grid {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 24px 28px 44px;
+    background: var(--light-table);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+  }
+
+  /* 35mm Celluloid Film Strip with Sprocket Perforations on Both Edges */
+  .film-strip {
+    width: 100%;
+    max-width: 1360px;
+    background: linear-gradient(180deg, #1b1918 0%, #141312 16%, #131211 84%, #1b1918 100%);
+    border: 1px solid rgba(0, 0, 0, 0.55);
+    border-radius: 4px;
+    box-shadow: 0 12px 30px rgba(15, 18, 22, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    padding: 9px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .film-edge-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 4px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: #d6a45c;
+    opacity: 0.88;
+    user-select: none;
+  }
+
+  .film-sprockets {
+    height: 15px;
+    width: 100%;
+    background-color: var(--sprocket-light);
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='15' viewBox='0 0 28 15'%3E%3Crect x='7' y='1' width='14' height='13' rx='2.5' fill='white'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='15' viewBox='0 0 28 15'%3E%3Crect x='7' y='1' width='14' height='13' rx='2.5' fill='white'/%3E%3C/svg%3E");
+    -webkit-mask-repeat: repeat-x;
+    mask-repeat: repeat-x;
+    -webkit-mask-position: center;
+    mask-position: center;
+    flex-shrink: 0;
+  }
+
+  .film-frames {
+    display: grid;
+    gap: 12px;
+    padding: 4px 2px;
+    width: 100%;
+  }
+
+  .film-frame {
+    position: relative;
+    display: block;
+    min-width: 0;
+    background: #0b0a0a;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+    padding: 6px 6px 9px;
+    cursor: pointer;
+    text-align: left;
+    color: #efece6;
+    transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.16s ease, box-shadow 0.18s ease;
+  }
+  .film-frame:hover {
+    transform: translateY(-2px);
+    border-color: #d6a45c;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
+  }
+  .film-frame:focus-visible {
+    outline: 2px solid #d6a45c;
+    outline-offset: 2px;
+  }
+  .film-frame.active {
+    border-color: #7ab3d4;
+    box-shadow: 0 0 0 1px #7ab3d4;
+  }
+
+  .film-frame-img {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: #1c1a19;
+    border-radius: 1px;
+  }
+  .film-frame-img img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .film-frame:hover .film-frame-img img {
+    transform: scale(1.07);
+  }
+
+  .film-frame-title {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: #f3f0e9;
+    margin-top: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .film-frame-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: #d6a45c;
+    margin-top: 3px;
+    font-variant-numeric: tabular-nums;
+  }
+  .film-frame-meta .frame-yr {
+    color: #a4a8ad;
+  }
+
+  /* 35mm Fullscreen Photographic Lightbox */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: rgba(14, 17, 20, 0.92);
+    backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+  }
+  .lightbox.open { display: flex; }
+
+  .lightbox-frame {
+    max-width: min(760px, 92vw);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .lightbox-mat {
+    background: #faf9f6;
+    padding: 14px;
+    border-radius: 3px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+    max-height: 76vh;
+    display: flex;
+  }
+  .lightbox-mat img {
+    max-width: 100%;
+    max-height: calc(76vh - 28px);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+  .lightbox-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    color: #eceae4;
+  }
+  .lightbox-caption {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 21px;
+    font-weight: 500;
+  }
+  .lightbox-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: #b4bcc4;
+    margin-top: 2px;
+  }
+  .lightbox-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .lightbox-close {
+    padding: 8px 13px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: #eceae4;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+  .lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.18);
+  }
+  .lightbox-close.primary {
+    background: var(--sea);
+    border-color: var(--sea);
+    color: #faf9f6;
+  }
+  .lightbox-close.primary:hover {
+    background: var(--sea-hover);
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    right: 24px;
+    z-index: 80;
+    padding: 10px 16px;
+    background: var(--ink);
+    color: var(--surface);
+    font-size: 12.5px;
+    font-weight: 500;
+    border-radius: 4px;
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Scrollbars */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--rule-strong); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--ink-muted); }
+
+  /* Floating 35mm Hover Loupe Preview beside Covers sidebar */
+  .hover-zoom {
+    position: fixed;
+    z-index: 55;
+    width: 288px;
+    padding: 10px 10px 12px;
+    background: var(--mat-bg);
+    border: 1px solid var(--rule-strong);
+    border-radius: 5px;
+    box-shadow: 0 22px 48px rgba(15, 20, 26, 0.28);
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+    transform: translate3d(-8px, 0, 0) scale(0.96);
+    transition: opacity 0.16s ease, transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.16s ease;
+  }
+  .hover-zoom.visible {
+    visibility: visible;
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  .hover-zoom-img {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: var(--paper-deep);
+    overflow: hidden;
+    border-radius: 2px;
+  }
+  .hover-zoom-img img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+  .hover-zoom-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-top: 9px;
+  }
+  .hover-zoom-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--ink-muted);
+    margin-top: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+  .hover-zoom-hint {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--sea);
+    margin-top: 5px;
+  }
+
+  @media (max-width: 1020px) {
+    body { overflow: auto; height: auto; min-height: 100%; }
+    .header { padding: 12px 16px; flex-wrap: wrap; }
+    .subbrand { display: none; }
+    .app {
+      grid-template-columns: 1fr;
+      overflow: visible;
+    }
+    .sidebar {
+      border-right: none;
+      border-bottom: 1px solid var(--rule);
+      min-height: 440px;
+      max-height: 66vh;
+    }
+    .hover-zoom { display: none !important; }
+    .detail { padding: 20px 16px 36px; overflow: visible; }
+    .monograph-sheet { padding: 20px; }
+    .monograph-top {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .photo-mat { max-width: 300px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .collage-grid { animation: none; }
+    * { transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="collage-bg" aria-hidden="true">
+  <div class="collage-grid" id="collageGrid"></div>
+</div>
+<div class="active-bloom" id="activeBloom" aria-hidden="true"></div>
+<div class="paper-veil" aria-hidden="true"></div>
+
+<header class="header">
+  <div class="brand-wrap">
+    <div class="tape-crest" aria-hidden="true">
+      <!-- Minimalist reel-to-reel tape & field horizon emblem -->
+      <svg width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="9.5" cy="12" r="4.5" stroke="currentColor" stroke-width="1.4"/>
+        <circle cx="9.5" cy="12" r="1.3" fill="currentColor"/>
+        <circle cx="18.5" cy="12" r="4.5" stroke="currentColor" stroke-width="1.4"/>
+        <circle cx="18.5" cy="12" r="1.3" fill="currentColor"/>
+        <path d="M5.5 18.5H22.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        <path d="M8 21.5C10.5 20.2 13 22.4 15.5 21.2C17.4 20.3 19 21.6 20.5 21.1" stroke="#9d443e" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div>
+      <div class="brand">Celer</div>
+      <div class="subbrand">174 Bandcamp Releases · Ambient, Tape Loops &amp; Field Recordings · 2006–2026</div>
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <a class="back-link" href="./index.html" title="Return to all music players">← Back to All Players</a>
+    <button class="desk-btn primary" id="randomBtn" type="button" title="Jump to a random release (R)">Random</button>
+    <button class="desk-btn" id="favFilterBtn" type="button" title="Show saved releases">Saved <span class="count-num" id="favCount">0</span></button>
+    <button class="desk-btn" id="wallToggleBtn" type="button" title="Toggle 174-frame Cover Wall (W)">Cover Wall</button>
+    <button class="desk-btn" id="themeToggleBtn" type="button" title="Switch between Daylight Paper and Evening Darkroom">Darkroom</button>
+    <button class="desk-btn" id="remixCollageBtn" type="button" title="Shuffle 35mm contact-sheet backdrop">Shuffle Backdrop</button>
+    <a class="desk-btn" href="https://celer.bandcamp.com/music" target="_blank" rel="noopener">Bandcamp ↗</a>
+  </div>
+</header>
+
+<div class="app" id="splitApp">
+  <aside class="sidebar">
+    <div class="sidebar-controls">
+      <div class="scope-row">
+        <span><span class="count-hi" id="visibleCount">174</span> / 174 Releases</span>
+        <span id="scopeLabel">Newest First</span>
+      </div>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search 174 titles, collaborators, or years...">
+      <div class="controls-grid">
+        <select class="select-input" id="sortSelect" aria-label="Sort releases">
+          <option value="newest">Sort: Newest First</option>
+          <option value="oldest">Sort: Chronological (2006+)</option>
+          <option value="title">Sort: Title A–Z</option>
+          <option value="titleDesc">Sort: Title Z–A</option>
+          <option value="longest">Sort: Longest Titles First</option>
+          <option value="shortest">Sort: Shortest Titles First</option>
+        </select>
+        <select class="select-input" id="yearSelect" aria-label="Filter by year">
+          <option value="ALL">All Years (2006–2026)</option>
+        </select>
+      </div>
+      <div class="series-strip" id="seriesStrip" role="group" aria-label="Filter by era or series"></div>
+      <div class="sidebar-tools">
+        <span class="loaded-label" id="loadedCounter">SHOWING 80 OF 174</span>
+        <div class="view-group" role="group" aria-label="Sidebar view">
+          <button class="mini-toggle active" id="viewListBtn" type="button">≡ List</button>
+          <button class="mini-toggle" id="viewGridBtn" type="button">⊞ Covers</button>
+        </div>
+      </div>
+    </div>
+    <div class="album-list" id="albumList"></div>
+  </aside>
+
+  <main class="detail" id="detail"></main>
+</div>
+
+<section class="wall-view" id="wallView" aria-label="Full Cover Wall">
+  <div class="wall-header">
+    <div>
+      <span class="wall-title">Celer · 35mm Contact Sheet</span>
+      <span class="wall-sub"><span id="wallCount">174</span> Releases</span>
+    </div>
+    <button class="desk-btn" id="closeWallBtn" type="button">← Back to Player</button>
+  </div>
+  <div class="wall-grid" id="wallGrid"></div>
+</section>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Full-resolution cover photograph">
+  <div class="lightbox-frame">
+    <div class="lightbox-mat">
+      <img id="lightboxImg" src="" alt="" referrerpolicy="no-referrer">
+    </div>
+    <div class="lightbox-bar">
+      <div>
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+        <div class="lightbox-meta" id="lightboxMeta"></div>
+      </div>
+      <div class="lightbox-actions">
+        <button class="lightbox-close" id="lightboxPrevBtn" type="button" title="Previous cover (←)">← Prev</button>
+        <button class="lightbox-close" id="lightboxNextBtn" type="button" title="Next cover (→)">Next →</button>
+        <button class="lightbox-close primary" id="lightboxPlayBtn" type="button">Load in Player</button>
+        <button class="lightbox-close" id="closeLightboxBtn" type="button">Close (Esc)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="hover-zoom" id="hoverZoom" aria-hidden="true">
+  <div class="hover-zoom-img">
+    <img id="hoverZoomImg" src="" alt="" referrerpolicy="no-referrer">
+  </div>
+  <div class="hover-zoom-title" id="hoverZoomTitle"></div>
+  <div class="hover-zoom-meta" id="hoverZoomMeta"></div>
+  <div class="hover-zoom-hint">Click cover to open in player</div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const RAW = [[3012713171,"a","Poulaine","Celer",3326798545,2026,"2026-04-24","https://celer.bandcamp.com/album/poulaine-2"],[3547461787,"a","Capri (Remastered Deluxe Edition)","Celer",2456104073,2026,"2026-03-17","https://celer.bandcamp.com/album/capri-remastered-deluxe-edition"],[1909828929,"a","Gems VI","Celer",2151724111,2026,"2026-01-02","https://celer.bandcamp.com/album/gems-vi"],[3008750898,"a","Gems V","Celer",756274715,2025,"2025-09-05","https://celer.bandcamp.com/album/gems-v"],[2069212504,"a","You and I Can't Ever Change (Expanded)","Celer",2317393504,2025,"2025-08-27","https://celer.bandcamp.com/album/you-and-i-cant-ever-change-expanded"],[2222914170,"a","Gems IV","Celer",2009169978,2025,"2025-03-21","https://celer.bandcamp.com/album/gems-iv"],[1957963128,"a","Vain Shapes and Intricate Parapets (Remastered)","Celer and Hakobune",2189532377,2025,"2025-01-20","https://celer.bandcamp.com/album/vain-shapes-and-intricate-parapets-remastered"],[482926249,"a","Gems III","Celer",1579993655,2024,"2024-10-18","https://celer.bandcamp.com/album/gems-iii"],[956776659,"a","Gems II","Celer",2761802976,2024,"2024-06-14","https://celer.bandcamp.com/album/gems-ii"],[3003468456,"a","Perfectly Beneath Us","Celer",3346002469,2024,"2024-05-24","https://celer.bandcamp.com/album/perfectly-beneath-us-2"],[1507087386,"a","Cursory Asperses","Celer",4250687766,2024,"2024-03-01","https://celer.bandcamp.com/album/cursory-asperses-2"],[3538237634,"a","Gems I","Celer",1186117231,2024,"2024-01-12","https://celer.bandcamp.com/album/gems-i"],[130618579,"a","Cascade; Or a Mass Of Severe Stages","Celer",3264113896,2021,"2021-12-12","https://celer.bandcamp.com/album/cascade-or-a-mass-of-severe-stages"],[3685548962,"a","With and Not Without","Celer",3404451784,2021,"2021-11-30","https://celer.bandcamp.com/album/with-and-not-without"],[737066478,"a","Sunspots","Celer",291631153,2021,"2021-11-05","https://celer.bandcamp.com/album/sunspots"],[2627220437,"a","In Light Of Blues","Celer",228262996,2021,"2021-08-13","https://celer.bandcamp.com/album/in-light-of-blues"],[295465060,"a","It Would Have, But It Wasn't","Celer",3395381999,2021,"2021-05-16","https://celer.bandcamp.com/album/it-would-have-but-it-wasnt-2"],[4106043840,"a","Malaria","Celer",2200353963,2021,"2021-04-01","https://celer.bandcamp.com/album/malaria"],[2957042079,"a","The Past? That.","Celer",3175069485,2021,"2021-03-31","https://celer.bandcamp.com/album/the-past-that"],[3416711232,"a","There Were More Failures Than This","Celer",1657039247,2021,"2021-03-30","https://celer.bandcamp.com/album/there-were-more-failures-than-this"],[1620720502,"a","Kōttei","Celer",3684904546,2021,"2021-03-28","https://celer.bandcamp.com/album/k-ttei"],[3158477060,"a","Being Below","Celer",836191554,2021,"2021-02-03","https://celer.bandcamp.com/album/being-below"],[3803542980,"a","The Subject Is A Religious One","Celer",2501738149,2020,"2020-12-24","https://celer.bandcamp.com/album/the-subject-is-a-religious-one"],[2156164193,"a","Nature Chamber (1-4)","Celer",457737648,2020,"2020-12-04","https://celer.bandcamp.com/album/nature-chamber-1-4"],[415357901,"a","Yes, Sometime","Celer",2113732901,2020,"2020-11-23","https://celer.bandcamp.com/album/yes-sometime"],[935191299,"a","Oñemoambuéva","Celer",157088995,2020,"2020-11-20","https://celer.bandcamp.com/album/o-emoambu-va"],[3848730306,"a","Collected Depths","Celer",1961032978,2020,"2020-11-19","https://celer.bandcamp.com/album/collected-depths"],[3103416780,"a","Tone Demon","Celer",771166889,2020,"2020-11-06","https://celer.bandcamp.com/album/tone-demon"],[15731563,"a","Time? This.","Celer",833880166,2020,"2020-10-01","https://celer.bandcamp.com/album/time-this"],[2840909191,"a","Descender","Celer",1914456583,2020,"2020-09-22","https://celer.bandcamp.com/album/descender"],[3652799464,"a","Wasted In the Waiting","Celer",1237187281,2020,"2020-09-17","https://celer.bandcamp.com/album/wasted-in-the-waiting"],[1833086127,"a","Don't Stop Saying Goodbye","Celer",3174761621,2020,"2020-08-28","https://celer.bandcamp.com/album/dont-stop-saying-goodbye"],[2996037804,"a","You Only See the Way Up","Celer",832054373,2020,"2020-08-19","https://celer.bandcamp.com/album/you-only-see-the-way-up"],[985593870,"a","Optimism Is the Killer","Celer",962306873,2020,"2020-08-07","https://celer.bandcamp.com/album/optimism-is-the-killer"],[3606198267,"a","It Would Be Giving Up","Celer",1631898494,2020,"2020-08-06","https://celer.bandcamp.com/album/it-would-be-giving-up"],[940319263,"a","Love Exposure","Celer",103253427,2020,"2020-07-27","https://celer.bandcamp.com/album/love-exposure"],[682315317,"a","Ulterior Sense","Celer",4070280830,2020,"2020-07-22","https://celer.bandcamp.com/album/ulterior-sense"],[766807256,"t","For the Meantime","Celer",867408191,2020,"2020-06-17","https://celer.bandcamp.com/track/for-the-meantime"],[1602826555,"a","Everyday After","Celer",128554264,2020,"2020-05-24","https://celer.bandcamp.com/album/everyday-after"],[3070010093,"a","Thoughts Or Feelings?","Celer",1691145687,2020,"2020-05-15","https://celer.bandcamp.com/album/thoughts-or-feelings"],[2016275940,"a","Nothing So Mystical","Celer",279442965,2020,"2020-04-18","https://celer.bandcamp.com/album/nothing-so-mystical"],[27801162,"t","Climate Change","Celer",1192879352,2020,"2020-04-18","https://celer.bandcamp.com/track/climate-change"],[2355753207,"a","Could I Not Be Saved After All That?","Celer",3332421422,2020,"2020-04-12","https://celer.bandcamp.com/album/could-i-not-be-saved-after-all-that"],[594369267,"a","Before You Know It","Celer",2172653996,2020,"2020-04-12","https://celer.bandcamp.com/album/before-you-know-it"],[3834631547,"a","Wait For A Little Longer","Celer",1041773038,2020,"2020-04-01","https://celer.bandcamp.com/album/wait-for-a-little-longer"],[2894645490,"a","Heartache, Heartache, and Heartache","Celer",518125473,2020,"2020-04-01","https://celer.bandcamp.com/album/heartache-heartache-and-heartache"],[2417269733,"a","Channeling Your Demons","Celer",1601156237,2020,"2020-03-28","https://celer.bandcamp.com/album/channeling-your-demons"],[2802119584,"a","Not Far Enough From Home","Celer",584528177,2020,"2020-03-24","https://celer.bandcamp.com/album/not-far-enough-from-home"],[678419881,"a","Because Of All You Want","Celer",2839929824,2020,"2020-03-03","https://celer.bandcamp.com/album/because-of-all-you-want"],[2279555661,"a","Regret Seems To Last Forever","Celer",1502684208,2020,"2020-02-21","https://celer.bandcamp.com/album/regret-seems-to-last-forever"],[3910446629,"a","Future Predictions","Celer",834703417,2020,"2020-01-02","https://celer.bandcamp.com/album/future-predictions"],[3137277029,"a","Valdez","Celer",3582588865,2019,"2019-11-01","https://celer.bandcamp.com/album/valdez"],[1833857181,"a","Vamps","Celer",1353149956,2019,"2019-02-14","https://celer.bandcamp.com/album/vamps"],[4169000361,"a","Xièxie","Celer",2301064442,2019,"2019-01-24","https://celer.bandcamp.com/album/xi-xie"],[1157552460,"a","I Wish You Could","Celer",920256059,2018,"2018-11-13","https://celer.bandcamp.com/album/i-wish-you-could"],[1868390944,"a","Memory Repetitions","Celer",3648118107,2018,"2018-11-09","https://celer.bandcamp.com/album/memory-repetitions"],[465410635,"a","Torn To Ribbons","Celer",3402331032,2018,"2018-11-04","https://celer.bandcamp.com/album/torn-to-ribbons"],[1631187190,"a","Plays Bizet","Celer",1976616386,2018,"2018-10-26","https://celer.bandcamp.com/album/plays-bizet"],[2859893585,"a","Give Up the Idea Of Being Content","Celer",2535579385,2018,"2018-10-19","https://celer.bandcamp.com/album/give-up-the-idea-of-being-content"],[1651034577,"a","Coral Sea","Celer",4284133600,2018,"2018-10-05","https://celer.bandcamp.com/album/coral-sea"],[2840634378,"t","Untitled September","Celer",2393317870,2018,"2018-09-29","https://celer.bandcamp.com/track/untitled-september"],[3834595025,"a","Swallowed From Within","Celer",2942774396,2018,"2018-08-29","https://celer.bandcamp.com/album/swallowed-from-within"],[2831292050,"a","Plays Ravel","Celer",784326765,2018,"2018-08-10","https://celer.bandcamp.com/album/plays-ravel"],[3017557026,"a","Tell Me When You Come Back","Celer",457174557,2018,"2018-07-22","https://celer.bandcamp.com/album/tell-me-when-you-come-back"],[674845891,"a","Nacreous Clouds (Remastered)","Celer",4134742374,2018,"2018-06-22","https://celer.bandcamp.com/album/nacreous-clouds-remastered"],[87739258,"a","Something Cathartic","Celer",925130689,2018,"2018-05-19","https://celer.bandcamp.com/album/something-cathartic"],[3173291856,"a","You'll Never Understand Me","Celer",1071403481,2018,"2018-03-19","https://celer.bandcamp.com/album/youll-never-understand-me"],[3595788819,"a","A Chance Isn't Really a Chance At All","Celer",1446719853,2018,"2018-03-18","https://celer.bandcamp.com/album/a-chance-isnt-really-a-chance-at-all"],[1786248942,"a","Advert Subversion","Celer",1656396298,2018,"2018-03-04","https://celer.bandcamp.com/album/advert-subversion-2"],[2579673360,"a","Isolated Demands","Celer",3341606362,2018,"2018-02-17","https://celer.bandcamp.com/album/isolated-demands"],[2327071401,"a","Landmarks (Remastered)","Celer + Forest Management",2753372923,2018,"2018-02-05","https://celer.bandcamp.com/album/landmarks-remastered"],[1040020220,"a","Euromaidan","Celer",3563390417,2017,"2017-12-15","https://celer.bandcamp.com/album/euromaidan"],[1878913366,"a","Solitary States","Celer",3541797240,2017,"2017-11-29","https://celer.bandcamp.com/album/solitary-states"],[3058102032,"a","Tanto Montare","Celer",1185243652,2017,"2017-11-28","https://celer.bandcamp.com/album/tanto-montare"],[1982168832,"a","Avalon","Celer",797960722,2017,"2017-11-06","https://celer.bandcamp.com/album/avalon"],[1408754787,"a","Gotha","Celer",2376133959,2017,"2017-11-01","https://celer.bandcamp.com/album/gotha"],[766575450,"a","Ends Zabriskie Point","Celer",421233988,2017,"2017-09-15","https://celer.bandcamp.com/album/ends-zabriskie-point"],[1819880785,"a","Plays Liberace","Celer",4236374879,2017,"2017-07-25","https://celer.bandcamp.com/album/plays-liberace"],[3395699945,"a","In the Air, In the Wind, Upon Us","Celer",4223818984,2017,"2017-06-01","https://celer.bandcamp.com/album/in-the-air-in-the-wind-upon-us"],[3698822503,"a","Fragile That Eventually Breaks","Celer",2993291139,2017,"2017-05-03","https://celer.bandcamp.com/album/fragile-that-eventually-breaks"],[1348975170,"a","In the End You'll Just Disappear","Celer",2749032312,2017,"2017-04-12","https://celer.bandcamp.com/album/in-the-end-youll-just-disappear"],[263019383,"a","Alcoves","Celer",2825891984,2017,"2017-02-02","https://celer.bandcamp.com/album/alcoves"],[2850924246,"a","Callisto","Celer",3218861428,2016,"2016-11-02","https://celer.bandcamp.com/album/callisto"],[2067794625,"a","Infinite set","Celer",100930695,2016,"2016-09-21","https://celer.bandcamp.com/album/infinite-set"],[3641580888,"a","Drawback","Celer",3548957170,2016,"2016-08-29","https://celer.bandcamp.com/album/drawback"],[615336310,"a","Shima","Celer",2294687464,2016,"2016-07-29","https://celer.bandcamp.com/album/shima"],[752492588,"a","Plays Schubert","Celer",1621640748,2016,"2016-07-17","https://celer.bandcamp.com/album/plays-schubert"],[3383765538,"a","Two days and one night","Celer",1211506098,2016,"2016-05-27","https://celer.bandcamp.com/album/two-days-and-one-night"],[1953620497,"a","I love you so much I can't even title this","Celer",4269137443,2016,"2016-05-26","https://celer.bandcamp.com/album/i-love-you-so-much-i-cant-even-title-this"],[1425517525,"a","Akagi","Celer",2821628431,2016,"2016-01-02","https://celer.bandcamp.com/album/akagi"],[22933550,"a","Soryu","Celer",2517941436,2015,"2015-11-02","https://celer.bandcamp.com/album/soryu"],[205987488,"a","I, Anatomy (Alternate version)","Celer",207530385,2015,"2015-10-08","https://celer.bandcamp.com/album/i-anatomy-alternate-version"],[3397405473,"a","Tempelhof","Celer",357915257,2015,"2015-09-30","https://celer.bandcamp.com/album/tempelhof"],[3411757301,"a","Compendium: Collected Singles and Remixes","Celer & Machinefabriek",1165111438,2015,"2015-07-21","https://celer.bandcamp.com/album/compendium-collected-singles-and-remixes"],[3925468441,"a","Cold traps","Celer",1236874889,2015,"2015-06-30","https://celer.bandcamp.com/album/cold-traps"],[1059048417,"a","Hidden, for once","Celer",1209848458,2015,"2015-06-28","https://celer.bandcamp.com/album/hidden-for-once"],[3095247934,"a","How could you believe me when I said I loved you when you know I've been a liar all my life (cassette version)","Celer",3177600902,2015,"2015-06-07","https://celer.bandcamp.com/album/how-could-you-believe-me-when-i-said-i-loved-you-when-you-know-ive-been-a-liar-all-my-life-cassette-version"],[2446659837,"a","How could you believe me when I said I loved you when you know I've been a liar all my life","Celer",1344234983,2015,"2015-06-07","https://celer.bandcamp.com/album/how-could-you-believe-me-when-i-said-i-loved-you-when-you-know-ive-been-a-liar-all-my-life"],[1942003761,"a","Jima","Celer",3053890032,2015,"2015-03-23","https://celer.bandcamp.com/album/jima"],[3266732301,"a","Commissioned Music","Celer",3304039936,2014,"2014-11-30","https://celer.bandcamp.com/album/commissioned-music"],[1348047252,"a","Mature, Occluding","Celer",1005287000,2014,"2014-11-30","https://celer.bandcamp.com/album/mature-occluding"],[2663808691,"a","Moonbeams Meant For Me","Celer",3915976278,2014,"2014-11-12","https://celer.bandcamp.com/album/moonbeams-meant-for-me"],[840142508,"a","Sky Limits","Celer",2977655260,2014,"2014-11-01","https://celer.bandcamp.com/album/sky-limits"],[1154092555,"a","Zigzag","Celer",201468750,2014,"2014-01-30","https://celer.bandcamp.com/album/zigzag"],[653853452,"a","Mesoscaphe","Mathieu Ruhlmann + Celer",852148095,2014,"2014-01-30","https://celer.bandcamp.com/album/mesoscaphe"],[132732848,"a","Voyeur","Celer",2206736403,2014,"2014-01-03","https://celer.bandcamp.com/album/voyeur"],[3936086779,"a","Climbing Formation","Celer",4020087178,2013,"2013-09-09","https://celer.bandcamp.com/album/climbing-formation"],[930628589,"a","Radish","Celer",404769975,2013,"2013-08-25","https://celer.bandcamp.com/album/radish"],[1144760882,"a","Salvaged Violets","Celer",3128923767,2013,"2013-05-05","https://celer.bandcamp.com/album/salvaged-violets"],[1590850917,"a","Viewpoint","Celer",1819543212,2013,"2013-03-20","https://celer.bandcamp.com/album/viewpoint"],[2006830490,"a","Dwell In Possibility","Celer",3877243348,2013,"2013-02-06","https://celer.bandcamp.com/album/dwell-in-possibility"],[476877080,"a","Truth Abandons","Celer",2814217876,2012,"2012-11-16","https://celer.bandcamp.com/album/truth-abandons"],[357591143,"a","I, Anatomy","Celer",2401049837,2012,"2012-09-04","https://celer.bandcamp.com/album/i-anatomy"],[4001017612,"a","Catalina","Celer",525946631,2012,"2012-09-03","https://celer.bandcamp.com/album/catalina"],[3440966334,"a","The Everything and the Nothing (Remastered)","Celer",714533774,2012,"2012-09-02","https://celer.bandcamp.com/album/the-everything-and-the-nothing-remastered"],[1040942951,"a","Redness + Perplexity","Celer",3457158032,2012,"2012-08-17","https://celer.bandcamp.com/album/redness-perplexity"],[1847995883,"a","Hei/Sou","Celer & Machinefabriek",4081568560,2012,"2012-08-01","https://celer.bandcamp.com/album/hei-sou"],[1725191271,"a","Epicentral Examples of the More or Less","Celer",923620704,2012,"2012-08-01","https://celer.bandcamp.com/album/epicentral-examples-of-the-more-or-less"],[3800879266,"a","Lightness and Irresponsibility","Celer",3743403050,2012,"2012-06-22","https://celer.bandcamp.com/album/lightness-and-irresponsibility"],[1040780548,"a","Greetings from Celer & Machinefabriek","Celer & Machinefabriek",1359448901,2012,"2012-06-06","https://celer.bandcamp.com/album/greetings-from-celer-machinefabriek"],[2124781268,"a","Diving Into the Plasma Pool","Celer",4236861037,2012,"2012-06-01","https://celer.bandcamp.com/album/diving-into-the-plasma-pool"],[2567290590,"a","Numa/Penarie","Celer & Machinefabriek",4248000776,2012,"2012-05-01","https://celer.bandcamp.com/album/numa-penarie"],[896146221,"a","Bliksem","Celer",4245019310,2012,"2012-03-26","https://celer.bandcamp.com/album/bliksem"],[1414841620,"a","Evaporate & Wonder","Celer",608139795,2012,"2012-02-24","https://celer.bandcamp.com/album/evaporate-wonder"],[3861219729,"a","Tightrope","Celer",1430102039,2012,"2012-02-20","https://celer.bandcamp.com/album/tightrope"],[4221387459,"a","Maastunnel/Mt. Mitake","Celer & Machinefabriek",4267696119,2012,"2012-02-13","https://celer.bandcamp.com/album/maastunnel-mt-mitake"],[880712711,"a","Emotion","Celer",1186836359,2012,"2012-01-25","https://celer.bandcamp.com/album/emotion"],[1549953033,"a","In The Finger-Painted Fields Of The Eyes","Celer",1459193171,2012,"2012-01-11","https://celer.bandcamp.com/album/in-the-finger-painted-fields-of-the-eyes"],[1670867292,"a","An Immensity Merely To Save Life","Celer",2536929972,2012,"2012-01-10","https://celer.bandcamp.com/album/an-immensity-merely-to-save-life"],[4153574898,"a","Discourses Of the Withered (Remastered)","Celer",2335047657,2011,"2011-12-22","https://celer.bandcamp.com/album/discourses-of-the-withered-remastered"],[3382884114,"a","Engaged Touches (Expanded and Remastered)","Celer",649432939,2011,"2011-12-12","https://celer.bandcamp.com/album/engaged-touches-expanded-and-remastered"],[3090994575,"a","Relief and Altruism","Celer",2920369173,2011,"2011-11-08","https://celer.bandcamp.com/album/relief-and-altruism"],[2594165653,"a","Close Proximity and the Unhindered Care-all","Celer",3899042254,2011,"2011-10-22","https://celer.bandcamp.com/album/close-proximity-and-the-unhindered-care-all"],[2394257494,"a","Voodoo Crowds (Remastered)","Celer",1764713852,2011,"2011-10-22","https://celer.bandcamp.com/album/voodoo-crowds-remastered"],[2320706738,"a","Vestiges of an Inherent Melancholy","Celer",2989777345,2011,"2011-10-22","https://celer.bandcamp.com/album/vestiges-of-an-inherent-melancholy"],[2224882110,"a","Red Seals (Remastered)","Celer",1445747773,2011,"2011-10-13","https://celer.bandcamp.com/album/red-seals-remastered"],[2579026286,"a","Spumes Mistaken For Snow","Celer",1311348623,2011,"2011-10-12","https://celer.bandcamp.com/album/spumes-mistaken-for-snow"],[1743127088,"a","Foolish Causes of Fail and Ruin","Celer",159827737,2011,"2011-10-05","https://celer.bandcamp.com/album/foolish-causes-of-fail-and-ruin"],[1152176465,"a","Levitation and Breaking Points","Celer",1046698094,2011,"2011-09-15","https://celer.bandcamp.com/album/levitation-and-breaking-points"],[4052907153,"a","Sunlir (Remastered)","Celer",184349415,2011,"2011-09-01","https://celer.bandcamp.com/album/sunlir-remastered"],[4200437315,"a","Ever, Irreplaceable Beauty","Celer",941901547,2011,"2011-07-26","https://celer.bandcamp.com/album/ever-irreplaceable-beauty"],[1599933339,"a","Menggayakan","Celer",2304531564,2011,"2011-07-17","https://celer.bandcamp.com/album/menggayakan"],[864446895,"a","Dearest Ices","Celer",1618195868,2011,"2011-06-27","https://celer.bandcamp.com/album/dearest-ices"],[4157030679,"a","Ceylon (Remastered)","Celer",1383560083,2011,"2011-06-19","https://celer.bandcamp.com/album/ceylon-remastered"],[1231453862,"a","Endes","Celer",346850117,2011,"2011-04-21","https://celer.bandcamp.com/album/endes"],[1927391467,"a","The Die That's Caste","Celer",1853500744,2010,"2010-11-03","https://celer.bandcamp.com/album/the-die-thats-caste"],[3182248036,"a","Generic City","Yui Onodera + Celer",4017320635,2010,"2010-11-01","https://celer.bandcamp.com/album/generic-city"],[397301807,"a","Compositions For Cassette","Celer",991952879,2010,"2010-11-01","https://celer.bandcamp.com/album/compositions-for-cassette"],[758873283,"a","Honey Moon","Celer",3405634169,2010,"2010-10-18","https://celer.bandcamp.com/album/honey-moon"],[1833221517,"a","Weavings of a Rapid Disenchantment","Celer",502715730,2010,"2010-10-08","https://celer.bandcamp.com/album/weavings-of-a-rapid-disenchantment"],[3445742062,"a","Panoramic Dreams Bathed In Seldomness","Celer",377290001,2010,"2010-09-10","https://celer.bandcamp.com/album/panoramic-dreams-bathed-in-seldomness"],[4150739250,"a","Hell Detoured","Celer",1217484391,2010,"2010-09-06","https://celer.bandcamp.com/album/hell-detoured"],[569166890,"a","Dying Star","Celer",813768621,2010,"2010-07-09","https://celer.bandcamp.com/album/dying-star"],[1866601116,"a","All At Once Is What Eternity Is","Celer",3076324448,2010,"2010-01-13","https://celer.bandcamp.com/album/all-at-once-is-what-eternity-is"],[612262755,"a","Pockets of Wheat","Celer",1929036324,2010,"2010-01-04","https://celer.bandcamp.com/album/pockets-of-wheat"],[3824384641,"a","Four Pieces Four","Celer",2740648259,2009,"2009-12-11","https://celer.bandcamp.com/album/four-pieces-four"],[4052434567,"a","In Escaping Lakes","Celer",1315890668,2009,"2009-11-11","https://celer.bandcamp.com/album/in-escaping-lakes"],[354815376,"a","Breeze of Roses","Celer",490059888,2009,"2009-11-01","https://celer.bandcamp.com/album/breeze-of-roses"],[556677956,"a","Four Pieces Three","Celer",3510058220,2009,"2009-06-30","https://celer.bandcamp.com/album/four-pieces-three"],[1040733884,"a","Four Pieces Two","Celer",3028787093,2009,"2009-03-31","https://celer.bandcamp.com/album/four-pieces-two"],[2177228031,"a","Capri (2009 CD edition)","Celer",2556347114,2009,"2009-02-17","https://celer.bandcamp.com/album/capri-2009-cd-edition"],[3876602939,"a","Rags of Contentment","Celer",2199815574,2009,"2009-02-10","https://celer.bandcamp.com/album/rags-of-contentment"],[2071563620,"a","Four Pieces One","Celer",624394735,2009,"2009-01-19","https://celer.bandcamp.com/album/four-pieces-one"],[543189669,"a","Tropical","Celer",3222982893,2008,"2008-12-11","https://celer.bandcamp.com/album/tropical"],[2339414291,"a","Para (Remastered)","Celer",499518200,2007,"2007-11-11","https://celer.bandcamp.com/album/para-remastered"],[3536787960,"a","Cantus Libres (Remastered)","Celer",2639097275,2007,"2007-11-10","https://celer.bandcamp.com/album/cantus-libres-remastered"],[2883995645,"a","Neon (Remastered)","Celer",960025670,2007,"2007-09-09","https://celer.bandcamp.com/album/neon-remastered"],[3961346178,"a","Sieline","Celer",37600385,2007,"2007-08-01","https://celer.bandcamp.com/album/sieline"],[603011883,"a","Belsslsssll","Celer",971962043,2007,"2007-05-06","https://celer.bandcamp.com/album/belsslsssll"],[3645857534,"a","Dilué","Celer",395847440,2007,"2007-03-05","https://celer.bandcamp.com/album/dilu"],[4225567519,"a","Sadha (Remastered)","Celer",1064728832,2007,"2007-01-01","https://celer.bandcamp.com/album/sadha-remastered"],[3596217212,"a","Canopy","Celer",430587301,2007,"2007-01-01","https://celer.bandcamp.com/album/canopy"],[2851920860,"a","Continents (Remastered)","Celer",3499283093,2006,"2006-10-01","https://celer.bandcamp.com/album/continents-remastered"],[1543867554,"a","Scols (Remastered)","Celer",55654213,2006,"2006-01-06","https://celer.bandcamp.com/album/scols-remastered"]];
+const BACKDROP_IDS = [2456104073,3346002469,4284133600,3326798545,2501738149,784326765,3218861428,649432939,2317393504,2761802976,3264113896,3395381999,3684904546,2113732901,833880166,832054373,4070280830,279442965,1041773038,2839929824,1353149956,3402331032,2393317870,4134742374,1656396298,3541797240,421233988,2749032312,3548957170,4269137443,357915257,3177600902,1005287000,852148095,3128923767,2401049837];
+
+const RELEASES = RAW.map((r, idx) => {
+  const id = r[0];
+  const type = r[1] === "t" ? "track" : "album";
+  const title = r[2];
+  const artist = r[3] || "Celer";
+  const artId = r[4];
+  const year = r[5];
+  const isoDate = r[6];
+  const url = r[7];
+  const isCollab = artist !== "Celer";
+  const isDuoEra = year > 0 && year <= 2009 && !isCollab;
+  const isGems = /\bgems\b/i.test(title);
+  const isPlays = /^plays\s+/i.test(title);
+  const isRemaster = /(remaster|expanded|deluxe|reissue)/i.test(title);
+  return {
+    idx,
+    frameNo: String(idx + 1).padStart(3, "0"),
+    id,
+    type,
+    title,
+    artist,
+    artId,
+    year,
+    isoDate,
+    url,
+    isCollab,
+    isDuoEra,
+    isGems,
+    isPlays,
+    isRemaster
+  };
+});
+
+const STORAGE_FAVS = "celer_saved_v1";
+const STORAGE_RECENT = "celer_recent_v1";
+const STORAGE_THEME = "celer_theme_v1";
+
+const SERIES_FILTERS = [
+  { key: "ALL", label: "All", test: () => true },
+  { key: "duo", label: "Duo Era 2006–09", test: r => r.year > 0 && r.year <= 2009 },
+  { key: "recent20s", label: "2020–2026", test: r => r.year >= 2020 },
+  { key: "gems", label: "Gems I–VI", test: r => r.isGems },
+  { key: "plays", label: "Plays Classics", test: r => r.isPlays },
+  { key: "collab", label: "Collaborations", test: r => r.isCollab },
+  { key: "remaster", label: "Remastered", test: r => r.isRemaster },
+  { key: "tracks", label: "Single Tracks", test: r => r.type === "track" }
+];
+
+const state = {
+  selectedId: RELEASES[0].id,
+  query: "",
+  sort: "newest",
+  year: "ALL",
+  series: "ALL",
+  onlySaved: false,
+  sidebarView: "list",
+  renderLimit: 80,
+  wallOpen: false,
+  wallLimit: 120,
+  darkroom: false,
+  saved: new Set(loadJson(STORAGE_FAVS, [])),
+  recent: loadJson(STORAGE_RECENT, [])
+};
+
+function loadJson(key, fallback) {
+  try {
+    const val = localStorage.getItem(key);
+    return val ? JSON.parse(val) : fallback;
+  } catch { return fallback; }
+}
+
+function saveJson(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
+}
+
+function artUrl(artId, size) {
+  return "https://f4.bcbits.com/img/a" + artId + "_" + size + ".jpg";
+}
+
+function esc(str) {
+  return String(str).replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"
+  }[c]));
+}
+
+function showToast(msg) {
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.classList.add("show");
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => el.classList.remove("show"), 2000);
+}
+
+function formatDate(iso) {
+  if (!iso) return "";
+  const parts = iso.split("-");
+  if (parts.length !== 3) return iso;
+  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const m = months[parseInt(parts[1], 10) - 1] || parts[1];
+  return m + " " + parseInt(parts[2], 10) + ", " + parts[0];
+}
+
+function eraSummary(r) {
+  if (r.isCollab) {
+    return "Collaborative archival recording credited to " + r.artist + ".";
+  }
+  if (r.year > 0 && r.year <= 2009) {
+    return "Recorded during the original Celer duo period (Will Long & Danielle Baquet, 2005–2009).";
+  }
+  if (r.isGems) {
+    return "Part of Celer's Gems series (2024–2026) of curated tape-loop and ambient studies.";
+  }
+  if (r.isPlays) {
+    return "Classical tape-loop and ambient re-interpretation from Celer's Plays series.";
+  }
+  return "Will Long solo ambient, tape-loop, and field-recording catalog entry.";
+}
+
+function eraTagText(r) {
+  if (r.isCollab) return "Collaboration";
+  if (r.year > 0 && r.year <= 2009) return "Will & Danielle · Duo Era";
+  if (r.isGems) return "Gems Series";
+  if (r.isPlays) return "Plays Series";
+  return "Will Long · Solo Era";
+}
+
+/* Theme (Daylight Paper vs Evening Darkroom) */
+function applyTheme(isDark, rerenderEmbed) {
+  state.darkroom = !!isDark;
+  document.documentElement.classList.toggle("darkroom", state.darkroom);
+  const btn = document.getElementById("themeToggleBtn");
+  btn.textContent = state.darkroom ? "Daylight" : "Darkroom";
+  btn.classList.toggle("active", state.darkroom);
+  saveJson(STORAGE_THEME, state.darkroom ? "darkroom" : "daylight");
+  if (rerenderEmbed) renderDetail();
+}
+
+/* Backdrop Contact Sheet */
+function buildCollage(shuffle) {
+  const grid = document.getElementById("collageGrid");
+  const ids = [...BACKDROP_IDS];
+  if (shuffle) {
+    for (let i = ids.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [ids[i], ids[j]] = [ids[j], ids[i]];
+    }
+  }
+  grid.innerHTML = "";
+  ids.forEach((artId, idx) => {
+    const tile = document.createElement("div");
+    tile.className = "collage-tile";
+    const img = new Image();
+    img.referrerPolicy = "no-referrer";
+    img.onload = () => {
+      tile.style.backgroundImage = "url('" + artUrl(artId, 9) + "')";
+      setTimeout(() => tile.classList.add("loaded"), (idx % 9) * 35);
+    };
+    img.src = artUrl(artId, 9);
+    grid.appendChild(tile);
+  });
+}
+
+/* Populate Year Select & Series Buttons */
+function populateControls() {
+  const yearCounts = new Map();
+  RELEASES.forEach(r => {
+    if (r.year) yearCounts.set(r.year, (yearCounts.get(r.year) || 0) + 1);
+  });
+  const yearSelect = document.getElementById("yearSelect");
+  const years = [...yearCounts.keys()].sort((a, b) => b - a);
+  years.forEach(y => {
+    const opt = document.createElement("option");
+    opt.value = String(y);
+    opt.textContent = y + " (" + yearCounts.get(y) + ")";
+    yearSelect.appendChild(opt);
+  });
+
+  const strip = document.getElementById("seriesStrip");
+  strip.innerHTML = "";
+  SERIES_FILTERS.forEach(sf => {
+    const cnt = RELEASES.filter(sf.test).length;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "series-btn" + (state.series === sf.key ? " active" : "");
+    btn.dataset.key = sf.key;
+    btn.textContent = sf.label + " (" + cnt + ")";
+    btn.addEventListener("click", () => {
+      state.series = sf.key;
+      state.renderLimit = 80;
+      updateSeriesButtons();
+      renderList();
+      if (state.wallOpen) renderWall();
+    });
+    strip.appendChild(btn);
+  });
+}
+
+function updateSeriesButtons() {
+  document.querySelectorAll(".series-btn").forEach(b => {
+    b.classList.toggle("active", b.dataset.key === state.series);
+  });
+}
+
+/* Filter + Sort Pipeline */
+function getFiltered() {
+  const q = state.query.trim().toLowerCase();
+  const seriesObj = SERIES_FILTERS.find(s => s.key === state.series) || SERIES_FILTERS[0];
+  let list = RELEASES.filter(r => {
+    if (state.onlySaved && !state.saved.has(r.id)) return false;
+    if (state.year !== "ALL" && String(r.year) !== state.year) return false;
+    if (!seriesObj.test(r)) return false;
+    if (q) {
+      const hay = (r.title + " " + r.artist + " " + r.year + " " + eraTagText(r)).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  list = [...list];
+  if (state.sort === "newest") {
+    list.sort((a, b) => (b.isoDate || "").localeCompare(a.isoDate || "") || b.id - a.id);
+  } else if (state.sort === "oldest") {
+    list.sort((a, b) => (a.isoDate || "").localeCompare(b.isoDate || "") || a.id - b.id);
+  } else if (state.sort === "title") {
+    list.sort((a, b) => a.title.localeCompare(b.title));
+  } else if (state.sort === "titleDesc") {
+    list.sort((a, b) => b.title.localeCompare(a.title));
+  } else if (state.sort === "longest") {
+    list.sort((a, b) => b.title.length - a.title.length || a.title.localeCompare(b.title));
+  } else if (state.sort === "shortest") {
+    list.sort((a, b) => a.title.length - b.title.length || a.title.localeCompare(b.title));
+  }
+  return list;
+}
+
+function updateFavBadge() {
+  document.getElementById("favCount").textContent = String(state.saved.size);
+  document.getElementById("favFilterBtn").classList.toggle("active", state.onlySaved);
+}
+
+/* Render Sidebar List / Covers */
+function renderList() {
+  const filtered = getFiltered();
+  const listEl = document.getElementById("albumList");
+  listEl.classList.toggle("grid-mode", state.sidebarView === "grid");
+
+  document.getElementById("visibleCount").textContent = String(filtered.length);
+  const sortLabels = {
+    newest: "Newest First",
+    oldest: "Chronological",
+    title: "Title A–Z",
+    titleDesc: "Title Z–A",
+    longest: "Longest Titles",
+    shortest: "Shortest Titles"
+  };
+  document.getElementById("scopeLabel").textContent = state.onlySaved
+    ? "Saved Collection"
+    : (state.year !== "ALL" ? state.year + " · " + sortLabels[state.sort] : sortLabels[state.sort]);
+
+  const slice = filtered.slice(0, state.renderLimit);
+  document.getElementById("loadedCounter").textContent =
+    "SHOWING " + slice.length + " OF " + filtered.length;
+
+  if (!filtered.length) {
+    listEl.innerHTML = '<div class="empty-state">No recordings match the current filter.<br><button class="desk-btn" id="resetFiltersBtn" type="button" style="margin-top:12px;">Reset Filters</button></div>';
+    const resetBtn = document.getElementById("resetFiltersBtn");
+    if (resetBtn) resetBtn.addEventListener("click", resetFilters);
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  slice.forEach(r => {
+    const isActive = r.id === state.selectedId;
+    const isSaved = state.saved.has(r.id);
+
+    if (state.sidebarView === "grid") {
+      const card = document.createElement("div");
+      card.className = "grid-card" + (isActive ? " active" : "");
+      card.setAttribute("role", "button");
+      card.tabIndex = 0;
+      card.dataset.id = String(r.id);
+      card.innerHTML =
+        '<div class="grid-card-img">' +
+          '<img src="' + artUrl(r.artId, 16) + '" alt="' + esc(r.title) + '" loading="lazy" referrerpolicy="no-referrer">' +
+          '<button type="button" class="card-loupe" title="Magnify cover photo" aria-label="Magnify cover for ' + esc(r.title) + '">' +
+            '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true">' +
+              '<circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.8"/>' +
+              '<path d="M13.2 13.2L17 17M9 6.8V11.2M6.8 9H11.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>' +
+            '</svg>' +
+          '</button>' +
+        '</div>' +
+        '<div class="grid-card-caption">' + esc(r.title) + '</div>' +
+        '<div class="grid-card-year">' + (r.year || "") + ' · #' + r.frameNo + (isSaved ? " · ★" : "") + '</div>';
+      card.querySelector(".card-loupe").addEventListener("click", e => {
+        e.stopPropagation();
+        hideHoverZoom();
+        openLightbox(r);
+      });
+      card.addEventListener("mouseenter", () => showHoverZoom(r, card));
+      card.addEventListener("mouseleave", hideHoverZoom);
+      card.addEventListener("click", () => {
+        hideHoverZoom();
+        selectRelease(r.id);
+        if (window.innerWidth <= 1020) {
+          document.getElementById("detail").scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+      card.addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          hideHoverZoom();
+          selectRelease(r.id);
+        }
+      });
+      frag.appendChild(card);
+    } else {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "album-row" + (isActive ? " active" : "");
+      btn.dataset.id = String(r.id);
+      btn.innerHTML =
+        '<div class="row-thumb"><img src="' + artUrl(r.artId, 9) + '" alt="" loading="lazy" referrerpolicy="no-referrer"></div>' +
+        '<div class="row-meta">' +
+          '<div class="row-title">' + esc(r.title) + '</div>' +
+          '<div class="row-sub">' + esc(r.artist) + (r.type === "track" ? " · Single Track" : "") + '</div>' +
+        '</div>' +
+        '<div class="row-right">' +
+          '<span>' + (r.year || "") + '</span>' +
+          (isSaved ? '<span class="row-saved" aria-label="Saved">★</span>' : '<span>#' + r.frameNo + '</span>') +
+        '</div>';
+      btn.addEventListener("click", () => selectRelease(r.id));
+      frag.appendChild(btn);
+    }
+  });
+
+  if (filtered.length > slice.length) {
+    const wrap = document.createElement("div");
+    wrap.className = "load-more-wrap";
+    const more = document.createElement("button");
+    more.type = "button";
+    more.className = "desk-btn";
+    more.textContent = "Load Remaining " + (filtered.length - slice.length) + " Releases";
+    more.addEventListener("click", () => {
+      state.renderLimit += 100;
+      renderList();
+    });
+    wrap.appendChild(more);
+    frag.appendChild(wrap);
+  }
+
+  listEl.innerHTML = "";
+  listEl.appendChild(frag);
+}
+
+function resetFilters() {
+  state.query = "";
+  state.year = "ALL";
+  state.series = "ALL";
+  state.onlySaved = false;
+  state.renderLimit = 80;
+  document.getElementById("searchInput").value = "";
+  document.getElementById("yearSelect").value = "ALL";
+  updateSeriesButtons();
+  updateFavBadge();
+  renderList();
+}
+
+/* Record Recently Played */
+function recordRecent(id) {
+  state.recent = [id, ...state.recent.filter(x => x !== id)].slice(0, 12);
+  saveJson(STORAGE_RECENT, state.recent);
+}
+
+function selectRelease(id, opts) {
+  const found = RELEASES.find(r => r.id === id);
+  if (!found) return;
+  state.selectedId = id;
+  if (!opts || !opts.skipRecent) recordRecent(id);
+  try {
+    const url = new URL(window.location.href);
+    url.searchParams.set("id", String(id));
+    history.replaceState(null, "", url.toString());
+  } catch {}
+
+  // Update ambient cover wash
+  document.getElementById("activeBloom").style.backgroundImage = "url('" + artUrl(found.artId, 16) + "')";
+
+  renderDetail();
+  renderList();
+
+  const activeEl = document.querySelector('#albumList [data-id="' + id + '"]');
+  if (activeEl && (!opts || !opts.noScroll)) {
+    activeEl.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }
+}
+
+/* Render Main Monograph Listening Desk */
+function renderDetail() {
+  const r = RELEASES.find(x => x.id === state.selectedId) || RELEASES[0];
+  const isSaved = state.saved.has(r.id);
+  const bgcol = state.darkroom ? "181c21" : "faf9f6";
+  const linkcol = state.darkroom ? "7ab3d4" : "235472";
+  const embedKind = r.type === "track" ? "track" : "album";
+  const embedSrc = "https://bandcamp.com/EmbeddedPlayer/" + embedKind + "=" + r.id +
+    "/size=large/bgcol=" + bgcol + "/linkcol=" + linkcol +
+    "/artwork=none/transparent=true/";
+
+  const isLong = r.title.length >= 52;
+
+  // Nearby recordings from same year (excluding current)
+  const sameYear = RELEASES.filter(x => x.year === r.year && x.id !== r.id).slice(0, 6);
+  const recentItems = state.recent
+    .filter(id => id !== r.id)
+    .map(id => RELEASES.find(x => x.id === id))
+    .filter(Boolean)
+    .slice(0, 6);
+
+  const detailEl = document.getElementById("detail");
+  detailEl.innerHTML =
+    '<div class="detail-inner">' +
+      '<article class="monograph-sheet">' +
+        '<div class="monograph-top">' +
+          '<div class="photo-mat">' +
+            '<button type="button" class="photo-btn" id="openLightboxBtn" title="Inspect 35mm cover photograph (L)">' +
+              '<img id="heroCoverImg" src="' + artUrl(r.artId, 16) + '" alt="' + esc(r.title) + ' album cover" referrerpolicy="no-referrer">' +
+            '</button>' +
+            '<div class="photo-plate-caption">' +
+              '<span>PLATE ' + r.frameNo + ' / 174</span>' +
+              '<span>' + (r.year || "Archive") + '</span>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="meta-col">' +
+            '<div class="archival-line">' +
+              '<span class="accent-text">' + esc(eraTagText(r)) + '</span>' +
+              '<span aria-hidden="true">·</span>' +
+              '<span>' + esc(formatDate(r.isoDate) || String(r.year)) + '</span>' +
+              '<span aria-hidden="true">·</span>' +
+              '<span>' + (r.type === "track" ? "Single Track" : "Album") + '</span>' +
+            '</div>' +
+
+            '<h1 class="hero-title' + (isLong ? " long-prose" : "") + '">' + esc(r.title) + '</h1>' +
+            '<div class="artist-credit">Recorded by <strong>' + esc(r.artist) + '</strong></div>' +
+            '<p class="era-note">' + esc(eraSummary(r)) + '</p>' +
+
+            '<div class="deck-actions">' +
+              '<button type="button" class="desk-btn save-btn' + (isSaved ? " saved" : "") + '" id="saveCurrentBtn" title="Save or unsave release (F)">' +
+                (isSaved ? "★ Saved" : "☆ Save") +
+              '</button>' +
+              '<button type="button" class="desk-btn" id="prevBtn" title="Previous release (←)">← Prev</button>' +
+              '<button type="button" class="desk-btn" id="nextBtn" title="Next release (→)">Next →</button>' +
+              '<button type="button" class="desk-btn" id="inspectPhotoBtn" title="Inspect full cover photograph (L)">Inspect Photo</button>' +
+              '<button type="button" class="desk-btn" id="copyLinkBtn" title="Copy direct link (C)">Copy Link</button>' +
+              '<a class="desk-btn" href="' + esc(r.url) + '" target="_blank" rel="noopener">Open on Bandcamp ↗</a>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="tape-divider">Bandcamp Listening Deck · Direct Stream</div>' +
+
+        '<div class="player-frame-wrap">' +
+          '<iframe class="bc-iframe' + (r.type === "track" ? " track-embed" : "") + '" ' +
+            'src="' + embedSrc + '" seamless title="' + esc(r.title) + ' by ' + esc(r.artist) + '"></iframe>' +
+        '</div>' +
+      '</article>' +
+
+      (sameYear.length ? renderShelfHtml("Also from " + r.year, sameYear.length + " recordings from the same year", sameYear) : "") +
+      (recentItems.length ? renderShelfHtml("Recently Played", "Stored locally in this browser", recentItems) : "") +
+
+      '<div class="shortcuts-bar">' +
+        '<span>/ Search · ← / → Prev / Next · R Random · W Cover Wall · L Photo Lightbox · F Save</span>' +
+        '<span>Celer · Will Long &amp; Danielle Baquet (2005–2026)</span>' +
+      '</div>' +
+    '</div>';
+
+  const heroImg = document.getElementById("heroCoverImg");
+  if (heroImg) {
+    heroImg.onerror = () => {
+      const btn = document.getElementById("openLightboxBtn");
+      if (btn) btn.innerHTML = '<div class="photo-fallback">' + esc(r.title) + '</div>';
+    };
+  }
+
+  document.getElementById("saveCurrentBtn").addEventListener("click", () => toggleSave(r.id));
+  document.getElementById("prevBtn").addEventListener("click", () => stepRelease(-1));
+  document.getElementById("nextBtn").addEventListener("click", () => stepRelease(1));
+  document.getElementById("openLightboxBtn").addEventListener("click", () => openLightbox(r));
+  document.getElementById("inspectPhotoBtn").addEventListener("click", () => openLightbox(r));
+  document.getElementById("copyLinkBtn").addEventListener("click", () => copyCurrentLink(r));
+
+  detailEl.querySelectorAll(".strip-card").forEach(card => {
+    card.addEventListener("click", () => selectRelease(Number(card.dataset.id)));
+  });
+}
+
+function renderShelfHtml(title, subtitle, items) {
+  return '<section class="shelf-section">' +
+    '<div class="shelf-head">' +
+      '<h2 class="shelf-title">' + esc(title) + '</h2>' +
+      '<span class="shelf-sub">' + esc(subtitle) + '</span>' +
+    '</div>' +
+    '<div class="strip-grid">' +
+      items.map(it =>
+        '<button type="button" class="strip-card" data-id="' + it.id + '">' +
+          '<div class="strip-thumb"><img src="' + artUrl(it.artId, 9) + '" alt="' + esc(it.title) + '" loading="lazy" referrerpolicy="no-referrer"></div>' +
+          '<div class="strip-name">' + esc(it.title) + '</div>' +
+          '<div class="strip-year">' + (it.year || "") + ' · #' + it.frameNo + '</div>' +
+        '</button>'
+      ).join("") +
+    '</div>' +
+  '</section>';
+}
+
+function toggleSave(id) {
+  if (state.saved.has(id)) {
+    state.saved.delete(id);
+    showToast("Removed from Saved");
+  } else {
+    state.saved.add(id);
+    showToast("Saved to collection");
+  }
+  saveJson(STORAGE_FAVS, [...state.saved]);
+  updateFavBadge();
+  renderDetail();
+  renderList();
+}
+
+function stepRelease(delta) {
+  const list = getFiltered();
+  if (!list.length) return;
+  const idx = list.findIndex(r => r.id === state.selectedId);
+  const nextIdx = idx === -1 ? 0 : (idx + delta + list.length) % list.length;
+  selectRelease(list[nextIdx].id);
+}
+
+function pickRandom() {
+  const list = getFiltered();
+  const pool = list.length ? list : RELEASES;
+  let pick = pool[Math.floor(Math.random() * pool.length)];
+  if (pool.length > 1 && pick.id === state.selectedId) {
+    pick = pool[(pool.indexOf(pick) + 1) % pool.length];
+  }
+  selectRelease(pick.id);
+  showToast("Selected: " + pick.title);
+}
+
+function copyCurrentLink(r) {
+  const link = window.location.href;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(link).then(() => showToast("Link copied")).catch(() => showToast(r.url));
+  } else {
+    showToast("Link ready in address bar");
+  }
+}
+
+/* Cover Wall */
+function toggleWall(force) {
+  state.wallOpen = typeof force === "boolean" ? force : !state.wallOpen;
+  document.getElementById("wallView").classList.toggle("open", state.wallOpen);
+  document.getElementById("wallToggleBtn").classList.toggle("active", state.wallOpen);
+  if (state.wallOpen) renderWall();
+}
+
+function getFramesPerStrip() {
+  const w = window.innerWidth;
+  if (w >= 1240) return 5;
+  if (w >= 920) return 4;
+  if (w >= 620) return 3;
+  return 2;
+}
+
+function renderWall() {
+  const filtered = getFiltered();
+  document.getElementById("wallCount").textContent = String(filtered.length);
+  const grid = document.getElementById("wallGrid");
+  const slice = filtered.slice(0, state.wallLimit);
+  const perStrip = getFramesPerStrip();
+  const frag = document.createDocumentFragment();
+
+  if (!slice.length) {
+    grid.innerHTML = '<div class="empty-state">No frames match the current filter.</div>';
+    return;
+  }
+
+  for (let s = 0; s < slice.length; s += perStrip) {
+    const chunk = slice.slice(s, s + perStrip);
+    const stripNum = String(Math.floor(s / perStrip) + 1).padStart(2, "0");
+    const firstFrame = chunk[0].frameNo;
+    const lastFrame = chunk[chunk.length - 1].frameNo;
+
+    const strip = document.createElement("div");
+    strip.className = "film-strip";
+
+    const topBar = document.createElement("div");
+    topBar.className = "film-edge-bar";
+    topBar.innerHTML =
+      '<span>CELER 400TX · STRIP ' + stripNum + '</span>' +
+      '<span>35MM CONTACT ARCHIVE · PLATES ' + firstFrame + '–' + lastFrame + '</span>';
+
+    const topSprockets = document.createElement("div");
+    topSprockets.className = "film-sprockets";
+    topSprockets.setAttribute("aria-hidden", "true");
+
+    const framesRow = document.createElement("div");
+    framesRow.className = "film-frames";
+    framesRow.style.gridTemplateColumns = "repeat(" + perStrip + ", minmax(0, 1fr))";
+
+    chunk.forEach(r => {
+      const frame = document.createElement("div");
+      frame.className = "film-frame" + (r.id === state.selectedId ? " active" : "");
+      frame.setAttribute("role", "button");
+      frame.tabIndex = 0;
+      frame.innerHTML =
+        '<div class="film-frame-img">' +
+          '<img src="' + artUrl(r.artId, 16) + '" alt="' + esc(r.title) + '" loading="lazy" referrerpolicy="no-referrer">' +
+          '<button type="button" class="card-loupe" title="Magnify 35mm cover photo" aria-label="Magnify cover for ' + esc(r.title) + '">' +
+            '<svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true">' +
+              '<circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.8"/>' +
+              '<path d="M13.2 13.2L17 17M9 6.8V11.2M6.8 9H11.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>' +
+            '</svg>' +
+          '</button>' +
+        '</div>' +
+        '<div class="film-frame-title">' + esc(r.title) + '</div>' +
+        '<div class="film-frame-meta">' +
+          '<span>▶ ' + r.frameNo + 'A</span>' +
+          '<span class="frame-yr">' + (r.year || "") + '</span>' +
+        '</div>';
+      frame.querySelector(".card-loupe").addEventListener("click", e => {
+        e.stopPropagation();
+        openLightbox(r);
+      });
+      frame.addEventListener("click", () => {
+        selectRelease(r.id);
+        toggleWall(false);
+      });
+      frame.addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          selectRelease(r.id);
+          toggleWall(false);
+        }
+      });
+      framesRow.appendChild(frame);
+    });
+
+    const bottomSprockets = document.createElement("div");
+    bottomSprockets.className = "film-sprockets";
+    bottomSprockets.setAttribute("aria-hidden", "true");
+
+    const bottomBar = document.createElement("div");
+    bottomBar.className = "film-edge-bar";
+    bottomBar.innerHTML =
+      '<span>SAFETY FILM · TWO ACORNS</span>' +
+      '<span>CLICK FRAME TO PLAY · LOUPE TO MAGNIFY</span>';
+
+    strip.appendChild(topBar);
+    strip.appendChild(topSprockets);
+    strip.appendChild(framesRow);
+    strip.appendChild(bottomSprockets);
+    strip.appendChild(bottomBar);
+    frag.appendChild(strip);
+  }
+
+  if (filtered.length > slice.length) {
+    const wrap = document.createElement("div");
+    wrap.className = "load-more-wrap";
+    const more = document.createElement("button");
+    more.type = "button";
+    more.className = "desk-btn";
+    more.textContent = "Load Remaining Film Strips (" + (filtered.length - slice.length) + " Frames)";
+    more.addEventListener("click", () => {
+      state.wallLimit = filtered.length;
+      renderWall();
+    });
+    wrap.appendChild(more);
+    frag.appendChild(wrap);
+  }
+
+  grid.innerHTML = "";
+  grid.appendChild(frag);
+}
+
+let lastWallCols = getFramesPerStrip();
+window.addEventListener("resize", () => {
+  const cols = getFramesPerStrip();
+  if (cols !== lastWallCols) {
+    lastWallCols = cols;
+    if (state.wallOpen) renderWall();
+  }
+});
+
+/* 35mm Photographic Lightbox */
+let lightboxReleaseId = null;
+
+function openLightbox(r) {
+  lightboxReleaseId = r.id;
+  const lb = document.getElementById("lightbox");
+  const img = document.getElementById("lightboxImg");
+  img.src = artUrl(r.artId, 10);
+  img.alt = r.title + " cover photograph";
+  document.getElementById("lightboxCaption").textContent = r.title;
+  document.getElementById("lightboxMeta").textContent =
+    r.artist + " · " + (formatDate(r.isoDate) || r.year) + " · Plate " + r.frameNo + " / 174";
+  const playBtn = document.getElementById("lightboxPlayBtn");
+  playBtn.style.display = r.id === state.selectedId ? "none" : "inline-flex";
+  lb.classList.add("open");
+}
+
+function stepLightbox(delta) {
+  const list = getFiltered();
+  const pool = list.length ? list : RELEASES;
+  const idx = pool.findIndex(r => r.id === lightboxReleaseId);
+  const nextIdx = idx === -1 ? 0 : (idx + delta + pool.length) % pool.length;
+  openLightbox(pool[nextIdx]);
+}
+
+function closeLightbox() {
+  lightboxReleaseId = null;
+  document.getElementById("lightbox").classList.remove("open");
+}
+
+/* Floating 35mm Hover Zoom Preview for Sidebar Covers View */
+function showHoverZoom(r, cardEl) {
+  if (window.innerWidth <= 1020) return;
+  if (window.matchMedia && !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+  const el = document.getElementById("hoverZoom");
+  const img = document.getElementById("hoverZoomImg");
+  img.src = artUrl(r.artId, 16);
+  img.alt = r.title;
+  document.getElementById("hoverZoomTitle").textContent = r.title;
+  document.getElementById("hoverZoomMeta").textContent =
+    r.artist + " · " + (r.year || "") + " · Plate #" + r.frameNo;
+
+  const sidebarRect = document.querySelector(".sidebar").getBoundingClientRect();
+  const cardRect = cardEl.getBoundingClientRect();
+  const left = Math.min(sidebarRect.right + 14, window.innerWidth - 304);
+  const estHeight = 368;
+  const top = Math.max(16, Math.min(cardRect.top - 24, window.innerHeight - estHeight - 16));
+  el.style.left = left + "px";
+  el.style.top = top + "px";
+  el.classList.add("visible");
+}
+
+function hideHoverZoom() {
+  const el = document.getElementById("hoverZoom");
+  if (el) el.classList.remove("visible");
+}
+
+document.getElementById("albumList").addEventListener("scroll", hideHoverZoom, { passive: true });
+document.getElementById("albumList").addEventListener("mouseleave", hideHoverZoom);
+
+/* Wire Events */
+document.getElementById("randomBtn").addEventListener("click", pickRandom);
+document.getElementById("favFilterBtn").addEventListener("click", () => {
+  state.onlySaved = !state.onlySaved;
+  state.renderLimit = 80;
+  updateFavBadge();
+  renderList();
+  if (state.wallOpen) renderWall();
+});
+document.getElementById("wallToggleBtn").addEventListener("click", () => toggleWall());
+document.getElementById("closeWallBtn").addEventListener("click", () => toggleWall(false));
+document.getElementById("themeToggleBtn").addEventListener("click", () => applyTheme(!state.darkroom, true));
+document.getElementById("remixCollageBtn").addEventListener("click", () => {
+  buildCollage(true);
+  showToast("Contact-sheet backdrop shuffled");
+});
+
+document.getElementById("searchInput").addEventListener("input", e => {
+  state.query = e.target.value;
+  state.renderLimit = 80;
+  renderList();
+  if (state.wallOpen) renderWall();
+});
+
+document.getElementById("sortSelect").addEventListener("change", e => {
+  state.sort = e.target.value;
+  renderList();
+  if (state.wallOpen) renderWall();
+});
+
+document.getElementById("yearSelect").addEventListener("change", e => {
+  state.year = e.target.value;
+  state.renderLimit = 80;
+  renderList();
+  if (state.wallOpen) renderWall();
+});
+
+document.getElementById("viewListBtn").addEventListener("click", () => {
+  state.sidebarView = "list";
+  document.getElementById("viewListBtn").classList.add("active");
+  document.getElementById("viewGridBtn").classList.remove("active");
+  renderList();
+});
+
+document.getElementById("viewGridBtn").addEventListener("click", () => {
+  state.sidebarView = "grid";
+  document.getElementById("viewGridBtn").classList.add("active");
+  document.getElementById("viewListBtn").classList.remove("active");
+  renderList();
+});
+
+document.getElementById("closeLightboxBtn").addEventListener("click", closeLightbox);
+document.getElementById("lightboxPrevBtn").addEventListener("click", () => stepLightbox(-1));
+document.getElementById("lightboxNextBtn").addEventListener("click", () => stepLightbox(1));
+document.getElementById("lightboxPlayBtn").addEventListener("click", () => {
+  if (lightboxReleaseId != null) {
+    selectRelease(lightboxReleaseId);
+    closeLightbox();
+    if (state.wallOpen) toggleWall(false);
+  }
+});
+document.getElementById("lightbox").addEventListener("click", e => {
+  if (e.target.id === "lightbox") closeLightbox();
+});
+
+document.addEventListener("keydown", e => {
+  const tag = (e.target && e.target.tagName) || "";
+  const inInput = tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT";
+  const lbOpen = document.getElementById("lightbox").classList.contains("open");
+  if (e.key === "Escape") {
+    if (lbOpen) {
+      closeLightbox();
+      return;
+    }
+    if (state.wallOpen) {
+      toggleWall(false);
+      return;
+    }
+    if (inInput) e.target.blur();
+    return;
+  }
+  if (inInput) return;
+  if (lbOpen) {
+    if (e.key === "ArrowRight") stepLightbox(1);
+    else if (e.key === "ArrowLeft") stepLightbox(-1);
+    return;
+  }
+  if (e.key === "/") {
+    e.preventDefault();
+    document.getElementById("searchInput").focus();
+  } else if (e.key === "r" || e.key === "R") {
+    pickRandom();
+  } else if (e.key === "w" || e.key === "W") {
+    toggleWall();
+  } else if (e.key === "f" || e.key === "F") {
+    toggleSave(state.selectedId);
+  } else if (e.key === "l" || e.key === "L") {
+    const cur = RELEASES.find(x => x.id === state.selectedId);
+    if (cur) openLightbox(cur);
+  } else if (e.key === "c" || e.key === "C") {
+    const cur = RELEASES.find(x => x.id === state.selectedId);
+    if (cur) copyCurrentLink(cur);
+  } else if (e.key === "ArrowRight") {
+    stepRelease(1);
+  } else if (e.key === "ArrowLeft") {
+    stepRelease(-1);
+  }
+});
+
+/* Initialize */
+const savedTheme = loadJson(STORAGE_THEME, "daylight");
+applyTheme(savedTheme === "darkroom", false);
+populateControls();
+updateFavBadge();
+buildCollage(false);
+
+const params = new URLSearchParams(window.location.search);
+const paramId = Number(params.get("id"));
+const initial = RELEASES.find(r => r.id === paramId) || RELEASES[0];
+selectRelease(initial.id, { skipRecent: true, noScroll: true });
+</script>
+</body>
+</html>
