@@ -1124,10 +1124,13 @@
 
   .bc-iframe {
     width: 100%;
-    height: 120px;
+    height: 360px;
     border: 0;
     display: block;
     background: #091517;
+  }
+  .bc-iframe.track-embed {
+    height: 120px;
   }
 
   /* More by Artist & Recently Played Shelves */
@@ -2132,6 +2135,7 @@ function selectIndex(idx, opts) {
   recordHistory(item.key);
   updateActiveVisuals(Boolean(options.scrollIntoView));
   renderDetail(item);
+  if (changed) els.detail.scrollTop = 0;
 }
 
 function recordHistory(key) {
@@ -2184,11 +2188,12 @@ function renderEmptyDetail() {
 
 function renderDetail(item) {
   const isFav = state.favs.has(item.key);
-  const embedParam = item.type === "t" ? "track=" + item.id : "album=" + item.id;
+  const isTrack = item.type === "t";
+  const embedParam = isTrack ? "track=" + item.id : "album=" + item.id;
   const embedSrc =
     "https://bandcamp.com/EmbeddedPlayer/" +
     embedParam +
-    "/size=large/bgcol=091517/linkcol=ebd082/tracklist=false/artwork=small/transparent=true/";
+    "/size=large/bgcol=091517/linkcol=ebd082/artwork=none/transparent=true/";
 
   const moreByArtist = DATA.filter(d => d.artist === item.artist && d.key !== item.key);
   const recentItems = state.history
@@ -2265,15 +2270,15 @@ function renderDetail(item) {
       '</div>' +
       '<div class="embed-shell">' +
         '<div class="embed-label">' +
-          '<span>Bandcamp Audio Stream</span>' +
+          '<span>Bandcamp Listening Deck · ' + (isTrack ? "Single Track" : "Full Album Tracklist") + '</span>' +
           '<span>Direct Label Embed</span>' +
         '</div>' +
-        '<iframe class="bc-iframe" src="' + embedSrc + '" seamless title="' + escapeHtml(item.artist + " — " + item.title) + ' Bandcamp Player"></iframe>' +
+        '<iframe class="bc-iframe' + (isTrack ? " track-embed" : "") + '" src="' + embedSrc + '" seamless title="' + escapeHtml(item.artist + " — " + item.title) + ' Bandcamp Player"></iframe>' +
       '</div>' +
       moreHtml +
       recentHtml +
       '<div class="shortcuts-note">' +
-        'Shortcuts: ↑/↓ or ←/→ step releases · L toggles Cabinet / List · R random · W Cover Wall · / search · Shift+T TV Cast Stage' +
+        'Shortcuts: ↑/↓ or ←/→ step releases · L toggles Cabinet / List · R random · F save · W Cover Wall · / search · Shift+T TV Cast Stage' +
       '</div>' +
     '</article>';
 
@@ -2717,6 +2722,9 @@ document.addEventListener("keydown", e => {
   } else if (e.key === "l" || e.key === "L") {
     e.preventDefault();
     setViewMode(state.viewMode === "cabinet" ? "list" : "cabinet");
+  } else if (e.key === "f" || e.key === "F") {
+    e.preventDefault();
+    if (state.activeKey) toggleFavorite(state.activeKey);
   } else if (e.key === "w" || e.key === "W") {
     e.preventDefault();
     if (state.wallOpen) closeCoverWall();
@@ -2730,6 +2738,7 @@ buildAlphaRail();
 applyFilters(false);
 requestAnimationFrame(drawTelemetry);
 </script>
+<script src="./now-playing-dock.js" defer></script>
 <script src="./chrome-cast.js" defer></script>
 </body>
 </html>

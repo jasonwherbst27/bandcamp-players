@@ -1,0 +1,2596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RidingEasy Records — 172 Releases · ’70s Custom Boogie Van Archive</title>
+<meta name="description" content="1970s custom boogie van culture archive for RidingEasy Records on Bandcamp, spanning 172 releases across 84 artists (2001–2026) including all 24 Brown Acid trips, walnut dashboard gauges, Cabinet &amp; List views, A–Z rail, Cover Wall, persistent resizable Now-Playing Bar, and Chrome Cast.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Righteous&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --shag-deep: #120b07;
+    --walnut: #1c120b;
+    --walnut-2: #271910;
+    --walnut-hover: #332116;
+    --velvet-plum: #2c1420;
+    --ink: #f7ecd4;
+    --ink-mid: #d3c09e;
+    --ink-muted: #9c886a;
+    --tangerine: #eb6b1c;
+    --harvest: #f2b729;
+    --kandy-red: #c93028;
+    --avocado: #869b43;
+    --chrome: #d7d0c2;
+    --chrome-dim: #7f7668;
+    --accent: #f2b729;
+    --accent-hi: #f8ca52;
+    --rule: rgba(242, 183, 41, 0.24);
+    --rule-strong: rgba(242, 183, 41, 0.48);
+    --focus-ring: #f2b729;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --font-display: 'Righteous', Georgia, serif;
+    --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--shag-deep);
+    color: var(--ink);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button, input, select, a { font-family: inherit; }
+
+  button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  /* Airbrushed Sunset & Metalflake Van Mural Atmospheric Backdrop */
+  .ambient-art {
+    position: fixed;
+    inset: -8%;
+    z-index: 0;
+    pointer-events: none;
+    background-size: cover;
+    background-position: center;
+    filter: blur(74px) saturate(0.95) brightness(0.28) sepia(0.24);
+    opacity: 0.48;
+    transform: scale(1.12);
+    transition: background-image 1s ease, opacity 0.6s ease;
+  }
+  body.glow-calm .ambient-art { opacity: 0.14; }
+
+  /* Subtle Tufted Velvet / Walnut Grain & Candy Metalflake Sheen */
+  .van-interior-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at 18% 12%, rgba(235, 107, 28, 0.2) 0%, transparent 48%),
+      radial-gradient(ellipse at 82% 16%, rgba(201, 48, 40, 0.16) 0%, transparent 46%),
+      radial-gradient(ellipse at 50% 92%, rgba(242, 183, 41, 0.1) 0%, transparent 52%),
+      repeating-linear-gradient(45deg, rgba(247, 236, 212, 0.018) 0px, rgba(247, 236, 212, 0.018) 1px, transparent 1px, transparent 26px),
+      repeating-linear-gradient(-45deg, rgba(247, 236, 212, 0.018) 0px, rgba(247, 236, 212, 0.018) 1px, transparent 1px, transparent 26px),
+      linear-gradient(180deg, rgba(18, 11, 7, 0.72) 0%, rgba(14, 8, 5, 0.94) 100%);
+  }
+
+  /* Iconic 1970s 4-Band Boogie Van Sunset Side-Stripe Ribbon */
+  .van-stripe-ribbon {
+    position: relative;
+    z-index: 32;
+    height: 10px;
+    width: 100%;
+    flex-shrink: 0;
+    background: linear-gradient(180deg,
+      #c93028 0%, #c93028 25%,
+      #eb6b1c 25%, #eb6b1c 50%,
+      #f2b729 50%, #f2b729 75%,
+      #f6e5be 75%, #f6e5be 100%
+    );
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.65);
+  }
+
+  /* Custom Van Walnut & Chrome Header */
+  .header {
+    position: relative;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 22px;
+    background:
+      repeating-linear-gradient(90deg, rgba(255, 215, 160, 0.018) 0px, rgba(255, 215, 160, 0.018) 2px, transparent 2px, transparent 14px),
+      linear-gradient(180deg, #2b1a10 0%, #1a1009 100%);
+    border-bottom: 2px solid var(--chrome-dim);
+    box-shadow: inset 0 1px 0 rgba(255, 236, 198, 0.14), 0 4px 16px rgba(0, 0, 0, 0.55);
+    flex-shrink: 0;
+  }
+
+  .brand-wrap {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  /* Teardrop / Bubble Porthole Van Window Crest */
+  .van-porthole {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2.5px solid var(--chrome);
+    background:
+      radial-gradient(circle at 50% 44%, #f8ca52 0%, #eb6b1c 42%, #8e1f1b 72%, #241018 100%);
+    box-shadow:
+      inset 0 2px 6px rgba(255, 255, 255, 0.35),
+      inset 0 -6px 10px rgba(18, 8, 5, 0.68),
+      0 2px 10px rgba(0, 0, 0, 0.65);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .brand {
+    font-family: var(--font-display);
+    font-size: 25px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1.02;
+    color: var(--harvest);
+    text-shadow: 0 2px 0 #4d1c0c, 0 4px 14px rgba(235, 107, 28, 0.32);
+    white-space: nowrap;
+  }
+
+  .subbrand {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-muted);
+    margin-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-mid);
+    text-decoration: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: color 0.14s ease, background-color 0.14s ease, border-color 0.14s ease;
+  }
+  .back-link:hover {
+    color: var(--harvest);
+    background: rgba(242, 183, 41, 0.1);
+    border-color: var(--rule);
+  }
+
+  /* Chrome & Walnut Dash Buttons */
+  .van-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 13px;
+    min-height: 36px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink);
+    background: linear-gradient(180deg, #332116 0%, #1e130c 100%);
+    border: 1px solid rgba(215, 208, 194, 0.34);
+    box-shadow: inset 0 1px 0 rgba(255, 240, 212, 0.16);
+    border-radius: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background-color 0.14s var(--ease), border-color 0.14s var(--ease), color 0.14s var(--ease), transform 0.12s var(--ease);
+  }
+  .van-btn:hover {
+    background: linear-gradient(180deg, #422b1d 0%, #291a10 100%);
+    border-color: var(--harvest);
+    color: var(--harvest);
+  }
+  .van-btn:active { transform: translateY(1px); }
+
+  .van-btn.primary {
+    background: linear-gradient(180deg, #f59030 0%, #d35415 100%);
+    border-color: #ffbe66;
+    color: #160a04;
+    box-shadow: inset 0 1px 0 rgba(255, 238, 198, 0.45);
+  }
+  .van-btn.primary:hover {
+    background: linear-gradient(180deg, #ffa445 0%, #e4611d 100%);
+    color: #100602;
+  }
+
+  .van-btn.active {
+    background: rgba(242, 183, 41, 0.18);
+    border-color: var(--harvest);
+    color: var(--harvest);
+  }
+
+  .count-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.9;
+  }
+
+  /* Main Split Workspace: Left Van Dashboard & Vinyl Rack | Right Back-of-the-Van Lounge */
+  .workspace {
+    position: relative;
+    z-index: 5;
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(560px, 1.32fr) minmax(380px, 0.68fr);
+    overflow: hidden;
+  }
+
+  .rack-zone {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    border-right: 2px solid var(--chrome-dim);
+    background: rgba(20, 12, 8, 0.86);
+  }
+
+  /* 1970s CUSTOM VAN WALNUT DASHBOARD: TWIN VU GAUGES + 8-TRACK STEREO DIAL */
+  .dash-strip {
+    display: grid;
+    grid-template-columns: 118px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 14px;
+    padding: 9px 16px;
+    background:
+      repeating-linear-gradient(0deg, rgba(255, 200, 140, 0.025) 0px, rgba(255, 200, 140, 0.025) 1px, transparent 1px, transparent 5px),
+      linear-gradient(180deg, #291910 0%, #160d08 100%);
+    border-bottom: 1.5px solid var(--rule-strong);
+    flex-shrink: 0;
+  }
+
+  .dash-gauges-btn {
+    padding: 4px 6px;
+    background: #0d0805;
+    border: 1.5px solid var(--chrome-dim);
+    border-radius: 2px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.85), 0 1px 0 rgba(255, 238, 210, 0.14);
+    cursor: pointer;
+    display: block;
+    transition: border-color 0.15s ease;
+  }
+  .dash-gauges-btn:hover { border-color: var(--harvest); }
+  .dash-gauges-canvas {
+    display: block;
+    width: 104px;
+    height: 62px;
+  }
+
+  /* Glowing Amber FM Stereo / 8-Track Dash Readout */
+  .stereo-dial {
+    position: relative;
+    min-width: 0;
+    height: 72px;
+    padding: 8px 13px;
+    background:
+      radial-gradient(ellipse at 50% 45%, rgba(62, 34, 14, 0.72) 0%, rgba(15, 9, 5, 0.98) 82%);
+    border: 1.5px solid rgba(215, 208, 194, 0.34);
+    box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.88), inset 0 1px 0 rgba(242, 183, 41, 0.14);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+
+  .stereo-dial-scale {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--harvest);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stereo-band-tag {
+    color: var(--tangerine);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .stereo-dial-main {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .stereo-artist {
+    font-family: var(--font-display);
+    font-size: 16px;
+    letter-spacing: 0.03em;
+    color: var(--harvest);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 48%;
+  }
+
+  .stereo-sep {
+    color: var(--tangerine);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .stereo-album {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .stereo-dial-track {
+    position: relative;
+    height: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--ink-muted);
+    border-top: 1px solid rgba(242, 183, 41, 0.22);
+    padding-top: 2px;
+  }
+
+  .stereo-needle {
+    position: absolute;
+    top: -2px;
+    bottom: -1px;
+    width: 2px;
+    left: 10%;
+    background: var(--tangerine);
+    box-shadow: 0 0 8px var(--tangerine);
+    pointer-events: none;
+    transition: left 0.28s var(--ease);
+  }
+
+  .dash-switches {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .toggle-switch {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 5px 10px;
+    min-width: 132px;
+    min-height: 32px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-mid);
+    background: linear-gradient(180deg, #2d1c12 0%, #190f09 100%);
+    border: 1px solid rgba(215, 208, 194, 0.28);
+    border-radius: 2px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: border-color 0.14s ease, color 0.14s ease, background-color 0.14s ease;
+  }
+  .toggle-switch:hover {
+    border-color: var(--harvest);
+    color: var(--harvest);
+  }
+  .toggle-switch.active {
+    background: linear-gradient(180deg, rgba(235, 107, 28, 0.34) 0%, rgba(168, 56, 16, 0.28) 100%);
+    border-color: var(--harvest);
+    color: var(--harvest);
+  }
+
+  /* Filter Toolbar + Core Roster Chrome Tabs */
+  .rack-toolbar {
+    padding: 10px 16px 9px;
+    background: rgba(24, 15, 10, 0.94);
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .toolbar-row {
+    display: grid;
+    grid-template-columns: minmax(170px, 1.45fr) 150px 118px 168px;
+    gap: 8px;
+  }
+
+  .search-input, .select-input {
+    width: 100%;
+    min-height: 36px;
+    padding: 7px 10px;
+    font-size: 13px;
+    color: var(--ink);
+    background: #120b07;
+    border: 1px solid rgba(215, 208, 194, 0.32);
+    border-radius: 2px;
+    transition: border-color 0.14s ease, background-color 0.14s ease;
+  }
+  .search-input::placeholder { color: var(--ink-muted); }
+  .search-input:focus, .select-input:focus {
+    outline: none;
+    border-color: var(--harvest);
+    background: #170e09;
+  }
+
+  .roster-bar {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: thin;
+  }
+  .roster-bar::-webkit-scrollbar { height: 4px; }
+
+  .roster-btn {
+    padding: 5px 10px;
+    min-height: 30px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-mid);
+    background: rgba(34, 21, 14, 0.88);
+    border: 1px solid rgba(215, 208, 194, 0.24);
+    border-radius: 2px;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: border-color 0.14s ease, color 0.14s ease, background-color 0.14s ease;
+  }
+  .roster-btn:hover {
+    color: var(--harvest);
+    border-color: var(--harvest);
+    background: rgba(235, 107, 28, 0.16);
+  }
+  .roster-btn.active {
+    background: linear-gradient(180deg, #f5b932 0%, #db7a1c 100%);
+    border-color: #ffe08a;
+    color: #160a04;
+    font-weight: 600;
+  }
+
+  .status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .status-left, .status-right {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+  }
+  .status-bar strong { color: var(--ink); font-weight: 600; }
+  .letter-now { color: var(--tangerine); font-weight: 600; }
+
+  .view-switch {
+    display: inline-flex;
+    align-items: center;
+    background: #100905;
+    border: 1px solid rgba(215, 208, 194, 0.34);
+    border-radius: 2px;
+    padding: 2px;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+  .view-switch-btn {
+    border: none;
+    background: transparent;
+    color: var(--ink-muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 5px 11px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.14s ease, color 0.14s ease;
+  }
+  .view-switch-btn:hover { color: var(--harvest); }
+  .view-switch-btn.active {
+    background: var(--tangerine);
+    color: #140904;
+    font-weight: 600;
+  }
+
+  .reset-link-btn {
+    border: 1px solid rgba(235, 107, 28, 0.65);
+    background: rgba(235, 107, 28, 0.16);
+    color: var(--harvest);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 4px 9px;
+    cursor: pointer;
+    white-space: nowrap;
+    display: none;
+  }
+  .reset-link-btn.visible { display: inline-flex; align-items: center; }
+  .reset-link-btn:hover { background: rgba(235, 107, 28, 0.3); }
+
+  /* STAGE BODY: WALNUT & CHROME VINYL RACK / LIST + A-Z RAIL */
+  .stage-body {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    overflow: hidden;
+  }
+
+  .cabinet-scroll {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    padding: 0 16px 32px;
+  }
+  .cabinet-scroll.hidden { display: none; }
+
+  .section-block { margin-bottom: 18px; }
+
+  .section-header {
+    position: sticky;
+    top: 0;
+    z-index: 8;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 4px 8px;
+    margin-bottom: 12px;
+    background: linear-gradient(180deg, rgba(20, 12, 8, 0.98) 0%, rgba(20, 12, 8, 0.92) 86%, rgba(20, 12, 8, 0) 100%);
+    border-bottom: 2px solid transparent;
+    border-image: linear-gradient(90deg, #c93028 0%, #eb6b1c 30%, #f2b729 65%, rgba(242, 183, 41, 0.14) 100%) 1;
+  }
+
+  .section-title-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-letter {
+    font-family: var(--font-display);
+    font-size: 21px;
+    line-height: 1;
+    color: var(--harvest);
+    text-shadow: 0 1px 0 #4d1c0c;
+  }
+
+  .section-count {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cabinet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+    grid-auto-rows: max-content;
+    gap: 14px;
+    align-content: start;
+  }
+
+  /* Custom Van Walnut & Chrome Vinyl Sleeve Card */
+  .van-card {
+    position: relative;
+    display: block;
+    min-width: 0;
+    padding: 8px 8px 11px;
+    background: linear-gradient(180deg, #281910 0%, #190f0a 100%);
+    border: 1px solid rgba(215, 208, 194, 0.22);
+    border-radius: 2px;
+    text-align: left;
+    color: var(--ink);
+    cursor: pointer;
+    transition: transform 0.16s var(--ease), border-color 0.16s var(--ease), background-color 0.16s var(--ease), box-shadow 0.16s var(--ease);
+  }
+
+  /* Subtle top sunset stripe on active or hovered sleeve */
+  .van-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #c93028 0%, #eb6b1c 45%, #f2b729 100%);
+    opacity: 0;
+    transition: opacity 0.16s ease;
+  }
+
+  .van-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--harvest);
+    background: linear-gradient(180deg, #352216 0%, #20130c 100%);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.55);
+  }
+  .van-card:hover::before { opacity: 0.7; }
+
+  .van-card.active {
+    border-color: var(--tangerine);
+    background: linear-gradient(180deg, #3b2213 0%, #22120a 100%);
+    box-shadow: 0 0 0 1px var(--tangerine), 0 12px 28px rgba(0, 0, 0, 0.65);
+  }
+  .van-card.active::before { opacity: 1; }
+
+  .van-cover-frame {
+    position: relative;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    background: #0d0704;
+    border: 1px solid rgba(215, 208, 194, 0.28);
+  }
+
+  .van-cover-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    transition: transform 0.28s var(--ease);
+  }
+  .van-card:hover .van-cover-frame img { transform: scale(1.045); }
+
+  .van-cover-sheen {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(135deg, rgba(248, 202, 82, 0.14) 0%, transparent 42%, rgba(18, 8, 5, 0.26) 100%);
+  }
+
+  .van-body { margin-top: 9px; }
+
+  .van-artist {
+    font-family: var(--font-display);
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    color: var(--harvest);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .van-title {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--ink);
+    margin-top: 3px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 33px;
+  }
+
+  .van-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 7px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(242, 183, 41, 0.16);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .van-card.active .van-meta {
+    color: var(--harvest);
+    border-top-color: rgba(235, 107, 28, 0.4);
+  }
+  .van-saved-star {
+    color: var(--harvest);
+    margin-left: 4px;
+  }
+
+  /* SYNCHRONIZED LIST VIEW */
+  .list-view {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    display: none;
+    flex-direction: column;
+    padding: 0 12px 28px;
+  }
+  .list-view.active { display: flex; }
+
+  .list-section-header {
+    position: sticky;
+    top: 0;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 10px 7px;
+    background: rgba(20, 12, 8, 0.96);
+    border-bottom: 1.5px solid var(--tangerine);
+    font-family: var(--font-display);
+    font-size: 16px;
+    color: var(--harvest);
+  }
+  .list-section-header span:last-child {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-muted);
+  }
+
+  .list-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 38px 46px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 10px;
+    border: none;
+    border-bottom: 1px solid rgba(242, 183, 41, 0.14);
+    background: transparent;
+    color: var(--ink);
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.14s ease;
+  }
+  .list-row:hover { background: rgba(242, 183, 41, 0.08); }
+  .list-row.active {
+    background: linear-gradient(90deg, rgba(235, 107, 28, 0.22) 0%, rgba(242, 183, 41, 0.07) 100%);
+    box-shadow: inset 0 0 0 1px rgba(235, 107, 28, 0.52);
+  }
+
+  .list-idx {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .list-row.active .list-idx { color: var(--harvest); }
+
+  .list-thumb {
+    width: 46px;
+    height: 46px;
+    object-fit: cover;
+    display: block;
+    border: 1px solid rgba(215, 208, 194, 0.34);
+    background: #0d0704;
+  }
+
+  .list-text { min-width: 0; }
+  .list-artist {
+    font-family: var(--font-display);
+    font-size: 14.5px;
+    color: var(--harvest);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .list-title {
+    font-size: 13px;
+    color: var(--ink);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .list-meta {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .list-year { color: var(--ink-mid); }
+
+  /* Vertical A-Z Scrollbar + Clickable Letter Rail */
+  .alpha-rail {
+    width: 58px;
+    flex-shrink: 0;
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    align-items: stretch;
+    background: rgba(16, 10, 6, 0.96);
+    border-left: 1px solid var(--rule);
+    padding: 8px 4px 8px 6px;
+    user-select: none;
+    z-index: 14;
+  }
+
+  .alpha-scrub-track {
+    position: relative;
+    width: 8px;
+    margin: 2px auto;
+    background: rgba(242, 183, 41, 0.14);
+    border: 1px solid rgba(215, 208, 194, 0.32);
+    cursor: ns-resize;
+    touch-action: none;
+  }
+
+  .alpha-scrub-fill {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 0%;
+    background: linear-gradient(180deg, #c93028 0%, #eb6b1c 50%, #f2b729 100%);
+    opacity: 0.72;
+    pointer-events: none;
+  }
+
+  .alpha-scrub-thumb {
+    position: absolute;
+    left: 50%;
+    top: 0%;
+    width: 14px;
+    height: 22px;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(180deg, #f0ebe1 0%, #a59d8f 100%);
+    border: 1px solid #fff8eb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+  }
+
+  .alpha-letters {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2px;
+  }
+
+  .alpha-btn {
+    border: none;
+    background: transparent;
+    color: var(--ink-muted);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1;
+    width: 100%;
+    padding: 2px 0;
+    cursor: pointer;
+    text-align: center;
+    transition: color 0.12s ease, background-color 0.12s ease;
+  }
+  .alpha-btn:hover:not(:disabled) {
+    color: var(--harvest);
+    background: rgba(242, 183, 41, 0.14);
+  }
+  .alpha-btn.active {
+    color: #140904;
+    background: var(--harvest);
+    font-weight: 700;
+  }
+  .alpha-btn:disabled { opacity: 0.22; cursor: default; }
+
+  .scrub-callout {
+    position: absolute;
+    right: 72px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 25;
+    padding: 12px 16px;
+    min-width: 128px;
+    text-align: center;
+    background: rgba(22, 13, 8, 0.96);
+    border: 2px solid var(--harvest);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.78);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.14s ease;
+  }
+  .scrub-callout.show { opacity: 1; }
+  .scrub-callout-letter {
+    font-family: var(--font-display);
+    font-size: 34px;
+    line-height: 1;
+    color: var(--harvest);
+  }
+  .scrub-callout-artist {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--tangerine);
+    margin-top: 5px;
+    max-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* RIGHT PANE: BACK-OF-THE-VAN SHAG & WALNUT LISTENING LOUNGE */
+  .detail {
+    position: relative;
+    overflow-y: auto;
+    padding: 22px 24px 36px;
+    background: linear-gradient(180deg, rgba(26, 16, 10, 0.9) 0%, rgba(16, 10, 6, 0.96) 100%);
+  }
+
+  .booth-frame {
+    position: relative;
+    padding: 20px;
+    background:
+      repeating-linear-gradient(90deg, rgba(255, 215, 160, 0.015) 0px, rgba(255, 215, 160, 0.015) 2px, transparent 2px, transparent 16px),
+      linear-gradient(180deg, #26170f 0%, #170e09 100%);
+    border: 1.5px solid rgba(215, 208, 194, 0.32);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
+  }
+
+  /* Sunset pin-stripe bar crowning the listening lounge card */
+  .booth-frame::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #c93028 0%, #eb6b1c 35%, #f2b729 72%, #f6e5be 100%);
+  }
+
+  .booth-top {
+    display: grid;
+    grid-template-columns: 152px minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+    padding-top: 4px;
+  }
+
+  .booth-cover-btn {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 2px solid var(--chrome);
+    background: #0d0704;
+    cursor: zoom-in;
+    overflow: hidden;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.65);
+  }
+  .booth-cover-btn img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    transition: transform 0.24s var(--ease);
+  }
+  .booth-cover-btn:hover img { transform: scale(1.04); }
+
+  .booth-meta-col { min-width: 0; }
+
+  .booth-kicker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--tangerine);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .booth-artist {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 1.9vw, 1.8rem);
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    color: var(--harvest);
+    text-align: left;
+    cursor: pointer;
+    text-wrap: balance;
+    transition: color 0.14s ease;
+  }
+  .booth-artist:hover { color: #ffe59c; text-decoration: underline; text-underline-offset: 4px; }
+
+  .booth-album {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.26;
+    color: var(--ink);
+    margin-top: 6px;
+    text-wrap: balance;
+  }
+
+  .booth-loc {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--ink-muted);
+    margin-top: 9px;
+    line-height: 1.45;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .booth-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .embed-shell {
+    margin-top: 16px;
+    padding: 10px;
+    background: #120b07;
+    border: 1px solid rgba(215, 208, 194, 0.24);
+  }
+
+  .embed-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-muted);
+    margin-bottom: 8px;
+  }
+  .embed-label span:last-child { color: var(--harvest); }
+
+  .bc-iframe {
+    width: 100%;
+    height: 360px;
+    border: 0;
+    display: block;
+    background: #1c120b;
+  }
+  .bc-iframe.track-embed { height: 120px; }
+
+  .shelf-section {
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .shelf-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .shelf-title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    letter-spacing: 0.03em;
+    color: var(--harvest);
+  }
+
+  .shelf-sub {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .strip-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+    gap: 10px;
+  }
+
+  .mini-card {
+    display: block;
+    min-width: 0;
+    padding: 6px 6px 8px;
+    background: rgba(29, 18, 11, 0.92);
+    border: 1px solid rgba(215, 208, 194, 0.22);
+    color: var(--ink);
+    text-align: left;
+    cursor: pointer;
+    transition: transform 0.15s var(--ease), border-color 0.15s ease;
+  }
+  .mini-card:hover { transform: translateY(-2px); border-color: var(--harvest); }
+  .mini-card.active { border-color: var(--tangerine); }
+
+  .mini-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    background: #0d0704;
+  }
+  .mini-card-title {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-top: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .mini-card-sub {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-muted);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .shortcuts-note {
+    margin-top: 22px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(242, 183, 41, 0.18);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  /* Full-Screen Cover Wall */
+  .wall-view {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: rgba(16, 10, 6, 0.97);
+    backdrop-filter: blur(10px);
+    display: none;
+    flex-direction: column;
+  }
+  .wall-view.open { display: flex; }
+
+  .wall-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 24px;
+    border-bottom: 2px solid var(--tangerine);
+    background: #1c120b;
+    flex-shrink: 0;
+  }
+
+  .wall-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--harvest);
+  }
+  .wall-sub {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--ink-muted);
+    margin-left: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .wall-grid {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px 160px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(172px, 1fr));
+    grid-auto-rows: max-content;
+    gap: 14px;
+    align-content: start;
+  }
+
+  .wall-tile {
+    display: block;
+    min-width: 0;
+    background: var(--walnut);
+    border: 1px solid rgba(215, 208, 194, 0.22);
+    padding: 7px 7px 10px;
+    cursor: pointer;
+    text-align: left;
+    color: var(--ink);
+    transition: transform 0.16s var(--ease), border-color 0.15s ease;
+  }
+  .wall-tile:hover { transform: translateY(-2px); border-color: var(--harvest); }
+  .wall-tile.active { border-color: var(--tangerine); box-shadow: 0 0 0 1px var(--tangerine); }
+  .wall-tile-img {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    background: #0d0704;
+  }
+  .wall-tile-img img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    transition: transform 0.28s var(--ease);
+  }
+  .wall-tile:hover .wall-tile-img img { transform: scale(1.06); }
+  .wall-tile-artist {
+    font-family: var(--font-display);
+    font-size: 13.5px;
+    color: var(--harvest);
+    margin-top: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .wall-tile-title {
+    font-size: 12px;
+    color: var(--ink-mid);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .wall-tile-year {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--ink-muted);
+    margin-top: 3px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Lightbox */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    background: rgba(12, 7, 4, 0.94);
+    backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .lightbox.open { display: flex; }
+
+  .lightbox-inner {
+    max-width: min(740px, 92vw);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .lightbox-inner img {
+    max-width: 100%;
+    max-height: 75vh;
+    width: auto;
+    height: auto;
+    border: 2px solid var(--chrome);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+  }
+  .lightbox-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+  .lightbox-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--harvest);
+  }
+  .lightbox-sub {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--ink-mid);
+    margin-top: 2px;
+  }
+
+  .empty-state {
+    text-align: center;
+    color: var(--ink-mid);
+    font-size: 14px;
+    padding: 56px 24px;
+    line-height: 1.6;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 150px;
+    right: 24px;
+    z-index: 90;
+    padding: 9px 15px;
+    background: var(--harvest);
+    color: #160a04;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid #fff3d1;
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+    transition: opacity 0.16s ease, transform 0.16s ease;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--rule-strong); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--harvest); }
+
+  @media (max-width: 1080px) {
+    body { overflow: auto; height: auto; min-height: 100%; }
+    .header { padding: 12px 16px; flex-wrap: wrap; }
+    .subbrand { display: none; }
+    .workspace { grid-template-columns: 1fr; overflow: visible; }
+    .rack-zone {
+      border-right: none;
+      border-bottom: 2px solid var(--chrome-dim);
+      height: 620px;
+    }
+    .dash-strip { grid-template-columns: 108px minmax(0, 1fr); }
+    .dash-switches { grid-column: 1 / -1; flex-direction: row; }
+    .toolbar-row { grid-template-columns: 1fr 1fr; }
+    .detail { padding: 20px 16px 36px; overflow: visible; }
+    .booth-top { grid-template-columns: 120px 1fr; gap: 14px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="ambient-art" id="ambientArt" aria-hidden="true"></div>
+<div class="van-interior-bg" aria-hidden="true"></div>
+
+<!-- 1970s Custom Boogie Van 4-Color Sunset Stripe -->
+<div class="van-stripe-ribbon" aria-hidden="true"></div>
+
+<header class="header">
+  <div class="brand-wrap">
+    <div class="van-porthole" aria-hidden="true">
+      <svg width="34" height="34" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="18" cy="14" r="7" fill="#fff0bc" opacity="0.92"/>
+        <path d="M2 24L11 17L19 22L27 16L34 24V34H2V24Z" fill="#230f0a"/>
+        <path d="M16 34L18 22L20 34H16Z" fill="#f2b729"/>
+      </svg>
+    </div>
+    <div>
+      <div class="brand">RidingEasy Records</div>
+      <div class="subbrand">172 Bandcamp Releases · 84 Artists · 2001–2026 · Los Angeles · ’70s Custom Van Archive</div>
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <a class="back-link" href="./index.html" title="Return to all music players">← Back to All Players</a>
+    <button class="van-btn primary" id="randomBtn" type="button" title="Pull a random record from the van (R)">Random Tape</button>
+    <button class="van-btn" id="favFilterBtn" type="button" title="Show saved releases">Saved <span class="count-num" id="favCount">0</span></button>
+    <button class="van-btn" id="wallToggleBtn" type="button" title="Open full-screen Cover Wall (W)">Cover Wall</button>
+    <a class="van-btn" href="https://ridingeasyrecords.bandcamp.com/music" target="_blank" rel="noopener">Bandcamp ↗</a>
+  </div>
+</header>
+
+<div class="workspace">
+  <!-- LEFT: Walnut Dash Gauges + Boogie Van Album Rack / List + A-Z Rail -->
+  <section class="rack-zone" id="rackZone" aria-label="RidingEasy Records catalog rack and 1970s van dashboard">
+
+    <!-- 1970s Custom Van Dashboard Strip (Twin Chrome Gauges + Glowing FM/8-Track Dial) -->
+    <div class="dash-strip">
+      <button type="button" class="dash-gauges-btn" id="dashGaugesBtn" title="Rev the gauges — click for a random RidingEasy album">
+        <canvas class="dash-gauges-canvas" id="dashGaugesCanvas" width="208" height="124"></canvas>
+      </button>
+
+      <div class="stereo-dial" aria-live="polite">
+        <div class="stereo-dial-scale">
+          <span id="dialPosReadout">8-Track Slot 001 / 172 · Section A</span>
+          <span class="stereo-band-tag" id="dialYearReadout">FM STEREO · 2026</span>
+        </div>
+        <div class="stereo-dial-main">
+          <span class="stereo-artist" id="dialArtistReadout">RidingEasy Records</span>
+          <span class="stereo-sep" aria-hidden="true">·</span>
+          <span class="stereo-album" id="dialAlbumReadout">Warming up the dash…</span>
+        </div>
+        <div class="stereo-dial-track">
+          <span>88</span><span>92</span><span>96</span><span>100</span><span>104</span><span>108 MHz</span>
+          <div class="stereo-needle" id="stereoNeedle"></div>
+        </div>
+      </div>
+
+      <div class="dash-switches">
+        <button type="button" class="toggle-switch" id="brownAcidBtn" title="Filter strictly to the 24 Brown Acid proto-metal &amp; psych trips">
+          <span>Brown Acid</span>
+          <span id="brownAcidCount">24</span>
+        </button>
+        <button type="button" class="toggle-switch active" id="sunsetGlowBtn" title="Toggle airbrush sunset mural backdrop glow">
+          <span>Sunset Glow</span>
+          <span id="sunsetGlowLabel">ON</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Search, Filters & Roster Quick-Picks -->
+    <div class="rack-toolbar">
+      <div class="toolbar-row">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search 172 fuzz, doom, Brown Acid trips... (/)">
+        <select class="select-input" id="sortSelect" aria-label="Sort catalog">
+          <option value="alpha">Sort: Artist A–Z</option>
+          <option value="alphaDesc">Sort: Artist Z–A</option>
+          <option value="album">Sort: Album A–Z</option>
+          <option value="newest">Sort: Newest Year</option>
+          <option value="oldest">Sort: Oldest Year</option>
+        </select>
+        <select class="select-input" id="yearSelect" aria-label="Filter by year">
+          <option value="ALL">All Years</option>
+        </select>
+        <select class="select-input" id="artistSelect" aria-label="Filter by artist">
+          <option value="ALL">All 84 Artists</option>
+        </select>
+      </div>
+
+      <div class="roster-bar" id="rosterBar" role="group" aria-label="Quick roster filters"></div>
+
+      <div class="status-bar">
+        <div class="status-left">
+          <div class="view-switch" role="group" aria-label="Catalog view mode">
+            <button type="button" class="view-switch-btn active" id="viewCabinetBtn" aria-pressed="true" title="Custom Van Vinyl Rack (L)">Van Rack</button>
+            <button type="button" class="view-switch-btn" id="viewListBtn" aria-pressed="false" title="Compact Tracklist Ledger (L)">List</button>
+          </div>
+          <span><strong id="posLabel">1 / 172</strong> · Section <span class="letter-now" id="currentLetterLabel">A</span></span>
+        </div>
+        <div class="status-right">
+          <button type="button" class="reset-link-btn" id="resetFiltersBtn">Clear Filters</button>
+          <span id="filteredSummary">172 releases shown</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Browse Body + Vertical A-Z Rail -->
+    <div class="stage-body">
+      <div class="cabinet-scroll" id="cabinetScroll" role="region" aria-label="RidingEasy Records vinyl rack"></div>
+      <div class="list-view" id="listView" role="listbox" aria-label="RidingEasy Records release list"></div>
+
+      <div class="scrub-callout" id="scrubCallout" aria-hidden="true">
+        <div class="scrub-callout-letter" id="scrubLetter">A</div>
+        <div class="scrub-callout-artist" id="scrubArtist">Artist</div>
+      </div>
+
+      <aside class="alpha-rail" aria-label="Alphabet scrollbar and letter selector">
+        <div class="alpha-scrub-track" id="alphaScrubTrack" role="slider" tabindex="0" aria-label="Scroll vertically through the catalog" aria-valuemin="0" aria-valuemax="171" aria-valuenow="0">
+          <div class="alpha-scrub-fill" id="alphaScrubFill"></div>
+          <div class="alpha-scrub-thumb" id="alphaScrubThumb"></div>
+        </div>
+        <div class="alpha-letters" id="alphaLetters"></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- RIGHT: Back-of-the-Van Shag & Walnut Listening Lounge -->
+  <main class="detail" id="detail"></main>
+</div>
+
+<!-- Full-Screen Cover Wall -->
+<section class="wall-view" id="wallView" aria-label="RidingEasy Records Cover Wall">
+  <div class="wall-header">
+    <div>
+      <span class="wall-title">RidingEasy Records · Cover Wall</span>
+      <span class="wall-sub"><span id="wallCount">172</span> Releases</span>
+    </div>
+    <button class="van-btn" id="closeWallBtn" type="button">← Back to Van Rack</button>
+  </div>
+  <div class="wall-grid" id="wallGrid"></div>
+</section>
+
+<!-- Cover Art Lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Album cover artwork">
+  <div class="lightbox-inner">
+    <img id="lightboxImg" src="" alt="" referrerpolicy="no-referrer">
+    <div class="lightbox-bar">
+      <div>
+        <div class="lightbox-title" id="lightboxTitle"></div>
+        <div class="lightbox-sub" id="lightboxSub"></div>
+      </div>
+      <button class="van-btn" id="closeLightboxBtn" type="button">Close (Esc)</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const RAW = [[2359950486,"a","Alastor","Onwards and Downwards",3203681139,2021,"2021-05-28","https://alastordoom.bandcamp.com/album/onwards-and-downwards","A","Sweden"],[204747798,"a","Alastor","Slave To The Grave",2745246405,2018,"2018-10-31","https://alastordoom.bandcamp.com/album/slave-to-the-grave-2","A","Sweden"],[4220531147,"a","Albatross","Rockin The Sky",2205104680,2024,"2024-01-19","https://ridingeasyrecords.bandcamp.com/album/rockin-the-sky","A","Los Angeles, California"],[209296715,"a","Back Jack","Back Jack",2908839630,2024,"2024-04-26","https://ridingeasyrecords.bandcamp.com/album/back-jack","B","Los Angeles, California"],[2109170982,"a","BETTY","Handful",1951162071,2024,"2024-03-08","https://ridingeasyrecords.bandcamp.com/album/handful","B","Los Angeles, California"],[2226946673,"a","Blackout","The Horse",2767191903,2017,"2017-06-23","https://blackout666.bandcamp.com/album/the-horse","B","Brooklyn, New York"],[339643914,"a","Blackout","Blackout",2367611717,2015,"2015-03-31","https://blackout666.bandcamp.com/album/blackout-2","B","Brooklyn, New York"],[2068802287,"a","Blackwater Holylight","Silence/Motion",3377001689,2021,"2021-10-22","https://blackwaterholylight.bandcamp.com/album/silence-motion","B","Portland, Oregon"],[3624451558,"a","Blackwater Holylight","Veils of Winter",1648395442,2019,"2019-10-11","https://blackwaterholylight.bandcamp.com/album/veils-of-winter","B","Portland, Oregon"],[2927258174,"a","Blackwater Holylight","Blackwater Holylight",1574237364,2018,"2018-04-06","https://blackwaterholylight.bandcamp.com/album/blackwater-holylight","B","Portland, Oregon"],[4049543221,"a","Brotherhood of Peace","Cuttin' Loose",865769181,2023,"2023-07-21","https://ridingeasyrecords.bandcamp.com/album/cuttin-loose","B","Los Angeles, California"],[3606578531,"a","Brown Acid - \"The Second Trip\"","Brown Acid \"The Second Trip\"",558901115,2016,"2016-04-20","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-second-trip","B","Los Angeles, California"],[3533496027,"a","Brown Acid - The First Trip","Brown Acid - The First Trip",1903756504,2015,"2015-08-25","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-first-trip","B","Los Angeles, California"],[3152133776,"a","Brown Acid \"The Fifth Trip\"","Brown Acid \"The Fifth Trip\"",588579273,2017,"2017-10-31","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-fifth-trip","B","Los Angeles, California"],[2620867201,"a","Brown Acid \"The Sixth Trip\"","Brown Acid \"The Sixth Trip\"",3823058512,2018,"2018-04-20","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-sixth-trip","B","Los Angeles, California"],[2856369292,"a","Bus the unknown secretary","Never Decide",2818709640,2019,"2019-02-28","https://bustheunknownsecretary.bandcamp.com/album/never-decide","B","Athens, Greece"],[3989071297,"a","Craig Peyton's Band X","The Best Of Band X",3130484735,2024,"2024-02-15","https://ridingeasyrecords.bandcamp.com/album/the-best-of-band-x","C","Los Angeles, California"],[3819060907,"a","DEATHCHANT","KOVA",2429647791,2026,"2026-09-25","https://deathchantnoise.bandcamp.com/album/kova?label=3790865819&tab=music","D","Los Angeles, California"],[333134133,"a","DEATHCHANT","THRONES",786840204,2023,"2023-10-13","https://deathchantnoise.bandcamp.com/album/thrones","D","Los Angeles, California"],[2740972104,"a","DEATHCHANT","Waste",2897778758,2021,"2021-06-25","https://deathchantnoise.bandcamp.com/album/waste","D","Los Angeles, California"],[2989019977,"a","Demian","Demian",1369467140,2025,"2025-02-14","https://ridingeasyrecords.bandcamp.com/album/demian","D","Los Angeles, California"],[3395541981,"a","Dunbarrow","Dunbarrow II",247829936,2018,"2018-09-14","https://dunbarrow.bandcamp.com/album/dunbarrow-ii","D","Haugesund, Norway"],[1988382351,"a","Dunbarrow","Dunbarrow",1582455031,2016,"2016-01-29","https://dunbarrow.bandcamp.com/album/dunbarrow","D","Haugesund, Norway"],[3363616746,"a","Dusty Rose Gang","A-One From Day One",211301301,2025,"2025-05-16","https://dustyrosegang.bandcamp.com/album/a-one-from-day-one?label=3790865819&tab=music","D","Detroit, Michigan"],[3842015630,"a","Early Moods","Ready For The Grave",2808359264,2026,"2026-09-18","https://earlymoods.bandcamp.com/album/ready-for-the-grave?label=3790865819&tab=music","E","Los Angeles, California"],[1286545075,"a","Early Moods","A Sinners Past",2338172467,2024,"2024-03-08","https://earlymoods.bandcamp.com/album/a-sinners-past","E","Los Angeles, California"],[3020491353,"a","Early Moods","Early Moods",144175054,2022,"2022-08-05","https://earlymoods.bandcamp.com/album/early-moods","E","Los Angeles, California"],[1934664565,"a","Electric Citizen","Helltown",1653305629,2018,"2018-09-28","https://electriccitizenband.bandcamp.com/album/helltown","E","Cincinnati, Ohio"],[3677503684,"a","Electric Citizen","Higher Time",1112249696,2016,"2016-05-06","https://electriccitizenband.bandcamp.com/album/higher-time","E","Cincinnati, Ohio"],[770670485,"a","Electric Citizen","Sateen",1591897332,2014,"2014-06-01","https://electriccitizenband.bandcamp.com/album/sateen","E","Cincinnati, Ohio"],[3273789363,"a","Firebreather","Dwell in the Fog",878321054,2022,"2022-02-25","https://firebreatherdoom.bandcamp.com/album/dwell-in-the-fog","F","Gothenburg, Sweden"],[3980242129,"a","Firebreather","Under A Blood Moon",1768813232,2019,"2019-09-27","https://firebreatherdoom.bandcamp.com/album/under-a-blood-moon","F","Gothenburg, Sweden"],[552110105,"a","Flood","The Rise Of Flood",4245892380,2026,"2026-09-15","https://ridingeasyrecords.bandcamp.com/album/the-rise-of-flood","F","Los Angeles, California"],[1870063869,"a","FRACTION","Moon Blood",1873503995,2023,"2023-07-14","https://ridingeasyrecords.bandcamp.com/album/moon-blood","F","Los Angeles, California"],[3092112816,"a","Gary Del Vecchio","Buzzin",1808907832,2023,"2023-08-10","https://ridingeasyrecords.bandcamp.com/album/buzzin","G","Los Angeles, California"],[2524634645,"a","Granicus","Granicus",2803772325,2025,"2025-02-07","https://ridingeasyrecords.bandcamp.com/album/granicus","G","Los Angeles, California"],[3389263639,"a","Haywire","Still In The Saddle",4204468234,2024,"2024-01-12","https://ridingeasyrecords.bandcamp.com/album/still-in-the-saddle","H","Los Angeles, California"],[3093057431,"a","Hell Fire","Reckoning",1622930868,2022,"2022-08-12","https://hellfiremetal.bandcamp.com/album/reckoning","H","San Francisco, California"],[3389626033,"a","Hell Fire","Conquerors",1525124237,2020,"2020-05-14","https://hellfiremetal.bandcamp.com/album/conquerors","H","San Francisco, California"],[2191686008,"a","Hell Fire","Mania",334500654,2019,"2019-03-29","https://hellfiremetal.bandcamp.com/album/mania","H","San Francisco, California"],[492375538,"a","Hell Fire","Victims",2366339343,2019,"2019-11-14","https://hellfiremetal.bandcamp.com/album/victims","H","San Francisco, California"],[3314926808,"a","Hell Fire","Free Again",3752146719,2017,"2017-08-18","https://hellfiremetal.bandcamp.com/album/free-again","H","San Francisco, California"],[3548463901,"a","Here Lies Man","Ritual Divination",3282958052,2021,"2021-01-22","https://hereliesman.bandcamp.com/album/ritual-divination","H","Los Angeles, California"],[433464033,"a","Here Lies Man","No Ground To Walk Upon",2083482542,2019,"2019-08-16","https://hereliesman.bandcamp.com/album/no-ground-to-walk-upon","H","Los Angeles, California"],[2269492643,"a","Here Lies Man","You Will Know Nothing",2861318175,2018,"2018-06-15","https://hereliesman.bandcamp.com/album/you-will-know-nothing-2","H","Los Angeles, California"],[933963519,"a","Here Lies Man","Animal Noises EP",1212130656,2017,"2017-11-24","https://hereliesman.bandcamp.com/album/animal-noises-ep","H","Los Angeles, California"],[370222511,"a","Here Lies Man","Here Lies Man",4150698540,2017,"2017-04-07","https://hereliesman.bandcamp.com/album/here-lies-man","H","Los Angeles, California"],[2841924841,"a","Highway","Highway",3999493068,2024,"2024-11-15","https://ridingeasyrecords.bandcamp.com/album/highway","H","Los Angeles, California"],[3478427830,"a","HÖG","BLACKHOLE",3088019469,2025,"2025-08-22","https://hogpdx.bandcamp.com/album/blackhole?label=3790865819&tab=music","H","Portland, Oregon"],[111480399,"a","Holy Serpent","Endless",2002052220,2019,"2019-10-18","https://holyserpentband.bandcamp.com/album/endless","H","Melbourne, Australia"],[3898900070,"a","Holy Serpent","Temples",1895649725,2016,"2016-09-30","https://holyserpentband.bandcamp.com/album/temples","H","Melbourne, Australia"],[1127743734,"a","Holy Serpent","Holy Serpent",856987300,2015,"2015-05-12","https://holyserpentband.bandcamp.com/album/holy-serpent","H","Melbourne, Australia"],[3822781077,"a","Hudson and the Hawks","You Know How It Is",1627023962,2020,"2020-08-28","https://hudsonandthehawks.bandcamp.com/album/you-know-how-it-is","H","San Diego, California"],[2240233123,"a","Ice","The Ice Age",3518392172,2020,"2020-05-08","https://theiceage.bandcamp.com/album/the-ice-age","I","Los Angeles, California"],[550164491,"a","ID","Where Are We Going",2728722356,2024,"2024-09-27","https://ridingeasyrecords.bandcamp.com/album/where-are-we-going","I","Los Angeles, California"],[3104342559,"a","Joe Prichard and Gibraltar","Joe Prichard and Gibraltar",1984965640,2023,"2023-11-24","https://ridingeasyrecords.bandcamp.com/album/joe-prichard-and-gibraltar","J","Los Angeles, California"],[3682263487,"a","John Braheny","Some Kind Of Change",3237664486,2024,"2024-04-12","https://ridingeasyrecords.bandcamp.com/album/some-kind-of-change","J","Los Angeles, California"],[2383631238,"a","Lauren Lakis","DEADLIGHTS",1806175390,2026,"2026-05-08","https://laurenlakis.bandcamp.com/album/deadlights?label=3790865819&tab=music","L","Berlin, Germany"],[1170473050,"a","Licorice Roots","Licorice Root Orchestra",4006901164,2024,"2024-09-27","https://ridingeasyrecords.bandcamp.com/album/licorice-root-orchestra","L","Los Angeles, California"],[1495787991,"a","Living Links","Gathering The Forces",1179091876,2023,"2023-11-03","https://ridingeasyrecords.bandcamp.com/album/gathering-the-forces","L","Los Angeles, California"],[1420769941,"a","Mad Jack","Straight Up",1905350605,2023,"2023-12-08","https://ridingeasyrecords.bandcamp.com/album/straight-up","M","Los Angeles, California"],[3513506758,"a","Magick Potion","Magick Potion",1595039725,2024,"2024-11-08","https://magickpotionband.bandcamp.com/album/magick-potion","M","Baltimore, Maryland"],[1897091507,"a","Mammoth","Mammoth",1982162828,2023,"2023-11-30","https://ridingeasyrecords.bandcamp.com/album/mammoth","M","Los Angeles, California"],[3397794244,"a","Maximillian","Maximillan",3858312878,2023,"2023-03-03","https://ridingeasyrecords.bandcamp.com/album/maximillan","M","Los Angeles, California"],[4122088411,"a","Mick's Jaguar","Fame and Fortune",918137662,2018,"2018-06-22","https://micksjaguar.bandcamp.com/album/fame-and-fortune","M","New York, New York"],[137354826,"a","Mondo Drag","Through The Hourglass",4133281759,2023,"2023-09-15","https://mondodrag.bandcamp.com/album/through-the-hourglass","M","Oakland, California"],[2775301713,"a","Mondo Drag","The Occultation Of Light",777545512,2016,"2016-02-26","https://mondodrag.bandcamp.com/album/the-occultation-of-light","M","Oakland, California"],[4014610607,"a","Mondo Drag","Mondo Drag",3596167080,2015,"2015-01-16","https://mondodrag.bandcamp.com/album/mondo-drag","M","Oakland, California"],[2385234057,"a","Monolord","RUST",741526470,2017,"2017-09-29","https://monolord.bandcamp.com/album/rust","M","Gothenburg, Sweden"],[3789630170,"a","Monolord","Lord of Suffering/Die in Haze",1963171504,2016,"2016-08-12","https://monolord.bandcamp.com/album/lord-of-suffering-die-in-haze","M","Gothenburg, Sweden"],[3789490303,"a","Monolord","Vænir",3503731580,2015,"2015-04-28","https://monolord.bandcamp.com/album/v-nir","M","Gothenburg, Sweden"],[2164642815,"a","Monolord","Empress Rising",984109431,2014,"2014-04-01","https://monolord.bandcamp.com/album/empress-rising","M","Gothenburg, Sweden"],[2660629818,"a","Mr. Dibbs","Brown Acid \"The Essential Mix\" by Mr. Dibbs",1922671516,2026,"2026-01-16","https://mrdibbs.bandcamp.com/album/brown-acid-the-essential-mix-by-mr-dibbs?label=3790865819&tab=music","M","Cincinnati, Ohio"],[160426304,"a","Oda","Oda",750676608,2024,"2024-07-23","https://ridingeasyrecords.bandcamp.com/album/oda","O","Los Angeles, California"],[2903507309,"a","Old Man's Will","Hard Times - Troubled Man",993118798,2015,"2015-10-02","https://oldmanswill.bandcamp.com/album/hard-times-troubled-man","O","Umeå, Sweden"],[2286444048,"a","Old Man's Will","Old Man's Will",3133935518,2013,"2013-10-16","https://oldmanswill.bandcamp.com/album/old-mans-will","O","Umeå, Sweden"],[4203395502,"a","Parchment Farm","Parchment Farm",1158132846,2024,"2024-05-24","https://ridingeasyrecords.bandcamp.com/album/parchment-farm","P","Los Angeles, California"],[2313052384,"a","Pearl Handle Band","Pearl Handle Band",935792622,2024,"2024-03-29","https://ridingeasyrecords.bandcamp.com/album/pearl-handle-band","P","Los Angeles, California"],[787964170,"a","Pentagram","High Voltage \"Live At Spotsylvania\" (1978)",4087584495,2026,"2026-05-01","https://pentagramband.bandcamp.com/album/high-voltage-live-at-spotsylvania-1978?label=3790865819&tab=music","P","Alexandria, Virginia"],[4249656224,"a","Psychic Trash","Psychic Trash",1341561298,2023,"2023-11-17","https://psychictrash.bandcamp.com/album/psychic-trash","P","Detroit, Michigan"],[3075515283,"a","R.I.P.","Dead End",3732181650,2020,"2020-10-09","https://braveinthegrave.bandcamp.com/album/dead-end","R","Portland, Oregon"],[688573916,"a","R.I.P.","Street Reaper",2752475622,2017,"2017-10-13","https://braveinthegrave.bandcamp.com/album/street-reaper","R","Portland, Oregon"],[498415281,"a","R.I.P.","In the Wind",662290488,2016,"2016-12-09","https://braveinthegrave.bandcamp.com/album/in-the-wind-2","R","Portland, Oregon"],[1503054221,"a","Randy & The Goats","On The Lam",2971945129,2023,"2023-07-07","https://ridingeasyrecords.bandcamp.com/album/on-the-lam","R","Los Angeles, California"],[1297640190,"a","Randy Holden","Population III",3891546842,2022,"2022-07-01","https://randyholden.bandcamp.com/album/population-iii","R","Los Angeles, California"],[1998218872,"a","Randy Holden","Population II",1535273313,2020,"2020-02-28","https://randyholden.bandcamp.com/album/population-ii","R","Los Angeles, California"],[1200864528,"a","Raw Meat","Raw Meat \"Stand-By Girl",2180527518,2015,"2015-07-12","https://ridingeasyrecords.bandcamp.com/album/raw-meat-stand-by-girl","R","Los Angeles, California"],[1614272068,"a","RidingEasy Records","Brown Acid \"The Twenty - Second Trip\"",783076449,2026,"2026-04-20","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-twenty-second-trip","R","Los Angeles, California"],[4014424591,"a","RidingEasy Records","Brown Acid \"The Twenty-Third Trip\"",707712272,2026,"2026-10-31","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-twenty-third-trip","R","Los Angeles, California"],[3307685903,"a","RidingEasy Records","Brown Acid - The Twentieth Trip",1759109267,2025,"2025-04-20","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-twentieth-trip","R","Los Angeles, California"],[3217346024,"a","RidingEasy Records","Brown Acid \"The Twenty-First Trip\"",3752206963,2025,"2025-10-31","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-twenty-first-trip","R","Los Angeles, California"],[1692156849,"a","RidingEasy Records","2025 Xmas Mixtape",4173048546,2024,"2024-12-23","https://ridingeasyrecords.bandcamp.com/album/2025-xmas-mixtape","R","Los Angeles, California"],[3835210582,"a","RidingEasy Records","Brown Acid \"The Eighteenth Trip\"",3701613273,2024,"2024-04-20","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-eighteenth-trip","R","Los Angeles, California"],[1773002898,"a","RidingEasy Records","Brown Acid \"The Nineteenth Trip\"",4195284195,2024,"2024-10-31","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-nineteenth-trip","R","Los Angeles, California"],[3148995600,"a","RidingEasy Records","Brown Acid \"The Seventeenth Trip\"",1658363178,2023,"2023-10-31","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-seventeenth-trip","R","Los Angeles, California"],[1674098097,"a","RidingEasy Records","Brown Acid \"The Sixteenth Trip\"",1623842047,2023,"2023-04-20","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-sixteenth-trip","R","Los Angeles, California"],[2915846526,"a","RidingEasy Records","Edge - Edge",229011068,2023,"2023-06-23","https://ridingeasyrecords.bandcamp.com/album/edge-edge","R","Los Angeles, California"],[185733436,"a","RidingEasy Records","Master Danse - Feelin Dead",1735031773,2023,"2023-02-15","https://ridingeasyrecords.bandcamp.com/album/master-danse-feelin-dead","R","Los Angeles, California"],[822462703,"a","RidingEasy Records","Scrap Metal Volume 2",1100446914,2023,"2023-02-10","https://ridingeasyrecords.bandcamp.com/album/scrap-metal-volume-2","R","Los Angeles, California"],[2849928535,"a","RidingEasy Records","Brown Acid - The Fifteenth Trip",1777693781,2022,"2022-10-31","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-fifteenth-trip","R","Los Angeles, California"],[3058367742,"a","RidingEasy Records","Brown Acid - The Fourteenth Trip",3546157977,2022,"2022-04-20","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-fourteenth-trip","R","Los Angeles, California"],[3476854722,"a","RidingEasy Records","Brown Acid - The Thirteenth Trip",1705938630,2021,"2021-10-31","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-thirteenth-trip","R","Los Angeles, California"],[3190294874,"a","RidingEasy Records","Brown Acid - The Twelfth Trip",1898825701,2021,"2021-04-20","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-twelfth-trip","R","Los Angeles, California"],[3484490798,"a","RidingEasy Records","Scrap Metal - Vol. 1",1387232230,2021,"2021-11-12","https://ridingeasyrecords.bandcamp.com/album/scrap-metal-vol-1","R","Los Angeles, California"],[3983710223,"a","RidingEasy Records","Brown Acid - The Eleventh Trip",687490805,2020,"2020-10-31","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-eleventh-trip","R","Los Angeles, California"],[3515471709,"a","RidingEasy Records","Brown Acid - The Tenth Trip",987491750,2020,"2020-04-20","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-tenth-trip","R","Los Angeles, California"],[4001076285,"a","RidingEasy Records","RidingEasy Xmas 2020 Mixtape",2446172905,2020,"2020-12-25","https://ridingeasyrecords.bandcamp.com/album/ridingeasy-xmas-2020-mixtape","R","Los Angeles, California"],[267926407,"a","RidingEasy Records","Brown Acid - The Ninth Trip",421080434,2019,"2019-10-31","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-ninth-trip","R","Los Angeles, California"],[1562419219,"a","RidingEasy Records","Brown Acid \"The Eighth Trip\"",3918062853,2019,"2019-04-20","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-eighth-trip-2","R","Los Angeles, California"],[1551427418,"a","RidingEasy Records","Brown Acid - The Seventh Trip",3677149292,2018,"2018-10-31","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-seventh-trip","R","Los Angeles, California"],[3813857853,"a","RidingEasy Records","Brown Acid - The Fourth Trip",3257924277,2017,"2017-04-20","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-fourth-trip","R","Los Angeles, California"],[1860782209,"a","RidingEasy Records","Brown Acid - \"The Third Trip\"",531597017,2016,"2016-10-31","https://ridingeasyrecords.bandcamp.com/album/brown-acid-the-third-trip","R","Los Angeles, California"],[3110993123,"a","RidingEasy Records","RidingEasy Records Kr3w Mixtape",2145939465,2015,"2015-01-23","https://ridingeasyrecords.bandcamp.com/album/ridingeasy-records-kr3w-mixtape","R","Los Angeles, California"],[3208536367,"a","Salem's Pot","Pronounce This!",103469468,2016,"2016-07-22","https://salemspot.bandcamp.com/album/pronounce-this","S",""],[388857777,"a","Salem's Pot","The Vampire Strikes Back",344915208,2015,"2015-10-31","https://salemspot.bandcamp.com/album/the-vampire-strikes-back","S",""],[3494256649,"a","Salem's Pot","...Lurar Ut Dig På Prärien",881698784,2014,"2014-04-29","https://salemspot.bandcamp.com/album/lurar-ut-dig-p-pr-rien","S",""],[2986253064,"a","Salem's Pot","Ego Trip / Yer Doom",1592394945,2014,"2014-09-06","https://salemspot.bandcamp.com/album/ego-trip-yer-doom","S",""],[2109662765,"t","Salem's Pot","Pink Flamingos",703963963,2014,"2014-10-31","https://salemspot.bandcamp.com/track/pink-flamingos","S",""],[4065827989,"a","Salem's Pot","Sweeden",646985446,2013,"2013-10-31","https://salemspot.bandcamp.com/album/sweeden","S",""],[3294403094,"a","Salem's Pot","Watch Me Kill You",1925891644,2013,"2013-02-01","https://salemspot.bandcamp.com/album/watch-me-kill-you","S",""],[2491174025,"a","Shooting Guns","Flavour Country",3152448163,2017,"2017-08-11","https://shootingguns.bandcamp.com/album/flavour-country","S","Saskatoon, Saskatchewan"],[1543710220,"a","SLAM WHITMAN","Four Dead In Ohio",3727270119,2001,"2001-02-01","https://ridingeasyrecords.bandcamp.com/album/four-dead-in-ohio","S","Los Angeles, California"],[3336399823,"a","Sons of Huns","While Sleeping Stay Awake",1115836811,2015,"2015-07-19","https://sonsofhuns.bandcamp.com/album/while-sleeping-stay-awake","S","Portland, Oregon"],[1208383414,"a","Sons of Huns","Banishment Ritual",2866523514,2013,"2013-11-29","https://sonsofhuns.bandcamp.com/album/banishment-ritual","S","Portland, Oregon"],[1686863556,"a","Sorcery","Sorcery Instrumentals",1195946713,2024,"2024-07-25","https://ridingeasyrecords.bandcamp.com/album/sorcery-instrumentals","S","Los Angeles, California"],[2928658284,"a","Sorcery","Rocktober Blood (Official Soundtrack)",1178793883,2023,"2023-11-24","https://sorcerystuntrock.bandcamp.com/album/rocktober-blood-official-soundtrack","S","Los Angeles, California"],[1138059189,"a","Sorcery","Stunt Rock Soundtrack",1330535083,2022,"2022-06-17","https://sorcerystuntrock.bandcamp.com/album/stunt-rock-soundtrack","S","Los Angeles, California"],[1973050589,"a","Southern Steel","Get On Through",3527455074,2023,"2023-12-29","https://ridingeasyrecords.bandcamp.com/album/get-on-through","S","Los Angeles, California"],[3876046733,"a","Spelljammer","Abyssal Trip",668222468,2021,"2021-02-26","https://spelljammer.bandcamp.com/album/abyssal-trip","S","Sweden"],[1817407208,"a","Spelljammer","Ancient of Days",1358070072,2015,"2015-10-02","https://spelljammer.bandcamp.com/album/ancient-of-days","S","Sweden"],[4195419159,"a","Spelljammer","VoI II",1680411986,2012,"2012-01-30","https://spelljammer.bandcamp.com/album/voi-ii","S","Sweden"],[2977622996,"a","Spelljammer","Inches From the Sun",2348510277,2010,"2010-10-29","https://spelljammer.bandcamp.com","S","Sweden"],[2309755134,"a","Spiny Normen","Spiny Normen",1361853998,2018,"2018-03-02","https://spinynormen.bandcamp.com/album/spiny-normen","S","Katy, Texas"],[3950716558,"a","Spiral Shades","Hypnosis Sessions",1632426187,2014,"2014-04-14","https://spiralshades.bandcamp.com/album/hypnosis-sessions","S","Norway"],[3745833362,"a","Stepson","Stepson",292465619,2025,"2025-12-05","https://ridingeasyrecords.bandcamp.com/album/stepson","S","Los Angeles, California"],[1217580376,"a","SVVAMP","SVVAMP 2",1368991187,2018,"2018-06-08","https://svvamp.bandcamp.com/album/svvamp-2","S","Sweden"],[1877961775,"a","SVVAMP","SVVAMP",1519802440,2016,"2016-09-02","https://svvamp.bandcamp.com/album/svvamp","S","Sweden"],[1466245477,"a","Sylvain Carel","Look Over The Nile",2876730499,2024,"2024-10-11","https://ridingeasyrecords.bandcamp.com/album/look-over-the-nile","S","Los Angeles, California"],[1280594896,"a","Ted Stilles","Bhang",2693757810,2024,"2024-05-31","https://ridingeasyrecords.bandcamp.com/album/bhang","T","Los Angeles, California"],[1993541974,"a","Tennessee River Crooks","Tennessee River Crooks",758742652,2023,"2023-12-15","https://ridingeasyrecords.bandcamp.com/album/tennessee-river-crooks","T","Los Angeles, California"],[1146610820,"a","The Bodysnatchers","EP",767204598,2024,"2024-02-15","https://ridingeasyrecords.bandcamp.com/album/ep","B","Los Angeles, California"],[2796810445,"a","The Death Wheelers","The Ecstasy Of Möld",1925387385,2025,"2025-03-07","https://thedeathwheelers.bandcamp.com/album/the-ecstasy-of-m-ld?label=3790865819&tab=music","D",""],[2976914704,"a","The Death Wheelers","Chaos and the Art of Motorcycle Madness",7432878,2023,"2023-08-25","https://thedeathwheelers.bandcamp.com/album/chaos-and-the-art-of-motorcycle-madness","D",""],[3757996609,"a","The Death Wheelers","Divine Filth",1434424126,2020,"2020-09-11","https://thedeathwheelers.bandcamp.com/album/divine-filth","D",""],[2621666509,"a","The Death Wheelers","✠ I Tread On Your Grave ✠",3641691223,2018,"2018-05-11","https://thedeathwheelers.bandcamp.com/album/i-tread-on-your-grave","D",""],[1354982577,"a","The Goners","Good Mourning",2950900907,2020,"2020-03-13","https://thegonestgoners.bandcamp.com/album/good-mourning","G","Eskilstuna, Sweden"],[1389392796,"a","The Macks Creek Band","The Macks Creek Band",842981262,2024,"2024-01-26","https://ridingeasyrecords.bandcamp.com/album/the-macks-creek-band","M","Los Angeles, California"],[526032637,"a","The Picturebooks","Imaginary Horse",39262958,2015,"2015-01-21","https://thepicturebooks.bandcamp.com/album/imaginary-horse","P","Gütersloh, Germany"],[1634328266,"a","The Well","Death and Consolation",3927839825,2019,"2019-04-26","https://thewellaustin.bandcamp.com/album/death-and-consolation","W","Austin, Texas"],[2066294923,"a","The Well","Pagan Science",1531572892,2016,"2016-10-14","https://thewellaustin.bandcamp.com/album/pagan-science","W","Austin, Texas"],[3856481974,"a","The Well","Samsara",4287255084,2014,"2014-09-27","https://thewellaustin.bandcamp.com/album/samsara","W","Austin, Texas"],[49652460,"a","Thomas V Jäger","Music For Imaginary Movies",536526432,2024,"2024-10-04","https://thomasvjager.bandcamp.com/album/music-for-imaginary-movies","T","Gothenburg, Sweden"],[405294666,"a","Thomas V Jäger","Music For Imaginary Movies 2",1430647077,2024,"2024-10-04","https://thomasvjager.bandcamp.com/album/music-for-imaginary-movies-2","T","Gothenburg, Sweden"],[3574551382,"a","Thomas V Jäger","Foliage",1030650061,2023,"2023-04-20","https://thomasvjager.bandcamp.com/album/foliage","T","Gothenburg, Sweden"],[1951381302,"a","Thomas V Jäger","Iron Nights",3945522249,2023,"2023-11-17","https://thomasvjager.bandcamp.com/album/iron-nights","T","Gothenburg, Sweden"],[892933768,"a","Thomas V Jäger","A Solitary Plan",1284904555,2020,"2020-07-24","https://thomasvjager.bandcamp.com/album/a-solitary-plan","T","Gothenburg, Sweden"],[1018317556,"a","Twelve Point Buck","loud music for quiet people",908668814,2025,"2025-03-15","https://twelvepointbuck.bandcamp.com/album/loud-music-for-quiet-people?label=3790865819&tab=music","T","NSW, Australia"],[284720226,"a","Warish","Next To Pay",627050246,2021,"2021-04-30","https://warish.bandcamp.com/album/next-to-pay","W","Oceanside, California"],[141761696,"a","Warish","Woven",294862170,2020,"2020-02-19","https://warish.bandcamp.com/album/woven","W","Oceanside, California"],[1915199443,"a","Warish","Down In Flames",1185870494,2019,"2019-09-13","https://warish.bandcamp.com/album/down-in-flames","W","Oceanside, California"],[764208409,"a","Warish","Runnin' Scared/Their Disguise",21398505,2019,"2019-05-31","https://warish.bandcamp.com/album/runnin-scared-their-disguise","W","Oceanside, California"],[3611830190,"a","Warish","WARISH",3801174229,2019,"2019-02-01","https://warish.bandcamp.com/album/warish","W","Oceanside, California"],[312739552,"a","Westing","FUTURE",3365056358,2023,"2023-02-24","https://westingband.bandcamp.com/album/future","W","Visalia, California"],[3442196948,"a","Westing","Westing",1996261618,2016,"2016-07-15","https://westingband.bandcamp.com/album/westing","W","Visalia, California"],[2280324406,"a","Westing","Slow Season",2457722490,2015,"2015-12-04","https://westingband.bandcamp.com/album/slow-season-3","W","Visalia, California"],[1062077249,"a","Westing","MOUNTAINS",2900653162,2014,"2014-11-11","https://westingband.bandcamp.com/album/mountains","W","Visalia, California"],[1744222009,"a","Westing","HEAVY 7\" - order at www.ridingeasyrecords.com",3246243199,2013,"2013-06-24","https://westingband.bandcamp.com/album/heavy-7-order-at-www-ridingeasyrecords-com","W","Visalia, California"],[1063029560,"a","White Boy And The Average Rat Band","Whiteboy And The Average Rat Band",1483700316,2024,"2024-02-02","https://ridingeasyrecords.bandcamp.com/album/whiteboy-and-the-average-rat-band","W","Los Angeles, California"],[1333613091,"a","White Lighting","Thunderbolts of Fuzz",943569434,2022,"2022-07-22","https://whitelighting.bandcamp.com/album/thunderbolts-of-fuzz","W","Minneapolis, Minnesota"],[4041497550,"a","Zig Zags","Deadbeat At Dawn",1256568997,2025,"2025-05-30","https://zigzags.bandcamp.com/album/deadbeat-at-dawn?label=3790865819&tab=music","Z","Los Angeles, California"],[628287990,"a","Zig Zags","Strange Masters",1342086539,2024,"2024-05-17","https://zigzags.bandcamp.com/album/strange-masters","Z","Los Angeles, California"],[2748277386,"a","Zig Zags","They'll Never Take Us Alive",830932615,2019,"2019-05-10","https://zigzags.bandcamp.com/album/theyll-never-take-us-alive","Z","Los Angeles, California"]];
+
+const DATA = RAW.map((r, i) => ({
+  idx: i,
+  id: r[0],
+  type: r[1],
+  artist: r[2],
+  title: r[3],
+  artId: r[4],
+  year: r[5],
+  isoDate: r[6],
+  url: r[7],
+  letter: r[8] || "#",
+  location: r[9] || "",
+  isBrownAcid: /brown acid/i.test(r[3]),
+  key: r[1] + ":" + r[0]
+}));
+
+const LETTERS = ["#", ..."ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")];
+const FEATURED_ARTISTS = [
+  "Monolord",
+  "Salem's Pot",
+  "Here Lies Man",
+  "Electric Citizen",
+  "Spelljammer",
+  "Blackwater Holylight",
+  "Early Moods",
+  "Hell Fire",
+  "Warish",
+  "The Death Wheelers",
+  "DEATHCHANT",
+  "Mondo Drag",
+  "Holy Serpent",
+  "Westing"
+];
+
+const FAV_STORAGE_KEY = "ridingeasy_records_favs_v1";
+const HIST_STORAGE_KEY = "ridingeasy_records_history_v1";
+
+function loadJson(key, fallback) {
+  try {
+    const v = JSON.parse(localStorage.getItem(key) || "null");
+    return v !== null ? v : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+const state = {
+  filtered: DATA.slice(),
+  activeKey: DATA[0] ? DATA[0].key : "",
+  activeIndex: 0,
+  viewMode: "cabinet",
+  search: "",
+  sort: "alpha",
+  year: "ALL",
+  artist: "ALL",
+  brownAcidOnly: false,
+  favsOnly: false,
+  sunsetGlow: true,
+  favs: new Set(loadJson(FAV_STORAGE_KEY, [])),
+  history: loadJson(HIST_STORAGE_KEY, []),
+  wallOpen: false,
+  isScrubbing: false,
+  rpmTarget: 0.42,
+  rpmNow: 0.2,
+  vuTarget: 0.55,
+  vuNow: 0.25
+};
+
+const els = {
+  ambientArt: document.getElementById("ambientArt"),
+  dashGaugesBtn: document.getElementById("dashGaugesBtn"),
+  dashGaugesCanvas: document.getElementById("dashGaugesCanvas"),
+  dialPosReadout: document.getElementById("dialPosReadout"),
+  dialYearReadout: document.getElementById("dialYearReadout"),
+  dialArtistReadout: document.getElementById("dialArtistReadout"),
+  dialAlbumReadout: document.getElementById("dialAlbumReadout"),
+  stereoNeedle: document.getElementById("stereoNeedle"),
+  brownAcidBtn: document.getElementById("brownAcidBtn"),
+  brownAcidCount: document.getElementById("brownAcidCount"),
+  sunsetGlowBtn: document.getElementById("sunsetGlowBtn"),
+  sunsetGlowLabel: document.getElementById("sunsetGlowLabel"),
+  searchInput: document.getElementById("searchInput"),
+  sortSelect: document.getElementById("sortSelect"),
+  yearSelect: document.getElementById("yearSelect"),
+  artistSelect: document.getElementById("artistSelect"),
+  rosterBar: document.getElementById("rosterBar"),
+  viewCabinetBtn: document.getElementById("viewCabinetBtn"),
+  viewListBtn: document.getElementById("viewListBtn"),
+  posLabel: document.getElementById("posLabel"),
+  currentLetterLabel: document.getElementById("currentLetterLabel"),
+  resetFiltersBtn: document.getElementById("resetFiltersBtn"),
+  filteredSummary: document.getElementById("filteredSummary"),
+  cabinetScroll: document.getElementById("cabinetScroll"),
+  listView: document.getElementById("listView"),
+  alphaScrubTrack: document.getElementById("alphaScrubTrack"),
+  alphaScrubFill: document.getElementById("alphaScrubFill"),
+  alphaScrubThumb: document.getElementById("alphaScrubThumb"),
+  alphaLetters: document.getElementById("alphaLetters"),
+  scrubCallout: document.getElementById("scrubCallout"),
+  scrubLetter: document.getElementById("scrubLetter"),
+  scrubArtist: document.getElementById("scrubArtist"),
+  detail: document.getElementById("detail"),
+  randomBtn: document.getElementById("randomBtn"),
+  favFilterBtn: document.getElementById("favFilterBtn"),
+  favCount: document.getElementById("favCount"),
+  wallToggleBtn: document.getElementById("wallToggleBtn"),
+  wallView: document.getElementById("wallView"),
+  wallGrid: document.getElementById("wallGrid"),
+  wallCount: document.getElementById("wallCount"),
+  closeWallBtn: document.getElementById("closeWallBtn"),
+  lightbox: document.getElementById("lightbox"),
+  lightboxImg: document.getElementById("lightboxImg"),
+  lightboxTitle: document.getElementById("lightboxTitle"),
+  lightboxSub: document.getElementById("lightboxSub"),
+  closeLightboxBtn: document.getElementById("closeLightboxBtn"),
+  toast: document.getElementById("toast")
+};
+
+function artUrl(artId, size) {
+  return "https://f4.bcbits.com/img/a" + artId + "_" + (size || 16) + ".jpg";
+}
+
+function escapeHtml(s) {
+  return String(s || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function formatDate(iso, year) {
+  if (!iso) return String(year || "");
+  const parts = iso.split("-");
+  if (parts.length !== 3) return String(year || "");
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const m = months[parseInt(parts[1], 10) - 1] || "";
+  const d = parseInt(parts[2], 10);
+  return m ? (m + " " + d + ", " + parts[0]) : parts[0];
+}
+
+function showToast(msg) {
+  els.toast.textContent = msg;
+  els.toast.classList.add("show");
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => els.toast.classList.remove("show"), 2000);
+}
+
+function sectionKeyFor(item) {
+  if (state.sort === "newest" || state.sort === "oldest") {
+    return String(item.year || "Unknown");
+  }
+  if (state.sort === "album") {
+    const ch = (item.title || "").replace(/^(the|a|an)s+/i, "").trim().charAt(0).toUpperCase();
+    return /[A-Z]/.test(ch) ? ch : "#";
+  }
+  return item.letter || "#";
+}
+
+function populateSelects() {
+  const yearCounts = new Map();
+  const artistCounts = new Map();
+  let brownAcidTotal = 0;
+
+  DATA.forEach(item => {
+    yearCounts.set(item.year, (yearCounts.get(item.year) || 0) + 1);
+    artistCounts.set(item.artist, (artistCounts.get(item.artist) || 0) + 1);
+    if (item.isBrownAcid) brownAcidTotal++;
+  });
+
+  els.brownAcidCount.textContent = String(brownAcidTotal);
+
+  Array.from(yearCounts.keys()).sort((a, b) => b - a).forEach(y => {
+    const opt = document.createElement("option");
+    opt.value = String(y);
+    opt.textContent = y + " (" + yearCounts.get(y) + ")";
+    els.yearSelect.appendChild(opt);
+  });
+
+  Array.from(artistCounts.keys()).sort((a, b) => a.localeCompare(b)).forEach(a => {
+    const opt = document.createElement("option");
+    opt.value = a;
+    opt.textContent = a + " (" + artistCounts.get(a) + ")";
+    els.artistSelect.appendChild(opt);
+  });
+
+  /* Build Quick-Filter Custom Van Roster Bar */
+  const allBtn = document.createElement("button");
+  allBtn.type = "button";
+  allBtn.className = "roster-btn active";
+  allBtn.dataset.mode = "ALL";
+  allBtn.textContent = "All (" + DATA.length + ")";
+  els.rosterBar.appendChild(allBtn);
+
+  const baBtn = document.createElement("button");
+  baBtn.type = "button";
+  baBtn.className = "roster-btn";
+  baBtn.dataset.mode = "BROWN_ACID";
+  baBtn.textContent = "Brown Acid (" + brownAcidTotal + ")";
+  els.rosterBar.appendChild(baBtn);
+
+  FEATURED_ARTISTS.forEach(name => {
+    const count = artistCounts.get(name);
+    if (!count) return;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "roster-btn";
+    btn.dataset.mode = "ARTIST";
+    btn.dataset.artist = name;
+    btn.textContent = name + " (" + count + ")";
+    els.rosterBar.appendChild(btn);
+  });
+}
+
+function updateRosterButtons() {
+  els.brownAcidBtn.classList.toggle("active", state.brownAcidOnly);
+  els.rosterBar.querySelectorAll(".roster-btn").forEach(btn => {
+    const mode = btn.dataset.mode;
+    let isActive = false;
+    if (mode === "ALL") {
+      isActive = !state.brownAcidOnly && state.artist === "ALL";
+    } else if (mode === "BROWN_ACID") {
+      isActive = state.brownAcidOnly;
+    } else if (mode === "ARTIST") {
+      isActive = !state.brownAcidOnly && state.artist === btn.dataset.artist;
+    }
+    btn.classList.toggle("active", isActive);
+  });
+}
+
+function buildAlphaRail() {
+  els.alphaLetters.innerHTML = "";
+  LETTERS.forEach(letter => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "alpha-btn";
+    btn.dataset.letter = letter;
+    btn.textContent = letter;
+    btn.title = "Jump to " + letter;
+    btn.addEventListener("click", () => jumpToLetter(letter));
+    els.alphaLetters.appendChild(btn);
+  });
+}
+
+function updateAlphaAvailability() {
+  const present = new Set(state.filtered.map(item => item.letter));
+  els.alphaLetters.querySelectorAll(".alpha-btn").forEach(btn => {
+    btn.disabled = !present.has(btn.dataset.letter);
+  });
+  els.alphaScrubTrack.setAttribute("aria-valuemax", String(Math.max(0, state.filtered.length - 1)));
+}
+
+function hasActiveFilters() {
+  return Boolean(
+    state.search.trim() ||
+    state.year !== "ALL" ||
+    state.artist !== "ALL" ||
+    state.brownAcidOnly ||
+    state.favsOnly
+  );
+}
+
+function applyFilters(preserveActive) {
+  const q = state.search.trim().toLowerCase();
+  let list = DATA.filter(item => {
+    if (state.favsOnly && !state.favs.has(item.key)) return false;
+    if (state.brownAcidOnly && !item.isBrownAcid) return false;
+    if (state.year !== "ALL" && String(item.year) !== state.year) return false;
+    if (state.artist !== "ALL" && item.artist !== state.artist) return false;
+    if (q) {
+      const hay = (item.artist + " " + item.title + " " + item.year + " " + item.location).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  if (state.sort === "alpha") {
+    list.sort((a, b) => a.artist.localeCompare(b.artist) || b.year - a.year || a.title.localeCompare(b.title));
+  } else if (state.sort === "alphaDesc") {
+    list.sort((a, b) => b.artist.localeCompare(a.artist) || b.year - a.year);
+  } else if (state.sort === "album") {
+    list.sort((a, b) => a.title.localeCompare(b.title) || a.artist.localeCompare(b.artist));
+  } else if (state.sort === "newest") {
+    list.sort((a, b) => (b.isoDate || "").localeCompare(a.isoDate || "") || b.year - a.year || a.artist.localeCompare(b.artist));
+  } else if (state.sort === "oldest") {
+    list.sort((a, b) => (a.isoDate || "").localeCompare(b.isoDate || "") || a.year - b.year || a.artist.localeCompare(b.artist));
+  }
+
+  state.filtered = list;
+  updateRosterButtons();
+  updateAlphaAvailability();
+  els.resetFiltersBtn.classList.toggle("visible", hasActiveFilters());
+  els.filteredSummary.textContent = list.length + (list.length === 1 ? " release shown" : " releases shown");
+  els.favCount.textContent = String(state.favs.size);
+  els.favFilterBtn.classList.toggle("active", state.favsOnly);
+
+  let nextIdx = 0;
+  if (preserveActive && state.activeKey) {
+    const found = list.findIndex(item => item.key === state.activeKey);
+    if (found >= 0) nextIdx = found;
+  }
+
+  renderCabinet();
+  renderListView();
+  if (state.wallOpen) renderCoverWall();
+
+  if (list.length > 0) {
+    selectIndex(nextIdx, { scrollIntoView: !preserveActive });
+  } else {
+    state.activeIndex = -1;
+    els.posLabel.textContent = "0 / 0";
+    els.currentLetterLabel.textContent = "—";
+    els.dialPosReadout.textContent = "No matching tapes";
+    els.dialArtistReadout.textContent = "No Matches";
+    els.dialAlbumReadout.textContent = "Clear filters to restore the RidingEasy catalog";
+    renderEmptyDetail();
+  }
+}
+
+function groupFiltered() {
+  const groups = [];
+  const map = new Map();
+  state.filtered.forEach((item, idx) => {
+    const sec = sectionKeyFor(item);
+    if (!map.has(sec)) {
+      const g = { key: sec, items: [] };
+      map.set(sec, g);
+      groups.push(g);
+    }
+    map.get(sec).items.push({ item, idx });
+  });
+  return groups;
+}
+
+function renderCabinet() {
+  els.cabinetScroll.innerHTML = "";
+  if (!state.filtered.length) {
+    els.cabinetScroll.innerHTML =
+      '<div class="empty-state">No RidingEasy releases match your current filters.<br><br><button type="button" class="van-btn primary" id="emptyClearBtn">Reset All Filters</button></div>';
+    const btn = document.getElementById("emptyClearBtn");
+    if (btn) btn.addEventListener("click", clearAllFilters);
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  const groups = groupFiltered();
+
+  groups.forEach(group => {
+    const section = document.createElement("section");
+    section.className = "section-block";
+    section.dataset.section = group.key;
+
+    const head = document.createElement("div");
+    head.className = "section-header";
+    head.innerHTML =
+      '<div class="section-title-group">' +
+        '<span class="section-letter">' + escapeHtml(group.key) + '</span>' +
+      '</div>' +
+      '<span class="section-count">' + group.items.length + (group.items.length === 1 ? " release" : " releases") + '</span>';
+    section.appendChild(head);
+
+    const grid = document.createElement("div");
+    grid.className = "cabinet-grid";
+
+    group.items.forEach(({ item, idx }) => {
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "van-card" + (item.key === state.activeKey ? " active" : "");
+      card.dataset.idx = String(idx);
+      card.dataset.key = item.key;
+      card.dataset.letter = item.letter;
+      const savedStar = state.favs.has(item.key) ? '<span class="van-saved-star" title="Saved">★</span>' : "";
+      const typeLabel = item.type === "t" ? "Single" : (item.isBrownAcid ? "Brown Acid" : "LP");
+      card.innerHTML =
+        '<div class="van-cover-frame">' +
+          '<img src="' + artUrl(item.artId, 16) + '" alt="' + escapeHtml(item.artist + " — " + item.title) + '" loading="lazy" referrerpolicy="no-referrer">' +
+          '<div class="van-cover-sheen" aria-hidden="true"></div>' +
+        '</div>' +
+        '<div class="van-body">' +
+          '<div class="van-artist">' + escapeHtml(item.artist) + '</div>' +
+          '<div class="van-title">' + escapeHtml(item.title) + '</div>' +
+          '<div class="van-meta">' +
+            '<span>' + escapeHtml(item.year) + ' · ' + typeLabel + '</span>' +
+            '<span>#' + String(idx + 1).padStart(3, "0") + savedStar + '</span>' +
+          '</div>' +
+        '</div>';
+      card.addEventListener("click", () => selectIndex(idx, { scrollIntoView: false }));
+      grid.appendChild(card);
+    });
+
+    section.appendChild(grid);
+    frag.appendChild(section);
+  });
+
+  els.cabinetScroll.appendChild(frag);
+}
+
+function renderListView() {
+  els.listView.innerHTML = "";
+  if (!state.filtered.length) {
+    els.listView.innerHTML = '<div class="empty-state">No RidingEasy releases match your current filters.</div>';
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  const groups = groupFiltered();
+
+  groups.forEach(group => {
+    const head = document.createElement("div");
+    head.className = "list-section-header";
+    head.dataset.section = group.key;
+    head.innerHTML =
+      '<span>' + escapeHtml(group.key) + '</span>' +
+      '<span>' + group.items.length + (group.items.length === 1 ? " release" : " releases") + '</span>';
+    frag.appendChild(head);
+
+    group.items.forEach(({ item, idx }) => {
+      const row = document.createElement("button");
+      row.type = "button";
+      row.className = "list-row" + (item.key === state.activeKey ? " active" : "");
+      row.dataset.idx = String(idx);
+      row.dataset.key = item.key;
+      row.dataset.letter = item.letter;
+      row.setAttribute("role", "option");
+      row.setAttribute("aria-selected", item.key === state.activeKey ? "true" : "false");
+      const star = state.favs.has(item.key) ? " ★" : "";
+      const loc = item.location ? " · " + escapeHtml(item.location) : "";
+      row.innerHTML =
+        '<span class="list-idx">' + String(idx + 1).padStart(3, "0") + '</span>' +
+        '<img class="list-thumb" src="' + artUrl(item.artId, 9) + '" alt="" loading="lazy" referrerpolicy="no-referrer">' +
+        '<div class="list-text">' +
+          '<div class="list-artist">' + escapeHtml(item.artist) + star + '</div>' +
+          '<div class="list-title">' + escapeHtml(item.title) + '</div>' +
+        '</div>' +
+        '<div class="list-meta">' +
+          '<div class="list-year">' + escapeHtml(item.year) + '</div>' +
+          '<div>' + (item.type === "t" ? "Single" : "Album") + loc + '</div>' +
+        '</div>';
+      row.addEventListener("click", () => selectIndex(idx, { scrollIntoView: false }));
+      frag.appendChild(row);
+    });
+  });
+
+  els.listView.appendChild(frag);
+}
+
+function updateActiveVisuals(scrollIntoView) {
+  const item = state.filtered[state.activeIndex];
+  if (!item) return;
+
+  els.cabinetScroll.querySelectorAll(".van-card.active").forEach(el => el.classList.remove("active"));
+  const activeCard = els.cabinetScroll.querySelector('.van-card[data-key="' + item.key + '"]');
+  if (activeCard) {
+    activeCard.classList.add("active");
+    if (scrollIntoView && state.viewMode === "cabinet") {
+      activeCard.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+  }
+
+  els.listView.querySelectorAll(".list-row.active").forEach(el => {
+    el.classList.remove("active");
+    el.setAttribute("aria-selected", "false");
+  });
+  const activeRow = els.listView.querySelector('.list-row[data-key="' + item.key + '"]');
+  if (activeRow) {
+    activeRow.classList.add("active");
+    activeRow.setAttribute("aria-selected", "true");
+    if (scrollIntoView && state.viewMode === "list") {
+      activeRow.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+  }
+
+  els.posLabel.textContent = (state.activeIndex + 1) + " / " + state.filtered.length;
+  els.currentLetterLabel.textContent = sectionKeyFor(item);
+  updateAlphaHighlight(item.letter, state.filtered.length > 1 ? state.activeIndex / (state.filtered.length - 1) : 0);
+}
+
+function updateAlphaHighlight(letter, ratio) {
+  const clamped = Math.max(0, Math.min(1, ratio || 0));
+  els.alphaScrubFill.style.height = (clamped * 100) + "%";
+  els.alphaScrubThumb.style.top = (clamped * 100) + "%";
+  els.alphaScrubTrack.setAttribute("aria-valuenow", String(Math.round(clamped * Math.max(0, state.filtered.length - 1))));
+  els.alphaLetters.querySelectorAll(".alpha-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.letter === letter);
+  });
+}
+
+function selectIndex(idx, opts) {
+  const options = opts || {};
+  if (!state.filtered.length) return;
+  const clamped = Math.max(0, Math.min(state.filtered.length - 1, idx));
+  const item = state.filtered[clamped];
+  const changed = item.key !== state.activeKey;
+  state.activeIndex = clamped;
+  state.activeKey = item.key;
+
+  const pct = state.filtered.length > 1 ? (clamped / (state.filtered.length - 1)) : 0.5;
+  els.dialPosReadout.textContent =
+    "8-Track Slot " + String(clamped + 1).padStart(3, "0") + " / " + state.filtered.length + " · Section " + item.letter;
+  els.dialYearReadout.textContent =
+    (item.isBrownAcid ? "BROWN ACID TRIP · " : "FM STEREO · ") + item.year;
+  els.dialArtistReadout.textContent = item.artist;
+  els.dialAlbumReadout.textContent = item.title;
+  els.stereoNeedle.style.left = (4 + pct * 92).toFixed(1) + "%";
+
+  els.ambientArt.style.backgroundImage = 'url("' + artUrl(item.artId, 16) + '")';
+  state.rpmTarget = 0.55 + Math.random() * 0.35;
+  state.vuTarget = 0.65 + Math.random() * 0.28;
+
+  recordHistory(item.key);
+  updateActiveVisuals(Boolean(options.scrollIntoView));
+  renderDetail(item);
+  if (changed) els.detail.scrollTop = 0;
+}
+
+function recordHistory(key) {
+  state.history = [key, ...state.history.filter(k => k !== key)].slice(0, 10);
+  try {
+    localStorage.setItem(HIST_STORAGE_KEY, JSON.stringify(state.history));
+  } catch {}
+}
+
+function toggleFavorite(key) {
+  if (state.favs.has(key)) {
+    state.favs.delete(key);
+    showToast("Removed from Saved");
+  } else {
+    state.favs.add(key);
+    showToast("Saved to Van Crate");
+  }
+  try {
+    localStorage.setItem(FAV_STORAGE_KEY, JSON.stringify(Array.from(state.favs)));
+  } catch {}
+  els.favCount.textContent = String(state.favs.size);
+
+  if (state.favsOnly) {
+    applyFilters(true);
+    return;
+  }
+
+  const card = els.cabinetScroll.querySelector('.van-card[data-key="' + key + '"]');
+  if (card) {
+    const idx = parseInt(card.dataset.idx, 10);
+    const metaRight = card.querySelector(".van-meta span:last-child");
+    if (metaRight) {
+      metaRight.innerHTML = "#" + String(idx + 1).padStart(3, "0") + (state.favs.has(key) ? '<span class="van-saved-star" title="Saved">★</span>' : "");
+    }
+  }
+  const current = state.filtered[state.activeIndex];
+  if (current && current.key === key) {
+    renderDetail(current);
+  }
+}
+
+function renderEmptyDetail() {
+  els.detail.innerHTML =
+    '<div class="booth-frame"><div class="empty-state">Pick any release from the Van Rack to inspect and load it into the Now-Playing Bar.</div></div>';
+}
+
+function renderDetail(item) {
+  const isFav = state.favs.has(item.key);
+  const isTrack = item.type === "t";
+  const embedParam = isTrack ? "track=" + item.id : "album=" + item.id;
+  const embedSrc =
+    "https://bandcamp.com/EmbeddedPlayer/" +
+    embedParam +
+    "/size=large/bgcol=1c120b/linkcol=f2b729/artwork=none/transparent=true/";
+
+  const moreByArtist = DATA.filter(d => d.artist === item.artist && d.key !== item.key);
+  const recentItems = state.history
+    .map(k => DATA.find(d => d.key === k))
+    .filter(Boolean)
+    .slice(0, 6);
+
+  const metaParts = [
+    formatDate(item.isoDate, item.year),
+    isTrack ? "Single" : "Album",
+    "Catalog #" + String(item.idx + 1).padStart(3, "0")
+  ];
+  if (item.location) metaParts.push(item.location);
+
+  let moreHtml = "";
+  if (moreByArtist.length > 0) {
+    moreHtml =
+      '<section class="shelf-section">' +
+        '<div class="shelf-head">' +
+          '<h2 class="shelf-title">More by ' + escapeHtml(item.artist) + '</h2>' +
+          '<span class="shelf-sub">' + moreByArtist.length + ' more on RidingEasy</span>' +
+        '</div>' +
+        '<div class="strip-grid">' +
+          moreByArtist.slice(0, 12).map(rel =>
+            '<button type="button" class="mini-card" data-jump-key="' + rel.key + '">' +
+              '<img src="' + artUrl(rel.artId, 9) + '" alt="' + escapeHtml(rel.title) + '" loading="lazy" referrerpolicy="no-referrer">' +
+              '<div class="mini-card-title">' + escapeHtml(rel.title) + '</div>' +
+              '<div class="mini-card-sub">' + escapeHtml(rel.year) + '</div>' +
+            '</button>'
+          ).join("") +
+        '</div>' +
+      '</section>';
+  }
+
+  let recentHtml = "";
+  if (recentItems.length > 1) {
+    recentHtml =
+      '<section class="shelf-section">' +
+        '<div class="shelf-head">' +
+          '<h2 class="shelf-title">Recently Inspected</h2>' +
+          '<span class="shelf-sub">' + recentItems.length + ' recent</span>' +
+        '</div>' +
+        '<div class="strip-grid">' +
+          recentItems.map(rel =>
+            '<button type="button" class="mini-card' + (rel.key === item.key ? " active" : "") + '" data-jump-key="' + rel.key + '">' +
+              '<img src="' + artUrl(rel.artId, 9) + '" alt="' + escapeHtml(rel.artist + " — " + rel.title) + '" loading="lazy" referrerpolicy="no-referrer">' +
+              '<div class="mini-card-title">' + escapeHtml(rel.artist) + '</div>' +
+              '<div class="mini-card-sub">' + escapeHtml(rel.title) + '</div>' +
+            '</button>'
+          ).join("") +
+        '</div>' +
+      '</section>';
+  }
+
+  els.detail.innerHTML =
+    '<article class="booth-frame">' +
+      '<div class="booth-top">' +
+        '<button type="button" class="booth-cover-btn" id="openLightboxBtn" title="Inspect high-resolution cover artwork">' +
+          '<img src="' + artUrl(item.artId, 16) + '" alt="' + escapeHtml(item.artist + " — " + item.title) + '" referrerpolicy="no-referrer">' +
+        '</button>' +
+        '<div class="booth-meta-col">' +
+          '<div class="booth-kicker">Back-of-the-Van Lounge · Section ' + escapeHtml(item.letter) + (item.isBrownAcid ? ' · Brown Acid Series' : '') + '</div>' +
+          '<button type="button" class="booth-artist" id="filterArtistBtn" title="Filter van rack to ' + escapeHtml(item.artist) + '">' + escapeHtml(item.artist) + '</button>' +
+          '<h1 class="booth-album">' + escapeHtml(item.title) + '</h1>' +
+          '<div class="booth-loc">' + escapeHtml(metaParts.join(" · ")) + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="booth-actions">' +
+        '<button type="button" class="van-btn" id="prevBtn" title="Previous release (↑ / ←)">← Previous</button>' +
+        '<button type="button" class="van-btn" id="nextBtn" title="Next release (↓ / →)">Next →</button>' +
+        '<button type="button" class="van-btn' + (isFav ? " active" : "") + '" id="favToggleBtn">' + (isFav ? "★ Saved" : "☆ Save") + '</button>' +
+        '<button type="button" class="van-btn" id="copyLinkBtn">Copy Link</button>' +
+        '<a class="van-btn" href="' + escapeHtml(item.url) + '" target="_blank" rel="noopener">Bandcamp ↗</a>' +
+      '</div>' +
+      '<div class="embed-shell">' +
+        '<div class="embed-label">' +
+          '<span>Bandcamp Listening Deck · ' + (isTrack ? "Single Track" : "Full Album Tracklist") + '</span>' +
+          '<span>RidingEasy Records</span>' +
+        '</div>' +
+        '<iframe class="bc-iframe' + (isTrack ? " track-embed" : "") + '" src="' + embedSrc + '" seamless title="' + escapeHtml(item.artist + " — " + item.title) + ' Bandcamp Player"></iframe>' +
+      '</div>' +
+      moreHtml +
+      recentHtml +
+      '<div class="shortcuts-note">' +
+        'Shortcuts: ↑/↓ or ←/→ step releases · L toggles Van Rack / List · P expands Now-Playing Bar · R random · F save · W Cover Wall · / search · Shift+T TV Cast Stage' +
+      '</div>' +
+    '</article>';
+
+  document.getElementById("openLightboxBtn").addEventListener("click", () => openLightbox(item));
+  document.getElementById("filterArtistBtn").addEventListener("click", () => {
+    state.brownAcidOnly = false;
+    state.artist = state.artist === item.artist ? "ALL" : item.artist;
+    els.artistSelect.value = state.artist;
+    applyFilters(true);
+    showToast(state.artist === "ALL" ? "Showing all 84 artists" : "Filtered to " + item.artist);
+  });
+  document.getElementById("prevBtn").addEventListener("click", () => selectIndex(state.activeIndex - 1, { scrollIntoView: true }));
+  document.getElementById("nextBtn").addEventListener("click", () => selectIndex(state.activeIndex + 1, { scrollIntoView: true }));
+  document.getElementById("favToggleBtn").addEventListener("click", () => toggleFavorite(item.key));
+  document.getElementById("copyLinkBtn").addEventListener("click", () => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(item.url).then(() => showToast("Bandcamp URL copied")).catch(() => showToast("Copy unavailable"));
+    } else {
+      showToast("Copy unavailable");
+    }
+  });
+
+  els.detail.querySelectorAll("[data-jump-key]").forEach(btn => {
+    btn.addEventListener("click", () => jumpToKey(btn.dataset.jumpKey));
+  });
+}
+
+function jumpToKey(key) {
+  let idx = state.filtered.findIndex(item => item.key === key);
+  if (idx < 0) {
+    clearAllFilters();
+    idx = state.filtered.findIndex(item => item.key === key);
+  }
+  if (idx >= 0) {
+    selectIndex(idx, { scrollIntoView: true });
+  }
+}
+
+function jumpToLetter(letter) {
+  const idx = state.filtered.findIndex(item => item.letter === letter);
+  if (idx < 0) return;
+
+  if (state.sort === "alpha" || state.sort === "alphaDesc") {
+    const container = state.viewMode === "cabinet" ? els.cabinetScroll : els.listView;
+    const sec = container.querySelector('[data-section="' + letter + '"]');
+    if (sec) sec.scrollIntoView({ block: "start", behavior: "smooth" });
+  }
+  selectIndex(idx, { scrollIntoView: true });
+  flashScrubCallout(letter, state.filtered[idx].artist);
+}
+
+function flashScrubCallout(letter, artist) {
+  els.scrubLetter.textContent = letter;
+  els.scrubArtist.textContent = artist || "";
+  els.scrubCallout.classList.add("show");
+  clearTimeout(flashScrubCallout._t);
+  flashScrubCallout._t = setTimeout(() => {
+    if (!state.isScrubbing) els.scrubCallout.classList.remove("show");
+  }, 650);
+}
+
+function clearAllFilters() {
+  state.search = "";
+  state.year = "ALL";
+  state.artist = "ALL";
+  state.brownAcidOnly = false;
+  state.favsOnly = false;
+  els.searchInput.value = "";
+  els.yearSelect.value = "ALL";
+  els.artistSelect.value = "ALL";
+  applyFilters(true);
+}
+
+function setViewMode(mode) {
+  state.viewMode = mode === "list" ? "list" : "cabinet";
+  const isCab = state.viewMode === "cabinet";
+  els.cabinetScroll.classList.toggle("hidden", !isCab);
+  els.listView.classList.toggle("active", !isCab);
+  els.viewCabinetBtn.classList.toggle("active", isCab);
+  els.viewCabinetBtn.setAttribute("aria-pressed", String(isCab));
+  els.viewListBtn.classList.toggle("active", !isCab);
+  els.viewListBtn.setAttribute("aria-pressed", String(!isCab));
+  updateActiveVisuals(true);
+}
+
+function openCoverWall() {
+  state.wallOpen = true;
+  els.wallView.classList.add("open");
+  renderCoverWall();
+}
+
+function closeCoverWall() {
+  state.wallOpen = false;
+  els.wallView.classList.remove("open");
+}
+
+function renderCoverWall() {
+  els.wallCount.textContent = String(state.filtered.length);
+  els.wallGrid.innerHTML = "";
+  const frag = document.createDocumentFragment();
+  state.filtered.forEach((item, idx) => {
+    const tile = document.createElement("button");
+    tile.type = "button";
+    tile.className = "wall-tile" + (item.key === state.activeKey ? " active" : "");
+    tile.innerHTML =
+      '<div class="wall-tile-img">' +
+        '<img src="' + artUrl(item.artId, 16) + '" alt="' + escapeHtml(item.artist + " — " + item.title) + '" loading="lazy" referrerpolicy="no-referrer">' +
+      '</div>' +
+      '<div class="wall-tile-artist">' + escapeHtml(item.artist) + '</div>' +
+      '<div class="wall-tile-title">' + escapeHtml(item.title) + '</div>' +
+      '<div class="wall-tile-year">' + escapeHtml(item.year) + '</div>';
+    tile.addEventListener("click", () => {
+      closeCoverWall();
+      selectIndex(idx, { scrollIntoView: true });
+    });
+    frag.appendChild(tile);
+  });
+  els.wallGrid.appendChild(frag);
+}
+
+function openLightbox(item) {
+  els.lightboxImg.src = artUrl(item.artId, 10);
+  els.lightboxImg.alt = item.artist + " — " + item.title;
+  els.lightboxTitle.textContent = item.artist + " — " + item.title;
+  els.lightboxSub.textContent = formatDate(item.isoDate, item.year) + (item.location ? " · " + item.location : "");
+  els.lightbox.classList.add("open");
+}
+
+function closeLightbox() {
+  els.lightbox.classList.remove("open");
+}
+
+function selectRandom() {
+  if (!state.filtered.length) return;
+  let pick = Math.floor(Math.random() * state.filtered.length);
+  if (state.filtered.length > 1 && pick === state.activeIndex) {
+    pick = (pick + 1) % state.filtered.length;
+  }
+  selectIndex(pick, { scrollIntoView: true });
+}
+
+/* Vertical A-Z Rail Sync */
+function syncRailFromScroll(container) {
+  if (state.isScrubbing || !state.filtered.length) return;
+  const maxScroll = Math.max(1, container.scrollHeight - container.clientHeight);
+  const ratio = Math.max(0, Math.min(1, container.scrollTop / maxScroll));
+  const estIdx = Math.min(state.filtered.length - 1, Math.floor(ratio * state.filtered.length));
+  const estItem = state.filtered[estIdx];
+  if (estItem) {
+    updateAlphaHighlight(estItem.letter, ratio);
+    els.currentLetterLabel.textContent = sectionKeyFor(estItem);
+  }
+}
+
+els.cabinetScroll.addEventListener("scroll", () => {
+  if (state.viewMode === "cabinet") syncRailFromScroll(els.cabinetScroll);
+}, { passive: true });
+
+els.listView.addEventListener("scroll", () => {
+  if (state.viewMode === "list") syncRailFromScroll(els.listView);
+}, { passive: true });
+
+function scrubFromPointer(clientY) {
+  if (!state.filtered.length) return;
+  const rect = els.alphaScrubTrack.getBoundingClientRect();
+  const ratio = Math.max(0, Math.min(1, (clientY - rect.top) / Math.max(1, rect.height)));
+  const container = state.viewMode === "cabinet" ? els.cabinetScroll : els.listView;
+  const maxScroll = Math.max(0, container.scrollHeight - container.clientHeight);
+  container.scrollTop = ratio * maxScroll;
+
+  const idx = Math.min(state.filtered.length - 1, Math.floor(ratio * state.filtered.length));
+  const item = state.filtered[idx];
+  if (item) {
+    updateAlphaHighlight(item.letter, ratio);
+    els.currentLetterLabel.textContent = sectionKeyFor(item);
+    els.scrubLetter.textContent = sectionKeyFor(item);
+    els.scrubArtist.textContent = item.artist;
+    els.scrubCallout.classList.add("show");
+  }
+}
+
+els.alphaScrubTrack.addEventListener("pointerdown", e => {
+  state.isScrubbing = true;
+  els.alphaScrubTrack.setPointerCapture(e.pointerId);
+  scrubFromPointer(e.clientY);
+});
+els.alphaScrubTrack.addEventListener("pointermove", e => {
+  if (state.isScrubbing) scrubFromPointer(e.clientY);
+});
+const endScrub = () => {
+  if (!state.isScrubbing) return;
+  state.isScrubbing = false;
+  setTimeout(() => {
+    if (!state.isScrubbing) els.scrubCallout.classList.remove("show");
+  }, 350);
+};
+els.alphaScrubTrack.addEventListener("pointerup", endScrub);
+els.alphaScrubTrack.addEventListener("pointercancel", endScrub);
+
+/* Warm Amber Twin 1970s Van Dash Gauges (RPM / VU Analog Needles) */
+const gCtx = els.dashGaugesCanvas.getContext("2d");
+const prefersReducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function drawGauge(cx, cy, r, val, label) {
+  gCtx.save();
+  /* Chrome bezel */
+  gCtx.beginPath();
+  gCtx.arc(cx, cy, r + 3, 0, Math.PI * 2);
+  gCtx.fillStyle = "#5c5449";
+  gCtx.fill();
+
+  /* Warm dark amber dial face */
+  const grad = gCtx.createRadialGradient(cx, cy - 6, 4, cx, cy, r);
+  grad.addColorStop(0, "#2f1b0d");
+  grad.addColorStop(1, "#0d0704");
+  gCtx.beginPath();
+  gCtx.arc(cx, cy, r, 0, Math.PI * 2);
+  gCtx.fillStyle = grad;
+  gCtx.fill();
+
+  /* Tick marks */
+  const startA = Math.PI * 0.78;
+  const endA = Math.PI * 2.22;
+  for (let i = 0; i <= 8; i++) {
+    const t = i / 8;
+    const a = startA + t * (endA - startA);
+    gCtx.strokeStyle = t > 0.75 ? "#c93028" : "#f2b729";
+    gCtx.lineWidth = i % 2 === 0 ? 2.2 : 1.2;
+    gCtx.beginPath();
+    gCtx.moveTo(cx + Math.cos(a) * (r - 10), cy + Math.sin(a) * (r - 10));
+    gCtx.lineTo(cx + Math.cos(a) * (r - 3), cy + Math.sin(a) * (r - 3));
+    gCtx.stroke();
+  }
+
+  /* Dial label */
+  gCtx.fillStyle = "#d3c09e";
+  gCtx.font = "600 13px 'IBM Plex Mono', monospace";
+  gCtx.textAlign = "center";
+  gCtx.fillText(label, cx, cy + r * 0.56);
+
+  /* Glowing orange needle */
+  const needleA = startA + Math.max(0.05, Math.min(0.95, val)) * (endA - startA);
+  gCtx.strokeStyle = "#ff7c2a";
+  gCtx.lineWidth = 2.6;
+  gCtx.beginPath();
+  gCtx.moveTo(cx, cy);
+  gCtx.lineTo(cx + Math.cos(needleA) * (r - 9), cy + Math.sin(needleA) * (r - 9));
+  gCtx.stroke();
+
+  gCtx.beginPath();
+  gCtx.arc(cx, cy, 4.2, 0, Math.PI * 2);
+  gCtx.fillStyle = "#e6dfd2";
+  gCtx.fill();
+  gCtx.restore();
+}
+
+function animateGauges(ts) {
+  const w = els.dashGaugesCanvas.width;
+  const h = els.dashGaugesCanvas.height;
+  gCtx.clearRect(0, 0, w, h);
+
+  if (!prefersReducedMotion) {
+    const idlePulse = 0.28 + Math.sin(ts * 0.0022) * 0.06 + Math.sin(ts * 0.0057) * 0.04;
+    const vuPulse = 0.34 + Math.cos(ts * 0.0031) * 0.08 + Math.sin(ts * 0.0073) * 0.05;
+    state.rpmTarget += (idlePulse - state.rpmTarget) * 0.015;
+    state.vuTarget += (vuPulse - state.vuTarget) * 0.02;
+    state.rpmNow += (state.rpmTarget - state.rpmNow) * 0.12;
+    state.vuNow += (state.vuTarget - state.vuNow) * 0.14;
+  } else {
+    state.rpmNow = 0.38;
+    state.vuNow = 0.48;
+  }
+
+  drawGauge(54, 62, 46, state.rpmNow, "RPM");
+  drawGauge(154, 62, 46, state.vuNow, "FUZZ");
+
+  requestAnimationFrame(animateGauges);
+}
+
+/* Events */
+els.searchInput.addEventListener("input", () => {
+  state.search = els.searchInput.value;
+  applyFilters(true);
+});
+
+els.sortSelect.addEventListener("change", () => {
+  state.sort = els.sortSelect.value;
+  applyFilters(true);
+});
+
+els.yearSelect.addEventListener("change", () => {
+  state.year = els.yearSelect.value;
+  applyFilters(true);
+});
+
+els.artistSelect.addEventListener("change", () => {
+  state.brownAcidOnly = false;
+  state.artist = els.artistSelect.value;
+  applyFilters(true);
+});
+
+els.rosterBar.addEventListener("click", e => {
+  const btn = e.target.closest(".roster-btn");
+  if (!btn) return;
+  const mode = btn.dataset.mode;
+  if (mode === "ALL") {
+    state.brownAcidOnly = false;
+    state.artist = "ALL";
+    els.artistSelect.value = "ALL";
+  } else if (mode === "BROWN_ACID") {
+    state.brownAcidOnly = !state.brownAcidOnly;
+    if (state.brownAcidOnly) {
+      state.artist = "ALL";
+      els.artistSelect.value = "ALL";
+    }
+  } else if (mode === "ARTIST") {
+    state.brownAcidOnly = false;
+    state.artist = btn.dataset.artist;
+    els.artistSelect.value = state.artist;
+  }
+  applyFilters(false);
+});
+
+els.brownAcidBtn.addEventListener("click", () => {
+  state.brownAcidOnly = !state.brownAcidOnly;
+  if (state.brownAcidOnly) {
+    state.artist = "ALL";
+    els.artistSelect.value = "ALL";
+  }
+  applyFilters(false);
+});
+
+els.sunsetGlowBtn.addEventListener("click", () => {
+  state.sunsetGlow = !state.sunsetGlow;
+  document.body.classList.toggle("glow-calm", !state.sunsetGlow);
+  els.sunsetGlowBtn.classList.toggle("active", state.sunsetGlow);
+  els.sunsetGlowLabel.textContent = state.sunsetGlow ? "ON" : "LOW";
+});
+
+els.resetFiltersBtn.addEventListener("click", clearAllFilters);
+els.viewCabinetBtn.addEventListener("click", () => setViewMode("cabinet"));
+els.viewListBtn.addEventListener("click", () => setViewMode("list"));
+els.randomBtn.addEventListener("click", selectRandom);
+els.dashGaugesBtn.addEventListener("click", selectRandom);
+
+els.favFilterBtn.addEventListener("click", () => {
+  state.favsOnly = !state.favsOnly;
+  applyFilters(false);
+});
+
+els.wallToggleBtn.addEventListener("click", openCoverWall);
+els.closeWallBtn.addEventListener("click", closeCoverWall);
+els.closeLightboxBtn.addEventListener("click", closeLightbox);
+els.lightbox.addEventListener("click", e => {
+  if (e.target === els.lightbox) closeLightbox();
+});
+
+document.addEventListener("keydown", e => {
+  const tag = (document.activeElement && document.activeElement.tagName) || "";
+  const inInput = tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT";
+
+  if (e.key === "Escape") {
+    if (els.lightbox.classList.contains("open")) { closeLightbox(); return; }
+    if (state.wallOpen) { closeCoverWall(); return; }
+    if (inInput) { document.activeElement.blur(); return; }
+  }
+
+  if (inInput || e.metaKey || e.ctrlKey || e.altKey) return;
+
+  if (e.key === "/") {
+    e.preventDefault();
+    els.searchInput.focus();
+  } else if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+    e.preventDefault();
+    selectIndex(state.activeIndex + 1, { scrollIntoView: true });
+  } else if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
+    e.preventDefault();
+    selectIndex(state.activeIndex - 1, { scrollIntoView: true });
+  } else if (e.key === "r" || e.key === "R") {
+    e.preventDefault();
+    selectRandom();
+  } else if (e.key === "l" || e.key === "L") {
+    e.preventDefault();
+    setViewMode(state.viewMode === "cabinet" ? "list" : "cabinet");
+  } else if (e.key === "f" || e.key === "F") {
+    e.preventDefault();
+    if (state.activeKey) toggleFavorite(state.activeKey);
+  } else if (e.key === "w" || e.key === "W") {
+    e.preventDefault();
+    if (state.wallOpen) closeCoverWall();
+    else openCoverWall();
+  }
+});
+
+/* Boot Van Archive */
+populateSelects();
+buildAlphaRail();
+applyFilters(false);
+requestAnimationFrame(animateGauges);
+</script>
+<script src="./now-playing-dock.js" defer></script>
+<script src="./chrome-cast.js" defer></script>
+</body>
+</html>

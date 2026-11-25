@@ -41,6 +41,9 @@
   }
 
   function readNowPlaying() {
+    if (window.__BC_NOW_PLAYING__ && window.__BC_NOW_PLAYING__.title) {
+      return Object.assign({}, window.__BC_NOW_PLAYING__);
+    }
     const brandEl =
       document.querySelector(".brand") ||
       document.querySelector(".brand-title") ||
@@ -681,6 +684,7 @@
         });
         obs.observe(target, { childList: true, subtree: true });
       }
+      window.addEventListener("bc-now-playing-changed", () => syncNowPlaying());
     }
 
     document.addEventListener("keydown", e => {
