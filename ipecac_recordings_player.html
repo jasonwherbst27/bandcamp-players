@@ -1,0 +1,2735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ipecac Recordings — 231 Releases · Rapture Art Deco Archive &amp; Cold War Sonar Console</title>
+<meta name="description" content="BioShock Art Deco specimen cabinet &amp; Atomic Age Cold War sonar archive for Ipecac Recordings on Bandcamp, spanning 231 releases across 110 artists (1999–2027) with crackling CRT telemetry, quick roster filters, Cabinet &amp; List views, A–Z rail, Cover Wall, Cast mode, and Bandcamp embeds.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Julius+Sans+One&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --abyss: #050c0d;
+    --hull: #091517;
+    --hull-2: #0f2124;
+    --hull-3: #142a2e;
+    --hull-hover: #173136;
+    --ink: #f1e9d6;
+    --ink-mid: #c5bda7;
+    --ink-muted: #869690;
+    --brass: #c9a24b;
+    --brass-lit: #ebd082;
+    --brass-dim: #705825;
+    --brass-soft: rgba(201, 162, 75, 0.16);
+    --phosphor: #4bf09a;
+    --phosphor-dim: #1d8a55;
+    --phosphor-soft: rgba(75, 240, 154, 0.14);
+    --tube-amber: #e69138;
+    --rule: rgba(201, 162, 75, 0.24);
+    --rule-strong: rgba(201, 162, 75, 0.48);
+    --focus-ring: #ebd082;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+
+  body {
+    font-family: 'Barlow', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--abyss);
+    color: var(--ink);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button, input, select, a { font-family: inherit; }
+
+  button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  /* Deep Atlantic Rapture Caustics + Subtle Album-Art Glow */
+  .ambient-art {
+    position: fixed;
+    inset: -8%;
+    z-index: 0;
+    pointer-events: none;
+    background-size: cover;
+    background-position: center;
+    filter: blur(72px) saturate(0.55) brightness(0.24) hue-rotate(-10deg);
+    opacity: 0.44;
+    transform: scale(1.12);
+    transition: background-image 1s ease, opacity 0.8s ease;
+  }
+
+  .rapture-ocean {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at 24% 14%, rgba(36, 128, 120, 0.17) 0%, transparent 50%),
+      radial-gradient(ellipse at 78% 84%, rgba(201, 162, 75, 0.08) 0%, transparent 48%),
+      repeating-linear-gradient(135deg, rgba(201, 162, 75, 0.018) 0px, rgba(201, 162, 75, 0.018) 1px, transparent 1px, transparent 28px),
+      linear-gradient(180deg, rgba(5, 12, 13, 0.74) 0%, rgba(4, 10, 11, 0.94) 100%);
+  }
+
+  /* Subtle Console-Wide CRT Scanline & Crackle Layer */
+  .crt-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    background:
+      repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.14) 0px, rgba(0, 0, 0, 0.14) 1px, transparent 1px, transparent 3px);
+    opacity: 0.42;
+    transition: opacity 0.22s ease;
+  }
+  body.crt-calm .crt-overlay { opacity: 0.08; }
+
+  /* Art Deco Brass Header Masthead */
+  .header {
+    position: relative;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 22px;
+    background: linear-gradient(180deg, rgba(13, 29, 32, 0.97) 0%, rgba(8, 19, 21, 0.97) 100%);
+    border-bottom: 2px solid var(--brass);
+    box-shadow: 0 3px 0 rgba(5, 12, 13, 0.9), 0 4px 0 rgba(201, 162, 75, 0.24);
+    flex-shrink: 0;
+  }
+
+  .header::after {
+    content: "";
+    position: absolute;
+    left: 22px;
+    right: 22px;
+    bottom: 3px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(235, 208, 130, 0.42) 15%, rgba(235, 208, 130, 0.42) 85%, transparent);
+    pointer-events: none;
+  }
+
+  .brand-wrap {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-width: 0;
+  }
+
+  .deco-crest {
+    width: 38px;
+    height: 38px;
+    border: 1.5px solid var(--brass);
+    background: radial-gradient(circle at 50% 42%, #132d30 0%, #071214 100%);
+    box-shadow: inset 0 0 0 3px #071214, inset 0 0 0 4px rgba(201, 162, 75, 0.42);
+    display: grid;
+    place-items: center;
+    color: var(--brass-lit);
+    flex-shrink: 0;
+  }
+
+  .brand {
+    font-family: 'Julius Sans One', Georgia, serif;
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    line-height: 1.05;
+    text-transform: uppercase;
+    color: var(--brass-lit);
+    text-shadow: 0 1px 10px rgba(201, 162, 75, 0.24);
+    white-space: nowrap;
+  }
+
+  .subbrand {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--ink-muted);
+    margin-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-mid);
+    text-decoration: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+  }
+  .back-link:hover {
+    color: var(--brass-lit);
+    background: rgba(201, 162, 75, 0.08);
+    border-color: var(--rule);
+  }
+
+  .deco-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 13px;
+    min-height: 36px;
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    background: linear-gradient(180deg, #12282b 0%, #0a181a 100%);
+    border: 1px solid var(--rule-strong);
+    box-shadow: inset 0 1px 0 rgba(235, 208, 130, 0.16);
+    border-radius: 1px;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background-color 0.15s var(--ease), border-color 0.15s var(--ease), color 0.15s var(--ease), transform 0.12s var(--ease);
+  }
+  .deco-btn:hover {
+    background: linear-gradient(180deg, #19373b 0%, #0e2225 100%);
+    border-color: var(--brass-lit);
+    color: var(--brass-lit);
+  }
+  .deco-btn:active { transform: translateY(1px); }
+
+  .deco-btn.primary {
+    background: linear-gradient(180deg, #dfb860 0%, #b58d38 100%);
+    border-color: var(--brass-lit);
+    color: #081213;
+    font-weight: 600;
+  }
+  .deco-btn.primary:hover {
+    background: linear-gradient(180deg, #f0cf7b 0%, #c99f45 100%);
+    color: #050c0d;
+  }
+
+  .deco-btn.active {
+    background: var(--brass-soft);
+    border-color: var(--brass-lit);
+    color: var(--brass-lit);
+  }
+
+  .count-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.9;
+  }
+
+  /* Main Split Workspace: Left Rapture Vitrine & Cold War Console | Right Phonograph Listening Booth */
+  .workspace {
+    position: relative;
+    z-index: 5;
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(560px, 1.32fr) minmax(380px, 0.68fr);
+    overflow: hidden;
+  }
+
+  .archive-zone {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    border-right: 1.5px solid var(--brass);
+    box-shadow: inset -1px 0 0 rgba(201, 162, 75, 0.2);
+    background: rgba(6, 15, 17, 0.84);
+  }
+
+  /* INTEGRATED COLD WAR SONAR & CRACKLING CRT TELEMETRY CONSOLE STRIP */
+  .telemetry-strip {
+    display: grid;
+    grid-template-columns: 78px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 14px;
+    padding: 9px 16px;
+    background:
+      linear-gradient(180deg, rgba(8, 22, 23, 0.96) 0%, rgba(5, 13, 14, 0.98) 100%);
+    border-bottom: 1px solid var(--rule-strong);
+    flex-shrink: 0;
+  }
+
+  .mini-radar-wrap {
+    position: relative;
+    width: 74px;
+    height: 74px;
+    border-radius: 50%;
+    padding: 4px;
+    background: radial-gradient(circle at 32% 28%, #8f6e2d 0%, #443312 58%, #1d1507 100%);
+    border: 1.5px solid var(--brass);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.65), inset 0 1px 2px rgba(235, 208, 130, 0.35);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform 0.16s var(--ease), border-color 0.16s var(--ease);
+  }
+  .mini-radar-wrap:hover {
+    border-color: var(--brass-lit);
+    transform: scale(1.03);
+  }
+  .mini-radar-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #03110c;
+  }
+
+  .crt-monitor {
+    position: relative;
+    min-width: 0;
+    height: 74px;
+    padding: 8px 12px;
+    background:
+      radial-gradient(ellipse at 50% 45%, rgba(16, 48, 36, 0.72) 0%, rgba(4, 15, 12, 0.96) 80%);
+    border: 1px solid rgba(75, 240, 154, 0.32);
+    box-shadow:
+      inset 0 0 18px rgba(0, 0, 0, 0.8),
+      inset 0 0 0 1px rgba(75, 240, 154, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .crt-wave-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.48;
+    pointer-events: none;
+  }
+
+  .crt-readout-top {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--phosphor);
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .crt-bearing {
+    color: var(--tube-amber);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .crt-readout-main {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .crt-artist {
+    font-family: 'Julius Sans One', Georgia, serif;
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    color: var(--brass-lit);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 48%;
+  }
+
+  .crt-sep {
+    color: rgba(75, 240, 154, 0.55);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .crt-album {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .crt-readout-foot {
+    position: relative;
+    z-index: 2;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10.5px;
+    color: rgba(173, 232, 200, 0.78);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .console-switches {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .switch-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 5px 10px;
+    min-width: 122px;
+    min-height: 33px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-mid);
+    background: linear-gradient(180deg, #102427 0%, #091517 100%);
+    border: 1px solid var(--rule);
+    border-radius: 1px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+  }
+  .switch-btn:hover {
+    border-color: var(--brass-lit);
+    color: var(--brass-lit);
+  }
+  .switch-btn.active {
+    border-color: rgba(75, 240, 154, 0.55);
+    color: var(--phosphor);
+    background: rgba(17, 45, 36, 0.72);
+  }
+  .switch-state {
+    font-size: 10px;
+    opacity: 0.9;
+  }
+
+  /* Filter Toolbar + Core Roster Brass Strip */
+  .archive-toolbar {
+    padding: 10px 16px 9px;
+    background: rgba(9, 21, 23, 0.94);
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .toolbar-row {
+    display: grid;
+    grid-template-columns: minmax(170px, 1.45fr) 150px 118px 168px;
+    gap: 8px;
+  }
+
+  .search-input, .select-input {
+    width: 100%;
+    min-height: 36px;
+    padding: 7px 10px;
+    font-size: 13px;
+    color: var(--ink);
+    background: #061012;
+    border: 1px solid var(--rule-strong);
+    border-radius: 1px;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+  }
+  .search-input::placeholder { color: var(--ink-muted); }
+  .search-input:focus, .select-input:focus {
+    outline: none;
+    border-color: var(--brass-lit);
+    background: #081518;
+  }
+
+  /* One-Click Featured Ipecac Roster Brass Tabs */
+  .roster-bar {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: thin;
+  }
+  .roster-bar::-webkit-scrollbar { height: 4px; }
+
+  .roster-btn {
+    padding: 5px 10px;
+    min-height: 30px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-mid);
+    background: rgba(12, 27, 30, 0.82);
+    border: 1px solid var(--rule);
+    border-radius: 1px;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: border-color 0.14s ease, color 0.14s ease, background-color 0.14s ease;
+  }
+  .roster-btn:hover {
+    color: var(--brass-lit);
+    border-color: var(--rule-strong);
+    background: rgba(201, 162, 75, 0.1);
+  }
+  .roster-btn.active {
+    background: linear-gradient(180deg, #dfb860 0%, #b58d38 100%);
+    border-color: var(--brass-lit);
+    color: #071112;
+    font-weight: 600;
+  }
+
+  .status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .status-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+  .status-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .status-bar strong { color: var(--ink); font-weight: 500; }
+  .letter-now { color: var(--phosphor); font-weight: 600; }
+
+  .view-switch {
+    display: inline-flex;
+    align-items: center;
+    background: #050d0f;
+    border: 1px solid var(--rule-strong);
+    border-radius: 1px;
+    padding: 2px;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+  .view-switch-btn {
+    border: none;
+    background: transparent;
+    color: var(--ink-muted);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    padding: 5px 11px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .view-switch-btn:hover { color: var(--brass-lit); }
+  .view-switch-btn.active {
+    background: var(--brass);
+    color: #061012;
+    font-weight: 600;
+  }
+
+  .reset-link-btn {
+    border: 1px solid rgba(230, 145, 56, 0.55);
+    background: rgba(230, 145, 56, 0.12);
+    color: var(--tube-amber);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    padding: 4px 9px;
+    cursor: pointer;
+    white-space: nowrap;
+    display: none;
+  }
+  .reset-link-btn.visible { display: inline-flex; align-items: center; }
+  .reset-link-btn:hover {
+    background: rgba(230, 145, 56, 0.24);
+    color: var(--brass-lit);
+  }
+
+  /* MAIN STAGE: RAPTURE ART DECO SPECIMEN CABINET / LIST VIEW + A-Z RAIL */
+  .stage-body {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    overflow: hidden;
+  }
+
+  /* CABINET GRID (Default Highly Usable BioShock Vitrine) */
+  .cabinet-scroll {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    padding: 0 16px 32px;
+    scroll-behavior: auto;
+  }
+  .cabinet-scroll.hidden { display: none; }
+
+  .section-block {
+    margin-bottom: 18px;
+  }
+
+  .section-header {
+    position: sticky;
+    top: 0;
+    z-index: 8;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 4px 8px;
+    margin-bottom: 12px;
+    background: linear-gradient(180deg, rgba(6, 15, 17, 0.98) 0%, rgba(6, 15, 17, 0.92) 86%, rgba(6, 15, 17, 0) 100%);
+    border-bottom: 1px solid var(--rule-strong);
+  }
+
+  .section-title-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-letter {
+    font-family: 'Julius Sans One', Georgia, serif;
+    font-size: 20px;
+    line-height: 1;
+    letter-spacing: 0.12em;
+    color: var(--brass-lit);
+    min-width: 24px;
+  }
+
+  .section-rule-ornament {
+    width: 28px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--brass), transparent);
+  }
+
+  .section-count {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cabinet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+    grid-auto-rows: max-content;
+    gap: 14px;
+    align-content: start;
+  }
+
+  /* Art Deco Brass Specimen Card */
+  .specimen-card {
+    position: relative;
+    display: block;
+    min-width: 0;
+    padding: 8px 8px 11px;
+    background: linear-gradient(180deg, rgba(13, 30, 33, 0.94) 0%, rgba(8, 19, 21, 0.98) 100%);
+    border: 1px solid var(--rule);
+    border-radius: 1px;
+    text-align: left;
+    color: var(--ink);
+    cursor: pointer;
+    transition: transform 0.16s var(--ease), border-color 0.16s var(--ease), background-color 0.16s var(--ease), box-shadow 0.16s var(--ease);
+  }
+
+  .specimen-card::before,
+  .specimen-card::after {
+    content: "";
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.16s ease;
+  }
+  .specimen-card::before {
+    top: -1px;
+    left: -1px;
+    border-top: 2px solid var(--phosphor);
+    border-left: 2px solid var(--phosphor);
+  }
+  .specimen-card::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 2px solid var(--phosphor);
+    border-right: 2px solid var(--phosphor);
+  }
+
+  .specimen-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--brass-lit);
+    background: linear-gradient(180deg, rgba(19, 43, 47, 0.96) 0%, rgba(11, 25, 28, 0.98) 100%);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+  }
+
+  .specimen-card.active {
+    border-color: var(--phosphor);
+    background: linear-gradient(180deg, rgba(16, 44, 39, 0.96) 0%, rgba(9, 24, 24, 0.98) 100%);
+    box-shadow: 0 0 0 1px rgba(75, 240, 154, 0.45), 0 10px 26px rgba(0, 0, 0, 0.55);
+  }
+  .specimen-card.active::before,
+  .specimen-card.active::after {
+    opacity: 1;
+  }
+
+  .specimen-cover-frame {
+    position: relative;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    background: #040a0b;
+    border: 1px solid rgba(201, 162, 75, 0.34);
+  }
+
+  .specimen-cover-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    transition: transform 0.28s var(--ease), filter 0.22s ease;
+  }
+
+  .specimen-card:hover .specimen-cover-frame img {
+    transform: scale(1.045);
+  }
+
+  .specimen-cover-sheen {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(135deg, rgba(235, 208, 130, 0.14) 0%, transparent 38%, rgba(4, 12, 13, 0.22) 100%);
+    opacity: 0.65;
+  }
+
+  .specimen-body {
+    margin-top: 9px;
+  }
+
+  .specimen-artist {
+    font-family: 'Julius Sans One', Georgia, serif;
+    font-size: 13.5px;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    color: var(--brass-lit);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .specimen-title {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.28;
+    color: var(--ink);
+    margin-top: 3px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 33px;
+  }
+
+  .specimen-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 7px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(201, 162, 75, 0.18);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10.5px;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .specimen-card.active .specimen-meta {
+    color: var(--phosphor);
+    border-top-color: rgba(75, 240, 154, 0.3);
+  }
+
+  .specimen-saved-star {
+    color: var(--brass-lit);
+    font-size: 11px;
+    margin-left: 4px;
+  }
+
+  /* SYNCHRONIZED LIST VIEW */
+  .list-view {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    display: none;
+    flex-direction: column;
+    padding: 0 12px 28px;
+  }
+  .list-view.active { display: flex; }
+
+  .list-section-header {
+    position: sticky;
+    top: 0;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 10px 7px;
+    background: rgba(6, 15, 17, 0.96);
+    border-bottom: 1px solid var(--rule-strong);
+    font-family: 'Julius Sans One', Georgia, serif;
+    font-size: 15px;
+    letter-spacing: 0.12em;
+    color: var(--brass-lit);
+  }
+  .list-section-header span:last-child {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+    letter-spacing: 0.03em;
+  }
+
+  .list-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 38px 46px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 10px;
+    border: none;
+    border-bottom: 1px solid rgba(201, 162, 75, 0.14);
+    background: transparent;
+    color: var(--ink);
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.14s ease;
+  }
+  .list-row:hover { background: rgba(201, 162, 75, 0.08); }
+  .list-row.active {
+    background: linear-gradient(90deg, rgba(75, 240, 154, 0.14) 0%, rgba(201, 162, 75, 0.07) 100%);
+    box-shadow: inset 0 0 0 1px rgba(75, 240, 154, 0.42);
+  }
+
+  .list-idx {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .list-row.active .list-idx { color: var(--phosphor); }
+
+  .list-thumb {
+    width: 46px;
+    height: 46px;
+    object-fit: cover;
+    display: block;
+    border: 1px solid var(--rule-strong);
+    background: #040a0b;
+  }
+
+  .list-text { min-width: 0; }
+  .list-artist {
+    font-family: 'Julius Sans One', Georgia, serif;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    color: var(--brass-lit);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .list-title {
+    font-size: 13px;
+    color: var(--ink);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .list-meta {
+    text-align: right;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .list-year { color: var(--ink-mid); }
+
+  /* Vertical A-Z Scrollbar + Clickable Letter Rail */
+  .alpha-rail {
+    width: 58px;
+    flex-shrink: 0;
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    align-items: stretch;
+    background: rgba(7, 17, 19, 0.96);
+    border-left: 1px solid var(--rule);
+    padding: 8px 4px 8px 6px;
+    user-select: none;
+    z-index: 14;
+  }
+
+  .alpha-scrub-track {
+    position: relative;
+    width: 8px;
+    margin: 2px auto;
+    background: rgba(201, 162, 75, 0.14);
+    border: 1px solid rgba(201, 162, 75, 0.3);
+    cursor: ns-resize;
+    touch-action: none;
+  }
+
+  .alpha-scrub-fill {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 0%;
+    background: linear-gradient(180deg, var(--brass) 0%, var(--phosphor) 100%);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  .alpha-scrub-thumb {
+    position: absolute;
+    left: 50%;
+    top: 0%;
+    width: 14px;
+    height: 22px;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(180deg, #ebd082 0%, #b58d38 100%);
+    border: 1px solid #fff3cf;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
+    pointer-events: none;
+  }
+
+  .alpha-letters {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2px;
+  }
+
+  .alpha-btn {
+    border: none;
+    background: transparent;
+    color: var(--ink-muted);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    line-height: 1;
+    width: 100%;
+    padding: 2px 0;
+    cursor: pointer;
+    text-align: center;
+    transition: color 0.12s ease, background-color 0.12s ease;
+  }
+  .alpha-btn:hover:not(:disabled) {
+    color: var(--brass-lit);
+    background: rgba(201, 162, 75, 0.14);
+  }
+  .alpha-btn.active {
+    color: #061012;
+    background: var(--phosphor);
+    font-weight: 700;
+  }
+  .alpha-btn:disabled {
+    opacity: 0.22;
+    cursor: default;
+  }
+
+  .scrub-callout {
+    position: absolute;
+    right: 72px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 25;
+    padding: 12px 16px;
+    min-width: 128px;
+    text-align: center;
+    background: rgba(7, 18, 20, 0.96);
+    border: 1.5px solid var(--brass-lit);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.72);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.14s ease;
+  }
+  .scrub-callout.show { opacity: 1; }
+  .scrub-callout-letter {
+    font-family: 'Julius Sans One', Georgia, serif;
+    font-size: 32px;
+    line-height: 1;
+    color: var(--brass-lit);
+  }
+  .scrub-callout-artist {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--phosphor);
+    margin-top: 5px;
+    max-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* RIGHT PANE: RAPTURE PHONOGRAPH LISTENING BOOTH */
+  .detail {
+    position: relative;
+    overflow-y: auto;
+    padding: 22px 24px 36px;
+    background: linear-gradient(180deg, rgba(8, 19, 21, 0.92) 0%, rgba(5, 13, 14, 0.96) 100%);
+  }
+
+  .booth-frame {
+    position: relative;
+    padding: 20px;
+    background: linear-gradient(180deg, rgba(13, 29, 32, 0.9) 0%, rgba(8, 18, 20, 0.96) 100%);
+    border: 1px solid var(--rule-strong);
+    box-shadow: inset 0 0 0 4px rgba(5, 12, 13, 0.72), inset 0 0 0 5px rgba(201, 162, 75, 0.22);
+  }
+
+  .booth-top {
+    display: grid;
+    grid-template-columns: 152px minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+  }
+
+  .booth-cover-btn {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 1.5px solid var(--brass);
+    background: #040a0b;
+    cursor: zoom-in;
+    overflow: hidden;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55);
+  }
+  .booth-cover-btn img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    transition: transform 0.24s var(--ease);
+  }
+  .booth-cover-btn:hover img { transform: scale(1.04); }
+
+  .booth-meta-col { min-width: 0; }
+
+  .booth-kicker {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--phosphor);
+    letter-spacing: 0.05em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .booth-artist {
+    display: inline-block;
+    margin-top: 7px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    font-family: 'Julius Sans One', Georgia, serif;
+    font-size: clamp(1.25rem, 1.8vw, 1.65rem);
+    letter-spacing: 0.08em;
+    line-height: 1.12;
+    color: var(--brass-lit);
+    text-align: left;
+    cursor: pointer;
+    text-wrap: balance;
+    transition: color 0.14s ease;
+  }
+  .booth-artist:hover { color: #fff0c2; text-decoration: underline; text-underline-offset: 4px; }
+
+  .booth-album {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--ink);
+    margin-top: 6px;
+    text-wrap: balance;
+  }
+
+  .booth-loc {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-muted);
+    margin-top: 9px;
+    line-height: 1.45;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .booth-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .embed-shell {
+    margin-top: 16px;
+    padding: 10px;
+    background: #061012;
+    border: 1px solid var(--rule);
+  }
+
+  .embed-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+    margin-bottom: 8px;
+  }
+  .embed-label span:last-child { color: var(--brass); }
+
+  .bc-iframe {
+    width: 100%;
+    height: 120px;
+    border: 0;
+    display: block;
+    background: #091517;
+  }
+
+  /* More by Artist & Recently Played Shelves */
+  .shelf-section {
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .shelf-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .shelf-title {
+    font-family: 'Julius Sans One', Georgia, serif;
+    font-size: 15px;
+    letter-spacing: 0.1em;
+    color: var(--brass-lit);
+  }
+
+  .shelf-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .strip-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+    gap: 10px;
+  }
+
+  .mini-card {
+    display: block;
+    min-width: 0;
+    padding: 6px 6px 8px;
+    background: rgba(11, 25, 28, 0.9);
+    border: 1px solid var(--rule);
+    color: var(--ink);
+    text-align: left;
+    cursor: pointer;
+    transition: transform 0.15s var(--ease), border-color 0.15s ease;
+  }
+  .mini-card:hover { transform: translateY(-2px); border-color: var(--brass-lit); }
+  .mini-card.active { border-color: var(--phosphor); }
+
+  .mini-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    background: #040a0b;
+  }
+  .mini-card-title {
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-top: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .mini-card-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-muted);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .shortcuts-note {
+    margin-top: 22px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(201, 162, 75, 0.16);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  /* Full-Screen Cover Wall */
+  .wall-view {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: rgba(5, 12, 13, 0.97);
+    backdrop-filter: blur(10px);
+    display: none;
+    flex-direction: column;
+  }
+  .wall-view.open { display: flex; }
+
+  .wall-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 24px;
+    border-bottom: 1.5px solid var(--brass);
+    background: rgba(9, 21, 23, 0.96);
+    flex-shrink: 0;
+  }
+
+  .wall-title {
+    font-family: 'Julius Sans One', Georgia, serif;
+    font-size: 20px;
+    letter-spacing: 0.12em;
+    color: var(--brass-lit);
+  }
+  .wall-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-muted);
+    margin-left: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .wall-grid {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px 36px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(172px, 1fr));
+    grid-auto-rows: max-content;
+    gap: 14px;
+    align-content: start;
+  }
+
+  .wall-tile {
+    display: block;
+    min-width: 0;
+    background: var(--hull);
+    border: 1px solid var(--rule);
+    padding: 7px 7px 10px;
+    cursor: pointer;
+    text-align: left;
+    color: var(--ink);
+    transition: transform 0.16s var(--ease), border-color 0.15s ease;
+  }
+  .wall-tile:hover { transform: translateY(-2px); border-color: var(--brass-lit); }
+  .wall-tile.active { border-color: var(--phosphor); box-shadow: 0 0 0 1px var(--phosphor); }
+  .wall-tile-img {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    background: #040a0b;
+  }
+  .wall-tile-img img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    transition: transform 0.28s var(--ease);
+  }
+  .wall-tile:hover .wall-tile-img img { transform: scale(1.06); }
+  .wall-tile-artist {
+    font-family: 'Julius Sans One', Georgia, serif;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    color: var(--brass-lit);
+    margin-top: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .wall-tile-title {
+    font-size: 12px;
+    color: var(--ink-mid);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .wall-tile-year {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10.5px;
+    color: var(--ink-muted);
+    margin-top: 3px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Lightbox */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    background: rgba(3, 9, 10, 0.94);
+    backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .lightbox.open { display: flex; }
+
+  .lightbox-inner {
+    max-width: min(740px, 92vw);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .lightbox-inner img {
+    max-width: 100%;
+    max-height: 75vh;
+    width: auto;
+    height: auto;
+    border: 2px solid var(--brass);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.82);
+  }
+  .lightbox-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+  .lightbox-title {
+    font-family: 'Julius Sans One', Georgia, serif;
+    font-size: 21px;
+    letter-spacing: 0.09em;
+    color: var(--brass-lit);
+  }
+  .lightbox-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-mid);
+    margin-top: 2px;
+  }
+
+  .empty-state {
+    text-align: center;
+    color: var(--ink-mid);
+    font-size: 14px;
+    padding: 56px 24px;
+    line-height: 1.6;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    right: 24px;
+    z-index: 90;
+    padding: 9px 15px;
+    background: var(--brass-lit);
+    color: #061012;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    border: 1px solid #fff5d6;
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+    transition: opacity 0.16s ease, transform 0.16s ease;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--rule-strong); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--brass-lit); }
+
+  @media (max-width: 1080px) {
+    body { overflow: auto; height: auto; min-height: 100%; }
+    .header { padding: 12px 16px; flex-wrap: wrap; }
+    .subbrand { display: none; }
+    .workspace { grid-template-columns: 1fr; overflow: visible; }
+    .archive-zone {
+      border-right: none;
+      border-bottom: 1.5px solid var(--brass);
+      height: 640px;
+    }
+    .telemetry-strip { grid-template-columns: 64px minmax(0, 1fr); }
+    .console-switches { grid-column: 1 / -1; flex-direction: row; }
+    .toolbar-row { grid-template-columns: 1fr 1fr; }
+    .detail { padding: 20px 16px 36px; overflow: visible; }
+    .booth-top { grid-template-columns: 120px 1fr; gap: 14px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="ambient-art" id="ambientArt" aria-hidden="true"></div>
+<div class="rapture-ocean" aria-hidden="true"></div>
+<div class="crt-overlay" aria-hidden="true"></div>
+
+<header class="header">
+  <div class="brand-wrap">
+    <div class="deco-crest" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="14" cy="14" r="10" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="14" cy="14" r="5.5" stroke="#4bf09a" stroke-width="1.2" opacity="0.9"/>
+        <path d="M14 2V7M14 21V26M2 14H7M21 14H26" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M14 14L20.5 8.5" stroke="#4bf09a" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div>
+      <div class="brand">Ipecac Recordings</div>
+      <div class="subbrand">231 Bandcamp Releases · 110 Artists · 1999–2027 · Rapture Art Deco Archive</div>
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <a class="back-link" href="./index.html" title="Return to all music players">← Back to All Players</a>
+    <button class="deco-btn primary" id="randomBtn" type="button" title="Jump to a random Ipecac release (R)">Random</button>
+    <button class="deco-btn" id="favFilterBtn" type="button" title="Show saved releases">Saved <span class="count-num" id="favCount">0</span></button>
+    <button class="deco-btn" id="wallToggleBtn" type="button" title="Open full-screen Cover Wall (W)">Cover Wall</button>
+    <a class="deco-btn" href="https://ipecacrecordings.bandcamp.com/music" target="_blank" rel="noopener">Bandcamp ↗</a>
+  </div>
+</header>
+
+<div class="workspace">
+  <!-- LEFT: Cold War Telemetry Strip + Rapture Art Deco Specimen Cabinet / List + A-Z Rail -->
+  <section class="archive-zone" id="archiveZone" aria-label="Ipecac Recordings catalog cabinet and Cold War telemetry console">
+
+    <!-- Compact Cold War Bathysphere Sonar & Crackling CRT Monitor Strip -->
+    <div class="telemetry-strip">
+      <button type="button" class="mini-radar-wrap" id="miniRadarBtn" title="Bathysphere sonar pulse — click for random contact">
+        <canvas class="mini-radar-canvas" id="miniRadarCanvas" width="132" height="132"></canvas>
+      </button>
+
+      <div class="crt-monitor" id="crtMonitor" aria-live="polite">
+        <canvas class="crt-wave-canvas" id="crtWaveCanvas"></canvas>
+        <div class="crt-readout-top">
+          <span id="crtSectorReadout">Sector A · Contact 001 / 231</span>
+          <span class="crt-bearing" id="crtBearingReadout">BRG 000° · 420 FT</span>
+        </div>
+        <div class="crt-readout-main">
+          <span class="crt-artist" id="crtArtistReadout">Ipecac Recordings</span>
+          <span class="crt-sep" aria-hidden="true">—</span>
+          <span class="crt-album" id="crtAlbumReadout">Tuning Rapture archive…</span>
+        </div>
+        <div class="crt-readout-foot">
+          <span id="crtMetaReadout">1999–2027 · Click any cover to load the phonograph deck</span>
+          <span id="crtCrackleTag">CRT Static Active</span>
+        </div>
+      </div>
+
+      <div class="console-switches">
+        <button type="button" class="switch-btn active" id="crackleToggleBtn" title="Toggle crackling CRT screen static and scanlines">
+          <span>CRT Crackle</span>
+          <span class="switch-state" id="crackleStateLabel">ON</span>
+        </button>
+        <button type="button" class="switch-btn" id="pingAudioBtn" title="Toggle optional submarine sonar chime on album change">
+          <span>Sonar Ping</span>
+          <span class="switch-state" id="pingStateLabel">OFF</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Search, Filters & Featured Roster Brass Tabs -->
+    <div class="archive-toolbar">
+      <div class="toolbar-row">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search 231 bands, albums, years... (/)">
+        <select class="select-input" id="sortSelect" aria-label="Sort catalog">
+          <option value="alpha">Sort: Artist A–Z</option>
+          <option value="alphaDesc">Sort: Artist Z–A</option>
+          <option value="album">Sort: Album A–Z</option>
+          <option value="newest">Sort: Newest Year</option>
+          <option value="oldest">Sort: Oldest Year</option>
+        </select>
+        <select class="select-input" id="yearSelect" aria-label="Filter by year">
+          <option value="ALL">All Years</option>
+        </select>
+        <select class="select-input" id="artistSelect" aria-label="Filter by artist">
+          <option value="ALL">All 110 Artists</option>
+        </select>
+      </div>
+
+      <div class="roster-bar" id="rosterBar" role="group" aria-label="Quick artist filters"></div>
+
+      <div class="status-bar">
+        <div class="status-left">
+          <div class="view-switch" role="group" aria-label="Catalog view mode">
+            <button type="button" class="view-switch-btn active" id="viewCabinetBtn" aria-pressed="true" title="Rapture Display Cabinet (L)">Cabinet</button>
+            <button type="button" class="view-switch-btn" id="viewListBtn" aria-pressed="false" title="Compact Ledger List (L)">List</button>
+          </div>
+          <span><strong id="posLabel">1 / 231</strong> · Section <span class="letter-now" id="currentLetterLabel">A</span></span>
+        </div>
+        <div class="status-right">
+          <button type="button" class="reset-link-btn" id="resetFiltersBtn">Clear Filters</button>
+          <span id="filteredSummary">231 releases shown</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Browsing Body + A-Z Rail -->
+    <div class="stage-body">
+      <div class="cabinet-scroll" id="cabinetScroll" role="region" aria-label="Rapture Art Deco specimen cabinet"></div>
+      <div class="list-view" id="listView" role="listbox" aria-label="Ipecac Recordings release list"></div>
+
+      <div class="scrub-callout" id="scrubCallout" aria-hidden="true">
+        <div class="scrub-callout-letter" id="scrubLetter">A</div>
+        <div class="scrub-callout-artist" id="scrubArtist">Artist</div>
+      </div>
+
+      <aside class="alpha-rail" aria-label="Alphabet scrollbar and letter selector">
+        <div class="alpha-scrub-track" id="alphaScrubTrack" role="slider" tabindex="0" aria-label="Scroll vertically through the catalog" aria-valuemin="0" aria-valuemax="230" aria-valuenow="0">
+          <div class="alpha-scrub-fill" id="alphaScrubFill"></div>
+          <div class="alpha-scrub-thumb" id="alphaScrubThumb"></div>
+        </div>
+        <div class="alpha-letters" id="alphaLetters"></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- RIGHT: Rapture Art Deco Phonograph Listening Booth -->
+  <main class="detail" id="detail"></main>
+</div>
+
+<!-- Full-Screen Cover Wall -->
+<section class="wall-view" id="wallView" aria-label="Ipecac Recordings Cover Wall">
+  <div class="wall-header">
+    <div>
+      <span class="wall-title">Ipecac Recordings · Cover Wall</span>
+      <span class="wall-sub"><span id="wallCount">231</span> Releases</span>
+    </div>
+    <button class="deco-btn" id="closeWallBtn" type="button">← Back to Cabinet</button>
+  </div>
+  <div class="wall-grid" id="wallGrid"></div>
+</section>
+
+<!-- Cover Art Lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Album cover artwork">
+  <div class="lightbox-inner">
+    <img id="lightboxImg" src="" alt="" referrerpolicy="no-referrer">
+    <div class="lightbox-bar">
+      <div>
+        <div class="lightbox-title" id="lightboxTitle"></div>
+        <div class="lightbox-sub" id="lightboxSub"></div>
+      </div>
+      <button class="deco-btn" id="closeLightboxBtn" type="button">Close (Esc)</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const RAW = [[1923419739,"a","Alain Johannes","Hum",3452397808,2020,"2020-07-31","https://alainjohannes.bandcamp.com/album/hum?label=3660962074&tab=music","A",""],[3803764116,"t","Alain Johannes Trio","Luna A Sol (feat. Mike Patton)",1346834942,2018,"2018-09-07","https://alainjohannestrio.bandcamp.com/track/luna-a-sol-feat-mike-patton?label=3660962074&tab=music","A",""],[3796108627,"a","Alessandro \"Asso\" Stefana","Alessandro \"Asso\" Stefana",334426576,2024,"2024-05-17","https://alessandroassostefana.bandcamp.com/album/alessandro-asso-stefana?label=3660962074&tab=music","A","Italy"],[2461273192,"a","Altamont","The Monkees' Uncle",3821256485,2005,"2005-11-01","https://altamont-ipecac.bandcamp.com/album/the-monkees-uncle?label=3660962074&tab=music","A",""],[572524628,"a","Aperture Science Psychoacoustic Laboratories","Portal 2: Songs to Test By (Collectors Edition)",4112442137,2012,"2012-10-30","https://portal2game.bandcamp.com/album/portal-2-songs-to-test-by-collectors-edition-2?label=3660962074&tab=music","A",""],[30639110,"a","AVTT/PTTN (The Avett Brothers & Mike Patton)","AVTT/PTTN",983181568,2025,"2025-11-14","https://mikepatton.bandcamp.com/album/avtt-pttn?label=3660962074&tab=music","A",""],[782219154,"a","The Bobby Lees","Bellevue",2135301746,2022,"2022-10-07","https://thebobbylees.bandcamp.com/album/bellevue?label=3660962074&tab=music","B","Woodstock, New York"],[4052310844,"a","The Bobby Lees","Hollywood Junkyard EP",2054065199,2022,"2022-06-17","https://thebobbylees.bandcamp.com/album/hollywood-junkyard-ep?label=3660962074&tab=music","B","Woodstock, New York"],[2009404995,"a","Book Of Knots","Garden Of Fainting Stars",3117207716,2011,"2011-06-14","https://bookofknots.bandcamp.com/album/garden-of-fainting-stars?label=3660962074&tab=music","B",""],[1825951783,"a","Brian Reitzell","30 Days Of Night - Original Motion Picture Soundtrack",3791683991,2007,"2007-10-16","https://30daysofnight.bandcamp.com/album/30-days-of-night-original-motion-picture-soundtrack?label=3660962074&tab=music","B",""],[1991651865,"a","Circus Devils","Sgt. Disco",3431015204,2007,"2007-08-28","https://circusdevils-ipecac.bandcamp.com/album/sgt-disco?label=3660962074&tab=music","C",""],[3952050207,"a","CNTS","Thoughts & Prayers",3574788065,2024,"2024-03-29","https://cntsla.bandcamp.com/album/thoughts-prayers?label=3660962074&tab=music","C","Los Angeles, California"],[2667439590,"t","CNTS","Life's Fortune",1153270165,2023,"2023-11-10","https://cntsla.bandcamp.com/track/lifes-fortune?label=3660962074&tab=music","C","Los Angeles, California"],[4143243252,"t","CNTS","The Nail",3817604531,2023,"2023-11-10","https://cntsla.bandcamp.com/track/the-nail?label=3660962074&tab=music","C","Los Angeles, California"],[1367381199,"a","CNTS","Cunts",496741757,2019,"2019-11-01","https://cntsla.bandcamp.com/album/cunts?label=3660962074&tab=music","C","Los Angeles, California"],[3911867058,"a","Cor de Lux","Year Of The Horse",2276204762,2026,"2026-09-18","https://cordelux.bandcamp.com/album/year-of-the-horse?label=3660962074&tab=music","C","Kill Devil Hills, North Carolina"],[3523426933,"a","Crystal Fairy","Crystal Fairy",3842536620,2017,"2017-02-24","https://crystalfairy.bandcamp.com/album/crystal-fairy?label=3660962074&tab=music","C",""],[2343888971,"t","Crystal Fairy","Drugs On The Bus",2267589716,2016,"2016-10-21","https://crystalfairy.bandcamp.com/track/drugs-on-the-bus?label=3660962074&tab=music","C",""],[848288374,"a","Curse Of The Golden Vampire","Mass Destruction",1726552976,2003,"2003-06-02","https://curseofthegoldenvampire.bandcamp.com/album/mass-destruction?label=3660962074&tab=music","C","UK"],[1125444312,"a","Dälek","Brilliance of a Falling Moon",1964807385,2026,"2026-03-27","https://dalek.bandcamp.com/album/brilliance-of-a-falling-moon?label=3660962074&tab=music","D","Union City, New Jersey"],[3216714138,"t","Dälek","Surrealist",1622438157,2026,"2026-09-30","https://dalek.bandcamp.com/track/surrealist?label=3660962074&tab=music","D","Union City, New Jersey"],[2509723905,"t","Dälek","The Essence",4166665379,2025,"2025-05-06","https://dalek.bandcamp.com/track/the-essence?label=3660962074&tab=music","D","Union City, New Jersey"],[1918670805,"a","Dälek","Negro Necro Nekros",1509283514,2024,"2024-05-10","https://dalek.bandcamp.com/album/negro-necro-nekros?label=3660962074&tab=music","D","Union City, New Jersey"],[1415412885,"t","Dälek","Decimation (Giovanni Marks City Version)",2625024347,2023,"2023-11-08","https://dalek.bandcamp.com/track/decimation-giovanni-marks-city-version?label=3660962074&tab=music","D","Union City, New Jersey"],[2461583738,"a","Dälek","Precipice",3847332513,2022,"2022-04-29","https://dalek.bandcamp.com/album/precipice?label=3660962074&tab=music","D","Union City, New Jersey"],[3550658877,"a","Dälek","Endangered Philosophies",1157126491,2017,"2017-09-01","https://dalek.bandcamp.com/album/endangered-philosophies?label=3660962074&tab=music","D","Union City, New Jersey"],[3884131429,"a","Dälek","Gutter Tactics",1489183715,2009,"2009-01-27","https://dalek.bandcamp.com/album/gutter-tactics?label=3660962074&tab=music","D","Union City, New Jersey"],[56266468,"a","Dälek","Abandoned Language",404289604,2007,"2007-02-27","https://dalek.bandcamp.com/album/abandoned-language?label=3660962074&tab=music","D","Union City, New Jersey"],[770160469,"a","Dälek","Absence",4238056795,2005,"2005-02-08","https://dalek.bandcamp.com/album/absence?label=3660962074&tab=music","D","Union City, New Jersey"],[62357769,"a","Dälek","From Filthy Tongue Of Gods And Griots",337770161,2002,"2002-08-05","https://dalek.bandcamp.com/album/from-filthy-tongue-of-gods-and-griots?label=3660962074&tab=music","D","Union City, New Jersey"],[1280638927,"a","dälek, King Garbage","dälek vs. King Garbage",2130632263,2023,"2023-06-09","https://dalek.bandcamp.com/album/d-lek-vs-king-garbage?label=3660962074&tab=music","D","Union City, New Jersey"],[2722417677,"a","Daniele Luppi","Bad Habits",200738231,2011,"2011-04-26","https://danieleluppi.bandcamp.com/album/bad-habits?label=3660962074&tab=music","D",""],[567384106,"a","Daughters","Daughters (2026 Remaster)",2491386386,2026,"2026-11-16","https://daughters.bandcamp.com/album/daughters-2026-remaster?label=3660962074&tab=music","D","Providence, Rhode Island"],[3279284130,"t","Daughters","Satan In The Wait",3872253521,2018,"2018-07-13","https://daughters.bandcamp.com/track/satan-in-the-wait?label=3660962074&tab=music","D","Providence, Rhode Island"],[4069278465,"a","Daughters","You Won't Get What You Want",781820650,2018,"2018-10-26","https://daughters.bandcamp.com/album/you-wont-get-what-you-want?label=3660962074&tab=music","D","Providence, Rhode Island"],[2915095035,"a","Daughters","Daughters",619103882,2010,"2010-03-09","https://daughters.bandcamp.com/album/daughters?label=3660962074&tab=music","D","Providence, Rhode Island"],[552739198,"a","Daughters","Hell Songs",2291248793,2006,"2006-08-08","https://daughters.bandcamp.com/album/hell-songs?label=3660962074&tab=music","D","Providence, Rhode Island"],[3792444887,"a","Daughters","Canada Songs",1295864765,2003,"2003-07-29","https://daughters.bandcamp.com/album/canada-songs?label=3660962074&tab=music","D","Providence, Rhode Island"],[1117936618,"a","Daughters","Daughters 2002 EP",3395950022,2002,"2002-03-25","https://daughters.bandcamp.com/album/daughters-2002-ep?label=3660962074&tab=music","D","Providence, Rhode Island"],[3490535236,"a","Dave Lombardo","Rites Of Percussion",1745489369,2023,"2023-05-05","https://davelombardo.bandcamp.com/album/rites-of-percussion?label=3660962074&tab=music","D","Los Angeles, California"],[1664703117,"a","Dead Cross","II",2740082180,2022,"2022-10-28","https://deadcross.bandcamp.com/album/ii?label=3660962074&tab=music","D",""],[2419104241,"a","Dead Cross","Dead Cross (EP)",1624045067,2018,"2018-05-02","https://deadcross.bandcamp.com/album/dead-cross-ep?label=3660962074&tab=music","D",""],[2702793229,"a","Dead Cross","Dead Cross",2101234138,2017,"2017-08-04","https://deadcross.bandcamp.com/album/dead-cross?label=3660962074&tab=music","D",""],[2554799318,"a","DJ Eddie Def","Inner Scratch Demons",541493395,2001,"2001-03-19","https://djeddiedef.bandcamp.com/album/inner-scratch-demons?label=3660962074&tab=music","D",""],[3283132316,"a","Dub Trio","Another Sound Is Dying",2976041,2008,"2008-01-29","https://dubtrio-ipecac.bandcamp.com/album/another-sound-is-dying?label=3660962074&tab=music","D",""],[675818502,"a","Eagles Of Death Metal","Peace, Love, Death Metal",4225295624,2004,"2004-03-23","https://eodm-ipecac.bandcamp.com/album/peace-love-death-metal?label=3660962074&tab=music","E",""],[368299679,"a","East West Blast Test","Popular Music For Unpopular People",3205624542,2006,"2006-01-24","https://eastwestblasttest-ipecac.bandcamp.com/album/popular-music-for-unpopular-people?label=3660962074&tab=music","E",""],[4176926490,"a","End","The Sounds Of Disaster",70220148,2004,"2004-04-06","https://end-ipecac.bandcamp.com/album/the-sounds-of-disaster?label=3660962074&tab=music","E",""],[2562700788,"a","eX-Girl","Back To The Mono Kero!",4294902461,2001,"2001-05-14","https://ex-girl.bandcamp.com/album/back-to-the-mono-kero?label=3660962074&tab=music","E","Japan"],[562150125,"a","Eyvind Kang","The Narrow Garden",117022210,2012,"2012-01-31","https://eyvindkang.bandcamp.com/album/the-narrow-garden?label=3660962074&tab=music","E",""],[3641436149,"a","Eyvind Kang","Athlantis",2272137864,2007,"2007-07-11","https://eyvindkang.bandcamp.com/album/athlantis?label=3660962074&tab=music","E",""],[668100030,"a","Eyvind Kang","Virginal Co Ordinates",1221010895,2004,"2004-05-04","https://eyvindkang.bandcamp.com/album/virginal-co-ordinates?label=3660962074&tab=music","E",""],[1371570709,"t","Faith No More","Motherfucker (JG Thirlwell Remix)",2906088403,2021,"2021-08-03","https://faithnomore.bandcamp.com/track/motherfucker-jg-thirlwell-remix?label=3660962074&tab=music","F",""],[2358397735,"t","Faith No More","Superhero (Battaglia Remix)",3902505510,2021,"2021-09-09","https://faithnomore.bandcamp.com/track/superhero-battaglia-remix?label=3660962074&tab=music","F",""],[648723437,"a","Faith No More","Motherfucker (Calcitonin Mix) Remixed by JG Thirlwell",1795729384,2016,"2016-11-25","https://faithnomore.bandcamp.com/album/motherfucker-calcitonin-mix-remixed-by-jg-thirlwell?label=3660962074&tab=music","F",""],[3196183282,"a","Faith No More","Sol Invictus",1116300187,2015,"2015-05-19","https://faithnomore.bandcamp.com/album/sol-invictus?label=3660962074&tab=music","F",""],[788320803,"a","Fantomas","Suspended Animation",2425137638,2005,"2005-04-05","https://fantomasofficial.bandcamp.com/album/suspended-animation?label=3660962074&tab=music","F",""],[1745334821,"a","Fantomas","Director's Cut",1050910976,2001,"2001-07-09","https://fantomasofficial.bandcamp.com/album/directors-cut?label=3660962074&tab=music","F",""],[1824832504,"a","Fantomas","Fantomas",2529060608,1999,"1999-04-26","https://fantomasofficial.bandcamp.com/album/fantomas?label=3660962074&tab=music","F",""],[1406943834,"a","The Fantomas Melvins Big Band","Millennium Monsterwork",1531609642,2002,"2002-04-01","https://fantomasmelvinsbigband.bandcamp.com/album/millennium-monsterwork?label=3660962074&tab=music","F",""],[3996792959,"a","Farmers Market","Surfin' USSR",957550024,2008,"2008-03-11","https://farmersmarket-ipecac.bandcamp.com/album/surfin-ussr?label=3660962074&tab=music","F","Norway"],[1110944777,"a","Flat Earth Society","Isms",627919816,2004,"2004-01-01","https://flatearthsociety-ipecac.bandcamp.com/album/isms?label=3660962074&tab=music","F","Belgium"],[2179184428,"a","Gangpol & Mit","The 1000 Softcore Tourist People Club",2501812041,2011,"2011-03-29","https://gangpolmit.bandcamp.com/album/the-1000-softcore-tourist-people-club?label=3660962074&tab=music","G","France"],[678115747,"a","Gatta Morta","Immaculator (out Feb 12, 2027)",1111606890,2027,"2027-02-01","https://gattamorta.bandcamp.com/album/immaculator-out-feb-12-2027?label=3660962074&tab=music","G","Los Angeles, California"],[3214683203,"t","Gatta Morta","Black Hall (Early Mix)",709643407,2026,"2026-08-04","https://gattamorta.bandcamp.com/track/black-hall-early-mix?label=3660962074&tab=music","G","Los Angeles, California"],[711567129,"a","General Patton vs The X-ecutioners","General Patton vs. The X-Ecutioners",3804734921,2005,"2005-02-08","https://generalpatton.bandcamp.com/album/general-patton-vs-the-x-ecutioners?label=3660962074&tab=music","G",""],[2782252471,"a","Ghostigital","In Cod We Trust",740893896,2006,"2006-03-07","https://ghostigital-ipecac.bandcamp.com/album/in-cod-we-trust?label=3660962074&tab=music","G","Iceland"],[4126367746,"a","Goon Moon","Licker's Last Leg",3127047689,2007,"2007-05-08","https://goonmoon-ipecac.bandcamp.com/album/lickers-last-leg?label=3660962074&tab=music","G",""],[1993936761,"a","Guano Padano","Americana",3622008824,2014,"2014-11-04","https://guanopadano.bandcamp.com/album/americana?label=3660962074&tab=music","G","Italy"],[155282437,"a","Guano Padano","2",2930182314,2012,"2012-08-07","https://guanopadano.bandcamp.com/album/2?label=3660962074&tab=music","G","Italy"],[444845515,"a","Guapo","Black Oni",2406422258,2004,"2004-01-01","https://guapo-ipecac.bandcamp.com/album/black-oni?label=3660962074&tab=music","G","UK"],[2570430552,"a","Hella","There's No 666 In Outer Space",740065418,2007,"2007-01-30","https://hella-ipecac.bandcamp.com/album/theres-no-666-in-outer-space?label=3660962074&tab=music","H",""],[439860249,"a","Human Impact","Gone Dark",1256867995,2024,"2024-10-04","https://humanimpact.bandcamp.com/album/gone-dark?label=3660962074&tab=music","H","New York, New York"],[475561548,"t","Human Impact","Imperative",1052811655,2022,"2022-05-18","https://humanimpact.bandcamp.com/track/imperative?label=3660962074&tab=music","H","New York, New York"],[946900046,"a","Human Impact","EP01",3409365642,2021,"2021-03-12","https://humanimpact.bandcamp.com/album/ep01?label=3660962074&tab=music","H","New York, New York"],[2851834415,"t","Human Impact","Contact",4058083235,2020,"2020-04-07","https://humanimpact.bandcamp.com/track/contact?label=3660962074&tab=music","H","New York, New York"],[1070375650,"t","Human Impact","Genetic",1896255554,2020,"2020-09-23","https://humanimpact.bandcamp.com/track/genetic?label=3660962074&tab=music","H","New York, New York"],[2377009975,"a","Human Impact","Human Impact",3544215655,2020,"2020-03-13","https://humanimpact.bandcamp.com/album/human-impact?label=3660962074&tab=music","H","New York, New York"],[1798370986,"a","Human Impact","Transist / Subversion",3770062321,2020,"2020-06-23","https://humanimpact.bandcamp.com/album/transist-subversion?label=3660962074&tab=music","H","New York, New York"],[779111530,"t","Imani Coppola","Contributing Member Of Society (RM Remix)",2059759231,2019,"2019-12-06","https://imanicoppola.bandcamp.com/track/contributing-member-of-society-rm-remix?label=3660962074&tab=music","I","Brooklyn, New York"],[2410576004,"t","Imani Coppola","Lying To My Therapist",174584573,2019,"2019-06-28","https://imanicoppola.bandcamp.com/track/lying-to-my-therapist?label=3660962074&tab=music","I","Brooklyn, New York"],[2848276110,"t","Imani Coppola","Rattle",2177820348,2019,"2019-04-26","https://imanicoppola.bandcamp.com/track/rattle?label=3660962074&tab=music","I","Brooklyn, New York"],[4049475522,"t","Imani Coppola","SAMO",1805822894,2019,"2019-05-31","https://imanicoppola.bandcamp.com/track/samo?label=3660962074&tab=music","I","Brooklyn, New York"],[1381592281,"a","Imani Coppola","The Protagonist",1879468005,2019,"2019-10-04","https://imanicoppola.bandcamp.com/album/the-protagonist?label=3660962074&tab=music","I","Brooklyn, New York"],[3122539966,"a","Ipecac Recordings","Ipecac Bandcamp LA Wildfire Relief Fundraiser 2025",2930146795,2025,"2025-02-07","https://ipecacrecordings.bandcamp.com/album/ipecac-bandcamp-la-wildfire-relief-fundraiser-2025","I",""],[2770353228,"a","Ipecac Recordings","Ipecac \"Safe & Sane\" Sampler",286614394,2020,"2020-06-16","https://ipecacrecordings.bandcamp.com/album/ipecac-safe-sane-sampler","I",""],[2611233366,"a","ISIS","Live VII 02.25.10",194258905,2017,"2017-03-31","https://isistheband.bandcamp.com/album/live-vii-022510?label=3660962074&tab=music","I","Los Angeles, California"],[197373845,"a","ISIS","Oceanic (Remastered)",262554903,2014,"2014-11-04","https://isistheband.bandcamp.com/album/oceanic-remastered?label=3660962074&tab=music","I","Los Angeles, California"],[3249309212,"a","ISIS","Panopticon (Remastered)",1384768220,2014,"2014-04-29","https://isistheband.bandcamp.com/album/panopticon-remastered?label=3660962074&tab=music","I","Los Angeles, California"],[1038372221,"a","ISIS","Temporal",3076302655,2012,"2012-11-06","https://isistheband.bandcamp.com/album/temporal?label=3660962074&tab=music","I","Los Angeles, California"],[133407217,"a","ISIS","Wavering Radiant",543300609,2009,"2009-05-05","https://isistheband.bandcamp.com/album/wavering-radiant?label=3660962074&tab=music","I","Los Angeles, California"],[2521276816,"a","ISIS","Holy Tears",98843491,2008,"2008-02-05","https://isistheband.bandcamp.com/album/holy-tears?label=3660962074&tab=music","I","Los Angeles, California"],[1984299166,"a","ISIS","In The Absence Of Truth",1789655195,2006,"2006-10-31","https://isistheband.bandcamp.com/album/in-the-absence-of-truth?label=3660962074&tab=music","I","Los Angeles, California"],[742562483,"a","ISIS","Celestial (2013 Remaster)",1805645268,2000,"2000-04-03","https://isistheband.bandcamp.com/album/celestial-2013-remaster?label=3660962074&tab=music","I","Los Angeles, California"],[1989086558,"a","James Plotkin's Phantomsmasher","Phantomsmasher",3970100369,2002,"2002-08-19","https://phantomsmasher.bandcamp.com/album/phantomsmasher?label=3660962074&tab=music","J",""],[2160567954,"a","Jean Claude Vannier","Jean Claude Vannier et son orchestre de mandolines",3831887921,2025,"2025-02-14","https://vannier.bandcamp.com/album/jean-claude-vannier-et-son-orchestre-de-mandolines?label=3660962074&tab=music","J","France"],[3404135653,"t","The Jesus Lizard","I'm Tired Of Being Your Mother",3896623598,2025,"2025-03-05","https://thejesuslizard.bandcamp.com/track/im-tired-of-being-your-mother?label=3660962074&tab=music","J","Chicago, Illinois"],[4019860042,"t","The Jesus Lizard","Westside",2380547554,2025,"2025-01-22","https://thejesuslizard.bandcamp.com/track/westside?label=3660962074&tab=music","J","Chicago, Illinois"],[947314980,"t","The Jesus Lizard","Cost Of Living",590213148,2024,"2024-11-14","https://thejesuslizard.bandcamp.com/track/cost-of-living?label=3660962074&tab=music","J","Chicago, Illinois"],[3484685282,"a","The Jesus Lizard","Rack",2661229644,2024,"2024-09-13","https://thejesuslizard.bandcamp.com/album/rack?label=3660962074&tab=music","J","Chicago, Illinois"],[903360454,"a","JG Thirlwell & Simon Steensland","Oscillospira",1216176379,2020,"2020-04-24","https://jgthirlwellsimonsteensland.bandcamp.com/album/oscillospira?label=3660962074&tab=music","J",""],[421405023,"a","Kaada/Patton","Bacteria Cult",2312817509,2016,"2016-04-01","https://kaadapatton.bandcamp.com/album/bacteria-cult?label=3660962074&tab=music","K",""],[1931437432,"a","Kaada/Patton","Romances",574474993,2004,"2004-11-30","https://kaadapatton.bandcamp.com/album/romances?label=3660962074&tab=music","K",""],[2554283617,"a","kid606","Kill Sound Before Sound Kills You",2173286913,2003,"2003-11-04","https://kid606-ipecac.bandcamp.com/album/kill-sound-before-sound-kills-you?label=3660962074&tab=music","K",""],[4222033694,"a","kid606","Down With The Scene",3141533988,2000,"2000-06-19","https://kid606-ipecac.bandcamp.com/album/down-with-the-scene?label=3660962074&tab=music","K",""],[3702769301,"a","King Buzzo","This Machine Kills Artists",2234552532,2014,"2014-06-03","https://kingbuzzo.bandcamp.com/album/this-machine-kills-artists?label=3660962074&tab=music","K",""],[2287341364,"a","King Buzzo (with Trevor Dunn)","Gift Of Sacrifice",1378641353,2020,"2020-08-14","https://kingbuzzo.bandcamp.com/album/gift-of-sacrifice?label=3660962074&tab=music","K",""],[1734361000,"a","King Garbage","Heavy Metal Greasy Love",2773980861,2022,"2022-04-01","https://king-garbage.bandcamp.com/album/heavy-metal-greasy-love?label=3660962074&tab=music","K","Asheville, North Carolina"],[3886974103,"t","King Garbage","Peanut Butter Kisses",328456254,2021,"2021-10-07","https://king-garbage.bandcamp.com/track/peanut-butter-kisses?label=3660962074&tab=music","K","Asheville, North Carolina"],[437640825,"t","King Garbage","Piper (Single Version)",393728228,2021,"2021-07-30","https://king-garbage.bandcamp.com/track/piper-single-version?label=3660962074&tab=music","K","Asheville, North Carolina"],[1794662274,"a","King Garbage, dälek","dälek vs. King Garbage",3587957539,2023,"2023-06-09","https://king-garbage.bandcamp.com/album/d-lek-vs-king-garbage?label=3660962074&tab=music","K","Asheville, North Carolina"],[788965302,"a","Le Butcherettes","A Raw Youth (Digital Deluxe)",2676545632,2015,"2015-09-18","https://lebutcherettesofficial.bandcamp.com/album/a-raw-youth-digital-deluxe?label=3660962074&tab=music","L",""],[2308055605,"a","Le Butcherettes","Cry Is For The Flies",2059137898,2014,"2014-09-16","https://lebutcherettesofficial.bandcamp.com/album/cry-is-for-the-flies?label=3660962074&tab=music","L",""],[1258985516,"a","The Lucky Stars","Hollywood & Western",2184267661,2000,"2000-05-29","https://theluckystars2.bandcamp.com/album/hollywood-western?label=3660962074&tab=music","L",""],[1550869800,"a","Lustmord Lombardo","The Pulse Of Atoms",2453719403,2026,"2026-10-02","https://davelombardo.bandcamp.com/album/the-pulse-of-atoms?label=3660962074&tab=music","L","Los Angeles, California"],[2754511306,"a","Lustmord Lombardo","The Pulse Of Atoms",1656556374,2026,"2026-10-02","https://lustmord.bandcamp.com/album/the-pulse-of-atoms?label=3660962074&tab=music","L","Los Angeles"],[2829491586,"a","MadLove","White With Foam",1002291089,2009,"2009-09-01","https://madlove-ipecac.bandcamp.com/album/white-with-foam?label=3660962074&tab=music","M",""],[2997689582,"a","Maldoror","She",2386074309,1999,"1999-09-27","https://maldoror-ipecac.bandcamp.com/album/she?label=3660962074&tab=music","M",""],[4229642418,"a","Mark Lanegan","Houston: Publishing Demos 2002",3952306623,2015,"2015-08-21","https://marklanegan-ipecac.bandcamp.com/album/houston-publishing-demos-2002?label=3660962074&tab=music","M",""],[691386015,"a","mclusky","i sure am getting sick of this bowling alley",1560139254,2026,"2026-03-20","https://mcluskymclusky.bandcamp.com/album/i-sure-am-getting-sick-of-this-bowling-alley?label=3660962074&tab=music","M","Bristol, UK"],[3044024273,"a","mclusky","the world is still here and so are we",1087993591,2025,"2025-05-09","https://mcluskymclusky.bandcamp.com/album/the-world-is-still-here-and-so-are-we?label=3660962074&tab=music","M","Bristol, UK"],[907159334,"a","Melvins","Thunderball",2271177607,2025,"2025-04-18","https://melvinsofficial.bandcamp.com/album/thunderball?label=3660962074&tab=music","M",""],[2787560988,"a","Melvins","Tarantula Heart",3814474596,2024,"2024-04-19","https://melvinsofficial.bandcamp.com/album/tarantula-heart?label=3660962074&tab=music","M",""],[1961677105,"a","Melvins","Bad Mood Rising",2175372624,2022,"2022-09-30","https://melvinsofficial.bandcamp.com/album/bad-mood-rising?label=3660962074&tab=music","M",""],[3605659489,"a","Melvins","Five Legged Dog",1414149832,2021,"2021-10-15","https://melvinsofficial.bandcamp.com/album/five-legged-dog?label=3660962074&tab=music","M",""],[3623262619,"a","Melvins","Working With God",809219475,2021,"2021-02-26","https://melvinsofficial.bandcamp.com/album/working-with-god?label=3660962074&tab=music","M",""],[1514412293,"a","Melvins","The Maggot & The Bootlicker - Vinyl Reissue",1594335562,2019,"2019-09-20","https://melvinsofficial.bandcamp.com/album/the-maggot-the-bootlicker-vinyl-reissue?label=3660962074&tab=music","M",""],[1358337946,"a","Melvins","Pinkus Abortion Technician",3788272129,2018,"2018-04-20","https://melvinsofficial.bandcamp.com/album/pinkus-abortion-technician?label=3660962074&tab=music","M",""],[825324338,"a","Melvins","A Walk With Love & Death",1588761152,2017,"2017-07-07","https://melvinsofficial.bandcamp.com/album/a-walk-with-love-death?label=3660962074&tab=music","M",""],[3702696786,"a","Melvins","Basses Loaded",2965628692,2016,"2016-06-03","https://melvinsofficial.bandcamp.com/album/basses-loaded?label=3660962074&tab=music","M",""],[3002557086,"a","Melvins","The Bulls & The Bees + Electroretard",288963798,2015,"2015-05-27","https://melvinsofficial.bandcamp.com/album/the-bulls-the-bees-electroretard?label=3660962074&tab=music","M",""],[1067198778,"a","Melvins","Hold It In",639826697,2014,"2014-10-14","https://melvinsofficial.bandcamp.com/album/hold-it-in?label=3660962074&tab=music","M",""],[553111623,"a","Melvins","Everybody Loves Sausages",2551388361,2013,"2013-04-30","https://melvinsofficial.bandcamp.com/album/everybody-loves-sausages?label=3660962074&tab=music","M",""],[1763180822,"a","Melvins","Tres Cabrones",2875689308,2013,"2013-11-05","https://melvinsofficial.bandcamp.com/album/tres-cabrones?label=3660962074&tab=music","M",""],[2552779118,"a","Melvins","Freak Puke (Melvins Lite)",803004215,2012,"2012-06-05","https://melvinsofficial.bandcamp.com/album/freak-puke-melvins-lite?label=3660962074&tab=music","M",""],[140556527,"a","Melvins","Sugar Daddy Live",414079839,2011,"2011-05-31","https://melvinsofficial.bandcamp.com/album/sugar-daddy-live?label=3660962074&tab=music","M",""],[2097352803,"a","Melvins","The Bride Screamed Murder",2123832428,2010,"2010-06-01","https://melvinsofficial.bandcamp.com/album/the-bride-screamed-murder?label=3660962074&tab=music","M",""],[1099591847,"a","Melvins","Chicken Switch",2489313039,2009,"2009-09-29","https://melvinsofficial.bandcamp.com/album/chicken-switch?label=3660962074&tab=music","M",""],[3986055130,"a","Melvins","Nude With Boots",230543223,2008,"2008-07-08","https://melvinsofficial.bandcamp.com/album/nude-with-boots?label=3660962074&tab=music","M",""],[488595963,"a","Melvins","A Senile Animal",3754217042,2006,"2006-10-10","https://melvinsofficial.bandcamp.com/album/a-senile-animal?label=3660962074&tab=music","M",""],[3644315935,"a","Melvins","Houdini Live 2005",796423384,2006,"2006-05-16","https://melvinsofficial.bandcamp.com/album/houdini-live-2005?label=3660962074&tab=music","M",""],[2005506243,"a","Melvins","Mangled Demos from 1983",687800118,2005,"2005-05-21","https://melvinsofficial.bandcamp.com/album/mangled-demos-from-1983?label=3660962074&tab=music","M",""],[2235560038,"a","Melvins","Pigs of the Roman Empire (Melvins/Lustmord)",1028177608,2004,"2004-08-24","https://melvinsofficial.bandcamp.com/album/pigs-of-the-roman-empire-melvins-lustmord?label=3660962074&tab=music","M",""],[306938343,"a","Melvins","26 Songs",1493625029,2003,"2003-03-11","https://melvinsofficial.bandcamp.com/album/26-songs?label=3660962074&tab=music","M",""],[2580458977,"a","Melvins","Hostile Ambient Takeover",3477735194,2002,"2002-04-15","https://melvinsofficial.bandcamp.com/album/hostile-ambient-takeover?label=3660962074&tab=music","M",""],[3248285754,"a","Melvins","Colossus Of Destiny",4259425773,2001,"2001-04-16","https://melvinsofficial.bandcamp.com/album/colossus-of-destiny?label=3660962074&tab=music","M",""],[2873008335,"a","Melvins","Gluey Porch Treatments",2030084651,2000,"2000-11-27","https://melvinsofficial.bandcamp.com/album/gluey-porch-treatments?label=3660962074&tab=music","M",""],[3610449102,"a","Melvins","The Crybaby",5802342,2000,"2000-03-07","https://melvinsofficial.bandcamp.com/album/the-crybaby?label=3660962074&tab=music","M",""],[532978514,"a","Melvins","The Bootlicker",1982339023,1999,"1999-08-23","https://melvinsofficial.bandcamp.com/album/the-bootlicker?label=3660962074&tab=music","M",""],[1038884672,"a","Melvins","The Maggot",988485431,1999,"1999-05-17","https://melvinsofficial.bandcamp.com/album/the-maggot?label=3660962074&tab=music","M",""],[3563200286,"a","Melvins, Napalm Death","Savage Imperial Death March",658060150,2026,"2026-04-10","https://melvinsofficial.bandcamp.com/album/savage-imperial-death-march?label=3660962074&tab=music","M",""],[4274913311,"a","Messer Chups","Crazy Price",3634584272,2005,"2005-10-18","https://messerchups.bandcamp.com/album/crazy-price?label=3660962074&tab=music","M","Russia"],[709219328,"a","Mike Patton","1922 (Original Motion Picture Soundtrack)",4014765333,2018,"2018-07-20","https://mikepatton.bandcamp.com/album/1922-original-motion-picture-soundtrack?label=3660962074&tab=music","M",""],[449331838,"a","Mike Patton","Laborintus II",3657641361,2012,"2012-07-03","https://mikepatton.bandcamp.com/album/laborintus-ii?label=3660962074&tab=music","M",""],[2439427850,"a","Mike Patton","The Solitude Of Prime Numbers",1970118016,2011,"2011-11-01","https://mikepatton.bandcamp.com/album/the-solitude-of-prime-numbers?label=3660962074&tab=music","M",""],[336452223,"a","Mike Patton","Mondo Cane",2447019849,2010,"2010-05-04","https://mikepatton.bandcamp.com/album/mondo-cane?label=3660962074&tab=music","M",""],[1868195430,"a","Mike Patton","\"A Perfect Place\" Original Motion Picture Soundtrack",703902966,2008,"2008-03-11","https://mikepatton.bandcamp.com/album/a-perfect-place-original-motion-picture-soundtrack?label=3660962074&tab=music","M",""],[2344360664,"a","Mike Patton, Jean-Claude Vannier","Corpse Flower",94682931,2019,"2019-09-13","https://mikepatton.bandcamp.com/album/corpse-flower?label=3660962074&tab=music","M",""],[716772264,"a","Mini Mansions","Mini Mansions",2534359518,2010,"2010-11-02","https://minimansionsipecac.bandcamp.com/album/mini-mansions?label=3660962074&tab=music","M",""],[2154192576,"a","Moistboyz","III",740673035,2002,"2002-09-02","https://moistboyz.bandcamp.com/album/iii?label=3660962074&tab=music","M",""],[3067893016,"a","Mondo Generator","A Drug Problem That Never Existed",2622866202,2003,"2003-07-04","https://mondogenerator.bandcamp.com/album/a-drug-problem-that-never-existed?label=3660962074&tab=music","M",""],[370489860,"a","Mouse on Mars","Varcharz",3060442404,2006,"2006-09-12","https://mouseonmars.bandcamp.com/album/varcharz?label=3660962074&tab=music","M","Berlin, Germany"],[1959939438,"a","Mr. Bungle","The Night They Came Home",4156460356,2021,"2021-06-11","https://mrbungle.bandcamp.com/album/the-night-they-came-home?label=3660962074&tab=music","M","San Francisco, California"],[1420265514,"a","Mr. Bungle","The Raging Wrath Of The Easter Bunny Demo",4225317696,2020,"2020-10-30","https://mrbungle.bandcamp.com/album/the-raging-wrath-of-the-easter-bunny-demo?label=3660962074&tab=music","M","San Francisco, California"],[3795791780,"t","Mr. Bungle","USA",2529480697,2020,"2020-06-05","https://mrbungle.bandcamp.com/track/usa?label=3660962074&tab=music","M","San Francisco, California"],[1205104786,"a","Mugison","Mugiboogie",3067764861,2008,"2008-06-24","https://mugison-ipecac.bandcamp.com/album/mugiboogie?label=3660962074&tab=music","M","Iceland"],[1281765500,"a","Mugison","Little Trip",1706707614,2006,"2006-04-18","https://mugison-ipecac.bandcamp.com/album/little-trip?label=3660962074&tab=music","M","Iceland"],[3097703842,"a","Mugison","Mugimama! Is This Monkey Music?",918580539,2005,"2005-10-04","https://mugison-ipecac.bandcamp.com/album/mugimama-is-this-monkey-music?label=3660962074&tab=music","M","Iceland"],[414034501,"a","Mutation","Error 500",1968684970,2013,"2013-10-29","https://mutationerror500.bandcamp.com/album/error-500?label=3660962074&tab=music","M","UK"],[456557129,"a","Neil Hamburger","Final Relaxation (The Golding Institute)",1412772028,2006,"2006-06-27","https://neilhamburgeripecac.bandcamp.com/album/final-relaxation-the-golding-institute?label=3660962074&tab=music","N",""],[1027359984,"a","Neil Hamburger","Great Phone Calls",4085780450,2000,"2000-07-03","https://neilhamburgeripecac.bandcamp.com/album/great-phone-calls?label=3660962074&tab=music","N",""],[799041829,"a","Nevermen","Nevermen",3258201789,2016,"2016-01-29","https://nevermen-ipecac.bandcamp.com/album/nevermen-2?label=3660962074&tab=music","N",""],[1738367949,"a","Northern State","Can I Keep This Pen?",2604586679,2007,"2007-08-28","https://northernstate.bandcamp.com/album/can-i-keep-this-pen?label=3660962074&tab=music","N",""],[4279297193,"a","Orthrelm","Ov",1037092437,2005,"2005-06-14","https://orthrelm-ipecac.bandcamp.com/album/ov?label=3660962074&tab=music","O",""],[3083031519,"a","Otto Von Schirach","Maxipad Detention",2399720319,2006,"2006-07-25","https://ottovonschirach-ipecac.bandcamp.com/album/maxipad-detention?label=3660962074&tab=music","O",""],[3879455631,"a","OXBOW","Love's Holiday",67409463,2023,"2023-07-21","https://oxbowofficial.bandcamp.com/album/loves-holiday?label=3660962074&tab=music","O","San Francisco, California"],[2966737315,"a","Palms","Opening Titles / End Credits",1334094119,2023,"2023-02-22","https://palms-ipecac.bandcamp.com/album/opening-titles-end-credits?label=3660962074&tab=music","P",""],[2448672791,"a","Palms","Palms (10th Anniversary Edition)",250582510,2013,"2013-06-25","https://palms-ipecac.bandcamp.com/album/palms-10th-anniversary-edition?label=3660962074&tab=music","P",""],[3128296710,"t","Peeping Tom","Pre-School Love Affair",2376358776,2023,"2023-10-27","https://peepingtom-ipecac.bandcamp.com/track/pre-school-love-affair?label=3660962074&tab=music","P",""],[1031909028,"a","Peeping Tom","Peeping Tom",2206445306,2006,"2006-05-30","https://peepingtom-ipecac.bandcamp.com/album/peeping-tom?label=3660962074&tab=music","P",""],[3327826332,"a","Philm","Harmonic",3134283279,2012,"2012-05-15","https://philm.bandcamp.com/album/harmonic?label=3660962074&tab=music","P",""],[530844750,"a","Pink Anvil","Halloween Party",3929986606,2003,"2003-04-22","https://pinkanvil.bandcamp.com/album/halloween-party?label=3660962074&tab=music","P",""],[2681419537,"a","Planet B","Planet B",3140863033,2018,"2018-11-23","https://planetb-noise.bandcamp.com/album/planet-b?label=3660962074&tab=music","P",""],[2466738408,"a","Qui","Love's Miracle",2891278638,2007,"2007-09-11","https://qui-ipecac.bandcamp.com/album/loves-miracle?label=3660962074&tab=music","Q",""],[2115723836,"a","Retox","Ugly Animals",1148835918,2011,"2011-08-23","https://retoxrules.bandcamp.com/album/ugly-animals?label=3660962074&tab=music","R","California"],[3669453418,"a","Rob Swift","The Architect",4280047152,2010,"2010-02-23","https://robswift-ipecac.bandcamp.com/album/the-architect?label=3660962074&tab=music","R",""],[3833928038,"a","Ruins","Yawiquo (Sax Ruins)",903016690,2009,"2009-07-21","https://ruins-ipecac.bandcamp.com/album/yawiquo-sax-ruins?label=3660962074&tab=music","R","Japan"],[3167285251,"a","Ruins","Tzomborgha",3759603199,2002,"2002-11-11","https://ruins-ipecac.bandcamp.com/album/tzomborgha?label=3660962074&tab=music","R","Japan"],[1330316559,"a","Sensational","Get On My Page",2929596891,2001,"2001-06-11","https://sensational-ipecac.bandcamp.com/album/get-on-my-page?label=3660962074&tab=music","S",""],[4264227777,"a","Skeleton Key","Obtainium",1419474856,2002,"2002-06-24","https://skeletonkey-ipecac.bandcamp.com/album/obtainium?label=3660962074&tab=music","S",""],[712850278,"a","Split Cranium","I'm The Devil and I'm OK",3540075984,2018,"2018-05-25","https://splitcranium.bandcamp.com/album/im-the-devil-and-im-ok-2?label=3660962074&tab=music","S","Finland"],[50795759,"a","Spotlights","Tidals (10th Anniversary)",104886257,2026,"2026-09-10","https://spotlights.bandcamp.com/album/tidals-10th-anniversary?label=3660962074&tab=music","S","New York"],[640985884,"a","Spotlights","Rarities",3561756581,2025,"2025-11-21","https://spotlights.bandcamp.com/album/rarities?label=3660962074&tab=music","S","New York"],[1201671786,"a","Spotlights","Alchemy For The Dead",2787915887,2023,"2023-04-28","https://spotlights.bandcamp.com/album/alchemy-for-the-dead?label=3660962074&tab=music","S","New York"],[3128936780,"a","Spotlights","Love & Decay",1286657565,2019,"2019-04-26","https://spotlights.bandcamp.com/album/love-decay?label=3660962074&tab=music","S","New York"],[4028619345,"a","Spotlights","Hanging By Faith",1537011474,2018,"2018-06-15","https://spotlights.bandcamp.com/album/hanging-by-faith?label=3660962074&tab=music","S","New York"],[3771134427,"a","Spotlights","Seismic",771682589,2017,"2017-10-06","https://spotlights.bandcamp.com/album/seismic?label=3660962074&tab=music","S","New York"],[1033873780,"a","Steroid Maximus","Ectopia",2987505471,2002,"2002-05-27","https://steroidmaximus.bandcamp.com/album/ectopia?label=3660962074&tab=music","S",""],[3409809907,"a","The Tango Saloon","The Tango Saloon",3932525817,2006,"2006-04-18","https://thetangosaloon.bandcamp.com/album/the-tango-saloon?label=3660962074&tab=music","T","Australia"],[4042372413,"a","tetema","necroscape",3566379124,2020,"2020-04-03","https://tetema.bandcamp.com/album/necroscape?label=3660962074&tab=music","T",""],[3752289194,"a","tetema","Geocidal",1310264414,2014,"2014-12-09","https://tetema.bandcamp.com/album/geocidal?label=3660962074&tab=music","T",""],[3738724442,"a","Tipsy","Buzzz",1484340293,2008,"2008-11-04","https://tipsy-ipecac.bandcamp.com/album/buzzz?label=3660962074&tab=music","T",""],[963566552,"a","Tomahawk","Tonic Immobility",1175396463,2021,"2021-03-26","https://tomahawkofficial.bandcamp.com/album/tonic-immobility?label=3660962074&tab=music","T",""],[235460057,"a","Tomahawk","M.E.A.T.",1758053827,2014,"2014-06-03","https://tomahawkofficial.bandcamp.com/album/m-e-a-t?label=3660962074&tab=music","T",""],[517052230,"a","Tomahawk","Oddfellows",118270594,2013,"2013-01-29","https://tomahawkofficial.bandcamp.com/album/oddfellows?label=3660962074&tab=music","T",""],[464150770,"a","Tomahawk","Anonymous",3180572438,2007,"2007-06-19","https://tomahawkofficial.bandcamp.com/album/anonymous?label=3660962074&tab=music","T",""],[752049208,"a","Tomahawk","Mit Gas",2352073323,2003,"2003-05-06","https://tomahawkofficial.bandcamp.com/album/mit-gas?label=3660962074&tab=music","T",""],[3032633332,"a","Tomahawk","Tomahawk",1808567590,2001,"2001-10-30","https://tomahawkofficial.bandcamp.com/album/tomahawk?label=3660962074&tab=music","T",""],[1830688872,"a","Trevor Dunn's Trio Convulsant","Sister Phantom Owl Fish",662074095,2004,"2004-11-01","https://trevordunnstrioconvulsant.bandcamp.com/album/sister-phantom-owl-fish?label=3660962074&tab=music","T",""],[3735311510,"a","The Unsemble","The Unsemble",4171639480,2014,"2014-03-04","https://theunsemble.bandcamp.com/album/the-unsemble?label=3660962074&tab=music","U",""],[3957336679,"a","Valve","Half-Life: Alyx",4093292725,2022,"2022-09-30","https://valvehl.bandcamp.com/album/half-life-alyx?label=3660962074&tab=music","V",""],[1200202721,"a","Valve Studio Orchestra","Counter-Strike 2",942436321,2023,"2023-11-01","https://valvestudioorchestra.bandcamp.com/album/counter-strike-2?label=3660962074&tab=music","V",""],[1833294244,"a","Valve Studio Orchestra","Jungle Inferno (more music from Team Fortress 2)",4142651794,2020,"2020-07-10","https://valvestudioorchestra.bandcamp.com/album/jungle-inferno-more-music-from-team-fortress-2?label=3660962074&tab=music","V",""],[121821302,"a","Valve Studio Orchestra","Fight Songs: The Music Of Team Fortress 2",188736238,2017,"2017-04-21","https://valvestudioorchestra.bandcamp.com/album/fight-songs-the-music-of-team-fortress-2?label=3660962074&tab=music","V",""],[3550292779,"a","Valve Studio Orchestra","The DOTA 2 Official Soundtrack",2414690112,2017,"2017-07-28","https://valvestudioorchestra.bandcamp.com/album/the-dota-2-official-soundtrack?label=3660962074&tab=music","V",""],[470890832,"a","Various Artists","The Orange Box (Original Soundtrack)",1047586558,2007,"2007-11-01","https://valvehl.bandcamp.com/album/the-orange-box-original-soundtrack?label=3660962074&tab=music","V",""],[1389024001,"t","Venamoris","Contrapasso",2626207640,2025,"2025-05-13","https://venamoris.bandcamp.com/track/contrapasso?label=3660962074&tab=music","V","Los Angeles, California"],[3505277052,"t","Venamoris","Dreaming Of You",1050845857,2025,"2025-11-06","https://venamoris.bandcamp.com/track/dreaming-of-you?label=3660962074&tab=music","V","Los Angeles, California"],[207370649,"a","Venamoris","To Cross or To Burn",1104488226,2025,"2025-02-28","https://venamoris.bandcamp.com/album/to-cross-or-to-burn?label=3660962074&tab=music","V","Los Angeles, California"],[1251814694,"t","Venamoris","In the Shadows",1038310765,2024,"2024-09-25","https://venamoris.bandcamp.com/track/in-the-shadows?label=3660962074&tab=music","V","Los Angeles, California"],[2240026094,"t","Venamoris","Spiderweb",400415348,2024,"2024-10-29","https://venamoris.bandcamp.com/track/spiderweb?label=3660962074&tab=music","V","Los Angeles, California"],[2247817346,"t","Venamoris","Winter's Whispers",571393229,2024,"2024-12-03","https://venamoris.bandcamp.com/track/winters-whispers?label=3660962074&tab=music","V","Los Angeles, California"],[4097056196,"t","Venera","Swarm",2069742749,2023,"2023-07-26","https://veneramusic.bandcamp.com/track/swarm?label=3660962074&tab=music","V","Los Angeles, California"],[1350489315,"a","Venera","Venera",3735581920,2023,"2023-10-13","https://veneramusic.bandcamp.com/album/venera?label=3660962074&tab=music","V","Los Angeles, California"],[1986850676,"a","Venomous Concept","Retroactive Abortion",660453398,2004,"2004-06-29","https://venomousconcept-ipecac.bandcamp.com/album/retroactive-abortion?label=3660962074&tab=music","V",""],[5546358,"a","Vincent & Mr. Green","Vincent & Mr. Green",2339152428,2004,"2004-10-05","https://vincentmrgreen.bandcamp.com/album/vincent-mr-green?label=3660962074&tab=music","V",""],[3522942123,"a","Yoshimi And Yuka","Flower With No Color",763684308,2003,"2003-04-08","https://yoshimiandyuka.bandcamp.com/album/flower-with-no-color?label=3660962074&tab=music","Y","Japan"],[1027779677,"a","Young Gods","Second Nature",3418750296,2003,"2003-01-28","https://younggods-ipecac.bandcamp.com/album/second-nature?label=3660962074&tab=music","Y","Switzerland"],[310708735,"a","Zach Hill","Astrological Straits",4247854150,2008,"2008-08-12","https://zachhill-ipecac.bandcamp.com/album/astrological-straits?label=3660962074&tab=music","Z",""],[1648736362,"a","Zu","Cortar Todo",557234379,2015,"2015-03-25","https://zu-ipecac.bandcamp.com/album/cortar-todo?label=3660962074&tab=music","Z","Italy"],[2260905871,"a","Zu","Carboniferous",3862221756,2009,"2009-02-10","https://zu-ipecac.bandcamp.com/album/carboniferous?label=3660962074&tab=music","Z","Italy"]];
+
+const DATA = RAW.map((r, i) => ({
+  idx: i,
+  id: r[0],
+  type: r[1],
+  artist: r[2],
+  title: r[3],
+  artId: r[4],
+  year: r[5],
+  isoDate: r[6],
+  url: r[7],
+  letter: r[8] || "#",
+  location: r[9] || "",
+  key: r[1] + ":" + r[0]
+}));
+
+const LETTERS = ["#", ..."ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")];
+const FEATURED_ARTISTS = [
+  "Melvins",
+  "Dälek",
+  "ISIS",
+  "Daughters",
+  "Tomahawk",
+  "Mike Patton",
+  "Faith No More",
+  "Mr. Bungle",
+  "Fantomas",
+  "The Jesus Lizard",
+  "Dead Cross",
+  "Human Impact",
+  "Spotlights"
+];
+
+const FAV_STORAGE_KEY = "ipecac_recordings_favs_v1";
+const HIST_STORAGE_KEY = "ipecac_recordings_history_v1";
+
+function loadJson(key, fallback) {
+  try {
+    const v = JSON.parse(localStorage.getItem(key) || "null");
+    return v !== null ? v : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+const state = {
+  filtered: DATA.slice(),
+  activeKey: DATA[0] ? DATA[0].key : "",
+  activeIndex: 0,
+  viewMode: "cabinet",
+  search: "",
+  sort: "alpha",
+  year: "ALL",
+  artist: "ALL",
+  favsOnly: false,
+  crackleOn: true,
+  pingAudio: false,
+  favs: new Set(loadJson(FAV_STORAGE_KEY, [])),
+  history: loadJson(HIST_STORAGE_KEY, []),
+  wallOpen: false,
+  sweepAngle: 0,
+  pulseEnergy: 0.7,
+  crackleFlash: 0,
+  isScrubbing: false
+};
+
+const els = {
+  ambientArt: document.getElementById("ambientArt"),
+  miniRadarBtn: document.getElementById("miniRadarBtn"),
+  miniRadarCanvas: document.getElementById("miniRadarCanvas"),
+  crtWaveCanvas: document.getElementById("crtWaveCanvas"),
+  crtSectorReadout: document.getElementById("crtSectorReadout"),
+  crtBearingReadout: document.getElementById("crtBearingReadout"),
+  crtArtistReadout: document.getElementById("crtArtistReadout"),
+  crtAlbumReadout: document.getElementById("crtAlbumReadout"),
+  crtMetaReadout: document.getElementById("crtMetaReadout"),
+  crtCrackleTag: document.getElementById("crtCrackleTag"),
+  crackleToggleBtn: document.getElementById("crackleToggleBtn"),
+  crackleStateLabel: document.getElementById("crackleStateLabel"),
+  pingAudioBtn: document.getElementById("pingAudioBtn"),
+  pingStateLabel: document.getElementById("pingStateLabel"),
+  searchInput: document.getElementById("searchInput"),
+  sortSelect: document.getElementById("sortSelect"),
+  yearSelect: document.getElementById("yearSelect"),
+  artistSelect: document.getElementById("artistSelect"),
+  rosterBar: document.getElementById("rosterBar"),
+  viewCabinetBtn: document.getElementById("viewCabinetBtn"),
+  viewListBtn: document.getElementById("viewListBtn"),
+  posLabel: document.getElementById("posLabel"),
+  currentLetterLabel: document.getElementById("currentLetterLabel"),
+  resetFiltersBtn: document.getElementById("resetFiltersBtn"),
+  filteredSummary: document.getElementById("filteredSummary"),
+  cabinetScroll: document.getElementById("cabinetScroll"),
+  listView: document.getElementById("listView"),
+  alphaScrubTrack: document.getElementById("alphaScrubTrack"),
+  alphaScrubFill: document.getElementById("alphaScrubFill"),
+  alphaScrubThumb: document.getElementById("alphaScrubThumb"),
+  alphaLetters: document.getElementById("alphaLetters"),
+  scrubCallout: document.getElementById("scrubCallout"),
+  scrubLetter: document.getElementById("scrubLetter"),
+  scrubArtist: document.getElementById("scrubArtist"),
+  detail: document.getElementById("detail"),
+  randomBtn: document.getElementById("randomBtn"),
+  favFilterBtn: document.getElementById("favFilterBtn"),
+  favCount: document.getElementById("favCount"),
+  wallToggleBtn: document.getElementById("wallToggleBtn"),
+  wallView: document.getElementById("wallView"),
+  wallGrid: document.getElementById("wallGrid"),
+  wallCount: document.getElementById("wallCount"),
+  closeWallBtn: document.getElementById("closeWallBtn"),
+  lightbox: document.getElementById("lightbox"),
+  lightboxImg: document.getElementById("lightboxImg"),
+  lightboxTitle: document.getElementById("lightboxTitle"),
+  lightboxSub: document.getElementById("lightboxSub"),
+  closeLightboxBtn: document.getElementById("closeLightboxBtn"),
+  toast: document.getElementById("toast")
+};
+
+function artUrl(artId, size) {
+  return "https://f4.bcbits.com/img/a" + artId + "_" + (size || 16) + ".jpg";
+}
+
+function escapeHtml(s) {
+  return String(s || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function formatDate(iso, year) {
+  if (!iso) return String(year || "");
+  const parts = iso.split("-");
+  if (parts.length !== 3) return String(year || "");
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const m = months[parseInt(parts[1], 10) - 1] || "";
+  const d = parseInt(parts[2], 10);
+  return m ? (m + " " + d + ", " + parts[0]) : parts[0];
+}
+
+function showToast(msg) {
+  els.toast.textContent = msg;
+  els.toast.classList.add("show");
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => els.toast.classList.remove("show"), 2000);
+}
+
+/* Optional Web Audio Submarine Sonar Ping + Subtle CRT Static Burst */
+let audioCtx = null;
+function triggerSonarAudio() {
+  if (!state.pingAudio) return;
+  try {
+    const AudioCtor = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtor) return;
+    if (!audioCtx) audioCtx = new AudioCtor();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+
+    const now = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(1180, now);
+    osc.frequency.exponentialRampToValueAtTime(1090, now + 0.55);
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.linearRampToValueAtTime(0.045, now + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.62);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + 0.65);
+
+    if (state.crackleOn) {
+      const bufSize = Math.floor(audioCtx.sampleRate * 0.06);
+      const buf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+      const ch = buf.getChannelData(0);
+      for (let i = 0; i < bufSize; i++) {
+        ch[i] = (Math.random() * 2 - 1) * (Math.random() > 0.88 ? 0.28 : 0.03);
+      }
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = buf;
+      const nGain = audioCtx.createGain();
+      nGain.gain.setValueAtTime(0.04, now);
+      nGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+      noise.connect(nGain);
+      nGain.connect(audioCtx.destination);
+      noise.start(now);
+    }
+  } catch {
+    /* ignore audio context restrictions */
+  }
+}
+
+function getContactCoords(item, index, total) {
+  const angle = total > 1 ? ((index / total) * 360) : 0;
+  const bearing = Math.round(angle) % 360;
+  const depth = 240 + ((item.id % 580));
+  return { bearing, depth, rad: (bearing - 90) * (Math.PI / 180) };
+}
+
+function sectionKeyFor(item) {
+  if (state.sort === "newest" || state.sort === "oldest") {
+    return String(item.year || "Unknown");
+  }
+  if (state.sort === "album") {
+    const ch = (item.title || "").replace(/^(the|a|an)s+/i, "").trim().charAt(0).toUpperCase();
+    return /[A-Z]/.test(ch) ? ch : "#";
+  }
+  return item.letter || "#";
+}
+
+function populateSelects() {
+  const yearCounts = new Map();
+  const artistCounts = new Map();
+  DATA.forEach(item => {
+    yearCounts.set(item.year, (yearCounts.get(item.year) || 0) + 1);
+    artistCounts.set(item.artist, (artistCounts.get(item.artist) || 0) + 1);
+  });
+
+  Array.from(yearCounts.keys()).sort((a, b) => b - a).forEach(y => {
+    const opt = document.createElement("option");
+    opt.value = String(y);
+    opt.textContent = y + " (" + yearCounts.get(y) + ")";
+    els.yearSelect.appendChild(opt);
+  });
+
+  Array.from(artistCounts.keys()).sort((a, b) => a.localeCompare(b)).forEach(a => {
+    const opt = document.createElement("option");
+    opt.value = a;
+    opt.textContent = a + " (" + artistCounts.get(a) + ")";
+    els.artistSelect.appendChild(opt);
+  });
+
+  /* Build Quick-Filter Core Roster Brass Buttons */
+  const allBtn = document.createElement("button");
+  allBtn.type = "button";
+  allBtn.className = "roster-btn active";
+  allBtn.dataset.artist = "ALL";
+  allBtn.textContent = "All (" + DATA.length + ")";
+  els.rosterBar.appendChild(allBtn);
+
+  FEATURED_ARTISTS.forEach(name => {
+    const count = artistCounts.get(name);
+    if (!count) return;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "roster-btn";
+    btn.dataset.artist = name;
+    btn.textContent = name + " (" + count + ")";
+    els.rosterBar.appendChild(btn);
+  });
+}
+
+function updateRosterButtons() {
+  els.rosterBar.querySelectorAll(".roster-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.artist === state.artist);
+  });
+}
+
+function buildAlphaRail() {
+  els.alphaLetters.innerHTML = "";
+  LETTERS.forEach(letter => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "alpha-btn";
+    btn.dataset.letter = letter;
+    btn.textContent = letter;
+    btn.title = "Jump to " + letter;
+    btn.addEventListener("click", () => jumpToLetter(letter));
+    els.alphaLetters.appendChild(btn);
+  });
+}
+
+function updateAlphaAvailability() {
+  const present = new Set(state.filtered.map(item => item.letter));
+  els.alphaLetters.querySelectorAll(".alpha-btn").forEach(btn => {
+    btn.disabled = !present.has(btn.dataset.letter);
+  });
+  els.alphaScrubTrack.setAttribute("aria-valuemax", String(Math.max(0, state.filtered.length - 1)));
+}
+
+function hasActiveFilters() {
+  return Boolean(
+    state.search.trim() ||
+    state.year !== "ALL" ||
+    state.artist !== "ALL" ||
+    state.favsOnly
+  );
+}
+
+function applyFilters(preserveActive) {
+  const q = state.search.trim().toLowerCase();
+  let list = DATA.filter(item => {
+    if (state.favsOnly && !state.favs.has(item.key)) return false;
+    if (state.year !== "ALL" && String(item.year) !== state.year) return false;
+    if (state.artist !== "ALL" && item.artist !== state.artist) return false;
+    if (q) {
+      const hay = (item.artist + " " + item.title + " " + item.year + " " + item.location).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  if (state.sort === "alpha") {
+    list.sort((a, b) => a.artist.localeCompare(b.artist) || b.year - a.year || a.title.localeCompare(b.title));
+  } else if (state.sort === "alphaDesc") {
+    list.sort((a, b) => b.artist.localeCompare(a.artist) || b.year - a.year);
+  } else if (state.sort === "album") {
+    list.sort((a, b) => a.title.localeCompare(b.title) || a.artist.localeCompare(b.artist));
+  } else if (state.sort === "newest") {
+    list.sort((a, b) => (b.isoDate || "").localeCompare(a.isoDate || "") || b.year - a.year || a.artist.localeCompare(b.artist));
+  } else if (state.sort === "oldest") {
+    list.sort((a, b) => (a.isoDate || "").localeCompare(b.isoDate || "") || a.year - b.year || a.artist.localeCompare(b.artist));
+  }
+
+  state.filtered = list;
+  updateRosterButtons();
+  updateAlphaAvailability();
+  els.resetFiltersBtn.classList.toggle("visible", hasActiveFilters());
+  els.filteredSummary.textContent = list.length + (list.length === 1 ? " release shown" : " releases shown");
+  els.favCount.textContent = String(state.favs.size);
+  els.favFilterBtn.classList.toggle("active", state.favsOnly);
+
+  let nextIdx = 0;
+  if (preserveActive && state.activeKey) {
+    const found = list.findIndex(item => item.key === state.activeKey);
+    if (found >= 0) nextIdx = found;
+  }
+
+  renderCabinet();
+  renderListView();
+  if (state.wallOpen) renderCoverWall();
+
+  if (list.length > 0) {
+    selectIndex(nextIdx, { scrollIntoView: !preserveActive, silent: true });
+  } else {
+    state.activeIndex = -1;
+    els.posLabel.textContent = "0 / 0";
+    els.currentLetterLabel.textContent = "—";
+    els.crtSectorReadout.textContent = "No matching contacts";
+    els.crtBearingReadout.textContent = "BRG ---° · --- FT";
+    els.crtArtistReadout.textContent = "No Matches";
+    els.crtAlbumReadout.textContent = "Adjust search or clear filters to restore the catalog";
+    renderEmptyDetail();
+  }
+}
+
+function groupFiltered() {
+  const groups = [];
+  const map = new Map();
+  state.filtered.forEach((item, idx) => {
+    const sec = sectionKeyFor(item);
+    if (!map.has(sec)) {
+      const g = { key: sec, items: [] };
+      map.set(sec, g);
+      groups.push(g);
+    }
+    map.get(sec).items.push({ item, idx });
+  });
+  return groups;
+}
+
+function renderCabinet() {
+  els.cabinetScroll.innerHTML = "";
+  if (!state.filtered.length) {
+    els.cabinetScroll.innerHTML =
+      '<div class="empty-state">No Ipecac releases match your current filters.<br><br><button type="button" class="deco-btn primary" id="emptyClearBtn">Reset All Filters</button></div>';
+    const btn = document.getElementById("emptyClearBtn");
+    if (btn) btn.addEventListener("click", clearAllFilters);
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  const groups = groupFiltered();
+
+  groups.forEach(group => {
+    const section = document.createElement("section");
+    section.className = "section-block";
+    section.dataset.section = group.key;
+
+    const head = document.createElement("div");
+    head.className = "section-header";
+    head.innerHTML =
+      '<div class="section-title-group">' +
+        '<span class="section-letter">' + escapeHtml(group.key) + '</span>' +
+        '<span class="section-rule-ornament" aria-hidden="true"></span>' +
+      '</div>' +
+      '<span class="section-count">' + group.items.length + (group.items.length === 1 ? " release" : " releases") + '</span>';
+    section.appendChild(head);
+
+    const grid = document.createElement("div");
+    grid.className = "cabinet-grid";
+
+    group.items.forEach(({ item, idx }) => {
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "specimen-card" + (item.key === state.activeKey ? " active" : "");
+      card.dataset.idx = String(idx);
+      card.dataset.key = item.key;
+      card.dataset.letter = item.letter;
+      const savedStar = state.favs.has(item.key) ? '<span class="specimen-saved-star" title="Saved">★</span>' : "";
+      const typeLabel = item.type === "t" ? "Single" : "Album";
+      card.innerHTML =
+        '<div class="specimen-cover-frame">' +
+          '<img src="' + artUrl(item.artId, 16) + '" alt="' + escapeHtml(item.artist + " — " + item.title) + '" loading="lazy" referrerpolicy="no-referrer">' +
+          '<div class="specimen-cover-sheen" aria-hidden="true"></div>' +
+        '</div>' +
+        '<div class="specimen-body">' +
+          '<div class="specimen-artist">' + escapeHtml(item.artist) + '</div>' +
+          '<div class="specimen-title">' + escapeHtml(item.title) + '</div>' +
+          '<div class="specimen-meta">' +
+            '<span>' + escapeHtml(item.year) + ' · ' + typeLabel + '</span>' +
+            '<span>#' + String(idx + 1).padStart(3, "0") + savedStar + '</span>' +
+          '</div>' +
+        '</div>';
+      card.addEventListener("click", () => selectIndex(idx, { scrollIntoView: false }));
+      grid.appendChild(card);
+    });
+
+    section.appendChild(grid);
+    frag.appendChild(section);
+  });
+
+  els.cabinetScroll.appendChild(frag);
+}
+
+function renderListView() {
+  els.listView.innerHTML = "";
+  if (!state.filtered.length) {
+    els.listView.innerHTML = '<div class="empty-state">No Ipecac releases match your current filters.</div>';
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  const groups = groupFiltered();
+
+  groups.forEach(group => {
+    const head = document.createElement("div");
+    head.className = "list-section-header";
+    head.dataset.section = group.key;
+    head.innerHTML =
+      '<span>' + escapeHtml(group.key) + '</span>' +
+      '<span>' + group.items.length + (group.items.length === 1 ? " release" : " releases") + '</span>';
+    frag.appendChild(head);
+
+    group.items.forEach(({ item, idx }) => {
+      const row = document.createElement("button");
+      row.type = "button";
+      row.className = "list-row" + (item.key === state.activeKey ? " active" : "");
+      row.dataset.idx = String(idx);
+      row.dataset.key = item.key;
+      row.dataset.letter = item.letter;
+      row.setAttribute("role", "option");
+      row.setAttribute("aria-selected", item.key === state.activeKey ? "true" : "false");
+      const star = state.favs.has(item.key) ? " ★" : "";
+      const loc = item.location ? " · " + escapeHtml(item.location) : "";
+      row.innerHTML =
+        '<span class="list-idx">' + String(idx + 1).padStart(3, "0") + '</span>' +
+        '<img class="list-thumb" src="' + artUrl(item.artId, 9) + '" alt="" loading="lazy" referrerpolicy="no-referrer">' +
+        '<div class="list-text">' +
+          '<div class="list-artist">' + escapeHtml(item.artist) + star + '</div>' +
+          '<div class="list-title">' + escapeHtml(item.title) + '</div>' +
+        '</div>' +
+        '<div class="list-meta">' +
+          '<div class="list-year">' + escapeHtml(item.year) + '</div>' +
+          '<div>' + (item.type === "t" ? "Single" : "Album") + loc + '</div>' +
+        '</div>';
+      row.addEventListener("click", () => selectIndex(idx, { scrollIntoView: false }));
+      frag.appendChild(row);
+    });
+  });
+
+  els.listView.appendChild(frag);
+}
+
+function updateActiveVisuals(scrollIntoView) {
+  const item = state.filtered[state.activeIndex];
+  if (!item) return;
+
+  els.cabinetScroll.querySelectorAll(".specimen-card.active").forEach(el => el.classList.remove("active"));
+  const activeCard = els.cabinetScroll.querySelector('.specimen-card[data-key="' + item.key + '"]');
+  if (activeCard) {
+    activeCard.classList.add("active");
+    if (scrollIntoView && state.viewMode === "cabinet") {
+      activeCard.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+  }
+
+  els.listView.querySelectorAll(".list-row.active").forEach(el => {
+    el.classList.remove("active");
+    el.setAttribute("aria-selected", "false");
+  });
+  const activeRow = els.listView.querySelector('.list-row[data-key="' + item.key + '"]');
+  if (activeRow) {
+    activeRow.classList.add("active");
+    activeRow.setAttribute("aria-selected", "true");
+    if (scrollIntoView && state.viewMode === "list") {
+      activeRow.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+  }
+
+  els.posLabel.textContent = (state.activeIndex + 1) + " / " + state.filtered.length;
+  els.currentLetterLabel.textContent = sectionKeyFor(item);
+  updateAlphaHighlight(item.letter, state.filtered.length > 1 ? state.activeIndex / (state.filtered.length - 1) : 0);
+}
+
+function updateAlphaHighlight(letter, ratio) {
+  const clamped = Math.max(0, Math.min(1, ratio || 0));
+  els.alphaScrubFill.style.height = (clamped * 100) + "%";
+  els.alphaScrubThumb.style.top = (clamped * 100) + "%";
+  els.alphaScrubTrack.setAttribute("aria-valuenow", String(Math.round(clamped * Math.max(0, state.filtered.length - 1))));
+  els.alphaLetters.querySelectorAll(".alpha-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.letter === letter);
+  });
+}
+
+function selectIndex(idx, opts) {
+  const options = opts || {};
+  if (!state.filtered.length) return;
+  const clamped = Math.max(0, Math.min(state.filtered.length - 1, idx));
+  const item = state.filtered[clamped];
+  const changed = item.key !== state.activeKey;
+  state.activeIndex = clamped;
+  state.activeKey = item.key;
+
+  const coords = getContactCoords(item, clamped, state.filtered.length);
+  els.crtSectorReadout.textContent =
+    "Sector " + item.letter + " · Contact " + String(clamped + 1).padStart(3, "0") + " / " + state.filtered.length;
+  els.crtBearingReadout.textContent =
+    "BRG " + String(coords.bearing).padStart(3, "0") + "° · " + coords.depth + " FT";
+  els.crtArtistReadout.textContent = item.artist;
+  els.crtAlbumReadout.textContent = item.title;
+  els.crtMetaReadout.textContent =
+    formatDate(item.isoDate, item.year) +
+    " · " + (item.type === "t" ? "Single" : "Album") +
+    (item.location ? " · " + item.location : "");
+
+  els.ambientArt.style.backgroundImage = 'url("' + artUrl(item.artId, 16) + '")';
+  state.pulseEnergy = 1;
+  if (state.crackleOn) state.crackleFlash = 0.8;
+
+  if (changed && !options.silent) {
+    triggerSonarAudio();
+  }
+
+  recordHistory(item.key);
+  updateActiveVisuals(Boolean(options.scrollIntoView));
+  renderDetail(item);
+}
+
+function recordHistory(key) {
+  state.history = [key, ...state.history.filter(k => k !== key)].slice(0, 10);
+  try {
+    localStorage.setItem(HIST_STORAGE_KEY, JSON.stringify(state.history));
+  } catch {
+    /* ignore storage quota */
+  }
+}
+
+function toggleFavorite(key) {
+  if (state.favs.has(key)) {
+    state.favs.delete(key);
+    showToast("Removed from Saved");
+  } else {
+    state.favs.add(key);
+    showToast("Saved to Archive");
+  }
+  try {
+    localStorage.setItem(FAV_STORAGE_KEY, JSON.stringify(Array.from(state.favs)));
+  } catch {
+    /* ignore */
+  }
+  els.favCount.textContent = String(state.favs.size);
+
+  if (state.favsOnly) {
+    applyFilters(true);
+    return;
+  }
+
+  const card = els.cabinetScroll.querySelector('.specimen-card[data-key="' + key + '"]');
+  if (card) {
+    const idx = parseInt(card.dataset.idx, 10);
+    const metaRight = card.querySelector(".specimen-meta span:last-child");
+    if (metaRight) {
+      metaRight.innerHTML = "#" + String(idx + 1).padStart(3, "0") + (state.favs.has(key) ? '<span class="specimen-saved-star" title="Saved">★</span>' : "");
+    }
+  }
+  const current = state.filtered[state.activeIndex];
+  if (current && current.key === key) {
+    renderDetail(current);
+  }
+}
+
+function renderEmptyDetail() {
+  els.detail.innerHTML =
+    '<div class="booth-frame"><div class="empty-state">Select a release from the Rapture Specimen Cabinet to stream it on the Bandcamp phonograph deck.</div></div>';
+}
+
+function renderDetail(item) {
+  const isFav = state.favs.has(item.key);
+  const embedParam = item.type === "t" ? "track=" + item.id : "album=" + item.id;
+  const embedSrc =
+    "https://bandcamp.com/EmbeddedPlayer/" +
+    embedParam +
+    "/size=large/bgcol=091517/linkcol=ebd082/tracklist=false/artwork=small/transparent=true/";
+
+  const moreByArtist = DATA.filter(d => d.artist === item.artist && d.key !== item.key);
+  const recentItems = state.history
+    .map(k => DATA.find(d => d.key === k))
+    .filter(Boolean)
+    .slice(0, 6);
+
+  const metaParts = [
+    formatDate(item.isoDate, item.year),
+    item.type === "t" ? "Single" : "Album",
+    "Catalog #" + String(item.idx + 1).padStart(3, "0")
+  ];
+  if (item.location) metaParts.push(item.location);
+
+  let moreHtml = "";
+  if (moreByArtist.length > 0) {
+    moreHtml =
+      '<section class="shelf-section">' +
+        '<div class="shelf-head">' +
+          '<h2 class="shelf-title">More by ' + escapeHtml(item.artist) + '</h2>' +
+          '<span class="shelf-sub">' + moreByArtist.length + ' more on Ipecac</span>' +
+        '</div>' +
+        '<div class="strip-grid">' +
+          moreByArtist.slice(0, 12).map(rel =>
+            '<button type="button" class="mini-card" data-jump-key="' + rel.key + '">' +
+              '<img src="' + artUrl(rel.artId, 9) + '" alt="' + escapeHtml(rel.title) + '" loading="lazy" referrerpolicy="no-referrer">' +
+              '<div class="mini-card-title">' + escapeHtml(rel.title) + '</div>' +
+              '<div class="mini-card-sub">' + escapeHtml(rel.year) + '</div>' +
+            '</button>'
+          ).join("") +
+        '</div>' +
+      '</section>';
+  }
+
+  let recentHtml = "";
+  if (recentItems.length > 1) {
+    recentHtml =
+      '<section class="shelf-section">' +
+        '<div class="shelf-head">' +
+          '<h2 class="shelf-title">Recently Played</h2>' +
+          '<span class="shelf-sub">' + recentItems.length + ' recent</span>' +
+        '</div>' +
+        '<div class="strip-grid">' +
+          recentItems.map(rel =>
+            '<button type="button" class="mini-card' + (rel.key === item.key ? " active" : "") + '" data-jump-key="' + rel.key + '">' +
+              '<img src="' + artUrl(rel.artId, 9) + '" alt="' + escapeHtml(rel.artist + " — " + rel.title) + '" loading="lazy" referrerpolicy="no-referrer">' +
+              '<div class="mini-card-title">' + escapeHtml(rel.artist) + '</div>' +
+              '<div class="mini-card-sub">' + escapeHtml(rel.title) + '</div>' +
+            '</button>'
+          ).join("") +
+        '</div>' +
+      '</section>';
+  }
+
+  els.detail.innerHTML =
+    '<article class="booth-frame">' +
+      '<div class="booth-top">' +
+        '<button type="button" class="booth-cover-btn" id="openLightboxBtn" title="Inspect high-resolution cover artwork">' +
+          '<img src="' + artUrl(item.artId, 16) + '" alt="' + escapeHtml(item.artist + " — " + item.title) + '" referrerpolicy="no-referrer">' +
+        '</button>' +
+        '<div class="booth-meta-col">' +
+          '<div class="booth-kicker">Rapture Phonograph Deck · Sector ' + escapeHtml(item.letter) + '</div>' +
+          '<button type="button" class="booth-artist" id="filterArtistBtn" title="Filter cabinet to ' + escapeHtml(item.artist) + '">' + escapeHtml(item.artist) + '</button>' +
+          '<h1 class="booth-album">' + escapeHtml(item.title) + '</h1>' +
+          '<div class="booth-loc">' + escapeHtml(metaParts.join(" · ")) + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="booth-actions">' +
+        '<button type="button" class="deco-btn" id="prevBtn" title="Previous release (↑ / ←)">← Previous</button>' +
+        '<button type="button" class="deco-btn" id="nextBtn" title="Next release (↓ / →)">Next →</button>' +
+        '<button type="button" class="deco-btn' + (isFav ? " active" : "") + '" id="favToggleBtn">' + (isFav ? "★ Saved" : "☆ Save") + '</button>' +
+        '<button type="button" class="deco-btn" id="copyLinkBtn">Copy Link</button>' +
+        '<a class="deco-btn" href="' + escapeHtml(item.url) + '" target="_blank" rel="noopener">Bandcamp ↗</a>' +
+      '</div>' +
+      '<div class="embed-shell">' +
+        '<div class="embed-label">' +
+          '<span>Bandcamp Audio Stream</span>' +
+          '<span>Direct Label Embed</span>' +
+        '</div>' +
+        '<iframe class="bc-iframe" src="' + embedSrc + '" seamless title="' + escapeHtml(item.artist + " — " + item.title) + ' Bandcamp Player"></iframe>' +
+      '</div>' +
+      moreHtml +
+      recentHtml +
+      '<div class="shortcuts-note">' +
+        'Shortcuts: ↑/↓ or ←/→ step releases · L toggles Cabinet / List · R random · W Cover Wall · / search · Shift+T TV Cast Stage' +
+      '</div>' +
+    '</article>';
+
+  document.getElementById("openLightboxBtn").addEventListener("click", () => openLightbox(item));
+  document.getElementById("filterArtistBtn").addEventListener("click", () => {
+    state.artist = state.artist === item.artist ? "ALL" : item.artist;
+    els.artistSelect.value = state.artist;
+    applyFilters(true);
+    showToast(state.artist === "ALL" ? "Showing all 110 artists" : "Filtered to " + item.artist);
+  });
+  document.getElementById("prevBtn").addEventListener("click", () => selectIndex(state.activeIndex - 1, { scrollIntoView: true }));
+  document.getElementById("nextBtn").addEventListener("click", () => selectIndex(state.activeIndex + 1, { scrollIntoView: true }));
+  document.getElementById("favToggleBtn").addEventListener("click", () => toggleFavorite(item.key));
+  document.getElementById("copyLinkBtn").addEventListener("click", () => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(item.url).then(() => showToast("Bandcamp URL copied")).catch(() => showToast("Copy unavailable"));
+    } else {
+      showToast("Copy unavailable");
+    }
+  });
+
+  els.detail.querySelectorAll("[data-jump-key]").forEach(btn => {
+    btn.addEventListener("click", () => jumpToKey(btn.dataset.jumpKey));
+  });
+}
+
+function jumpToKey(key) {
+  let idx = state.filtered.findIndex(item => item.key === key);
+  if (idx < 0) {
+    clearAllFilters();
+    idx = state.filtered.findIndex(item => item.key === key);
+  }
+  if (idx >= 0) {
+    selectIndex(idx, { scrollIntoView: true });
+  }
+}
+
+function jumpToLetter(letter) {
+  const idx = state.filtered.findIndex(item => item.letter === letter);
+  if (idx < 0) return;
+
+  if (state.sort === "alpha" || state.sort === "alphaDesc") {
+    const container = state.viewMode === "cabinet" ? els.cabinetScroll : els.listView;
+    const sec = container.querySelector('[data-section="' + letter + '"]');
+    if (sec) {
+      sec.scrollIntoView({ block: "start", behavior: "smooth" });
+    }
+  }
+  selectIndex(idx, { scrollIntoView: true });
+  flashScrubCallout(letter, state.filtered[idx].artist);
+}
+
+function flashScrubCallout(letter, artist) {
+  els.scrubLetter.textContent = letter;
+  els.scrubArtist.textContent = artist || "";
+  els.scrubCallout.classList.add("show");
+  clearTimeout(flashScrubCallout._t);
+  flashScrubCallout._t = setTimeout(() => {
+    if (!state.isScrubbing) els.scrubCallout.classList.remove("show");
+  }, 650);
+}
+
+function clearAllFilters() {
+  state.search = "";
+  state.year = "ALL";
+  state.artist = "ALL";
+  state.favsOnly = false;
+  els.searchInput.value = "";
+  els.yearSelect.value = "ALL";
+  els.artistSelect.value = "ALL";
+  applyFilters(true);
+}
+
+function setViewMode(mode) {
+  state.viewMode = mode === "list" ? "list" : "cabinet";
+  const isCab = state.viewMode === "cabinet";
+  els.cabinetScroll.classList.toggle("hidden", !isCab);
+  els.listView.classList.toggle("active", !isCab);
+  els.viewCabinetBtn.classList.toggle("active", isCab);
+  els.viewCabinetBtn.setAttribute("aria-pressed", String(isCab));
+  els.viewListBtn.classList.toggle("active", !isCab);
+  els.viewListBtn.setAttribute("aria-pressed", String(!isCab));
+  updateActiveVisuals(true);
+}
+
+function openCoverWall() {
+  state.wallOpen = true;
+  els.wallView.classList.add("open");
+  renderCoverWall();
+}
+
+function closeCoverWall() {
+  state.wallOpen = false;
+  els.wallView.classList.remove("open");
+}
+
+function renderCoverWall() {
+  els.wallCount.textContent = String(state.filtered.length);
+  els.wallGrid.innerHTML = "";
+  const frag = document.createDocumentFragment();
+  state.filtered.forEach((item, idx) => {
+    const tile = document.createElement("button");
+    tile.type = "button";
+    tile.className = "wall-tile" + (item.key === state.activeKey ? " active" : "");
+    tile.innerHTML =
+      '<div class="wall-tile-img">' +
+        '<img src="' + artUrl(item.artId, 16) + '" alt="' + escapeHtml(item.artist + " — " + item.title) + '" loading="lazy" referrerpolicy="no-referrer">' +
+      '</div>' +
+      '<div class="wall-tile-artist">' + escapeHtml(item.artist) + '</div>' +
+      '<div class="wall-tile-title">' + escapeHtml(item.title) + '</div>' +
+      '<div class="wall-tile-year">' + escapeHtml(item.year) + '</div>';
+    tile.addEventListener("click", () => {
+      closeCoverWall();
+      selectIndex(idx, { scrollIntoView: true });
+    });
+    frag.appendChild(tile);
+  });
+  els.wallGrid.appendChild(frag);
+}
+
+function openLightbox(item) {
+  els.lightboxImg.src = artUrl(item.artId, 10);
+  els.lightboxImg.alt = item.artist + " — " + item.title;
+  els.lightboxTitle.textContent = item.artist + " — " + item.title;
+  els.lightboxSub.textContent = formatDate(item.isoDate, item.year) + (item.location ? " · " + item.location : "");
+  els.lightbox.classList.add("open");
+}
+
+function closeLightbox() {
+  els.lightbox.classList.remove("open");
+}
+
+function selectRandom() {
+  if (!state.filtered.length) return;
+  let pick = Math.floor(Math.random() * state.filtered.length);
+  if (state.filtered.length > 1 && pick === state.activeIndex) {
+    pick = (pick + 1) % state.filtered.length;
+  }
+  selectIndex(pick, { scrollIntoView: true });
+}
+
+/* Synchronize Vertical A-Z Scrollbar with Natural Cabinet/List Scrolling */
+function syncRailFromScroll(container) {
+  if (state.isScrubbing || !state.filtered.length) return;
+  const maxScroll = Math.max(1, container.scrollHeight - container.clientHeight);
+  const ratio = Math.max(0, Math.min(1, container.scrollTop / maxScroll));
+  const estIdx = Math.min(state.filtered.length - 1, Math.floor(ratio * state.filtered.length));
+  const estItem = state.filtered[estIdx];
+  if (estItem) {
+    updateAlphaHighlight(estItem.letter, ratio);
+    els.currentLetterLabel.textContent = sectionKeyFor(estItem);
+  }
+}
+
+els.cabinetScroll.addEventListener("scroll", () => {
+  if (state.viewMode === "cabinet") syncRailFromScroll(els.cabinetScroll);
+}, { passive: true });
+
+els.listView.addEventListener("scroll", () => {
+  if (state.viewMode === "list") syncRailFromScroll(els.listView);
+}, { passive: true });
+
+function scrubFromPointer(clientY) {
+  if (!state.filtered.length) return;
+  const rect = els.alphaScrubTrack.getBoundingClientRect();
+  const ratio = Math.max(0, Math.min(1, (clientY - rect.top) / Math.max(1, rect.height)));
+  const container = state.viewMode === "cabinet" ? els.cabinetScroll : els.listView;
+  const maxScroll = Math.max(0, container.scrollHeight - container.clientHeight);
+  container.scrollTop = ratio * maxScroll;
+
+  const idx = Math.min(state.filtered.length - 1, Math.floor(ratio * state.filtered.length));
+  const item = state.filtered[idx];
+  if (item) {
+    updateAlphaHighlight(item.letter, ratio);
+    els.currentLetterLabel.textContent = sectionKeyFor(item);
+    els.scrubLetter.textContent = sectionKeyFor(item);
+    els.scrubArtist.textContent = item.artist;
+    els.scrubCallout.classList.add("show");
+  }
+}
+
+els.alphaScrubTrack.addEventListener("pointerdown", e => {
+  state.isScrubbing = true;
+  els.alphaScrubTrack.setPointerCapture(e.pointerId);
+  scrubFromPointer(e.clientY);
+});
+els.alphaScrubTrack.addEventListener("pointermove", e => {
+  if (state.isScrubbing) scrubFromPointer(e.clientY);
+});
+const endScrub = () => {
+  if (!state.isScrubbing) return;
+  state.isScrubbing = false;
+  setTimeout(() => {
+    if (!state.isScrubbing) els.scrubCallout.classList.remove("show");
+  }, 350);
+};
+els.alphaScrubTrack.addEventListener("pointerup", endScrub);
+els.alphaScrubTrack.addEventListener("pointercancel", endScrub);
+
+/* Integrated Cold War Mini Bathysphere Sonar + Crackling CRT Oscilloscope Animation */
+const radarCtx = els.miniRadarCanvas.getContext("2d");
+const waveCtx = els.crtWaveCanvas.getContext("2d");
+const prefersReducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function resizeWaveCanvas() {
+  const rect = els.crtWaveCanvas.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  els.crtWaveCanvas.width = Math.round(rect.width * dpr);
+  els.crtWaveCanvas.height = Math.round(rect.height * dpr);
+  waveCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+window.addEventListener("resize", resizeWaveCanvas);
+resizeWaveCanvas();
+
+let lastTs = performance.now();
+function drawTelemetry(ts) {
+  const dt = Math.min(0.05, (ts - lastTs) / 1000);
+  lastTs = ts;
+
+  if (!prefersReducedMotion) {
+    state.sweepAngle = (state.sweepAngle + dt * 1.45) % (Math.PI * 2);
+  }
+  state.pulseEnergy = Math.max(0.18, state.pulseEnergy - dt * 0.65);
+  state.crackleFlash = Math.max(0, state.crackleFlash - dt * 2.8);
+  if (state.crackleOn && !prefersReducedMotion && Math.random() < 0.025) {
+    state.crackleFlash = 0.28 + Math.random() * 0.4;
+  }
+
+  /* 1. Miniature Riveted Brass Bathysphere Sonar Scope */
+  const rw = els.miniRadarCanvas.width;
+  const rh = els.miniRadarCanvas.height;
+  const cx = rw / 2;
+  const cy = rh / 2;
+  const radius = rw / 2 - 4;
+
+  radarCtx.clearRect(0, 0, rw, rh);
+  const bgGrad = radarCtx.createRadialGradient(cx, cy, 4, cx, cy, radius);
+  bgGrad.addColorStop(0, "#0b2e21");
+  bgGrad.addColorStop(1, "#020b08");
+  radarCtx.fillStyle = bgGrad;
+  radarCtx.beginPath();
+  radarCtx.arc(cx, cy, radius, 0, Math.PI * 2);
+  radarCtx.fill();
+
+  /* Concentric range rings & crosshairs */
+  radarCtx.strokeStyle = "rgba(75, 240, 154, 0.24)";
+  radarCtx.lineWidth = 1;
+  [0.33, 0.66, 0.98].forEach(f => {
+    radarCtx.beginPath();
+    radarCtx.arc(cx, cy, radius * f, 0, Math.PI * 2);
+    radarCtx.stroke();
+  });
+  radarCtx.beginPath();
+  radarCtx.moveTo(cx - radius, cy);
+  radarCtx.lineTo(cx + radius, cy);
+  radarCtx.moveTo(cx, cy - radius);
+  radarCtx.lineTo(cx, cy + radius);
+  radarCtx.stroke();
+
+  /* Sweeping phosphor wedge */
+  const wedgeSteps = 12;
+  for (let i = 0; i < wedgeSteps; i++) {
+    const a1 = state.sweepAngle - (i * 0.085);
+    const a2 = a1 - 0.085;
+    radarCtx.fillStyle = "rgba(75, 240, 154, " + ((1 - i / wedgeSteps) * 0.22).toFixed(3) + ")";
+    radarCtx.beginPath();
+    radarCtx.moveTo(cx, cy);
+    radarCtx.arc(cx, cy, radius, a2, a1);
+    radarCtx.closePath();
+    radarCtx.fill();
+  }
+
+  /* Plot compact sample of filtered blips + active locked contact */
+  const total = state.filtered.length;
+  const stride = Math.max(1, Math.floor(total / 34));
+  for (let i = 0; i < total; i += stride) {
+    const rel = state.filtered[i];
+    const ang = (i / Math.max(1, total)) * Math.PI * 2 - Math.PI / 2;
+    const dist = (0.24 + ((rel.id % 70) / 100)) * radius;
+    const bx = cx + Math.cos(ang) * dist;
+    const by = cy + Math.sin(ang) * dist;
+    radarCtx.fillStyle = "rgba(75, 240, 154, 0.52)";
+    radarCtx.beginPath();
+    radarCtx.arc(bx, by, 1.7, 0, Math.PI * 2);
+    radarCtx.fill();
+  }
+
+  const active = state.filtered[state.activeIndex];
+  if (active) {
+    const coords = getContactCoords(active, state.activeIndex, total);
+    const dist = (0.28 + ((active.id % 64) / 100)) * radius;
+    const ax = cx + Math.cos(coords.rad) * dist;
+    const ay = cy + Math.sin(coords.rad) * dist;
+    radarCtx.strokeStyle = "#ebd082";
+    radarCtx.lineWidth = 1.4;
+    radarCtx.beginPath();
+    radarCtx.arc(ax, ay, 5 + state.pulseEnergy * 4, 0, Math.PI * 2);
+    radarCtx.stroke();
+    radarCtx.fillStyle = "#4bf09a";
+    radarCtx.beginPath();
+    radarCtx.arc(ax, ay, 2.8, 0, Math.PI * 2);
+    radarCtx.fill();
+  }
+
+  /* Sweep beam arm */
+  radarCtx.strokeStyle = "rgba(130, 255, 190, 0.9)";
+  radarCtx.lineWidth = 1.6;
+  radarCtx.beginPath();
+  radarCtx.moveTo(cx, cy);
+  radarCtx.lineTo(cx + Math.cos(state.sweepAngle) * radius, cy + Math.sin(state.sweepAngle) * radius);
+  radarCtx.stroke();
+
+  /* 2. Crackling Phosphor CRT Oscilloscope Waveform */
+  const rect = els.crtWaveCanvas.getBoundingClientRect();
+  const ww = rect.width;
+  const wh = rect.height;
+  if (ww > 0 && wh > 0) {
+    waveCtx.clearRect(0, 0, ww, wh);
+    waveCtx.strokeStyle = "rgba(75, 240, 154, 0.14)";
+    waveCtx.lineWidth = 1;
+    waveCtx.beginPath();
+    waveCtx.moveTo(0, wh * 0.5);
+    waveCtx.lineTo(ww, wh * 0.5);
+    waveCtx.stroke();
+
+    waveCtx.strokeStyle = "rgba(75, 240, 154, 0.65)";
+    waveCtx.lineWidth = 1.3;
+    waveCtx.beginPath();
+    const phase = ts * 0.004;
+    const amp = 4 + state.pulseEnergy * 13;
+    for (let x = 0; x <= ww; x += 4) {
+      const norm = x / ww;
+      const env = Math.sin(norm * Math.PI);
+      const jitter = state.crackleOn && state.crackleFlash > 0.12 ? (Math.random() - 0.5) * 9 * state.crackleFlash : 0;
+      const y = wh * 0.52 + Math.sin(norm * 26 - phase) * amp * env + Math.sin(norm * 62 + phase * 1.7) * (amp * 0.25) * env + jitter;
+      if (x === 0) waveCtx.moveTo(x, y);
+      else waveCtx.lineTo(x, y);
+    }
+    waveCtx.stroke();
+
+    if (state.crackleOn && state.crackleFlash > 0.18) {
+      waveCtx.fillStyle = "rgba(75, 240, 154, " + (state.crackleFlash * 0.12).toFixed(3) + ")";
+      const bandY = Math.random() * wh;
+      waveCtx.fillRect(0, bandY, ww, 2 + Math.random() * 4);
+    }
+  }
+
+  requestAnimationFrame(drawTelemetry);
+}
+
+/* Event Bindings */
+els.searchInput.addEventListener("input", () => {
+  state.search = els.searchInput.value;
+  applyFilters(true);
+});
+
+els.sortSelect.addEventListener("change", () => {
+  state.sort = els.sortSelect.value;
+  applyFilters(true);
+});
+
+els.yearSelect.addEventListener("change", () => {
+  state.year = els.yearSelect.value;
+  applyFilters(true);
+});
+
+els.artistSelect.addEventListener("change", () => {
+  state.artist = els.artistSelect.value;
+  applyFilters(true);
+});
+
+els.rosterBar.addEventListener("click", e => {
+  const btn = e.target.closest(".roster-btn");
+  if (!btn) return;
+  state.artist = btn.dataset.artist;
+  els.artistSelect.value = state.artist;
+  applyFilters(false);
+});
+
+els.resetFiltersBtn.addEventListener("click", clearAllFilters);
+els.viewCabinetBtn.addEventListener("click", () => setViewMode("cabinet"));
+els.viewListBtn.addEventListener("click", () => setViewMode("list"));
+els.randomBtn.addEventListener("click", selectRandom);
+els.miniRadarBtn.addEventListener("click", () => {
+  state.pulseEnergy = 1;
+  selectRandom();
+});
+
+els.favFilterBtn.addEventListener("click", () => {
+  state.favsOnly = !state.favsOnly;
+  applyFilters(false);
+});
+
+els.crackleToggleBtn.addEventListener("click", () => {
+  state.crackleOn = !state.crackleOn;
+  document.body.classList.toggle("crt-calm", !state.crackleOn);
+  els.crackleToggleBtn.classList.toggle("active", state.crackleOn);
+  els.crackleStateLabel.textContent = state.crackleOn ? "ON" : "CALM";
+  els.crtCrackleTag.textContent = state.crackleOn ? "CRT Static Active" : "CRT Calm";
+});
+
+els.pingAudioBtn.addEventListener("click", () => {
+  state.pingAudio = !state.pingAudio;
+  els.pingAudioBtn.classList.toggle("active", state.pingAudio);
+  els.pingStateLabel.textContent = state.pingAudio ? "ON" : "OFF";
+  if (state.pingAudio) triggerSonarAudio();
+});
+
+els.wallToggleBtn.addEventListener("click", openCoverWall);
+els.closeWallBtn.addEventListener("click", closeCoverWall);
+els.closeLightboxBtn.addEventListener("click", closeLightbox);
+els.lightbox.addEventListener("click", e => {
+  if (e.target === els.lightbox) closeLightbox();
+});
+
+document.addEventListener("keydown", e => {
+  const tag = (document.activeElement && document.activeElement.tagName) || "";
+  const inInput = tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT";
+
+  if (e.key === "Escape") {
+    if (els.lightbox.classList.contains("open")) { closeLightbox(); return; }
+    if (state.wallOpen) { closeCoverWall(); return; }
+    if (inInput) { document.activeElement.blur(); return; }
+  }
+
+  if (inInput || e.metaKey || e.ctrlKey || e.altKey) return;
+
+  if (e.key === "/") {
+    e.preventDefault();
+    els.searchInput.focus();
+  } else if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+    e.preventDefault();
+    selectIndex(state.activeIndex + 1, { scrollIntoView: true });
+  } else if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
+    e.preventDefault();
+    selectIndex(state.activeIndex - 1, { scrollIntoView: true });
+  } else if (e.key === "r" || e.key === "R") {
+    e.preventDefault();
+    selectRandom();
+  } else if (e.key === "l" || e.key === "L") {
+    e.preventDefault();
+    setViewMode(state.viewMode === "cabinet" ? "list" : "cabinet");
+  } else if (e.key === "w" || e.key === "W") {
+    e.preventDefault();
+    if (state.wallOpen) closeCoverWall();
+    else openCoverWall();
+  }
+});
+
+/* Boot Archive */
+populateSelects();
+buildAlphaRail();
+applyFilters(false);
+requestAnimationFrame(drawTelemetry);
+</script>
+<script src="./chrome-cast.js" defer></script>
+</body>
+</html>
