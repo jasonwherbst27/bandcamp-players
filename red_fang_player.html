@@ -1,0 +1,2207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Red Fang · Dungeon Quest Board &amp; Bandcamp Player</title>
+  <meta name="description" content="Dungeons &amp; Dragons tabletop campaign board and Bandcamp discography player for Red Fang (Portland, Oregon) across 14 releases (2009–2025) with D20 dice roller, quests, side quests, eras, and XP progression." />
+  <meta property="og:title" content="Red Fang · Dungeon Quest Board Player" />
+  <meta property="og:description" content="Roll a D20, explore Red Fang's 14 Bandcamp releases as RPG encounter cards across 3 eras, track quests and side quests, and stream directly from Bandcamp." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      /* 60% Dark Tabletop Battle-Mat Surface */
+      --bg: #120f0c;
+      --bg-deep: #0b0907;
+      /* 30% Aged Parchment-Slate & Brass-Bound Surfaces */
+      --surface: #1b1612;
+      --surface-2: #241d17;
+      --surface-hover: #2d241c;
+      --ink: #f2e8d2;
+      --ink-soft: #c7b99e;
+      --ink-dim: #92846c;
+      --rule: rgba(217, 179, 108, 0.20);
+      --rule-strong: rgba(217, 179, 108, 0.40);
+      /* 10% RPG Tabletop Accents */
+      --gold: #e0b254;
+      --gold-ink: #120e0a;
+      --crimson: #d94638;
+      --emerald: #38b87c;
+      --cobalt: #5ea1e0;
+      --relic: #b37ae6;
+
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --font-display: 'Cinzel', Georgia, serif;
+      --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.5;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select, a { font-family: inherit; }
+
+    :focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    /* Subtle tabletop 1-inch battle-mat grid + warm candlelight ambient vignette */
+    .battle-mat {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(ellipse 74% 48% at 18% 0%, rgba(224, 178, 84, 0.11), transparent 62%),
+        radial-gradient(ellipse 60% 44% at 86% 12%, rgba(217, 70, 56, 0.09), transparent 64%),
+        linear-gradient(to right, rgba(217, 179, 108, 0.045) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(217, 179, 108, 0.045) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+    }
+
+    .parchment-grain {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.075;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    .app-shell {
+      position: relative;
+      z-index: 2;
+      max-width: 1460px;
+      margin: 0 auto;
+      padding: 0 24px 40px;
+    }
+    @media (max-width: 720px) {
+      .app-shell { padding: 0 14px 32px; }
+    }
+
+    /* TOP BAR */
+    .top-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 16px 0 14px;
+      border-bottom: 1px solid var(--rule);
+      flex-wrap: wrap;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    .back-link {
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding: 6px 0;
+      border-bottom: 1px solid transparent;
+      transition: color 0.16s var(--ease), border-color 0.16s var(--ease);
+    }
+    .back-link:hover {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      line-height: 1;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .brand-title em {
+      font-style: normal;
+      color: var(--crimson);
+    }
+
+    .brand-meta {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--ink-dim);
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    @media (max-width: 960px) {
+      .brand-meta { display: none; }
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hdr-btn {
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid var(--rule-strong);
+      border-radius: 3px;
+      padding: 8px 13px;
+      min-height: 38px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.15s var(--ease), color 0.15s var(--ease), border-color 0.15s var(--ease);
+    }
+    .hdr-btn:hover {
+      background: var(--surface-hover);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+    .hdr-btn.active {
+      background: var(--gold);
+      color: var(--gold-ink);
+      border-color: var(--gold);
+      font-weight: 600;
+    }
+
+    /* CAMPAIGN CHARACTER SHEET & DICE TRAY HUD */
+    .campaign-hud {
+      margin: 16px 0 14px;
+      background: var(--surface);
+      border: 1px solid var(--rule-strong);
+      border-radius: 3px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.95fr);
+      overflow: hidden;
+    }
+    @media (max-width: 1020px) {
+      .campaign-hud { grid-template-columns: 1fr; }
+    }
+
+    .char-sheet {
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border-right: 1px solid var(--rule);
+    }
+    @media (max-width: 1020px) {
+      .char-sheet {
+        border-right: none;
+        border-bottom: 1px solid var(--rule);
+      }
+    }
+
+    .char-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .rank-title {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+    }
+    .rank-title span {
+      color: var(--gold);
+      margin-right: 8px;
+    }
+
+    .xp-readout {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--gold);
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .xp-track {
+      width: 100%;
+      height: 10px;
+      background: var(--bg-deep);
+      border: 1px solid var(--rule-strong);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .xp-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--crimson), var(--gold), var(--emerald));
+      transition: width 0.3s var(--ease);
+    }
+
+    .quest-stats-line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--ink-soft);
+      font-variant-numeric: tabular-nums;
+    }
+    .quest-stats-line b { color: var(--ink); font-weight: 600; }
+    .quest-stats-line .stat-done { color: var(--emerald); }
+
+    .feats-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--rule);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-dim);
+    }
+    .feat-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+    }
+    .feat-item.unlocked {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    /* DICE TRAY (D20 Random Encounter Roller) */
+    .dice-tray {
+      padding: 14px 18px;
+      background:
+        radial-gradient(ellipse 80% 80% at 15% 50%, rgba(217, 70, 56, 0.12), transparent 65%),
+        var(--bg-deep);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    @media (max-width: 600px) {
+      .dice-tray { flex-direction: column; align-items: stretch; }
+    }
+
+    .d20-stage {
+      position: relative;
+      width: 74px;
+      height: 74px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      padding: 0;
+    }
+
+    .d20-svg {
+      width: 72px;
+      height: 72px;
+      display: block;
+      transition: transform 0.25s var(--ease);
+    }
+    .d20-stage:hover .d20-svg {
+      transform: scale(1.06) rotate(-6deg);
+    }
+    .d20-stage.rolling .d20-svg {
+      animation: d20Tumble 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @keyframes d20Tumble {
+      0% { transform: rotate(0deg) scale(1); }
+      35% { transform: rotate(150deg) scale(1.16); }
+      70% { transform: rotate(300deg) scale(0.95); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+
+    .d20-num {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--ink);
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+      pointer-events: none;
+      font-variant-numeric: tabular-nums;
+    }
+    .d20-stage.crit .d20-num { color: var(--gold); }
+    .d20-stage.fumble .d20-num { color: #ff8075; }
+
+    .dice-info {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .dice-log {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--ink-soft);
+      line-height: 1.35;
+      min-height: 32px;
+    }
+    .dice-log strong { color: var(--gold); }
+
+    .dice-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .roll-btn {
+      background: var(--crimson);
+      color: #fff8ee;
+      border: 1px solid #f06558;
+      border-radius: 3px;
+      padding: 8px 14px;
+      min-height: 38px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s var(--ease), transform 0.15s var(--ease);
+    }
+    .roll-btn:hover {
+      background: #e55244;
+      transform: translateY(-1px);
+    }
+
+    .roll-btn-alt {
+      background: var(--surface-2);
+      color: var(--ink);
+      border: 1px solid var(--rule-strong);
+      border-radius: 3px;
+      padding: 8px 12px;
+      min-height: 38px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: border-color 0.15s var(--ease), color 0.15s var(--ease), background 0.15s var(--ease);
+    }
+    .roll-btn-alt:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: var(--surface-hover);
+    }
+
+    /* CAMPAIGN VICTORY BANNER (Shown cleanly when all 14 quests completed) */
+    .victory-banner {
+      display: none;
+      margin-bottom: 14px;
+      padding: 14px 18px;
+      background: linear-gradient(90deg, rgba(56, 184, 124, 0.18), rgba(224, 178, 84, 0.16));
+      border: 1px solid var(--emerald);
+      border-radius: 3px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .victory-banner.visible { display: flex; }
+    .victory-banner h2 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      color: var(--gold);
+    }
+    .victory-banner p {
+      font-size: 13.5px;
+      color: var(--ink);
+    }
+
+    /* QUEST TYPE & ERA FILTER TABS */
+    .filter-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 0 14px;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 18px;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      color: var(--ink-soft);
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+      padding: 7px 12px;
+      min-height: 36px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      cursor: pointer;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      transition: background 0.15s var(--ease), color 0.15s var(--ease), border-color 0.15s var(--ease);
+    }
+    .tab-btn:hover {
+      color: var(--ink);
+      border-color: var(--rule-strong);
+      background: var(--surface);
+    }
+    .tab-btn.active {
+      background: var(--gold);
+      color: var(--gold-ink);
+      border-color: var(--gold);
+      font-weight: 600;
+    }
+
+    .search-input {
+      min-height: 38px;
+      flex: 1 1 190px;
+      min-width: 170px;
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid var(--rule-strong);
+      border-radius: 3px;
+      padding: 7px 12px;
+      font-size: 13.5px;
+    }
+    .search-input::placeholder { color: var(--ink-dim); }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--gold);
+      background: var(--surface-2);
+    }
+
+    .ctrl-select {
+      min-height: 38px;
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid var(--rule-strong);
+      border-radius: 3px;
+      padding: 7px 11px;
+      font-size: 12.5px;
+      cursor: pointer;
+    }
+    .ctrl-select:hover { border-color: var(--gold); }
+
+    .view-group {
+      display: inline-flex;
+      border: 1px solid var(--rule-strong);
+      border-radius: 3px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .view-btn {
+      background: var(--surface);
+      color: var(--ink-soft);
+      border: none;
+      padding: 7px 12px;
+      min-height: 36px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s var(--ease), color 0.15s var(--ease);
+    }
+    .view-btn + .view-btn { border-left: 1px solid var(--rule); }
+    .view-btn:hover { color: var(--ink); }
+    .view-btn.active {
+      background: var(--gold);
+      color: var(--gold-ink);
+      font-weight: 600;
+    }
+
+    /* MAIN 2-COLUMN WORKBENCH (Game Board / Card Deck | Active Encounter Desk) */
+    .workbench {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 420px;
+      gap: 22px;
+      align-items: start;
+    }
+    @media (max-width: 1140px) {
+      .workbench { grid-template-columns: minmax(0, 1fr) 370px; }
+    }
+    @media (max-width: 940px) {
+      .workbench { grid-template-columns: 1fr; }
+    }
+
+    /* DUNGEON CAMPAIGN BOARD (ERA REALMS) */
+    .board-container {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .era-realm {
+      position: relative;
+      background: rgba(24, 19, 15, 0.88);
+      border: 1px solid var(--rule-strong);
+      border-radius: 3px;
+      padding: 18px;
+    }
+
+    .era-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--rule);
+      flex-wrap: wrap;
+    }
+
+    .era-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.02em;
+    }
+
+    .era-meta {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--ink-dim);
+      font-variant-numeric: tabular-nums;
+    }
+    .era-meta b { color: var(--emerald); }
+
+    /* GAME CARD GRID (Tabletop Encounter Cards) */
+    .card-board-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+      gap: 16px;
+    }
+    @media (max-width: 580px) {
+      .card-board-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+    }
+
+    .rpg-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(180deg, #241d17 0%, #17120e 100%);
+      border: 1px solid var(--rule-strong);
+      border-radius: 4px;
+      padding: 9px;
+      text-align: left;
+      color: inherit;
+      cursor: pointer;
+      transition: transform 0.18s var(--ease), border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+    }
+
+    /* Top color stripe by Quest Type */
+    .rpg-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 3px;
+      border-radius: 3px 3px 0 0;
+      background: var(--q-color, var(--crimson));
+    }
+
+    .rpg-card[data-qtype="main"] { --q-color: var(--crimson); }
+    .rpg-card[data-qtype="boss"] { --q-color: var(--gold); }
+    .rpg-card[data-qtype="side"] { --q-color: var(--cobalt); }
+    .rpg-card[data-qtype="deluxe"] { --q-color: var(--relic); }
+
+    .rpg-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--gold);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+    }
+
+    .rpg-card.selected {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 2px var(--gold), 0 12px 28px rgba(0, 0, 0, 0.55);
+    }
+
+    .rpg-card.completed {
+      border-color: rgba(56, 184, 124, 0.65);
+    }
+    .rpg-card.completed.selected {
+      border-color: var(--gold);
+    }
+
+    .card-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-bottom: 7px;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .card-qtype {
+      color: var(--q-color);
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-num {
+      color: var(--ink-dim);
+      white-space: nowrap;
+    }
+
+    .card-art-frame {
+      position: relative;
+      width: 100%;
+      border: 1px solid rgba(217, 179, 108, 0.28);
+      background: #0d0a08;
+      overflow: hidden;
+      margin-bottom: 9px;
+    }
+
+    .card-art {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      transition: transform 0.24s var(--ease);
+    }
+    .rpg-card:hover .card-art { transform: scale(1.03); }
+
+    /* Movable Player Token on the selected board tile */
+    .player-token {
+      position: absolute;
+      top: 7px;
+      left: 7px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #ffe299, var(--gold) 60%, #8a5e16 100%);
+      border: 2px solid #16110b;
+      color: #16110b;
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.7);
+      pointer-events: none;
+    }
+
+    /* Cleared Wax Seal Stamp */
+    .cleared-seal {
+      position: absolute;
+      bottom: 7px;
+      right: 7px;
+      background: rgba(14, 24, 18, 0.9);
+      border: 1px solid var(--emerald);
+      color: var(--emerald);
+      padding: 2px 7px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.22;
+      color: var(--ink);
+      margin-bottom: 4px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .rpg-card.selected .card-title { color: var(--gold); }
+
+    .card-role {
+      font-size: 12px;
+      color: var(--ink-soft);
+      margin-bottom: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-stats {
+      margin-top: auto;
+      padding-top: 7px;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--ink-dim);
+      font-variant-numeric: tabular-nums;
+    }
+    .card-xp {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    /* LEDGER / TABLE VIEW */
+    .ledger-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .ledger-row {
+      display: grid;
+      grid-template-columns: 38px 46px minmax(0, 1.5fr) 110px 76px 76px 84px;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 12px;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.14s var(--ease), border-color 0.14s var(--ease);
+    }
+    .ledger-row:hover {
+      background: var(--surface-hover);
+      border-color: var(--rule-strong);
+    }
+    .ledger-row.selected {
+      border-color: var(--gold);
+      background: var(--surface-2);
+    }
+    @media (max-width: 740px) {
+      .ledger-row {
+        grid-template-columns: 44px minmax(0, 1fr) 74px;
+      }
+      .ledger-row .col-hide-sm { display: none; }
+    }
+
+    .lr-num {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--ink-dim);
+      font-variant-numeric: tabular-nums;
+    }
+    .lr-thumb {
+      display: block;
+      width: 46px;
+      height: 46px;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border: 1px solid var(--rule);
+    }
+    .lr-title {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .ledger-row.selected .lr-title { color: var(--gold); }
+    .lr-sub {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-dim);
+      margin-top: 2px;
+    }
+    .lr-mono {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--ink-soft);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .lr-status {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      text-align: right;
+      white-space: nowrap;
+    }
+    .lr-status.done { color: var(--emerald); }
+    .lr-status.open { color: var(--ink-dim); }
+
+    /* RIGHT: STICKY ACTIVE ENCOUNTER & LISTENING DESK (#detail) */
+    #detail {
+      position: sticky;
+      top: 16px;
+      background: var(--surface);
+      border: 1px solid var(--rule-strong);
+      border-radius: 3px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    @media (max-width: 940px) {
+      #detail { position: static; }
+    }
+
+    .booth-head {
+      display: grid;
+      grid-template-columns: 118px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .booth-cover-btn {
+      display: block;
+      width: 118px;
+      padding: 0;
+      background: #0e0b09;
+      border: 1px solid var(--rule-strong);
+      border-radius: 3px;
+      overflow: hidden;
+      cursor: zoom-in;
+      flex-shrink: 0;
+    }
+    .booth-cover-btn:hover { border-color: var(--gold); }
+    .booth-cover-btn img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+    }
+
+    .booth-titles {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .booth-kicker {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--gold);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .booth-artist {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--crimson);
+      letter-spacing: 0.04em;
+    }
+
+    .booth-album {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 800;
+      line-height: 1.18;
+      color: var(--ink);
+      text-wrap: balance;
+    }
+
+    .booth-loc {
+      margin-top: 2px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-dim);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .quest-complete-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      background: var(--bg-deep);
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+    }
+    .quest-complete-bar.is-done {
+      border-color: var(--emerald);
+      background: rgba(56, 184, 124, 0.10);
+    }
+
+    .quest-state-text {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--ink-soft);
+      font-variant-numeric: tabular-nums;
+    }
+    .quest-state-text strong { color: var(--gold); }
+    .quest-complete-bar.is-done .quest-state-text strong { color: var(--emerald); }
+
+    .complete-btn {
+      background: var(--emerald);
+      color: #08150f;
+      border: 1px solid var(--emerald);
+      border-radius: 3px;
+      padding: 7px 13px;
+      min-height: 36px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.15s var(--ease), background 0.15s var(--ease);
+    }
+    .complete-btn:hover { opacity: 0.9; }
+    .complete-btn.is-done {
+      background: transparent;
+      color: var(--emerald);
+    }
+
+    .booth-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .booth-btn {
+      background: var(--surface-2);
+      color: var(--ink);
+      border: 1px solid var(--rule-strong);
+      border-radius: 3px;
+      padding: 7px 11px;
+      min-height: 36px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      white-space: nowrap;
+      transition: border-color 0.15s var(--ease), color 0.15s var(--ease);
+    }
+    .booth-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+    .booth-btn.saved {
+      background: var(--gold);
+      color: var(--gold-ink);
+      border-color: var(--gold);
+      font-weight: 600;
+    }
+
+    /* Bandcamp Embed Slot (intercepted cleanly by now-playing-dock.js) */
+    .embed-slot {
+      border-top: 1px solid var(--rule);
+      padding-top: 12px;
+    }
+
+    .bc-iframe {
+      width: 100%;
+      height: 360px;
+      border: 0;
+      display: block;
+      background: var(--surface);
+    }
+    .bc-iframe.track-embed {
+      height: 120px;
+    }
+
+    /* INTERACTIVE TRACK ENCOUNTER CHECKLIST */
+    .track-checklist {
+      border-top: 1px solid var(--rule);
+      padding-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .checklist-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-dim);
+      font-variant-numeric: tabular-nums;
+      margin-bottom: 2px;
+    }
+
+    .checklist-scroll {
+      max-height: 210px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding-right: 4px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--rule-strong) transparent;
+    }
+
+    .track-check-row {
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 8px;
+      background: var(--bg-deep);
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      cursor: pointer;
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      transition: border-color 0.14s var(--ease), color 0.14s var(--ease);
+    }
+    .track-check-row:hover {
+      border-color: var(--rule-strong);
+      color: var(--ink);
+    }
+    .track-check-row.checked {
+      border-color: rgba(56, 184, 124, 0.45);
+      color: var(--ink);
+    }
+    .track-check-row input {
+      accent-color: var(--emerald);
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+    .track-check-title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .track-check-dur {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--ink-dim);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .about-lore {
+      border-top: 1px solid var(--rule);
+      padding-top: 10px;
+      font-size: 12.8px;
+      color: var(--ink-soft);
+      line-height: 1.5;
+    }
+
+    /* FOOTER CAMPAIGN RESET BAR */
+    .campaign-footer {
+      margin-top: 28px;
+      padding-top: 14px;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--ink-dim);
+    }
+
+    .reset-confirm-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* FULLSCREEN COVER WALL MODAL */
+    .overlay-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 900;
+      background: rgba(12, 9, 7, 0.96);
+      display: none;
+      flex-direction: column;
+    }
+    .overlay-modal.open { display: flex; }
+
+    .modal-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 24px;
+      border-bottom: 1px solid var(--rule-strong);
+      background: var(--bg);
+    }
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .wall-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 24px 140px;
+    }
+    .wall-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 12px;
+    }
+    .wall-tile {
+      position: relative;
+      display: block;
+      padding: 0;
+      border: 1px solid var(--rule-strong);
+      background: #14100d;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.16s var(--ease), border-color 0.16s var(--ease);
+    }
+    .wall-tile:hover {
+      transform: scale(1.03);
+      border-color: var(--gold);
+    }
+    .wall-tile img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+    }
+    .wall-caption {
+      position: absolute;
+      inset: auto 0 0 0;
+      padding: 22px 10px 8px;
+      background: linear-gradient(to top, rgba(12, 9, 7, 0.94), rgba(12, 9, 7, 0.55), transparent);
+      color: var(--ink);
+      font-size: 12px;
+      text-align: left;
+    }
+    .wall-caption strong { display: block; color: var(--gold); font-family: var(--font-display); }
+
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 950;
+      background: rgba(10, 8, 6, 0.95);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+    }
+    .lightbox.open { display: flex; }
+
+    .lightbox-inner {
+      max-width: 680px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: center;
+    }
+    .lightbox-img {
+      display: block;
+      width: min(540px, 84vw);
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border: 1px solid var(--rule-strong);
+    }
+    .lightbox-meta { text-align: center; }
+    .lightbox-meta h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      color: var(--gold);
+    }
+    .lightbox-meta p {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--ink-soft);
+      margin-top: 4px;
+    }
+    .lightbox-controls { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+
+    .empty-state {
+      padding: 42px 20px;
+      text-align: center;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+    }
+    .empty-state h3 {
+      font-family: var(--font-display);
+      font-size: 20px;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .empty-state p {
+      color: var(--ink-soft);
+      margin-bottom: 14px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="battle-mat" aria-hidden="true"></div>
+  <div class="parchment-grain" aria-hidden="true"></div>
+
+  <div class="app-shell">
+    <header class="top-header">
+      <div class="header-left">
+        <a href="./index.html" class="back-link">← Back to All Players</a>
+        <div class="brand">
+          <h1 class="brand-title">Red <em>Fang</em> · Quest Board</h1>
+          <span class="brand-meta">Portland, Oregon · 14 Releases · 120 Tracks · 2009–2025</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button type="button" class="hdr-btn" id="soundToggleBtn" aria-pressed="true" title="Toggle tabletop dice and chime sound effects">FX: On</button>
+        <button type="button" class="hdr-btn" id="coverWallBtn" title="Open Cover Wall (W)">Cover Wall</button>
+        <button type="button" class="hdr-btn" id="savedFilterBtn" title="Show saved cards (F)">Saved (0)</button>
+      </div>
+    </header>
+
+    <!-- CHARACTER SHEET & D20 DICE TRAY -->
+    <section class="campaign-hud" aria-label="Campaign progress and dice roller">
+      <div class="char-sheet">
+        <div class="char-top">
+          <div class="rank-title" id="rankTitle"><span>Lv. 1</span>Tavern Listener</div>
+          <div class="xp-readout" id="xpReadout">0 / 2,800 XP</div>
+        </div>
+        <div class="xp-track" role="progressbar" aria-label="Campaign XP progress" aria-valuemin="0" aria-valuemax="2800" aria-valuenow="0" id="xpBar">
+          <div class="xp-fill" id="xpFill"></div>
+        </div>
+        <div class="quest-stats-line" id="questStatsLine"></div>
+        <div class="feats-row" id="featsRow" aria-label="Campaign achievements"></div>
+      </div>
+
+      <div class="dice-tray">
+        <button type="button" class="d20-stage" id="d20Btn" title="Roll D20 for a random Red Fang encounter (R)">
+          <svg class="d20-svg" viewBox="0 0 100 100" aria-hidden="true">
+            <polygon points="50,4 92,28 92,72 50,96 8,72 8,28" fill="#8f241c" stroke="#e0b254" stroke-width="3" />
+            <polygon points="50,18 82,36 72,72 28,72 18,36" fill="#b83227" stroke="#e0b254" stroke-width="1.6" />
+            <line x1="50" y1="4" x2="50" y2="18" stroke="#e0b254" stroke-width="1.6" />
+            <line x1="92" y1="28" x2="82" y2="36" stroke="#e0b254" stroke-width="1.6" />
+            <line x1="92" y1="72" x2="72" y2="72" stroke="#e0b254" stroke-width="1.6" />
+            <line x1="50" y1="96" x2="28" y2="72" stroke="#e0b254" stroke-width="1.4" opacity="0.55" />
+            <line x1="50" y1="96" x2="72" y2="72" stroke="#e0b254" stroke-width="1.4" opacity="0.55" />
+            <line x1="8" y1="72" x2="28" y2="72" stroke="#e0b254" stroke-width="1.6" />
+            <line x1="8" y1="28" x2="18" y2="36" stroke="#e0b254" stroke-width="1.6" />
+          </svg>
+          <span class="d20-num" id="d20Num">20</span>
+        </button>
+
+        <div class="dice-info">
+          <div class="dice-log" id="diceLog">Roll the <strong>D20</strong> to draw a random Red Fang album card from the dungeon board.</div>
+          <div class="dice-actions">
+            <button type="button" class="roll-btn" id="rollAnyBtn">Roll D20</button>
+            <button type="button" class="roll-btn-alt" id="rollUnplayedBtn">Roll Unplayed</button>
+            <button type="button" class="roll-btn-alt" id="rollSideBtn">Roll Side Quest</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="victory-banner" id="victoryBanner" role="status">
+      <div>
+        <h2>Campaign Complete · Dungeon Master of the Fang</h2>
+        <p>You conquered all 14 Red Fang releases across all three eras (120 tracks, 2,800 XP).</p>
+      </div>
+      <button type="button" class="hdr-btn active" id="victoryRollBtn">Roll Victory Encore</button>
+    </div>
+
+    <!-- FILTER & VIEW CONTROLS -->
+    <section class="filter-strip" aria-label="Quest and era filters">
+      <div class="filter-group" id="questTabs" role="tablist" aria-label="Filter by quest type"></div>
+      <select id="eraSelect" class="ctrl-select" aria-label="Filter by era">
+        <option value="ALL">All 3 Eras (2009–2025)</option>
+        <option value="age-1">Age I · Dawn of the Fang (2009–2012)</option>
+        <option value="age-2">Age II · Leviathan &amp; Bunker (2013–2016)</option>
+        <option value="age-3">Age III · Arrows &amp; Deep Lore (2018–2025)</option>
+      </select>
+      <select id="statusSelect" class="ctrl-select" aria-label="Filter by completion status">
+        <option value="ALL">All Statuses</option>
+        <option value="unplayed">Unplayed Quests</option>
+        <option value="completed">Completed Quests</option>
+      </select>
+      <input type="search" id="searchInput" class="search-input" placeholder="Search album or song (/)" autocomplete="off" aria-label="Search Red Fang catalog" />
+      <div class="view-group" role="group" aria-label="Display layout">
+        <button type="button" class="view-btn active" id="viewBoardBtn">Game Board</button>
+        <button type="button" class="view-btn" id="viewDeckBtn">Card Deck</button>
+        <button type="button" class="view-btn" id="viewLedgerBtn">Ledger</button>
+      </div>
+    </section>
+
+    <main class="workbench">
+      <section id="boardStage" aria-label="Red Fang campaign board"></section>
+      <aside id="detail" aria-label="Active encounter and listening desk"></aside>
+    </main>
+
+    <footer class="campaign-footer">
+      <span>Keys: R Roll D20 · ←/→ Step Board · W Cover Wall · F Saved · / Search</span>
+      <div class="reset-confirm-wrap" id="resetWrap">
+        <button type="button" class="hdr-btn" id="resetProgressBtn">Reset Quest Progress</button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- COVER WALL MODAL -->
+  <div class="overlay-modal" id="wallModal" role="dialog" aria-modal="true" aria-label="Cover Wall">
+    <div class="modal-bar">
+      <span class="modal-title">Red Fang · Artwork Vault (14 Cards)</span>
+      <button type="button" class="hdr-btn" id="wallCloseBtn">Close (Esc)</button>
+    </div>
+    <div class="wall-scroll">
+      <div class="wall-grid" id="wallGrid"></div>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Artwork Lightbox">
+    <div class="lightbox-inner">
+      <img id="lightboxImg" class="lightbox-img" alt="" referrerpolicy="no-referrer" />
+      <div class="lightbox-meta">
+        <h3 id="lightboxTitle"></h3>
+        <p id="lightboxSub"></p>
+      </div>
+      <div class="lightbox-controls">
+        <button type="button" class="hdr-btn" id="lbPrevBtn">← Previous</button>
+        <button type="button" class="hdr-btn" id="lbNextBtn">Next →</button>
+        <button type="button" class="hdr-btn" id="lbCloseBtn">Close (Esc)</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const RELEASES = [{"id":468503817,"type":"a","artist":"Red Fang","title":"Red Fang","artId":855568817,"year":2009,"isoDate":"2009-03-10","url":"https://redfang.bandcamp.com/album/red-fang","trackCount":10,"totalSec":2175,"tracks":[{"num":1,"title":"Prehistoric Dog","dur":268},{"num":2,"title":"Reverse Thunder","dur":195},{"num":3,"title":"Night Destroyer","dur":192},{"num":4,"title":"Human Remain Human Remains","dur":389},{"num":5,"title":"Good To Die","dur":209},{"num":6,"title":"Bird On Fire","dur":188},{"num":7,"title":"Wings Of Fang","dur":169},{"num":8,"title":"Sharks","dur":146},{"num":9,"title":"Whales And Leeches","dur":261},{"num":10,"title":"Witness","dur":158}],"about":"Maurice Bryan Giles - Guitar/ Vocals David Sullivan - Guitar / Vocals John Sherman - Drums Aaron Beam - Bass / Vocals","eraId":"age-1","eraName":"Age I · Dawn of the Fang (2009–2012)","eraShort":"Age I (2009–2012)","questType":"main","questLabel":"Main Quest","xp":250,"cr":"CR 3","role":"Origin Chapter · Prehistoric Dog","boardNum":1},{"id":2156612403,"type":"a","artist":"Red Fang","title":"Murder The Mountains (Deluxe Edition)","artId":101982953,"year":2011,"isoDate":"2011-04-12","url":"https://redfang.bandcamp.com/album/murder-the-mountains-deluxe-edition","trackCount":13,"totalSec":3119,"tracks":[{"num":1,"title":"Malverde","dur":242},{"num":2,"title":"Wires","dur":343},{"num":3,"title":"Hank is Dead","dur":156},{"num":4,"title":"Dirt Wizard","dur":178},{"num":5,"title":"Throw Up","dur":393},{"num":6,"title":"Painted Parade","dur":147},{"num":7,"title":"Number Thirteen","dur":285},{"num":8,"title":"Into the Eye","dur":239},{"num":9,"title":"The Undertow","dur":302},{"num":10,"title":"Human Herd","dur":232},{"num":11,"title":"Over The Edge (Bonus Track)","dur":237},{"num":12,"title":"Through (Bonus Track)","dur":280},{"num":13,"title":"Pawn Everything (Bonus Track)","dur":85}],"about":"RED FANG deals in kick-ass heavy rock. On their Chris Funk (DECEMBERISTS) produced, Vance Powell (KINGS OF LEON, WHITE STRIPES, RACONTEURS) mixed Relapse debut Murder the Mountains, the quartet waves a middle finger at fashion and bet the proverbial house on substance over style. The incredible “Wires”, “Number Thirteen”, \"Hank Is Dead\", and \"The Undertow\" are just a few of an onslaught of highlights on this front-to-back set of great f%$king songs. ***Includes Digital Booklet***","eraId":"age-1","eraName":"Age I · Dawn of the Fang (2009–2012)","eraShort":"Age I (2009–2012)","questType":"main","questLabel":"Main Quest","xp":250,"cr":"CR 7","role":"Relapse Debut Campaign (Deluxe)","boardNum":2},{"id":2984234791,"type":"a","artist":"Red Fang","title":"Crows In Swine - Single","artId":4278859668,"year":2012,"isoDate":"2012-09-18","url":"https://redfang.bandcamp.com/album/crows-in-swine-single","trackCount":1,"totalSec":156,"tracks":[{"num":1,"title":"Crows In Swine","dur":156}],"about":"Brand new single recorded in 2012! Available on split 7\" with ASG at relapse.com!","eraId":"age-1","eraName":"Age I · Dawn of the Fang (2009–2012)","eraShort":"Age I (2009–2012)","questType":"side","questLabel":"Side Quest","xp":100,"cr":"CR 1","role":"Quick Skirmish Single","boardNum":3},{"id":2283441571,"type":"a","artist":"Red Fang","title":"Whales and Leeches","artId":3482625391,"year":2013,"isoDate":"2013-10-15","url":"https://redfang.bandcamp.com/album/whales-and-leeches","trackCount":11,"totalSec":2481,"tracks":[{"num":1,"title":"DOEN","dur":198},{"num":2,"title":"Blood Like Cream","dur":213},{"num":3,"title":"No Hope","dur":178},{"num":4,"title":"Crows in Swine","dur":182},{"num":5,"title":"Voices of the Dead","dur":164},{"num":6,"title":"Behind The Light","dur":164},{"num":7,"title":"Dawn Rising","dur":421},{"num":8,"title":"Failure","dur":297},{"num":9,"title":"1516","dur":217},{"num":10,"title":"This Animal","dur":163},{"num":11,"title":"Every Little Twist","dur":284}],"about":"Portland, OR’s ultimate hard-rockin’ party bringers emerge from two years of constant touring with their new full length album ‘Whales And Leeches’. There’s certainly no shortage of fun on their new record, but ‘Whales And Leeches’ sees Red Fang further maturing into top notch songwriters and musicians. With the help of guests Mike Scheidt (Yob) and Pall Jenkins (The Black Heart Procession), ‘Whales And Leeches’ further propels Red Fang into the upper stratosphere of hard rock and metal elite. Red Fang have always been true masters of the hard rock hook and with ‘Whales And Leeches’ they deliver 11 killer, instantly classic anthems.","eraId":"age-2","eraName":"Age II · Leviathan & Bunker (2013–2016)","eraShort":"Age II (2013–2016)","questType":"main","questLabel":"Main Quest","xp":250,"cr":"CR 9","role":"Deep Sea Monster Campaign","boardNum":4},{"id":3869699106,"type":"a","artist":"Red Fang","title":"Whales and Leeches (Deluxe Version)","artId":77624342,"year":2013,"isoDate":"2013-10-15","url":"https://redfang.bandcamp.com/album/whales-and-leeches-deluxe-version","trackCount":13,"totalSec":2875,"tracks":[{"num":1,"title":"DOEN","dur":198},{"num":2,"title":"Blood Like Cream","dur":213},{"num":3,"title":"No Hope","dur":178},{"num":4,"title":"Crows in Swine","dur":182},{"num":5,"title":"Voices of the Dead","dur":164},{"num":6,"title":"Behind The Light","dur":164},{"num":7,"title":"Dawn Rising","dur":421},{"num":8,"title":"Failure","dur":297},{"num":9,"title":"1516","dur":217},{"num":10,"title":"This Animal","dur":163},{"num":11,"title":"Every Little Twist","dur":284},{"num":12,"title":"Murder The Mountains (Bonus Track)","dur":114},{"num":13,"title":"Black Water (Bonus Track)","dur":280}],"about":"Portland, OR’s ultimate hard-rockin’ party bringers emerge from two years of constant touring with their new full length album ‘Whales And Leeches’. There’s certainly no shortage of fun on their new record, but ‘Whales And Leeches’ sees Red Fang further maturing into top notch songwriters and musicians. With the help of guests Mike Scheidt (Yob) and Pall Jenkins (The Black Heart Procession), ‘Whales And Leeches’ further propels Red Fang into the upper stratosphere of hard rock and metal elite. Red Fang have always been true masters of the hard rock hook and with ‘Whales And Leeches’ they deliver 11 killer, instantly classic anthems.","eraId":"age-2","eraName":"Age II · Leviathan & Bunker (2013–2016)","eraShort":"Age II (2013–2016)","questType":"deluxe","questLabel":"Deluxe Vault","xp":200,"cr":"CR 8","role":"Expanded Relic Edition","boardNum":5},{"id":1449668823,"type":"a","artist":"Red Fang","title":"TeamRock.com presents an Absolute Music Bunker Session with Red Fang","artId":697269913,"year":2014,"isoDate":"2014-07-22","url":"https://redfang.bandcamp.com/album/teamrock-com-presents-an-absolute-music-bunker-session-with-red-fang","trackCount":6,"totalSec":1506,"tracks":[{"num":1,"title":"Failure (Acoustic)","dur":279},{"num":2,"title":"Human Herd (Acoustic)","dur":224},{"num":3,"title":"Malverde (Acoustic)","dur":232},{"num":4,"title":"Failure (Album Version)","dur":297},{"num":5,"title":"Human Herd (Album Version)","dur":232},{"num":6,"title":"Malverde (Album Version)","dur":242}],"about":"Acoustic tracks recorded live in March 2014 at the Team Rock studios in London, UK. “Failure” originally appears on the 2013 album ‘Whales and Leeches.’ “Human Herd” and “Malverde” originally appear on the 2011 album 'Murder the Mountains.' Acoustic tracks produced and mixed by Adam Whalley","eraId":"age-2","eraName":"Age II · Leviathan & Bunker (2013–2016)","eraShort":"Age II (2013–2016)","questType":"side","questLabel":"Side Quest","xp":180,"cr":"CR 4","role":"Live Underground Session","boardNum":6},{"id":1502004322,"type":"a","artist":"Red Fang","title":"Scion AV Presents - Red Fang","artId":3504817762,"year":2014,"isoDate":"2014-11-25","url":"https://redfang.bandcamp.com/album/scion-av-presents-red-fang","trackCount":2,"totalSec":436,"tracks":[{"num":1,"title":"The Meadows","dur":221},{"num":2,"title":"The Shadows","dur":215}],"about":"Red Fang and Scion AV have teamed for up a new two-song release. The two new songs from the Portland, Oregon band are “The Meadows” and “The Shadows.” Which one is more terrifying and which one is more terrifyingly awesome? You make the call!","eraId":"age-2","eraName":"Age II · Leviathan & Bunker (2013–2016)","eraShort":"Age II (2013–2016)","questType":"side","questLabel":"Side Quest","xp":120,"cr":"CR 2","role":"Two-Track Split Encounter","boardNum":7},{"id":4192377599,"type":"a","artist":"Red Fang","title":"Only Ghosts","artId":1546996237,"year":2016,"isoDate":"2016-10-14","url":"https://redfang.bandcamp.com/album/only-ghosts","trackCount":10,"totalSec":2458,"tracks":[{"num":1,"title":"Flies","dur":217},{"num":2,"title":"Cut it Short","dur":252},{"num":3,"title":"Flames","dur":90},{"num":4,"title":"No Air","dur":292},{"num":5,"title":"Shadows","dur":191},{"num":6,"title":"Not for You","dur":199},{"num":7,"title":"The Smell of the Sound","dur":323},{"num":8,"title":"The Deep","dur":267},{"num":9,"title":"I Am a Ghost","dur":248},{"num":10,"title":"Living in Lye","dur":379}],"about":"After three years of vigorously touring the world, RED FANG re-emerge with their greatest and latest full-length album, 'Only Ghosts'. Produced by the legendary Ross Robinson (At The Drive In, The Cure, Slipknot, and many more) and mixed by Joe Barresi (Queens of the Stone Age, Kyuss, Melvins), 'Only Ghosts' consists of 10 new tracks of the band's signature, high-impact, hook-filled, hard rock. RED FANG prove once again they are top-notch songwriters who have mastered the heavy anthem without taking themselves too seriously. 'Only Ghosts' is a rock album of incredible magnitude that demands to be played at maximum volume!","eraId":"age-2","eraName":"Age II · Leviathan & Bunker (2013–2016)","eraShort":"Age II (2013–2016)","questType":"main","questLabel":"Main Quest","xp":250,"cr":"CR 10","role":"Haunted Citadel Chapter","boardNum":8},{"id":3123654384,"type":"a","artist":"Red Fang","title":"Only Ghosts (Deluxe Version)","artId":971574415,"year":2016,"isoDate":"2016-10-14","url":"https://redfang.bandcamp.com/album/only-ghosts-deluxe-version","trackCount":12,"totalSec":2971,"tracks":[{"num":1,"title":"Flies","dur":217},{"num":2,"title":"Cut it Short","dur":252},{"num":3,"title":"Flames","dur":90},{"num":4,"title":"No Air","dur":292},{"num":5,"title":"Shadows","dur":191},{"num":6,"title":"Not for You","dur":199},{"num":7,"title":"The Smell of the Sound","dur":323},{"num":8,"title":"The Deep","dur":267},{"num":9,"title":"I Am a Ghost","dur":248},{"num":10,"title":"Living in Lye","dur":379},{"num":11,"title":"Dumb Guy (Bonus Track)","dur":193},{"num":12,"title":"One Hit Two Hit (Bonus Track)","dur":320}],"about":"After three years of vigorously touring the world, RED FANG re-emerge with their greatest and latest full-length album, 'Only Ghosts'. Produced by the legendary Ross Robinson (At The Drive In, The Cure, Slipknot, and many more) and mixed by Joe Barresi (Queens of the Stone Age, Kyuss, Melvins), 'Only Ghosts' consists of 10 new tracks of the band's signature, high-impact, hook-filled, hard rock. RED FANG prove once again they are top-notch songwriters who have mastered the heavy anthem without taking themselves too seriously. 'Only Ghosts' is a rock album of incredible magnitude that demands to be played at maximum volume!","eraId":"age-2","eraName":"Age II · Leviathan & Bunker (2013–2016)","eraShort":"Age II (2013–2016)","questType":"deluxe","questLabel":"Deluxe Vault","xp":200,"cr":"CR 8","role":"Expanded Relic Edition","boardNum":9},{"id":463244752,"type":"a","artist":"Red Fang","title":"Listen To The Sirens (Tubeway Army Cover)","artId":4186620142,"year":2018,"isoDate":"2018-08-28","url":"https://redfang.bandcamp.com/album/listen-to-the-sirens-tubeway-army-cover","trackCount":1,"totalSec":193,"tracks":[{"num":1,"title":"Listen To The Sirens (Tubeway Army Cover)","dur":193}],"about":"","eraId":"age-3","eraName":"Age III · Arrows & Deep Lore (2018–2025)","eraShort":"Age III (2018–2025)","questType":"side","questLabel":"Side Quest","xp":100,"cr":"CR 1","role":"Cover Relic Single","boardNum":10},{"id":2306438067,"type":"a","artist":"Red Fang","title":"Antidote (Digital Single)","artId":1183258030,"year":2019,"isoDate":"2019-06-13","url":"https://redfang.bandcamp.com/album/antidote-digital-single","trackCount":1,"totalSec":230,"tracks":[{"num":1,"title":"Antidote","dur":230}],"about":"Featured in RED FANG's mobile game app Red Fang: Headbang! Download the world's first video game you have to headbang to play in the App Store, Google Play, or at http://redfangheadbang.com! Directed by Ansel Wallenfang Produced by Wieden+Kennedy","eraId":"age-3","eraName":"Age III · Arrows & Deep Lore (2018–2025)","eraShort":"Age III (2018–2025)","questType":"side","questLabel":"Side Quest","xp":100,"cr":"CR 1","role":"Quick Skirmish Single","boardNum":11},{"id":2866183643,"type":"a","artist":"Red Fang","title":"Stereo Nucleosis","artId":1913569999,"year":2020,"isoDate":"2020-07-29","url":"https://redfang.bandcamp.com/album/stereo-nucleosis","trackCount":1,"totalSec":180,"tracks":[{"num":1,"title":"Stereo Nucleosis","dur":180}],"about":"Originally an Adult Swim Single Series track.","eraId":"age-3","eraName":"Age III · Arrows & Deep Lore (2018–2025)","eraShort":"Age III (2018–2025)","questType":"side","questLabel":"Side Quest","xp":100,"cr":"CR 1","role":"Quick Skirmish Single","boardNum":12},{"id":3666082417,"type":"a","artist":"Red Fang","title":"Arrows","artId":2079914558,"year":2021,"isoDate":"2021-06-04","url":"https://redfang.bandcamp.com/album/arrows","trackCount":13,"totalSec":2593,"tracks":[{"num":1,"title":"Take It Back","dur":121},{"num":2,"title":"Unreal Estate","dur":309},{"num":3,"title":"Arrows","dur":233},{"num":4,"title":"My Disaster","dur":116},{"num":5,"title":"Two High","dur":234},{"num":6,"title":"Anodyne","dur":216},{"num":7,"title":"Interop-Mod","dur":62},{"num":8,"title":"Fonzi Scheme","dur":254},{"num":9,"title":"Days Collide","dur":344},{"num":10,"title":"Rabbits in Hives","dur":96},{"num":11,"title":"Why","dur":188},{"num":12,"title":"Dr. Owl","dur":214},{"num":13,"title":"Funeral Coach","dur":206}],"about":"RED FANG return with their highly anticipated new album, Arrows! Their first album in four years, everyone's favorite beer-crushing, zombie-killing, air-guitar-contest-judging metal heroes are back in action, doing what they do best- AND MORE. “This record feels more like Murder The Mountains to me than any record we’ve done before or since,” bassist/vocalist Aaron Beam ventures. “It doesn’t sound like that record, but Murder the Mountains was us doing whatever the fuck we wanted, and that’s what this is, too.” Arrows was recorded at Halfling Studios in the band’s hometown of Portland, OR, with longtime collaborator Chris Funk, producer of Murder The Mountains and 2013’s Whales and Leeches. “Chris is a major influencer as far as the weird ambient stuff in between the songs and the creepy incidental noises within the songs,“ guitarist Bryan Giles points out. “I think he definitely creates an added layer of atmosphere that we wouldn’t have otherwise.” Arrows is also a proper title track, which is new territory for the band. “This is the first time we’ve named an album after a song that’s actually on the album,” Beam explains. “We have other albums that are named after songs of ours that are not on those albums. So this time we’re really fucking with you because we didn’t fuck with you.” Similarly, fans might not believe what the song “Arrows” is partially about. “If you’re confused by some of the lyrics to the song, that makes sense,” Beam explains. “But it makes reference to meditation. I started meditating six years ago, but I can only do it when I’m not feeling too anxious. So, when I don’t need it, that’s when I can do it.” Elsewhere, “Fonzi Scheme” was named after legendary Happy Days cool guy Arthur Fonzarelli—if only because it’s in the key of his famous catchphrase, “Aaay.” Producer Chris Funk came up with the idea of bringing in string players from the Portland Cello Project to class up the track. Meanwhile, the opening riff of closer “Funeral Coach” was written 11 years ago. But it took until recently for the song to blossom into its full double-entendre glory. “I was driving around and I saw a hearse that said ‘funeral coach services’ on the back,” Beam explains. “So the first thing that popped into my head was a dude with a headset and a clipboard going, ‘Alright, dudes—more tears! Five minutes in is when the tears are critical, or no one’s gonna believe that anyone cares that this person died.’” In a nod to tradition, Arrows will be available in formats that include all the drums, bass, guitars and vocals. But it could’ve gone another way. “Our original idea was to release the album with no vocals or guitar solos,” Beam explains. “If you want the guitar solos, it’s an extra five bucks. If you want the vocals, it’s an extra ten bucks. So basically people should feel lucky that we didn’t do that. You get to buy the whole thing altogether.” RED FANG think of it as a generous display of gratitude toward their fans. “Yeah,” says Sherman, “Thank you for buying our album, you lucky bastards.”","eraId":"age-3","eraName":"Age III · Arrows & Deep Lore (2018–2025)","eraShort":"Age III (2018–2025)","questType":"main","questLabel":"Main Quest","xp":250,"cr":"CR 12","role":"Modern Arsenal Chapter","boardNum":13},{"id":4282652693,"type":"a","artist":"Red Fang","title":"Deep Cuts","artId":3628531769,"year":2025,"isoDate":"2025-03-14","url":"https://redfang.bandcamp.com/album/deep-cuts","trackCount":26,"totalSec":5081,"tracks":[{"num":1,"title":"Antidote","dur":230},{"num":2,"title":"The Shadows","dur":215},{"num":3,"title":"Murder The Mountains","dur":114},{"num":4,"title":"Weird Poly","dur":129},{"num":5,"title":"Hollow Light","dur":194},{"num":6,"title":"Over The Edge","dur":237},{"num":7,"title":"Listen To The Sirens","dur":193},{"num":8,"title":"Stereo Nucleosis","dur":180},{"num":9,"title":"Black Hole","dur":151},{"num":10,"title":"Through","dur":280},{"num":11,"title":"Champ Chugger","dur":95},{"num":12,"title":"Ice Ice Baby","dur":216},{"num":13,"title":"It's Always There","dur":166},{"num":14,"title":"Black Water","dur":280},{"num":15,"title":"Pawn Everything","dur":85},{"num":16,"title":"Wires (Demo)","dur":278},{"num":17,"title":"In 5 With Keys","dur":120},{"num":18,"title":"Bad Places","dur":223},{"num":19,"title":"Forgot to Write","dur":94},{"num":20,"title":"Endless Sea","dur":296},{"num":21,"title":"Suicide","dur":298},{"num":22,"title":"OMG OMD","dur":201},{"num":23,"title":"LSP","dur":219},{"num":24,"title":"50's Tremors","dur":33},{"num":25,"title":"AGB Fruit","dur":155},{"num":26,"title":"Feeder","dur":399}],"about":"Celebrating 20 years as a formidable force in Heavy Rock, RED FANG return with Deep Cuts! The collection highlights the band's trajectory throughout the last two decades and features non album tracks, singles, B-Sides, rarities, and more! Tracks like \"Antidote\", which appears on vinyl for the first time, was previously featured in RED FANG's mobile game \"Red Fang: Headbang!\" spill onto the comp; elsewhere, a demo of the band's legendary track \"Wires\" is available for the very first time. Deep Cuts features other rare material, including cover songs from Wipers, No Talent, Dust, and Tubeway Army! Deep Cuts is available as a 2xLP collection, as well as CD and digital formats. Celebrate 20 years of crushing rock mayhem and headbang with RED FANG!","eraId":"age-3","eraName":"Age III · Arrows & Deep Lore (2018–2025)","eraShort":"Age III (2018–2025)","questType":"boss","questLabel":"Boss Raid","xp":450,"cr":"CR 20","role":"26-Track Grand Compendium","boardNum":14}];
+    const BY_ID = new Map(RELEASES.map((r) => [r.id, r]));
+    const TOTAL_XP = RELEASES.reduce((s, r) => s + r.xp, 0);
+
+    const ERAS = [
+      { id: "age-1", title: "Age I · Dawn of the Fang", years: "2009–2012", blurb: "Portland basement riffs & cardboard-armor legends" },
+      { id: "age-2", title: "Age II · Leviathan & Bunker", years: "2013–2016", blurb: "Sea monsters, underground bunker sessions & haunted halls" },
+      { id: "age-3", title: "Age III · Arrows & Deep Lore", years: "2018–2025", blurb: "Rare singles, Tubeway Army covers, Arrows & 26 Deep Cuts" }
+    ];
+
+    const RANKS = [
+      { lv: 1, minXp: 0, title: "Tavern Listener" },
+      { lv: 2, minXp: 250, title: "Cardboard Squire" },
+      { lv: 3, minXp: 650, title: "Prehistoric Knight" },
+      { lv: 4, minXp: 1100, title: "Mountain Slayer" },
+      { lv: 5, minXp: 1650, title: "Leviathan Hunter" },
+      { lv: 6, minXp: 2200, title: "Ghost Whisperer" },
+      { lv: 7, minXp: TOTAL_XP, title: "Dungeon Master of the Fang" }
+    ];
+
+    const STORAGE_KEY = "red_fang_quest_state_v1";
+
+    function loadProgress() {
+      try {
+        const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+        return {
+          completed: new Set((raw.completed || []).filter((id) => BY_ID.has(id))),
+          saved: new Set((raw.saved || []).filter((id) => BY_ID.has(id))),
+          checkedTracks: raw.checkedTracks && typeof raw.checkedTracks === "object" ? raw.checkedTracks : {},
+          rolls: Number(raw.rolls || 0),
+          fxOn: raw.fxOn !== false
+        };
+      } catch {
+        return { completed: new Set(), saved: new Set(), checkedTracks: {}, rolls: 0, fxOn: true };
+      }
+    }
+
+    const savedState = loadProgress();
+
+    const state = {
+      questFilter: "ALL",
+      eraFilter: "ALL",
+      statusFilter: "ALL",
+      savedOnly: false,
+      query: "",
+      view: "board",
+      selectedId: RELEASES[0] ? RELEASES[0].id : null,
+      completed: savedState.completed,
+      saved: savedState.saved,
+      checkedTracks: savedState.checkedTracks,
+      rolls: savedState.rolls,
+      fxOn: savedState.fxOn,
+      filtered: RELEASES.slice()
+    };
+
+    const dom = {
+      soundToggleBtn: document.getElementById("soundToggleBtn"),
+      coverWallBtn: document.getElementById("coverWallBtn"),
+      savedFilterBtn: document.getElementById("savedFilterBtn"),
+      rankTitle: document.getElementById("rankTitle"),
+      xpReadout: document.getElementById("xpReadout"),
+      xpBar: document.getElementById("xpBar"),
+      xpFill: document.getElementById("xpFill"),
+      questStatsLine: document.getElementById("questStatsLine"),
+      featsRow: document.getElementById("featsRow"),
+      d20Btn: document.getElementById("d20Btn"),
+      d20Num: document.getElementById("d20Num"),
+      diceLog: document.getElementById("diceLog"),
+      rollAnyBtn: document.getElementById("rollAnyBtn"),
+      rollUnplayedBtn: document.getElementById("rollUnplayedBtn"),
+      rollSideBtn: document.getElementById("rollSideBtn"),
+      victoryBanner: document.getElementById("victoryBanner"),
+      victoryRollBtn: document.getElementById("victoryRollBtn"),
+      questTabs: document.getElementById("questTabs"),
+      eraSelect: document.getElementById("eraSelect"),
+      statusSelect: document.getElementById("statusSelect"),
+      searchInput: document.getElementById("searchInput"),
+      viewBoardBtn: document.getElementById("viewBoardBtn"),
+      viewDeckBtn: document.getElementById("viewDeckBtn"),
+      viewLedgerBtn: document.getElementById("viewLedgerBtn"),
+      boardStage: document.getElementById("boardStage"),
+      detail: document.getElementById("detail"),
+      resetWrap: document.getElementById("resetWrap"),
+      resetProgressBtn: document.getElementById("resetProgressBtn"),
+      wallModal: document.getElementById("wallModal"),
+      wallCloseBtn: document.getElementById("wallCloseBtn"),
+      wallGrid: document.getElementById("wallGrid"),
+      lightbox: document.getElementById("lightbox"),
+      lightboxImg: document.getElementById("lightboxImg"),
+      lightboxTitle: document.getElementById("lightboxTitle"),
+      lightboxSub: document.getElementById("lightboxSub"),
+      lbPrevBtn: document.getElementById("lbPrevBtn"),
+      lbNextBtn: document.getElementById("lbNextBtn"),
+      lbCloseBtn: document.getElementById("lbCloseBtn")
+    };
+
+    function persist() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          completed: [...state.completed],
+          saved: [...state.saved],
+          checkedTracks: state.checkedTracks,
+          rolls: state.rolls,
+          fxOn: state.fxOn
+        }));
+      } catch {}
+    }
+
+    function artUrl(artId, size) {
+      return "https://f4.bcbits.com/img/a" + artId + "_" + (size || 16) + ".jpg";
+    }
+
+    function fmtDur(sec) {
+      const m = Math.floor((sec || 0) / 60);
+      const s = String((sec || 0) % 60).padStart(2, "0");
+      return m + ":" + s;
+    }
+
+    function esc(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    /* SYNTHESIZED WEB AUDIO TABLETOP FX (Dice Clatter & Quest Fanfare) */
+    let audioCtx = null;
+    function getAudioCtx() {
+      if (!state.fxOn) return null;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === "suspended") audioCtx.resume();
+        return audioCtx;
+      } catch {
+        return null;
+      }
+    }
+
+    function playDiceSound(isCrit) {
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      // 4 crisp wooden dice taps
+      [0, 0.07, 0.14, 0.23].forEach((offset, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(190 + i * 55 + Math.random() * 40, now + offset);
+        osc.frequency.exponentialRampToValueAtTime(70, now + offset + 0.045);
+        gain.gain.setValueAtTime(0.08, now + offset);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.05);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + offset);
+        osc.stop(now + offset + 0.055);
+      });
+      if (isCrit) {
+        [523.25, 659.25, 783.99].forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(freq, now + 0.28 + i * 0.06);
+          gain.gain.setValueAtTime(0.06, now + 0.28 + i * 0.06);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55 + i * 0.06);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + 0.28 + i * 0.06);
+          osc.stop(now + 0.6 + i * 0.06);
+        });
+      }
+    }
+
+    function playQuestCompleteSound(allDone) {
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      const now = ctx.currentTime;
+      const notes = allDone ? [392, 493.88, 587.33, 783.99] : [440, 554.37, 659.25];
+      notes.forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(freq, now + i * 0.08);
+        gain.gain.setValueAtTime(0.075, now + i * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.32);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + i * 0.08);
+        osc.stop(now + i * 0.08 + 0.34);
+      });
+    }
+
+    function syncSoundBtn() {
+      dom.soundToggleBtn.textContent = state.fxOn ? "FX: On" : "FX: Off";
+      dom.soundToggleBtn.setAttribute("aria-pressed", String(state.fxOn));
+    }
+
+    /* CAMPAIGN PROGRESS & GAMIFICATION HUD */
+    function renderHud() {
+      let earnedXp = 0;
+      let mainDone = 0, mainTotal = 0;
+      let sideDone = 0, sideTotal = 0;
+      let deluxeDone = 0, deluxeTotal = 0;
+
+      for (const r of RELEASES) {
+        const done = state.completed.has(r.id);
+        if (done) earnedXp += r.xp;
+        if (r.questType === "main" || r.questType === "boss") {
+          mainTotal++;
+          if (done) mainDone++;
+        } else if (r.questType === "side") {
+          sideTotal++;
+          if (done) sideDone++;
+        } else {
+          deluxeTotal++;
+          if (done) deluxeDone++;
+        }
+      }
+
+      let rank = RANKS[0];
+      for (const rk of RANKS) {
+        if (earnedXp >= rk.minXp) rank = rk;
+      }
+
+      const pct = Math.round((earnedXp / TOTAL_XP) * 100);
+      dom.rankTitle.innerHTML = "<span>Lv. " + rank.lv + "</span>" + esc(rank.title);
+      dom.xpReadout.textContent = earnedXp.toLocaleString("en-US") + " / " + TOTAL_XP.toLocaleString("en-US") + " XP (" + pct + "%)";
+      dom.xpFill.style.width = pct + "%";
+      dom.xpBar.setAttribute("aria-valuenow", String(earnedXp));
+
+      dom.questStatsLine.innerHTML =
+        '<span>Cleared <b class="stat-done">' + state.completed.size + "/" + RELEASES.length + "</b></span>" +
+        '<span aria-hidden="true">·</span>' +
+        '<span>Main Quests <b>' + mainDone + "/" + mainTotal + "</b></span>" +
+        '<span aria-hidden="true">·</span>' +
+        '<span>Side Quests <b>' + sideDone + "/" + sideTotal + "</b></span>" +
+        '<span aria-hidden="true">·</span>' +
+        '<span>Deluxe Vaults <b>' + deluxeDone + "/" + deluxeTotal + "</b></span>";
+
+      // Achievements / Campaign Feats
+      const age1Done = RELEASES.filter((r) => r.eraId === "age-1").every((r) => state.completed.has(r.id));
+      const age2Done = RELEASES.filter((r) => r.eraId === "age-2").every((r) => state.completed.has(r.id));
+      const age3Done = RELEASES.filter((r) => r.eraId === "age-3").every((r) => state.completed.has(r.id));
+      const bossDone = RELEASES.some((r) => r.questType === "boss" && state.completed.has(r.id));
+
+      const feats = [
+        { label: "First Blood", unlocked: state.completed.size >= 1 },
+        { label: "Dice Roller", unlocked: state.rolls >= 1 },
+        { label: "Age I Cleared", unlocked: age1Done },
+        { label: "Age II Cleared", unlocked: age2Done },
+        { label: "Age III Cleared", unlocked: age3Done },
+        { label: "Boss Slain (Deep Cuts)", unlocked: bossDone }
+      ];
+
+      dom.featsRow.innerHTML =
+        "<span>Feats:</span>" +
+        feats
+          .map(
+            (f) =>
+              '<span class="feat-item' + (f.unlocked ? " unlocked" : "") + '">' +
+                (f.unlocked ? "★ " : "○ ") + esc(f.label) +
+              "</span>"
+          )
+          .join("");
+
+      dom.victoryBanner.classList.toggle("visible", state.completed.size === RELEASES.length);
+      dom.savedFilterBtn.textContent = "Saved (" + state.saved.size + ")";
+      dom.savedFilterBtn.classList.toggle("active", state.savedOnly);
+    }
+
+    /* QUEST TYPE TABS */
+    function renderQuestTabs() {
+      const counts = {
+        ALL: RELEASES.length,
+        main: RELEASES.filter((r) => r.questType === "main" || r.questType === "boss").length,
+        side: RELEASES.filter((r) => r.questType === "side").length,
+        deluxe: RELEASES.filter((r) => r.questType === "deluxe").length
+      };
+      const defs = [
+        { id: "ALL", label: "All Cards (" + counts.ALL + ")" },
+        { id: "main", label: "Main Quests & Boss (" + counts.main + ")" },
+        { id: "side", label: "Side Quests (" + counts.side + ")" },
+        { id: "deluxe", label: "Deluxe Vaults (" + counts.deluxe + ")" }
+      ];
+      dom.questTabs.innerHTML = defs
+        .map(
+          (d) =>
+            '<button type="button" class="tab-btn' + (state.questFilter === d.id ? " active" : "") + '" data-q="' + d.id + '" role="tab" aria-selected="' + (state.questFilter === d.id) + '">' +
+              d.label +
+            "</button>"
+        )
+        .join("");
+    }
+
+    function computeFiltered() {
+      const q = state.query.trim().toLowerCase();
+      state.filtered = RELEASES.filter((r) => {
+        if (state.questFilter === "main" && r.questType !== "main" && r.questType !== "boss") return false;
+        if (state.questFilter === "side" && r.questType !== "side") return false;
+        if (state.questFilter === "deluxe" && r.questType !== "deluxe") return false;
+        if (state.eraFilter !== "ALL" && r.eraId !== state.eraFilter) return false;
+        if (state.statusFilter === "completed" && !state.completed.has(r.id)) return false;
+        if (state.statusFilter === "unplayed" && state.completed.has(r.id)) return false;
+        if (state.savedOnly && !state.saved.has(r.id)) return false;
+        if (q) {
+          const hay = (r.title + " " + r.year + " " + r.role + " " + r.tracks.map((t) => t.title).join(" ")).toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+    }
+
+    function cardMarkup(r) {
+      const isSel = r.id === state.selectedId;
+      const isDone = state.completed.has(r.id);
+      const isFav = state.saved.has(r.id);
+      return (
+        '<button type="button" class="rpg-card' + (isSel ? " selected" : "") + (isDone ? " completed" : "") + '" data-id="' + r.id + '" data-qtype="' + r.questType + '">' +
+          '<div class="card-top-bar">' +
+            '<span class="card-qtype">' + esc(r.questLabel) + " · " + esc(r.cr) + "</span>" +
+            '<span class="card-num">#' + String(r.boardNum).padStart(2, "0") + " · " + r.year + "</span>" +
+          "</div>" +
+          '<div class="card-art-frame">' +
+            '<img class="card-art" src="' + artUrl(r.artId, 16) + '" alt="' + esc("Red Fang — " + r.title) + '" loading="lazy" referrerpolicy="no-referrer" />' +
+            (isSel ? '<div class="player-token" title="Current Board Position">RF</div>' : "") +
+            (isDone ? '<div class="cleared-seal">✓ Cleared</div>' : "") +
+          "</div>" +
+          '<div class="card-title">' + esc(r.title) + "</div>" +
+          '<div class="card-role">' + esc(r.role) + "</div>" +
+          '<div class="card-stats">' +
+            "<span>" + r.trackCount + (r.trackCount === 1 ? " Track" : " Tracks") + " · " + fmtDur(r.totalSec) + "</span>" +
+            '<span class="card-xp">' + (isFav ? "★ " : "") + "+" + r.xp + " XP</span>" +
+          "</div>" +
+        "</button>"
+      );
+    }
+
+    function renderBoard() {
+      const list = state.filtered;
+      if (!list.length) {
+        dom.boardStage.innerHTML =
+          '<div class="empty-state">' +
+            "<h3>No Encounter Cards Match</h3>" +
+            "<p>Adjust your era, quest type, or search query to reveal Red Fang releases.</p>" +
+            '<button type="button" class="hdr-btn active" id="clearFilterBtn">Show All 14 Cards</button>' +
+          "</div>";
+        const btn = document.getElementById("clearFilterBtn");
+        if (btn) btn.addEventListener("click", clearFilters);
+        return;
+      }
+
+      if (state.view === "ledger") {
+        dom.boardStage.innerHTML =
+          '<div class="ledger-list">' +
+            list.map((r) => {
+              const isSel = r.id === state.selectedId;
+              const isDone = state.completed.has(r.id);
+              return (
+                '<button type="button" class="ledger-row' + (isSel ? " selected" : "") + '" data-id="' + r.id + '">' +
+                  '<span class="lr-num col-hide-sm">#' + String(r.boardNum).padStart(2, "0") + "</span>" +
+                  '<img class="lr-thumb" src="' + artUrl(r.artId, 9) + '" alt="" loading="lazy" referrerpolicy="no-referrer" />' +
+                  '<div style="min-width:0">' +
+                    '<div class="lr-title">' + esc(r.title) + "</div>" +
+                    '<div class="lr-sub">' + esc(r.eraShort) + " · " + esc(r.questLabel) + "</div>" +
+                  "</div>" +
+                  '<span class="lr-mono col-hide-sm">' + r.trackCount + " tracks · " + fmtDur(r.totalSec) + "</span>" +
+                  '<span class="lr-mono col-hide-sm">' + r.year + "</span>" +
+                  '<span class="lr-mono col-hide-sm" style="color:var(--gold)">+' + r.xp + " XP</span>" +
+                  '<span class="lr-status ' + (isDone ? "done" : "open") + '">' + (isDone ? "✓ Cleared" : "Unplayed") + "</span>" +
+                "</button>"
+              );
+            }).join("") +
+          "</div>";
+        return;
+      }
+
+      if (state.view === "deck") {
+        dom.boardStage.innerHTML = '<div class="card-board-grid">' + list.map(cardMarkup).join("") + "</div>";
+        return;
+      }
+
+      // Default: GAME BOARD grouped into the 3 Chronological Eras
+      const sections = [];
+      for (const era of ERAS) {
+        const eraItems = list.filter((r) => r.eraId === era.id);
+        if (!eraItems.length) continue;
+        const eraCleared = eraItems.filter((r) => state.completed.has(r.id)).length;
+        sections.push(
+          '<section class="era-realm" aria-label="' + esc(era.title) + '">' +
+            '<div class="era-header">' +
+              '<div>' +
+                '<h2 class="era-title">' + esc(era.title) + " (" + era.years + ")</h2>" +
+                '<div class="era-meta">' + esc(era.blurb) + "</div>" +
+              "</div>" +
+              '<div class="era-meta">Cleared <b>' + eraCleared + "/" + eraItems.length + "</b></div>" +
+            "</div>" +
+            '<div class="card-board-grid">' +
+              eraItems.map(cardMarkup).join("") +
+            "</div>" +
+          "</section>"
+        );
+      }
+
+      dom.boardStage.innerHTML = '<div class="board-container">' + sections.join("") + "</div>";
+    }
+
+    function toggleCompleted(id, silent) {
+      const wasDone = state.completed.has(id);
+      if (wasDone) state.completed.delete(id);
+      else state.completed.add(id);
+      persist();
+      renderHud();
+      computeFiltered();
+      renderBoard();
+      renderDetail(BY_ID.get(id));
+      if (!wasDone && !silent) {
+        playQuestCompleteSound(state.completed.size === RELEASES.length);
+      }
+    }
+
+    function renderDetail(item) {
+      if (!item) return;
+      state.selectedId = item.id;
+      const isDone = state.completed.has(item.id);
+      const isFav = state.saved.has(item.id);
+      const isSingleEmbed = item.trackCount <= 1;
+      const checkedList = Array.isArray(state.checkedTracks[item.id]) ? state.checkedTracks[item.id] : [];
+      const checkedSet = new Set(checkedList);
+
+      const embedUrl =
+        "https://bandcamp.com/EmbeddedPlayer/album=" +
+        item.id +
+        "/size=large/bgcol=1b1612/linkcol=e0b254/artwork=none/transparent=true/";
+
+      dom.detail.innerHTML =
+        '<div class="booth-head">' +
+          '<button type="button" class="booth-cover-btn" id="boothCoverBtn" title="Inspect full card artwork">' +
+            '<img src="' + artUrl(item.artId, 16) + '" alt="' + esc("Red Fang — " + item.title) + '" referrerpolicy="no-referrer" />' +
+          "</button>" +
+          '<div class="booth-titles">' +
+            '<div class="booth-kicker">Tile #' + String(item.boardNum).padStart(2, "0") + " · " + esc(item.questLabel) + " · " + esc(item.cr) + " · +" + item.xp + " XP</div>" +
+            '<div class="booth-artist">Red Fang</div>' +
+            '<h2 class="booth-album">' + esc(item.title) + "</h2>" +
+            '<div class="booth-loc">' + esc(item.eraShort) + " · " + item.year + " · " + item.trackCount + (item.trackCount === 1 ? " Track" : " Tracks") + " · " + fmtDur(item.totalSec) + "</div>" +
+          "</div>" +
+        "</div>" +
+        '<div class="quest-complete-bar' + (isDone ? " is-done" : "") + '">' +
+          '<div class="quest-state-text">' +
+            (isDone
+              ? "<strong>Quest Cleared</strong> · +" + item.xp + " XP earned"
+              : "<strong>Active Quest</strong> · Worth +" + item.xp + " XP") +
+          "</div>" +
+          '<button type="button" class="complete-btn' + (isDone ? " is-done" : "") + '" id="completeQuestBtn">' +
+            (isDone ? "✓ Cleared" : "Mark Completed") +
+          "</button>" +
+        "</div>" +
+        '<div class="booth-actions">' +
+          '<button type="button" class="booth-btn" id="prevBtn" title="Previous board tile (←)">← Prev</button>' +
+          '<button type="button" class="booth-btn" id="nextBtn" title="Next board tile (→)">Next →</button>' +
+          '<button type="button" class="booth-btn' + (isFav ? " saved" : "") + '" id="favBtn">' + (isFav ? "★ Saved" : "☆ Save") + "</button>" +
+          '<a class="booth-btn" href="' + esc(item.url) + '" target="_blank" rel="noopener noreferrer">Bandcamp ↗</a>' +
+        "</div>" +
+        '<div class="embed-slot">' +
+          '<iframe class="bc-iframe' + (isSingleEmbed ? " track-embed" : "") + '" src="' + embedUrl + '" seamless title="' + esc("Red Fang — " + item.title) + '"></iframe>' +
+        "</div>" +
+        (item.tracks && item.tracks.length
+          ? '<div class="track-checklist">' +
+              '<div class="checklist-head">' +
+                "<span>Encounter Track Checklist (" + checkedSet.size + "/" + item.tracks.length + ")</span>" +
+                "<span>Check all to clear quest</span>" +
+              "</div>" +
+              '<div class="checklist-scroll">' +
+                item.tracks.map((tr) => {
+                  const isChk = checkedSet.has(tr.num);
+                  return (
+                    '<label class="track-check-row' + (isChk ? " checked" : "") + '">' +
+                      '<input type="checkbox" data-track-num="' + tr.num + '"' + (isChk ? " checked" : "") + " />" +
+                      '<span class="track-check-title">' + tr.num + ". " + esc(tr.title) + "</span>" +
+                      '<span class="track-check-dur">' + fmtDur(tr.dur) + "</span>" +
+                    "</label>"
+                  );
+                }).join("") +
+              "</div>" +
+            "</div>"
+          : "") +
+        (item.about ? '<p class="about-lore">' + esc(item.about.slice(0, 260)) + (item.about.length > 260 ? "…" : "") + "</p>" : "");
+
+      document.getElementById("boothCoverBtn").addEventListener("click", () => openLightbox(item));
+      document.getElementById("completeQuestBtn").addEventListener("click", () => toggleCompleted(item.id, false));
+      document.getElementById("prevBtn").addEventListener("click", () => stepSelection(-1));
+      document.getElementById("nextBtn").addEventListener("click", () => stepSelection(1));
+      document.getElementById("favBtn").addEventListener("click", () => {
+        if (state.saved.has(item.id)) state.saved.delete(item.id);
+        else state.saved.add(item.id);
+        persist();
+        renderHud();
+        computeFiltered();
+        renderBoard();
+        renderDetail(item);
+      });
+
+      dom.detail.querySelectorAll("input[data-track-num]").forEach((cb) => {
+        cb.addEventListener("change", () => {
+          const num = Number(cb.dataset.trackNum);
+          const cur = new Set(Array.isArray(state.checkedTracks[item.id]) ? state.checkedTracks[item.id] : []);
+          if (cb.checked) cur.add(num);
+          else cur.delete(num);
+          state.checkedTracks[item.id] = [...cur];
+          persist();
+
+          // Auto-complete quest if all tracks checked!
+          if (cur.size === item.tracks.length && !state.completed.has(item.id)) {
+            toggleCompleted(item.id, false);
+          } else {
+            renderDetail(item);
+          }
+        });
+      });
+    }
+
+    function stepSelection(delta) {
+      const list = state.filtered.length ? state.filtered : RELEASES;
+      const idx = list.findIndex((r) => r.id === state.selectedId);
+      const next = list[(idx + delta + list.length) % list.length];
+      if (!next) return;
+      renderDetail(next);
+      renderBoard();
+      const el = dom.boardStage.querySelector('[data-id="' + next.id + '"]');
+      if (el) el.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+
+    /* D20 TABLETOP DICE ROLLER */
+    function rollEncounter(mode) {
+      let pool = RELEASES.slice();
+      if (mode === "unplayed") {
+        pool = RELEASES.filter((r) => !state.completed.has(r.id));
+        if (!pool.length) {
+          dom.diceLog.innerHTML = "<strong>All 14 quests cleared!</strong> Rolling an encore from the full dungeon board.";
+          pool = RELEASES.slice();
+        }
+      } else if (mode === "side") {
+        pool = RELEASES.filter((r) => r.questType === "side" || r.questType === "deluxe");
+      } else if (state.filtered.length) {
+        pool = state.filtered.slice();
+      }
+
+      // Avoid picking the exact same card twice if pool > 1
+      if (pool.length > 1) {
+        const other = pool.filter((r) => r.id !== state.selectedId);
+        if (other.length) pool = other;
+      }
+
+      const d20 = Math.floor(Math.random() * 20) + 1;
+      const pick = pool[Math.floor(Math.random() * pool.length)];
+      if (!pick) return;
+
+      state.rolls += 1;
+      persist();
+
+      // Trigger die animation
+      dom.d20Btn.classList.remove("rolling", "crit", "fumble");
+      void dom.d20Btn.offsetWidth;
+      dom.d20Btn.classList.add("rolling");
+      if (d20 === 20) dom.d20Btn.classList.add("crit");
+      if (d20 === 1) dom.d20Btn.classList.add("fumble");
+      dom.d20Num.textContent = String(d20);
+      playDiceSound(d20 === 20);
+
+      let flavor = "Rolled <strong>D20 → " + d20 + "</strong>";
+      if (d20 === 20) flavor = "<strong>NAT 20 · CRITICAL RIFF!</strong>";
+      else if (d20 === 1) flavor = "<strong>NAT 1 · AMBUSH ENCOUNTER!</strong>";
+
+      dom.diceLog.innerHTML =
+        flavor + " Drawn: <strong>" + esc(pick.title) + "</strong> (" + pick.year + " · " + esc(pick.questLabel) + ")";
+
+      // Make sure the rolled card is visible on the board
+      if (!state.filtered.some((r) => r.id === pick.id)) {
+        clearFilters(true);
+      }
+
+      renderHud();
+      renderDetail(pick);
+      renderBoard();
+      const cardEl = dom.boardStage.querySelector('[data-id="' + pick.id + '"]');
+      if (cardEl) cardEl.scrollIntoView({ block: "center", behavior: "smooth" });
+    }
+
+    function clearFilters(silent) {
+      state.questFilter = "ALL";
+      state.eraFilter = "ALL";
+      state.statusFilter = "ALL";
+      state.savedOnly = false;
+      state.query = "";
+      dom.eraSelect.value = "ALL";
+      dom.statusSelect.value = "ALL";
+      dom.searchInput.value = "";
+      dom.savedFilterBtn.classList.remove("active");
+      renderQuestTabs();
+      computeFiltered();
+      if (!silent) renderBoard();
+    }
+
+    /* COVER WALL & LIGHTBOX */
+    function openWall() {
+      dom.wallGrid.innerHTML = RELEASES.map((r) =>
+        '<button type="button" class="wall-tile" data-wall-id="' + r.id + '">' +
+          '<img src="' + artUrl(r.artId, 16) + '" alt="' + esc(r.title) + '" loading="lazy" referrerpolicy="no-referrer" />' +
+          '<div class="wall-caption"><strong>' + esc(r.title) + "</strong><span>" + r.year + " · " + esc(r.questLabel) + (state.completed.has(r.id) ? " · ✓ Cleared" : "") + "</span></div>" +
+        "</button>"
+      ).join("");
+      dom.wallModal.classList.add("open");
+    }
+    function closeWall() { dom.wallModal.classList.remove("open"); }
+
+    function openLightbox(item) {
+      if (!item) return;
+      dom.lightboxImg.src = artUrl(item.artId, 10);
+      dom.lightboxImg.alt = "Red Fang — " + item.title;
+      dom.lightboxTitle.textContent = item.title;
+      dom.lightboxSub.textContent = item.eraShort + " · " + item.year + " · " + item.questLabel + " · " + item.trackCount + " tracks (" + fmtDur(item.totalSec) + ")";
+      dom.lightbox.classList.add("open");
+    }
+    function closeLightbox() { dom.lightbox.classList.remove("open"); }
+
+    /* INLINE RESET CONFIRMATION (Zero window.confirm) */
+    function renderResetButton() {
+      dom.resetWrap.innerHTML = '<button type="button" class="hdr-btn" id="resetProgressBtn">Reset Quest Progress</button>';
+      document.getElementById("resetProgressBtn").addEventListener("click", () => {
+        dom.resetWrap.innerHTML =
+          '<span>Clear all XP and completed quests?</span>' +
+          '<button type="button" class="roll-btn" id="confirmResetYes">Confirm Reset</button>' +
+          '<button type="button" class="hdr-btn" id="confirmResetNo">Cancel</button>';
+        document.getElementById("confirmResetYes").addEventListener("click", () => {
+          state.completed.clear();
+          state.checkedTracks = {};
+          state.rolls = 0;
+          persist();
+          renderHud();
+          computeFiltered();
+          renderBoard();
+          renderDetail(BY_ID.get(state.selectedId) || RELEASES[0]);
+          dom.diceLog.innerHTML = "Campaign reset. Roll the <strong>D20</strong> to start a fresh run through Red Fang's catalog.";
+          renderResetButton();
+        });
+        document.getElementById("confirmResetNo").addEventListener("click", renderResetButton);
+      });
+    }
+
+    /* WIRE EVENTS */
+    dom.soundToggleBtn.addEventListener("click", () => {
+      state.fxOn = !state.fxOn;
+      persist();
+      syncSoundBtn();
+    });
+
+    dom.d20Btn.addEventListener("click", () => rollEncounter("any"));
+    dom.rollAnyBtn.addEventListener("click", () => rollEncounter("any"));
+    dom.rollUnplayedBtn.addEventListener("click", () => rollEncounter("unplayed"));
+    dom.rollSideBtn.addEventListener("click", () => rollEncounter("side"));
+    dom.victoryRollBtn.addEventListener("click", () => rollEncounter("any"));
+
+    dom.questTabs.addEventListener("click", (e) => {
+      const btn = e.target.closest(".tab-btn");
+      if (!btn) return;
+      state.questFilter = btn.dataset.q;
+      renderQuestTabs();
+      computeFiltered();
+      renderBoard();
+    });
+
+    dom.eraSelect.addEventListener("change", () => {
+      state.eraFilter = dom.eraSelect.value;
+      computeFiltered();
+      renderBoard();
+    });
+
+    dom.statusSelect.addEventListener("change", () => {
+      state.statusFilter = dom.statusSelect.value;
+      computeFiltered();
+      renderBoard();
+    });
+
+    dom.searchInput.addEventListener("input", () => {
+      state.query = dom.searchInput.value;
+      computeFiltered();
+      renderBoard();
+    });
+
+    dom.savedFilterBtn.addEventListener("click", () => {
+      state.savedOnly = !state.savedOnly;
+      dom.savedFilterBtn.classList.toggle("active", state.savedOnly);
+      computeFiltered();
+      renderBoard();
+    });
+
+    function setView(v) {
+      state.view = v;
+      dom.viewBoardBtn.classList.toggle("active", v === "board");
+      dom.viewDeckBtn.classList.toggle("active", v === "deck");
+      dom.viewLedgerBtn.classList.toggle("active", v === "ledger");
+      renderBoard();
+    }
+    dom.viewBoardBtn.addEventListener("click", () => setView("board"));
+    dom.viewDeckBtn.addEventListener("click", () => setView("deck"));
+    dom.viewLedgerBtn.addEventListener("click", () => setView("ledger"));
+
+    dom.boardStage.addEventListener("click", (e) => {
+      const card = e.target.closest("[data-id]");
+      if (!card) return;
+      const item = BY_ID.get(Number(card.dataset.id));
+      if (item) {
+        renderDetail(item);
+        renderBoard();
+      }
+    });
+
+    dom.coverWallBtn.addEventListener("click", openWall);
+    dom.wallCloseBtn.addEventListener("click", closeWall);
+    dom.wallGrid.addEventListener("click", (e) => {
+      const tile = e.target.closest("[data-wall-id]");
+      if (!tile) return;
+      const item = BY_ID.get(Number(tile.dataset.wallId));
+      if (item) {
+        closeWall();
+        renderDetail(item);
+        renderBoard();
+      }
+    });
+
+    dom.lbCloseBtn.addEventListener("click", closeLightbox);
+    dom.lightbox.addEventListener("click", (e) => {
+      if (e.target === dom.lightbox) closeLightbox();
+    });
+    dom.lbPrevBtn.addEventListener("click", () => {
+      stepSelection(-1);
+      openLightbox(BY_ID.get(state.selectedId));
+    });
+    dom.lbNextBtn.addEventListener("click", () => {
+      stepSelection(1);
+      openLightbox(BY_ID.get(state.selectedId));
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const tag = (document.activeElement && document.activeElement.tagName || "").toLowerCase();
+      if (e.key === "Escape") {
+        if (dom.lightbox.classList.contains("open")) return closeLightbox();
+        if (dom.wallModal.classList.contains("open")) return closeWall();
+        if (tag === "input") document.activeElement.blur();
+        return;
+      }
+      if (tag === "input" || tag === "select" || tag === "textarea") return;
+
+      if (e.key === "/") {
+        e.preventDefault();
+        dom.searchInput.focus();
+      } else if (e.key === "r" || e.key === "R" || e.key === "d" || e.key === "D") {
+        rollEncounter("any");
+      } else if (e.key === "w" || e.key === "W") {
+        if (dom.wallModal.classList.contains("open")) closeWall();
+        else openWall();
+      } else if (e.key === "f" || e.key === "F") {
+        dom.savedFilterBtn.click();
+      } else if (e.key === "ArrowRight") {
+        stepSelection(1);
+        if (dom.lightbox.classList.contains("open")) openLightbox(BY_ID.get(state.selectedId));
+      } else if (e.key === "ArrowLeft") {
+        stepSelection(-1);
+        if (dom.lightbox.classList.contains("open")) openLightbox(BY_ID.get(state.selectedId));
+      }
+    });
+
+    /* INIT */
+    syncSoundBtn();
+    renderResetButton();
+    renderQuestTabs();
+    renderHud();
+    computeFiltered();
+    renderBoard();
+    renderDetail(RELEASES[0]);
+  </script>
+  <script src="./now-playing-dock.js" defer></script>
+  <script src="./chrome-cast.js" defer></script>
+</body>
+</html>

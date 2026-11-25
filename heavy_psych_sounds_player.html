@@ -1,0 +1,2478 @@
+<!DOCTYPE html>
+<html lang="en" data-ink="acid-foil">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Heavy Psych Sounds Records · Silkscreen Archive Player</title>
+  <meta name="description" content="Complete Bandcamp discography player for Heavy Psych Sounds Records (Rome, Italy) featuring 489 releases across 172 artists (2012–2027), styled after the label's psychedelic silkscreen album covers." />
+  <meta property="og:title" content="Heavy Psych Sounds Records · Silkscreen Archive" />
+  <meta property="og:description" content="Browse and stream all 489 Heavy Psych Sounds Bandcamp releases with silkscreen ink palettes, liquid-light projection, A–Z index rail, Cover Wall, persistent Now-Playing Bar, and Chrome Cast." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,SOFT,WONK,wght@0,9..144,80,1,600..900;1,9..144,80,1,600..800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      /* 60% Matte Screenprint Ink Stock */
+      --bg: #0e0b0c;
+      --bg-deep: #090708;
+      /* 30% Structural Poster Stock */
+      --surface: #171214;
+      --surface-2: #1f181b;
+      --surface-hover: #261e22;
+      --ink: #f2ead9;
+      --ink-soft: #bfb4a3;
+      --ink-dim: #8a7f72;
+      --rule: rgba(242, 234, 217, 0.14);
+      --rule-strong: rgba(242, 234, 217, 0.28);
+      /* 10% Cover-Derived Silkscreen Inks (Default: Acid Foil — Superskull Gold + Nebula Magenta) */
+      --accent: #e6b83e;
+      --accent-ink: #110c09;
+      --accent-2: #e83e72;
+      --accent-rgb: 230, 184, 62;
+      --accent2-rgb: 232, 62, 114;
+      --bc-bg: 171214;
+      --bc-link: e6b83e;
+
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+    }
+
+    /* Screenprint Palette 2: Under Acid Hoof (Acid Mammoth — Cinnabar Blood + Aged Bone) */
+    html[data-ink="acid-hoof"] {
+      --bg: #0f0a0a;
+      --surface: #191111;
+      --surface-2: #221616;
+      --surface-hover: #2b1b1b;
+      --accent: #e05246;
+      --accent-ink: #0f0909;
+      --accent-2: #e8d9b5;
+      --accent-rgb: 224, 82, 70;
+      --accent2-rgb: 232, 217, 181;
+      --bc-bg: 191111;
+      --bc-link: e05246;
+    }
+
+    /* Screenprint Palette 3: Rosin Haze (Bongzilla — Acid Moss Olive + Oxide Crimson) */
+    html[data-ink="rosin-haze"] {
+      --bg: #0d0e0b;
+      --surface: #161813;
+      --surface-2: #1e2119;
+      --surface-hover: #25291f;
+      --accent: #aec437;
+      --accent-ink: #0d0e0a;
+      --accent-2: #d6504b;
+      --accent-rgb: 174, 196, 55;
+      --accent2-rgb: 214, 80, 75;
+      --bc-bg: 161813;
+      --bc-link: aec437;
+    }
+
+    /* Screenprint Palette 4: Cosmic Skull (Superskull Turquoise + Jalamanta Sun Gold) */
+    html[data-ink="cosmic-skull"] {
+      --bg: #0b0e0f;
+      --surface: #12181a;
+      --surface-2: #192225;
+      --surface-hover: #202c30;
+      --accent: #35cfc3;
+      --accent-ink: #081213;
+      --accent-2: #e6b83e;
+      --accent-rgb: 53, 207, 195;
+      --accent2-rgb: 230, 184, 62;
+      --bc-bg: 12181a;
+      --bc-link: 35cfc3;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.5;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select, a { font-family: inherit; }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* Subtle screenprint ink wash & risograph paper tooth */
+    .ink-wash {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 68% 44% at 14% 0%, rgba(var(--accent-rgb), 0.11), transparent 64%),
+        radial-gradient(ellipse 56% 40% at 88% 8%, rgba(var(--accent2-rgb), 0.10), transparent 66%);
+      transition: background 0.4s ease;
+    }
+
+    .paper-tooth {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.085;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    /* APP SHELL */
+    .app-shell {
+      position: relative;
+      z-index: 2;
+      max-width: 1460px;
+      margin: 0 auto;
+      padding: 0 24px 36px;
+    }
+
+    @media (max-width: 720px) {
+      .app-shell { padding: 0 14px 28px; }
+    }
+
+    /* TOP BAR (Clean Single-Row 3-Zone Header) */
+    .top-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 16px 0 14px;
+      border-bottom: 1px solid var(--rule);
+      flex-wrap: wrap;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    .back-link {
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding: 6px 0;
+      border-bottom: 1px solid transparent;
+      transition: color 0.16s var(--ease), border-color 0.16s var(--ease);
+    }
+    .back-link:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--ink);
+      white-space: nowrap;
+      font-variation-settings: "SOFT" 80, "WONK" 1;
+    }
+    .brand-title em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .brand-meta {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--ink-dim);
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    @media (max-width: 900px) {
+      .brand-meta { display: none; }
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hdr-btn {
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid var(--rule-strong);
+      border-radius: 2px;
+      padding: 8px 13px;
+      min-height: 38px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.15s var(--ease), color 0.15s var(--ease), border-color 0.15s var(--ease);
+    }
+    .hdr-btn:hover {
+      background: var(--surface-hover);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .hdr-btn.active {
+      background: var(--accent);
+      color: var(--accent-ink);
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* SILKSCREEN POSTER PRESS & LIQUID-LIGHT STRIP */
+    .press-strip {
+      position: relative;
+      margin: 16px 0 14px;
+      background: var(--surface);
+      border: 1px solid var(--rule-strong);
+      border-radius: 2px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 230px 1fr auto;
+      align-items: center;
+      min-height: 78px;
+    }
+
+    /* Silkscreen registration crosshairs on corners */
+    .press-strip::before,
+    .press-strip::after {
+      content: "+";
+      position: absolute;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      line-height: 1;
+      color: var(--ink-dim);
+      pointer-events: none;
+      z-index: 4;
+    }
+    .press-strip::before { top: 4px; left: 6px; }
+    .press-strip::after { bottom: 4px; right: 6px; }
+
+    @media (max-width: 980px) {
+      .press-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .oil-stage {
+      position: relative;
+      height: 78px;
+      border-right: 1px solid var(--rule);
+      background: #0a0709;
+      overflow: hidden;
+    }
+    @media (max-width: 980px) {
+      .oil-stage {
+        height: 46px;
+        border-right: none;
+        border-bottom: 1px solid var(--rule);
+      }
+    }
+
+    #oilCanvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .oil-toggle {
+      position: absolute;
+      bottom: 6px;
+      right: 6px;
+      background: rgba(14, 11, 12, 0.82);
+      color: var(--ink-soft);
+      border: 1px solid var(--rule-strong);
+      border-radius: 2px;
+      padding: 3px 8px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      cursor: pointer;
+      transition: color 0.15s var(--ease), border-color 0.15s var(--ease);
+    }
+    .oil-toggle:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .press-readout {
+      padding: 12px 20px;
+      min-width: 0;
+    }
+
+    .press-title-line {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.18;
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-variation-settings: "SOFT" 70, "WONK" 1;
+    }
+    .press-title-line span {
+      color: var(--accent);
+    }
+
+    .press-sub-line {
+      margin-top: 3px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--ink-dim);
+      font-variant-numeric: tabular-nums;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+    .press-sub-line b {
+      color: var(--ink-soft);
+      font-weight: 600;
+    }
+
+    .ink-switcher {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      border-left: 1px solid var(--rule);
+      flex-wrap: wrap;
+    }
+    @media (max-width: 980px) {
+      .ink-switcher {
+        border-left: none;
+        border-top: 1px solid var(--rule);
+        padding: 10px 16px;
+      }
+    }
+
+    .ink-label {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--ink-dim);
+      margin-right: 4px;
+      white-space: nowrap;
+    }
+
+    .ink-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-deep);
+      color: var(--ink-soft);
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      padding: 6px 10px;
+      min-height: 34px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: border-color 0.15s var(--ease), color 0.15s var(--ease), background 0.15s var(--ease);
+    }
+    .ink-btn:hover {
+      color: var(--ink);
+      border-color: var(--rule-strong);
+    }
+    .ink-btn.active {
+      background: var(--surface-hover);
+      color: var(--ink);
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+
+    .ink-swatch {
+      width: 10px;
+      height: 10px;
+      border-radius: 1px;
+      display: inline-block;
+      flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    /* CORE ROSTER QUICK-FILTER BAR */
+    .roster-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 4px 0 12px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--rule-strong) transparent;
+    }
+
+    .roster-btn {
+      background: transparent;
+      color: var(--ink-soft);
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      padding: 7px 12px;
+      min-height: 36px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+      transition: background 0.15s var(--ease), color 0.15s var(--ease), border-color 0.15s var(--ease);
+    }
+    .roster-btn:hover {
+      color: var(--ink);
+      border-color: var(--rule-strong);
+      background: var(--surface);
+    }
+    .roster-btn.active {
+      background: var(--accent);
+      color: var(--accent-ink);
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+    .roster-btn.doom-btn {
+      border-color: rgba(var(--accent2-rgb), 0.45);
+      color: var(--ink);
+    }
+    .roster-btn.doom-btn.active {
+      background: var(--accent-2);
+      color: #0e0a0b;
+      border-color: var(--accent-2);
+    }
+
+    /* CONTROLS TOOLBAR */
+    .controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 0 16px;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 18px;
+    }
+
+    .search-wrap {
+      position: relative;
+      flex: 1 1 250px;
+      min-width: 200px;
+    }
+
+    .search-input {
+      width: 100%;
+      min-height: 40px;
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid var(--rule-strong);
+      border-radius: 2px;
+      padding: 8px 34px 8px 12px;
+      font-size: 14px;
+      transition: border-color 0.15s var(--ease), background 0.15s var(--ease);
+    }
+    .search-input::placeholder { color: var(--ink-dim); }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: var(--surface-2);
+    }
+
+    .search-clear {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: var(--ink-dim);
+      font-size: 16px;
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .search-clear.visible { display: inline-flex; }
+    .search-clear:hover { color: var(--ink); }
+
+    .ctrl-select {
+      min-height: 40px;
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid var(--rule-strong);
+      border-radius: 2px;
+      padding: 8px 12px;
+      font-size: 13px;
+      cursor: pointer;
+      max-width: 210px;
+    }
+    .ctrl-select:hover { border-color: var(--accent); }
+
+    .view-group {
+      display: inline-flex;
+      border: 1px solid var(--rule-strong);
+      border-radius: 2px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .view-btn {
+      background: var(--surface);
+      color: var(--ink-soft);
+      border: none;
+      padding: 8px 13px;
+      min-height: 38px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s var(--ease), color 0.15s var(--ease);
+    }
+    .view-btn + .view-btn { border-left: 1px solid var(--rule); }
+    .view-btn:hover { color: var(--ink); }
+    .view-btn.active {
+      background: var(--accent);
+      color: var(--accent-ink);
+      font-weight: 600;
+    }
+
+    .reset-btn {
+      display: none;
+      min-height: 40px;
+      background: transparent;
+      color: var(--accent-2);
+      border: 1px solid rgba(var(--accent2-rgb), 0.5);
+      border-radius: 2px;
+      padding: 8px 12px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .reset-btn.visible { display: inline-flex; align-items: center; }
+    .reset-btn:hover {
+      background: var(--accent-2);
+      color: #0e0a0b;
+    }
+
+    .result-ledger {
+      margin-left: auto;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--ink-dim);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .result-ledger b { color: var(--ink); font-weight: 600; }
+
+    /* MAIN 2-COLUMN WORKBENCH (Catalog + A–Z Rail | Listening Desk) */
+    .workbench {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 410px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    @media (max-width: 1120px) {
+      .workbench {
+        grid-template-columns: minmax(0, 1fr) 360px;
+      }
+    }
+
+    @media (max-width: 920px) {
+      .workbench {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* LEFT: CATALOG + VERTICAL A-Z RAIL */
+    .catalog-stage {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 34px;
+      gap: 10px;
+      align-items: start;
+    }
+
+    @media (max-width: 600px) {
+      .catalog-stage {
+        grid-template-columns: minmax(0, 1fr) 28px;
+        gap: 6px;
+      }
+    }
+
+    .catalog-scroll {
+      height: calc(100vh - 255px);
+      min-height: 480px;
+      overflow-y: auto;
+      padding-right: 6px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--rule-strong) transparent;
+      scroll-behavior: smooth;
+    }
+    @media (max-width: 920px) {
+      .catalog-scroll {
+        height: 62vh;
+        min-height: 420px;
+      }
+    }
+
+    .section-divider {
+      position: sticky;
+      top: 0;
+      z-index: 6;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 12px;
+      margin: 14px 0 10px;
+      background: var(--bg);
+      border-top: 2px solid var(--accent);
+      border-bottom: 1px solid var(--rule);
+    }
+    .section-divider:first-child { margin-top: 0; }
+
+    .section-key {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--accent);
+      font-variation-settings: "SOFT" 70, "WONK" 1;
+    }
+
+    .section-count {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-dim);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* POSTER RACK GRID */
+    .poster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    @media (max-width: 600px) {
+      .poster-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+    }
+
+    .sleeve-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      cursor: pointer;
+      text-align: left;
+      color: inherit;
+      padding: 0;
+      overflow: hidden;
+      transition: transform 0.18s var(--ease), border-color 0.18s var(--ease), background 0.18s var(--ease);
+    }
+
+    .sleeve-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--rule-strong);
+      background: var(--surface-hover);
+    }
+
+    .sleeve-card.selected {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent);
+      background: var(--surface-2);
+    }
+
+    .sleeve-art-wrap {
+      position: relative;
+      width: 100%;
+      background: #120e10;
+      overflow: hidden;
+    }
+
+    /* Subtle aged vinyl-sleeve ringwear sheen (inspired by Bongzilla cover) */
+    .sleeve-art-wrap::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 50%, transparent 58%, rgba(242, 234, 217, 0.08) 64%, transparent 69%);
+      opacity: 0;
+      transition: opacity 0.2s var(--ease);
+    }
+    .sleeve-card:hover .sleeve-art-wrap::after,
+    .sleeve-card.selected .sleeve-art-wrap::after {
+      opacity: 1;
+    }
+
+    .sleeve-img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      background: #161114;
+      transition: transform 0.24s var(--ease);
+    }
+    .sleeve-card:hover .sleeve-img {
+      transform: scale(1.03);
+    }
+
+    .sleeve-fallback {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      text-align: center;
+      background: linear-gradient(135deg, #1b1418, #0e0a0c);
+      color: var(--ink-soft);
+      font-family: var(--font-display);
+      font-size: 14px;
+    }
+
+    .sleeve-info {
+      padding: 10px 11px 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex: 1;
+    }
+
+    .sleeve-artist {
+      font-family: var(--font-display);
+      font-size: 14.5px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sleeve-card.selected .sleeve-artist {
+      color: var(--accent);
+    }
+
+    .sleeve-album {
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .sleeve-meta {
+      margin-top: auto;
+      padding-top: 6px;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--ink-dim);
+      font-variant-numeric: tabular-nums;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .sleeve-fav-mark {
+      color: var(--accent-2);
+      font-weight: 600;
+    }
+
+    /* LIST VIEW */
+    .list-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 16px;
+    }
+
+    .list-row {
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1.05fr) minmax(0, 1.35fr) 54px 36px;
+      align-items: center;
+      gap: 12px;
+      padding: 6px 10px;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.14s var(--ease), border-color 0.14s var(--ease);
+    }
+    .list-row:hover {
+      background: var(--surface-hover);
+      border-color: var(--rule-strong);
+    }
+    .list-row.selected {
+      background: var(--surface-2);
+      border-color: var(--accent);
+    }
+    @media (max-width: 680px) {
+      .list-row {
+        grid-template-columns: 40px minmax(0, 1fr) 48px;
+        gap: 8px;
+      }
+      .list-row .lr-title-col,
+      .list-row .lr-fav {
+        display: none;
+      }
+    }
+
+    .lr-thumb {
+      display: block;
+      width: 44px;
+      height: 44px;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 1px;
+      background: #161114;
+    }
+
+    .lr-artist {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .list-row.selected .lr-artist { color: var(--accent); }
+
+    .lr-sub-mobile {
+      display: none;
+      font-size: 12px;
+      color: var(--ink-soft);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    @media (max-width: 680px) {
+      .lr-sub-mobile { display: block; }
+    }
+
+    .lr-title {
+      font-size: 13.5px;
+      color: var(--ink-soft);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .lr-year {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--ink-dim);
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .lr-fav {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--accent-2);
+      text-align: center;
+    }
+
+    .load-more-wrap {
+      padding: 14px 0 24px;
+      text-align: center;
+    }
+
+    .load-more-btn {
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid var(--rule-strong);
+      border-radius: 2px;
+      padding: 10px 22px;
+      min-height: 40px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.15s var(--ease), border-color 0.15s var(--ease), color 0.15s var(--ease);
+    }
+    .load-more-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--surface-hover);
+    }
+
+    /* VERTICAL A–Z SCROLLBAR & CLICKABLE LETTER RAIL */
+    .az-rail {
+      position: relative;
+      height: calc(100vh - 255px);
+      min-height: 480px;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      padding: 4px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      touch-action: none;
+    }
+    @media (max-width: 920px) {
+      .az-rail {
+        height: 62vh;
+        min-height: 420px;
+      }
+    }
+
+    .az-btn {
+      width: 100%;
+      flex: 1;
+      min-height: 0;
+      background: transparent;
+      border: none;
+      color: var(--ink-dim);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.12s var(--ease), background 0.12s var(--ease);
+    }
+    .az-btn.has-items { color: var(--ink-soft); }
+    .az-btn.has-items:hover {
+      color: var(--accent);
+      background: rgba(var(--accent-rgb), 0.12);
+    }
+    .az-btn.active {
+      background: var(--accent);
+      color: var(--accent-ink);
+      font-weight: 700;
+    }
+    .az-btn:disabled {
+      opacity: 0.25;
+      cursor: default;
+    }
+
+    .az-toast {
+      position: fixed;
+      right: 452px;
+      top: 50%;
+      transform: translateY(-50%) scale(0.92);
+      background: var(--accent);
+      color: var(--accent-ink);
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 800;
+      width: 58px;
+      height: 58px;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 40;
+      transition: opacity 0.15s var(--ease), transform 0.15s var(--ease);
+    }
+    .az-toast.visible {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+    }
+    @media (max-width: 920px) {
+      .az-toast { right: 54px; }
+    }
+
+    /* RIGHT: STICKY LISTENING DESK (#detail) */
+    #detail {
+      position: sticky;
+      top: 16px;
+      background: var(--surface);
+      border: 1px solid var(--rule-strong);
+      border-radius: 2px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    @media (max-width: 920px) {
+      #detail {
+        position: static;
+      }
+    }
+
+    /* Registration marks on Listening Desk corners */
+    #detail::before,
+    #detail::after {
+      content: "+";
+      position: absolute;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      line-height: 1;
+      color: var(--ink-dim);
+      pointer-events: none;
+    }
+    #detail::before { top: 4px; left: 6px; }
+    #detail::after { bottom: 4px; right: 6px; }
+
+    .booth-head {
+      display: grid;
+      grid-template-columns: 116px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .booth-cover-btn {
+      position: relative;
+      display: block;
+      width: 116px;
+      padding: 0;
+      background: #120e10;
+      border: 1px solid var(--rule-strong);
+      border-radius: 2px;
+      overflow: hidden;
+      cursor: zoom-in;
+      flex-shrink: 0;
+    }
+    .booth-cover-btn img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+    }
+    .booth-cover-btn:hover {
+      border-color: var(--accent);
+    }
+
+    .booth-titles {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .booth-kicker {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .booth-artist {
+      font-family: var(--font-display);
+      font-size: 21px;
+      font-weight: 800;
+      line-height: 1.12;
+      color: var(--ink);
+      text-wrap: balance;
+      font-variation-settings: "SOFT" 75, "WONK" 1;
+    }
+
+    .booth-album {
+      font-size: 14.5px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      line-height: 1.35;
+    }
+
+    .booth-loc {
+      margin-top: 4px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-dim);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .booth-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 10px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .booth-btn {
+      background: var(--surface-2);
+      color: var(--ink);
+      border: 1px solid var(--rule-strong);
+      border-radius: 2px;
+      padding: 7px 12px;
+      min-height: 36px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      white-space: nowrap;
+      transition: background 0.15s var(--ease), border-color 0.15s var(--ease), color 0.15s var(--ease);
+    }
+    .booth-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .booth-btn.saved {
+      background: var(--accent-2);
+      color: #0e0a0b;
+      border-color: var(--accent-2);
+      font-weight: 600;
+    }
+
+    /* Bandcamp Embed Slot (intercepted cleanly by now-playing-dock.js) */
+    .embed-slot {
+      border-top: 1px solid var(--rule);
+      padding-top: 12px;
+    }
+
+    .bc-iframe {
+      width: 100%;
+      height: 360px;
+      border: 0;
+      display: block;
+      background: var(--surface);
+    }
+    .bc-iframe.track-embed {
+      height: 120px;
+    }
+
+    /* MORE BY ARTIST + RECENTLY INSPECTED */
+    .related-block {
+      border-top: 1px solid var(--rule);
+      padding-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .related-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-dim);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .related-head button {
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      font-family: inherit;
+      font-size: 11px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .mini-strip {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--rule-strong) transparent;
+    }
+
+    .mini-tile {
+      width: 68px;
+      flex-shrink: 0;
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      padding: 0;
+      cursor: pointer;
+      overflow: hidden;
+      text-align: left;
+      transition: border-color 0.15s var(--ease), transform 0.15s var(--ease);
+    }
+    .mini-tile:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .mini-tile.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent);
+    }
+    .mini-tile img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+    }
+
+    /* EMPTY STATE */
+    .empty-state {
+      padding: 48px 24px;
+      text-align: center;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+    }
+    .empty-state h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+    .empty-state p {
+      color: var(--ink-soft);
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    /* FULLSCREEN COVER WALL MODAL */
+    .overlay-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 900;
+      background: rgba(10, 8, 9, 0.96);
+      display: none;
+      flex-direction: column;
+    }
+    .overlay-modal.open { display: flex; }
+
+    .modal-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 24px;
+      border-bottom: 1px solid var(--rule-strong);
+      background: var(--bg);
+    }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .modal-sub {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--ink-dim);
+      margin-left: 10px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .wall-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 24px 140px;
+    }
+
+    .wall-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 8px;
+    }
+
+    .wall-tile {
+      position: relative;
+      display: block;
+      padding: 0;
+      border: 1px solid var(--rule);
+      background: #141012;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.16s var(--ease), border-color 0.16s var(--ease);
+    }
+    .wall-tile:hover {
+      transform: scale(1.03);
+      border-color: var(--accent);
+      z-index: 2;
+    }
+    .wall-tile img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+    }
+    .wall-caption {
+      position: absolute;
+      inset: auto 0 0 0;
+      padding: 20px 8px 6px;
+      background: linear-gradient(to top, rgba(10, 8, 9, 0.92), rgba(10, 8, 9, 0.55), transparent);
+      color: var(--ink);
+      font-size: 11px;
+      line-height: 1.25;
+      text-align: left;
+      opacity: 0;
+      transition: opacity 0.15s var(--ease);
+    }
+    .wall-tile:hover .wall-caption { opacity: 1; }
+    .wall-caption strong { display: block; color: var(--accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .wall-caption span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 950;
+      background: rgba(9, 7, 8, 0.95);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+    }
+    .lightbox.open { display: flex; }
+
+    .lightbox-inner {
+      max-width: 720px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .lightbox-img {
+      display: block;
+      width: min(560px, 84vw);
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border: 1px solid var(--rule-strong);
+      background: #141012;
+    }
+
+    .lightbox-meta {
+      text-align: center;
+    }
+    .lightbox-meta h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      color: var(--ink);
+    }
+    .lightbox-meta p {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--ink-soft);
+      margin-top: 4px;
+    }
+
+    .lightbox-controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="ink-wash" aria-hidden="true"></div>
+  <div class="paper-tooth" aria-hidden="true"></div>
+
+  <div class="app-shell">
+    <header class="top-header">
+      <div class="header-left">
+        <a href="./index.html" class="back-link">← Back to All Players</a>
+        <div class="brand">
+          <h1 class="brand-title">Heavy <em>Psych</em> Sounds</h1>
+          <span class="brand-meta">Rome, Italy · 489 Releases · 172 Artists · 2012–2027</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button type="button" class="hdr-btn" id="coverWallBtn" title="Open full-screen Cover Wall (W)">Cover Wall</button>
+        <button type="button" class="hdr-btn" id="randomBtn" title="Inspect a random release (R)">Random</button>
+        <button type="button" class="hdr-btn" id="savedFilterBtn" title="Filter saved releases (F)">Saved (0)</button>
+      </div>
+    </header>
+
+    <section class="press-strip" aria-label="Silkscreen ink and liquid light studio">
+      <div class="oil-stage">
+        <canvas id="oilCanvas" width="460" height="156" aria-hidden="true"></canvas>
+        <button type="button" class="oil-toggle" id="oilToggleBtn" aria-pressed="true">Oil Light: On</button>
+      </div>
+      <div class="press-readout">
+        <div class="press-title-line" id="pressTitle"><span>Heavy Psych Sounds</span> · Silkscreen &amp; Fuzz Archive</div>
+        <div class="press-sub-line" id="pressSub">
+          <span><b>489</b> Releases</span>
+          <span aria-hidden="true">·</span>
+          <span><b>172</b> Bands</span>
+          <span aria-hidden="true">·</span>
+          <span><b>9</b> Doom Sessions</span>
+          <span aria-hidden="true">·</span>
+          <span>Keys: / Search · L List · W Wall · R Random · ←/→ Browse</span>
+        </div>
+      </div>
+      <div class="ink-switcher" role="group" aria-label="Silkscreen ink press palette">
+        <span class="ink-label">Ink Press</span>
+        <button type="button" class="ink-btn active" data-ink="acid-foil">
+          <span class="ink-swatch" style="background: linear-gradient(135deg, #e6b83e 50%, #e83e72 50%);"></span>
+          Acid Foil
+        </button>
+        <button type="button" class="ink-btn" data-ink="acid-hoof">
+          <span class="ink-swatch" style="background: linear-gradient(135deg, #e05246 50%, #e8d9b5 50%);"></span>
+          Acid Hoof
+        </button>
+        <button type="button" class="ink-btn" data-ink="rosin-haze">
+          <span class="ink-swatch" style="background: linear-gradient(135deg, #aec437 50%, #d6504b 50%);"></span>
+          Rosin Haze
+        </button>
+        <button type="button" class="ink-btn" data-ink="cosmic-skull">
+          <span class="ink-swatch" style="background: linear-gradient(135deg, #35cfc3 50%, #e6b83e 50%);"></span>
+          Cosmic Skull
+        </button>
+      </div>
+    </section>
+
+    <nav class="roster-bar" id="rosterBar" aria-label="Core roster quick filters"></nav>
+
+    <section class="controls-bar" aria-label="Catalog search, sorting, and view controls">
+      <div class="search-wrap">
+        <input type="search" id="searchInput" class="search-input" placeholder="Search artist, album title, or year (press /)" autocomplete="off" aria-label="Search releases" />
+        <button type="button" id="searchClear" class="search-clear" aria-label="Clear search">×</button>
+      </div>
+      <select id="artistSelect" class="ctrl-select" aria-label="Filter by artist"></select>
+      <select id="yearSelect" class="ctrl-select" aria-label="Filter by year"></select>
+      <select id="sortSelect" class="ctrl-select" aria-label="Sort releases">
+        <option value="artist-asc">Artist A–Z</option>
+        <option value="artist-desc">Artist Z–A</option>
+        <option value="year-desc">Newest Year</option>
+        <option value="year-asc">Oldest Year</option>
+        <option value="title-asc">Album A–Z</option>
+      </select>
+      <div class="view-group" role="group" aria-label="Catalog view mode">
+        <button type="button" class="view-btn active" id="viewRackBtn">Poster Rack</button>
+        <button type="button" class="view-btn" id="viewListBtn">List</button>
+      </div>
+      <button type="button" class="reset-btn" id="resetBtn">Reset</button>
+      <div class="result-ledger" id="resultLedger"></div>
+    </section>
+
+    <main class="workbench">
+      <section class="catalog-stage" aria-label="Release catalog">
+        <div class="catalog-scroll" id="catalogScroll"></div>
+        <aside class="az-rail" id="azRail" aria-label="Alphabetical quick jump"></aside>
+      </section>
+
+      <aside id="detail" aria-label="Release inspection and listening desk"></aside>
+    </main>
+  </div>
+
+  <div class="az-toast" id="azToast" aria-hidden="true"></div>
+
+  <!-- FULLSCREEN COVER WALL -->
+  <div class="overlay-modal" id="wallModal" role="dialog" aria-modal="true" aria-label="Cover Wall">
+    <div class="modal-bar">
+      <div>
+        <span class="modal-title">Heavy Psych Sounds · Cover Wall</span>
+        <span class="modal-sub" id="wallSub"></span>
+      </div>
+      <button type="button" class="hdr-btn" id="wallCloseBtn">Close (Esc)</button>
+    </div>
+    <div class="wall-scroll" id="wallScroll">
+      <div class="wall-grid" id="wallGrid"></div>
+      <div class="load-more-wrap" id="wallMoreWrap"></div>
+    </div>
+  </div>
+
+  <!-- ARTWORK LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Cover artwork viewer">
+    <div class="lightbox-inner">
+      <img id="lightboxImg" class="lightbox-img" alt="" referrerpolicy="no-referrer" />
+      <div class="lightbox-meta">
+        <h3 id="lightboxArtist"></h3>
+        <p id="lightboxCaption"></p>
+      </div>
+      <div class="lightbox-controls">
+        <button type="button" class="hdr-btn" id="lbPrevBtn">← Previous</button>
+        <button type="button" class="hdr-btn" id="lbNextBtn">Next →</button>
+        <button type="button" class="hdr-btn" id="lbCloseBtn">Close (Esc)</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const RAW_DATA = [[357891098,"a","-(16)-","Forgeries Vol 1, 1972 - 1984",2996244007,2026,"2026-05-01","https://heavypsychsoundsrecords.bandcamp.com/album/16-forgeries-vol-1-1972-1984","#"],[4204257296,"a","1782","Clamor Luciferi",716392372,2023,"2023-04-14","https://heavypsychsoundsrecords.bandcamp.com/album/1782-clamor-luciferi","#"],[3876736002,"a","1782","From The Graveyard REPRESS",1619539312,2023,"2023-04-14","https://heavypsychsoundsrecords.bandcamp.com/album/1782-from-the-graveyard-repress","#"],[2058068144,"a","1782","s/t REPRESS",876387334,2023,"2023-04-14","https://heavypsychsoundsrecords.bandcamp.com/album/1782-s-t-repress","#"],[607494976,"a","1782","From The Graveyard",3921872218,2021,"2021-03-26","https://heavypsychsoundsrecords.bandcamp.com/album/1782-from-the-graveyard","#"],[130010905,"a","1782","s/t",3992542591,2019,"2019-05-24","https://heavypsychsoundsrecords.bandcamp.com/album/1782-s-t","#"],[4125620943,"a","4 Bands Split","Vol.1 feat. Naam, White Hills, Black Rainbows, The Flying Eyes",3502786867,2022,"2022-02-25","https://heavypsychsoundsrecords.bandcamp.com/album/4-bands-split-vol-1-feat-naam-white-hills-black-rainbows-the-flying-eyes","#"],[3123925615,"a","4 LIVE BUNDLEs // DUEL","ECSTATIC VISION - THE ATOMIC BITCHWAX - THE LORDS OF ALTAMONT",3736667562,2023,"2023-03-14","https://heavypsychsoundsrecords.bandcamp.com/album/4-live-bundles-duel-ecstatic-vision-the-atomic-bitchwax-the-lords-of-altamont","#"],[3044320273,"a","Acid Mammoth","Under Acid Hoof REPRESS",451259592,2026,"2026-05-15","https://heavypsychsoundsrecords.bandcamp.com/album/acid-mammoth-under-acid-hoof-repress-3","A"],[50454785,"a","Acid Mammoth","Supersonic Megafauna Collision",539383560,2024,"2024-04-05","https://heavypsychsoundsrecords.bandcamp.com/album/acid-mammoth-supersonic-megafauna-collision","A"],[2633497092,"a","Acid Mammoth","Caravan REPRESS",4200400874,2023,"2023-03-14","https://heavypsychsoundsrecords.bandcamp.com/album/acid-mammoth-caravan-repress","A"],[1897485963,"a","Acid Mammoth","Acid Mammoth",847440010,2021,"2021-03-12","https://heavypsychsoundsrecords.bandcamp.com/album/acid-mammoth-acid-mammoth","A"],[2074830985,"a","Acid Mammoth","Caravan",4064713837,2021,"2021-03-05","https://heavypsychsoundsrecords.bandcamp.com/album/acid-mammoth-caravan","A"],[1138368319,"a","Acid Mammoth","Under Acid Hoof REPRESS",1249003552,2021,"2021-04-15","https://heavypsychsoundsrecords.bandcamp.com/album/acid-mammoth-under-acid-hoof-repress-2","A"],[2149774920,"a","Acid Mammoth","Under Acid Hoof REPRESS",2785447739,2021,"2021-03-12","https://heavypsychsoundsrecords.bandcamp.com/album/acid-mammoth-under-acid-hoof-repress","A"],[882034300,"a","Acid Mammoth","Under Acid Hoof REPRESS in gatefold",2928310833,2021,"2021-07-19","https://heavypsychsoundsrecords.bandcamp.com/album/acid-mammoth-under-acid-hoof-repress-in-gatefold","A"],[1295895178,"a","Acid Mammoth","Under Acid Hoof",2294357547,2020,"2020-01-24","https://heavypsychsoundsrecords.bandcamp.com/album/acid-mammoth-under-acid-hoof","A"],[2437998153,"a","Acid'S Trip","Strings of Soul",2738794328,2021,"2021-05-07","https://heavypsychsoundsrecords.bandcamp.com/album/acids-trip-strings-of-soul","A"],[2642162392,"a","Alunah","Fever Dream",2264566654,2024,"2024-09-20","https://heavypsychsoundsrecords.bandcamp.com/album/alunah-fever-dream","A"],[2081629763,"a","Alunah","Strange Machine",1445053904,2022,"2022-04-15","https://heavypsychsoundsrecords.bandcamp.com/album/alunah-strange-machine","A"],[166081438,"a","Alunah","Violet Hour",4140440924,2019,"2019-10-11","https://heavypsychsoundsrecords.bandcamp.com/album/alunah-violet-hour","A"],[3766028660,"a","Alunah/Samavayo","Embers of Belief",2364365046,2026,"2026-06-05","https://heavypsychsoundsrecords.bandcamp.com/album/alunah-samavayo-embers-of-belief","A"],[4170378598,"a","Ananda Mida","Live at Duna Jam",1275804773,2024,"2024-07-12","https://heavypsychsoundsrecords.bandcamp.com/album/ananda-mida-live-at-duna-jam","A"],[3039575842,"a","Ape Skull","Ape Skull REPRESS",1478067745,2022,"2022-01-07","https://heavypsychsoundsrecords.bandcamp.com/album/ape-skull-ape-skull-repress","A"],[1066378027,"a","Ape Skull","Fly Camel Fly",2325266490,2015,"2015-05-08","https://heavypsychsoundsrecords.bandcamp.com/album/ape-skull-fly-camel-fly","A"],[1425752558,"a","Asomvel","World Shaker",1215166722,2019,"2019-05-03","https://heavypsychsoundsrecords.bandcamp.com/album/asomvel-world-shaker","A"],[3575449433,"a","Astrodeath","Vol. II",2362016710,2023,"2023-05-12","https://heavypsychsoundsrecords.bandcamp.com/album/astrodeath-vol-ii","A"],[2251964318,"a","Atom Juice","Atom Juice",465254419,2025,"2025-07-11","https://heavypsychsoundsrecords.bandcamp.com/album/atom-juice-atom-juice","A"],[1713460951,"a","Avon","Dave's Dungeon",2993641955,2018,"2018-02-23","https://heavypsychsoundsrecords.bandcamp.com/album/avon-daves-dungeon","A"],[1392315727,"a","B.U.S.","The Unknown Secretary",242764956,2021,"2021-10-08","https://heavypsychsoundsrecords.bandcamp.com/album/b-u-s-the-unknown-secretary","B"],[573577126,"a","Banquet","Jupiter Rose",3730107383,2016,"2016-02-26","https://heavypsychsoundsrecords.bandcamp.com/album/banquet-jupiter-rose","B"],[1368244286,"a","Belzebong","Light The Dankness REPRESS",132107755,2026,"2026-11-06","https://heavypsychsoundsrecords.bandcamp.com/album/belzebong-light-the-dankness-repress-2","B"],[87258663,"a","Belzebong","Sonic Scapes & Weedy Grooves REPRESS",2505395284,2026,"2026-11-06","https://heavypsychsoundsrecords.bandcamp.com/album/belzebong-sonic-scapes-weedy-grooves-repress","B"],[1192655834,"a","Belzebong","The End Is High",3472518315,2026,"2026-02-20","https://heavypsychsoundsrecords.bandcamp.com/album/belzebong-the-end-is-high","B"],[1114478848,"a","Belzebong","Greenferno REPRESS",1046061454,2025,"2025-10-24","https://heavypsychsoundsrecords.bandcamp.com/album/belzebong-greenferno-repress","B"],[1386513892,"a","Belzebong","Sonic Scapes & Weedy Grooves REISSUE",2679590548,2022,"2022-06-10","https://heavypsychsoundsrecords.bandcamp.com/album/belzebong-sonic-scapes-weedy-grooves-reissue","B"],[2231583859,"a","Belzebong","Light The Dankness (Repress)",3056512772,2020,"2020-07-03","https://heavypsychsoundsrecords.bandcamp.com/album/belzebong-light-the-dankness-repress","B"],[407539352,"a","Big Scenic Nowhere","The Waydown",3246286851,2024,"2024-02-02","https://heavypsychsoundsrecords.bandcamp.com/album/big-scenic-nowhere-the-waydown","B"],[2998608973,"a","Big Scenic Nowhere","The Long Morrow",1881582509,2022,"2022-01-14","https://heavypsychsoundsrecords.bandcamp.com/album/big-scenic-nowhere-the-long-morrow","B"],[2431997242,"a","Big Scenic Nowhere","Lavender Blues EP",3842434604,2020,"2020-10-23","https://heavypsychsoundsrecords.bandcamp.com/album/big-scenic-nowhere-lavender-blues-ep","B"],[1854820393,"a","Big Scenic Nowhere","Vision Beyond Horizon",1578120220,2020,"2020-01-31","https://heavypsychsoundsrecords.bandcamp.com/album/big-scenic-nowhere-vision-beyond-horizon","B"],[3063562794,"a","Black Honey Cult","Black Honey Cult",863648875,2025,"2025-05-02","https://heavypsychsoundsrecords.bandcamp.com/album/black-honey-cult-black-honey-cult","B"],[2084115282,"a","Black Lung","Dark Waves",486374132,2022,"2022-05-27","https://heavypsychsoundsrecords.bandcamp.com/album/black-lung-dark-waves","B"],[674476210,"a","Black Rainbows","Superskull REPRESS (with new gold foil cover)",1957541768,2026,"2026-03-17","https://heavypsychsoundsrecords.bandcamp.com/album/black-rainbows-superskull-repress-with-new-gold-foil-cover","B"],[174166192,"a","Black Rainbows","Carmina Diabolo REPRESS",3886823916,2024,"2024-04-05","https://heavypsychsoundsrecords.bandcamp.com/album/black-rainbows-carmina-diabolo-repress","B"],[3949420094,"a","Black Rainbows","Superskull",179099304,2023,"2023-06-09","https://heavypsychsoundsrecords.bandcamp.com/album/black-rainbows-superskull","B"],[2946681510,"a","Black Rainbows","Live at Desertfest Belgium",3881834776,2022,"2022-02-25","https://heavypsychsoundsrecords.bandcamp.com/album/black-rainbows-live-at-desertfest-belgium","B"],[1480026733,"a","Black Rainbows","Twilight in the Desert REPRESS",2117703735,2022,"2022-02-25","https://heavypsychsoundsrecords.bandcamp.com/album/black-rainbows-twilight-in-the-desert-repress","B"],[1004481920,"a","Black Rainbows","Cosmic Ritual Supertrip",1012471425,2020,"2020-05-22","https://heavypsychsoundsrecords.bandcamp.com/album/black-rainbows-cosmic-ritual-supertrip","B"],[3522042382,"a","Black Rainbows","Pandaemonium REPRESS",1287473092,2020,"2020-01-10","https://heavypsychsoundsrecords.bandcamp.com/album/black-rainbows-pandaemonium-repress-2","B"],[2697829250,"a","Black Rainbows","Pandaemonium REPRESS",2048905341,2020,"2020-01-10","https://heavypsychsoundsrecords.bandcamp.com/album/black-rainbows-pandaemonium-repress","B"],[2510144595,"a","Black Rainbows","Hawkdope (repress)",4127534679,2019,"2019-07-26","https://heavypsychsoundsrecords.bandcamp.com/album/black-rainbows-hawkdope-repress","B"],[2586228679,"a","Black Rainbows","Stellar Prophecy (repress)",1021267098,2019,"2019-07-26","https://heavypsychsoundsrecords.bandcamp.com/album/black-rainbows-stellar-prophecy-repress","B"],[2561118260,"a","Black Rainbows","HAWKDOPE Reissue",3500719234,2018,"2018-03-23","https://heavypsychsoundsrecords.bandcamp.com/album/black-rainbows-hawkdope-reissue","B"],[3484170321,"a","Black Rainbows","HOLY MOON Ep Reissue",2580856258,2018,"2018-03-23","https://heavypsychsoundsrecords.bandcamp.com/album/black-rainbows-holy-moon-ep-reissue","B"],[1732301806,"a","Black Rainbows","Pandaemonium",1816283913,2018,"2018-04-06","https://heavypsychsoundsrecords.bandcamp.com/album/black-rainbows-pandaemonium","B"],[1654066630,"a","Black Rainbows","SUPERMOTHERFUZZALICIOUS!! Reissue",2387211117,2018,"2018-03-23","https://heavypsychsoundsrecords.bandcamp.com/album/black-rainbows-supermotherfuzzalicious-reissue","B"],[193617910,"a","Black Rainbows","BLACK RAINBOWS-Hawkdope",1089632243,2015,"2015-03-13","https://heavypsychsoundsrecords.bandcamp.com/album/black-rainbows-hawkdope","B"],[1410056983,"a","Black Rainbows","Carmina Diabolo",155360441,2013,"2013-09-11","https://heavypsychsoundsrecords.bandcamp.com/album/black-rainbows-carmina-diabolo","B"],[2776771548,"a","Black Rainbows","HOLY MOON Ep",3784070961,2013,"2013-10-01","https://heavypsychsoundsrecords.bandcamp.com/album/black-rainbows-holy-moon-ep","B"],[1005312320,"a","Black Rainbows","SE7EN INCHES",2208845012,2013,"2013-09-12","https://heavypsychsoundsrecords.bandcamp.com/album/black-rainbows-se7en-inches","B"],[1009923659,"a","Black Rainbows","SUPERMOTHAFUZZALICIOUS!!",2809808238,2013,"2013-09-12","https://heavypsychsoundsrecords.bandcamp.com/album/black-rainbows-supermothafuzzalicious","B"],[2856296831,"a","Blues Pills","Lady in Gold / Live in Paris REPRESS",4291334067,2026,"2026-05-22","https://heavypsychsoundsrecords.bandcamp.com/album/blues-pills-lady-in-gold-live-in-paris-repress","B"],[60786454,"a","Blues Pills","Live at Freak Valley Festival REPRESS",3190705034,2026,"2026-05-22","https://heavypsychsoundsrecords.bandcamp.com/album/blues-pills-live-at-freak-valley-festival-repress","B"],[1149549026,"a","Bongzilla","Dabbing (LIVE) Rosin in Europe",2457593122,2024,"2024-03-15","https://heavypsychsoundsrecords.bandcamp.com/album/bongzilla-dabbing-live-rosin-in-europe","B"],[288106255,"a","Bongzilla","Dab City",2029675259,2023,"2023-06-02","https://heavypsychsoundsrecords.bandcamp.com/album/bongzilla-dab-city","B"],[2984173864,"a","Bongzilla","Amerijuanican",2332042211,2021,"2021-04-20","https://heavypsychsoundsrecords.bandcamp.com/album/bongzilla-amerijuanican","B"],[2978159280,"a","Bongzilla","Amerijuanican CASSETTE",1396365484,2021,"2021-11-12","https://heavypsychsoundsrecords.bandcamp.com/album/bongzilla-amerijuanican-cassette","B"],[3004878011,"a","Bongzilla","Apogee",1968582461,2021,"2021-04-20","https://heavypsychsoundsrecords.bandcamp.com/album/bongzilla-apogee","B"],[896527487,"a","Bongzilla","Apogee CASSETTE",2199600918,2021,"2021-11-12","https://heavypsychsoundsrecords.bandcamp.com/album/bongzilla-apogee-cassette","B"],[748699541,"a","Bongzilla","Gateway",3367105703,2021,"2021-04-20","https://heavypsychsoundsrecords.bandcamp.com/album/bongzilla-gateway","B"],[1789691392,"a","Bongzilla","Gateway CASSETTE",2386797560,2021,"2021-11-12","https://heavypsychsoundsrecords.bandcamp.com/album/bongzilla-gateway-cassette","B"],[3750578256,"a","Bongzilla","Methods For Attaining Extreme Altitudes",1338822899,2021,"2021-04-20","https://heavypsychsoundsrecords.bandcamp.com/album/bongzilla-methods-for-attaining-extreme-altitudes","B"],[2133080973,"a","Bongzilla","Methods For Attaining Extreme Altitudes CASSETTE",19058171,2021,"2021-11-12","https://heavypsychsoundsrecords.bandcamp.com/album/bongzilla-methods-for-attaining-extreme-altitudes-cassette","B"],[228931767,"a","Bongzilla","Stash",3245209173,2021,"2021-04-20","https://heavypsychsoundsrecords.bandcamp.com/album/bongzilla-stash","B"],[2068238213,"a","Bongzilla","Stash CASSETTE",2279895137,2021,"2021-11-12","https://heavypsychsoundsrecords.bandcamp.com/album/bongzilla-stash-cassette","B"],[3956587353,"a","Bongzilla","Weedsconsin",2322228717,2021,"2021-04-20","https://heavypsychsoundsrecords.bandcamp.com/album/bongzilla-weedsconsin","B"],[130954947,"a","Bongzilla","Weedsconsin DELUXE EDITION",3599179571,2021,"2021-11-12","https://heavypsychsoundsrecords.bandcamp.com/album/bongzilla-weedsconsin-deluxe-edition","B"],[3528282069,"a","Brant Bjork","Jalamanta REPRESS",3199470279,2026,"2026-03-10","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-jalamanta-repress-3","B"],[3597153868,"a","Brant Bjork","Jalamanta REPRESS",2491389846,2025,"2025-01-22","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-jalamanta-repress-2","B"],[2524296759,"a","Brant Bjork","Saved By Magic Again REMASTERED REISSUE",899024505,2023,"2023-09-22","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-saved-by-magic-again-remastered-reissue","B"],[641727485,"a","Brant Bjork","And The Operators",2869087794,2022,"2022-10-28","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-and-the-operators-2","B"],[3401224079,"a","Brant Bjork","Bougainvillea Suite",946651805,2022,"2022-10-28","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-bougainvillea-suite","B"],[831034163,"a","Brant Bjork","Jalamanta (repress)",3608846066,2022,"2022-04-26","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-jalamanta-repress","B"],[3397630844,"a","Brant Bjork","Keep Your Cool REISSUE",2203045732,2022,"2022-10-28","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-keep-your-cool-reissue","B"],[1334701489,"a","Brant Bjork","Somera Sól",737071650,2022,"2022-05-06","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-somera-s-l","B"],[1319426986,"a","Brant Bjork","Jacoozzi (repress)",357349148,2021,"2021-01-11","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-jacoozzi-repress","B"],[3812639540,"a","Brant Bjork","Brant Bjork",3657487523,2020,"2020-05-08","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-brant-bjork","B"],[3592909583,"a","Brant Bjork","Gods & Goddesses (Remastered)",2747615478,2020,"2020-05-08","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-gods-goddesses-remastered","B"],[183546483,"a","Brant Bjork","Punk Rock Guilt (Remastered)",2063567642,2020,"2020-05-08","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-punk-rock-guilt-remastered","B"],[398300520,"a","Brant Bjork","Jacoozzi",2970822346,2019,"2019-04-05","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-jacoozzi-2","B"],[675102918,"a","Brant Bjork","Jalamanta (remastered and remixed)",3834606567,2019,"2019-09-13","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-jalamanta-remastered-and-remixed","B"],[3105037968,"a","Brant Bjork","Keep Your Cool (remastered)",2866905218,2019,"2019-04-12","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-keep-your-cool-remastered","B"],[3090253613,"a","Brant Bjork","Gods & Goddesses",2490385780,2018,"2018-03-21","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-gods-goddesses","B"],[1645822769,"a","Brant Bjork","Jalamanta",2445470909,2018,"2018-03-21","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-jalamanta","B"],[3769530023,"a","Brant Bjork","Keep Your Cool",1980066065,2018,"2018-03-21","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-keep-your-cool","B"],[3208057871,"a","Brant Bjork","Local Angel",121630688,2018,"2018-09-28","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-local-angel-2","B"],[3555073518,"a","Brant Bjork","Mankind Woman",2386172771,2018,"2018-09-14","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-mankind-woman","B"],[3492051347,"a","Brant Bjork","Punk Rock Guilt",1361651014,2018,"2018-03-21","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-punk-rock-guilt","B"],[2547527815,"a","Brant Bjork","Tres Dias",1082969737,2018,"2018-09-21","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-tres-dias-2","B"],[744791932,"a","Brant Bjork & The Bros","Saved By Magic Again REMASTERED REISSUE",1045013540,2023,"2023-09-22","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-the-bros-saved-by-magic-again-remastered-reissue","B"],[2529144168,"a","BRANT BJORK and The Bros","Saved By Magic",2213648436,2018,"2018-03-21","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-and-the-bros-saved-by-magic","B"],[2614563241,"a","BRANT BJORK and The Bros","Somera Sól",3013876047,2018,"2018-03-21","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-and-the-bros-somera-s-l","B"],[1728921200,"a","Cachemira","Ambos Mundos",4163992562,2022,"2022-06-24","https://heavypsychsoundsrecords.bandcamp.com/album/cachemira-ambos-mundos","C"],[1005407335,"a","CHÉ","Sounds Of Liberation REMASTERED REISSUE",2086035818,2023,"2023-09-22","https://heavypsychsoundsrecords.bandcamp.com/album/ch-sounds-of-liberation-remastered-reissue","C"],[608580331,"a","CHÉ","Sounds Of Liberation",2703404939,2018,"2018-03-21","https://heavypsychsoundsrecords.bandcamp.com/album/ch-sounds-of-liberation","C"],[2281219416,"a","Child","Rebirth",978187346,2026,"2026-06-26","https://heavypsychsoundsrecords.bandcamp.com/album/child-rebirth","C"],[2226075921,"a","Child","Blueside",4199330637,2024,"2024-04-26","https://heavypsychsoundsrecords.bandcamp.com/album/child-blueside","C"],[3614352880,"a","Child","Child",4145842701,2024,"2024-04-26","https://heavypsychsoundsrecords.bandcamp.com/album/child-child","C"],[700010684,"a","Child","EP I",3392399731,2024,"2024-05-03","https://heavypsychsoundsrecords.bandcamp.com/album/child-ep-i","C"],[1710787832,"a","Child","Soul Murder",3586825973,2024,"2024-05-03","https://heavypsychsoundsrecords.bandcamp.com/album/child-soul-murder","C"],[3642179114,"a","Conan","Monnos REISSUE",2516364396,2025,"2025-04-25","https://heavypsychsoundsrecords.bandcamp.com/album/conan-monnos-reissue","C"],[1116738620,"a","Conan","Violence Dimension",3023597823,2025,"2025-04-25","https://heavypsychsoundsrecords.bandcamp.com/album/conan-violence-dimension","C"],[2646472602,"a","Conan","Violence Dimension DELUXE EDITION",882597921,2025,"2025-04-25","https://heavypsychsoundsrecords.bandcamp.com/album/conan-violence-dimension-deluxe-edition","C"],[1670184406,"a","Cosmic Reaper","Bleed The Wicked, Drown The Damned",1115943129,2025,"2025-09-26","https://heavypsychsoundsrecords.bandcamp.com/album/cosmic-reaper-bleed-the-wicked-drown-the-damned","C"],[1998261878,"a","Cosmic Reaper","Cosmic Reaper",3670760407,2021,"2021-03-19","https://heavypsychsoundsrecords.bandcamp.com/album/cosmic-reaper-cosmic-reaper","C"],[2675265829,"a","Cosmic Wheels","ST",356504091,2016,"2016-05-02","https://heavypsychsoundsrecords.bandcamp.com/album/cosmic-wheels-st","C"],[2066197851,"a","Crypt Trip","Rootstock (repress)",1059780989,2021,"2021-01-11","https://heavypsychsoundsrecords.bandcamp.com/album/crypt-trip-rootstock-repress","C"],[622284658,"a","Crypt Trip","Haze County",1193133408,2019,"2019-03-08","https://heavypsychsoundsrecords.bandcamp.com/album/crypt-trip-haze-county","C"],[2088071821,"a","Crypt Trip","Rootstock",963254602,2018,"2018-05-11","https://heavypsychsoundsrecords.bandcamp.com/album/crypt-trip-rootstock","C"],[3804741462,"a","Danava","Live",2419996574,2024,"2024-06-21","https://heavypsychsoundsrecords.bandcamp.com/album/danava-live","D"],[3519588895,"a","Dead Meadow","Foundlings",175497373,2026,"2026-07-31","https://heavypsychsoundsrecords.bandcamp.com/album/dead-meadow-foundlings","D"],[3685302479,"a","Dead Meadow","Dead Meadow",1224468749,2025,"2025-03-21","https://heavypsychsoundsrecords.bandcamp.com/album/dead-meadow-dead-meadow","D"],[2978242488,"a","Dead Meadow","Feathers",3685132344,2025,"2025-03-21","https://heavypsychsoundsrecords.bandcamp.com/album/dead-meadow-feathers","D"],[501141188,"a","Dead Meadow","Force Form Free",4044509429,2025,"2025-03-21","https://heavypsychsoundsrecords.bandcamp.com/album/dead-meadow-force-form-free","D"],[606444169,"a","Dead Meadow","Howls From The Hills",1868708804,2025,"2025-03-21","https://heavypsychsoundsrecords.bandcamp.com/album/dead-meadow-howls-from-the-hills","D"],[3251290573,"a","Dead Meadow","Old Growth REPRESS",1568961325,2025,"2025-03-21","https://heavypsychsoundsrecords.bandcamp.com/album/dead-meadow-old-growth-repress","D"],[1328267526,"a","Dead Meadow","Shivering King And Others REPRESS",4073385384,2025,"2025-03-21","https://heavypsychsoundsrecords.bandcamp.com/album/dead-meadow-shivering-king-and-others-repress","D"],[2508369154,"a","Dead Meadow","The Nothing They Need",3055320778,2025,"2025-03-21","https://heavypsychsoundsrecords.bandcamp.com/album/dead-meadow-the-nothing-they-need","D"],[1851003258,"a","Dead Meadow","Three Kings REPRESS",2049226207,2025,"2025-03-21","https://heavypsychsoundsrecords.bandcamp.com/album/dead-meadow-three-kings-repress","D"],[747413909,"a","Dead Meadow","Voyager To Voyager",3022436306,2025,"2025-03-28","https://heavypsychsoundsrecords.bandcamp.com/album/dead-meadow-voyager-to-voyager","D"],[2402814827,"a","Dead Meadow","Voyager to Voyager (alternative cover)",2968352663,2025,"2025-03-28","https://heavypsychsoundsrecords.bandcamp.com/album/dead-meadow-voyager-to-voyager-alternative-cover","D"],[3035451035,"a","Dead Meadow","Warble Wombs REPRESS",1626915895,2025,"2025-03-21","https://heavypsychsoundsrecords.bandcamp.com/album/dead-meadow-warble-wombs-repress","D"],[2114773028,"a","Dead Witches","The Final Exorcism",1791071876,2019,"2019-02-22","https://heavypsychsoundsrecords.bandcamp.com/album/dead-witches-the-final-exorcism","D"],[2736948784,"a","Deadsmoke","Mountain Legacy",1763526022,2017,"2017-09-28","https://heavypsychsoundsrecords.bandcamp.com/album/deadsmoke-mountain-legacy","D"],[397765832,"a","Deadsmoke","St",3307297857,2016,"2016-03-24","https://heavypsychsoundsrecords.bandcamp.com/album/deadsmoke-st","D"],[3571185518,"a","Decasia","An Endless Feast For Hyenas",1297868650,2022,"2022-04-05","https://heavypsychsoundsrecords.bandcamp.com/album/decasia-an-endless-feast-for-hyenas","D"],[2488323523,"a","Desert Storm","Buried Under The Weight Of Reason",509468861,2026,"2026-03-06","https://heavypsychsoundsrecords.bandcamp.com/album/desert-storm-buried-under-the-weight-of-reason","D"],[1716119302,"a","Deville","COME HEAVY SLEEP",667089410,2013,"2013-09-12","https://heavypsychsoundsrecords.bandcamp.com/album/deville-come-heavy-sleep","D"],[328539710,"a","Disastroid","Garden Creatures",1476564642,2024,"2024-02-23","https://heavypsychsoundsrecords.bandcamp.com/album/disastroid-garden-creatures","D"],[2993309314,"a","Disastroid","Mortal Fools",3236276254,2020,"2020-02-14","https://heavypsychsoundsrecords.bandcamp.com/album/disastroid-mortal-fools","D"],[866885423,"a","Doom Sessions","DOOM SESSIONS vol. VII feat. ENDTIME // COSMIC REAPER",3505119857,2023,"2023-01-20","https://heavypsychsoundsrecords.bandcamp.com/album/doom-sessions-vol-vii-feat-endtime-cosmic-reaper","D"],[3117722154,"a","Doom Sessions","DOOM SESSIONS VOL.VIII feat. OREYEON // LORD ELEPHANT",3407263134,2023,"2023-05-05","https://heavypsychsoundsrecords.bandcamp.com/album/doom-sessions-vol-viii-feat-oreyeon-lord-elephant","D"],[3336708411,"a","Doom Sessions","DOOM SESSIONS VOL.4 feat BONGZILLA // TONS repress",2528580913,2022,"2022-04-08","https://heavypsychsoundsrecords.bandcamp.com/album/doom-sessions-vol-4-feat-bongzilla-tons-repress","D"],[3413611239,"a","Doom Sessions Vol.1","Conan // Deadsmoke",3772753034,2020,"2020-07-17","https://heavypsychsoundsrecords.bandcamp.com/album/doom-sessions-vol-1-conan-deadsmoke","D"],[1032394015,"a","Doom Sessions Vol.2","1782 // Acid Mammoth",3134977996,2020,"2020-09-18","https://heavypsychsoundsrecords.bandcamp.com/album/doom-sessions-vol-2-1782-acid-mammoth","D"],[1611920777,"a","Doom Sessions Vol.3","16 // Grime",1746031357,2021,"2021-02-26","https://heavypsychsoundsrecords.bandcamp.com/album/doom-sessions-vol-3-16-grime","D"],[502596963,"a","Doom Sessions Vol.4","Bongzilla // Tons",872176825,2021,"2021-04-23","https://heavypsychsoundsrecords.bandcamp.com/album/doom-sessions-vol-4-bongzilla-tons","D"],[973627434,"a","Doom Sessions Vol.5","High Reeper // Hippie Death Cult",1067076698,2021,"2021-05-14","https://heavypsychsoundsrecords.bandcamp.com/album/doom-sessions-vol-5-high-reeper-hippie-death-cult","D"],[2192832470,"a","Doom Sessions Vol.666","Dead Witches // Witchthroat Serpent",1849815926,2021,"2021-06-18","https://heavypsychsoundsrecords.bandcamp.com/album/doom-sessions-vol-666-dead-witches-witchthroat-serpent","D"],[2256233886,"a","Dozer","Beyond Colossal",58845788,2021,"2021-02-19","https://heavypsychsoundsrecords.bandcamp.com/album/beyond-colossal","D"],[4275599972,"a","Dozer","Through The Eyes Of Heathens",3596308735,2021,"2021-02-19","https://heavypsychsoundsrecords.bandcamp.com/album/through-the-eyes-of-heathens","D"],[3613422033,"a","Dozer","Vultures",3278103872,2021,"2021-02-12","https://heavypsychsoundsrecords.bandcamp.com/album/vultures","D"],[4181223841,"a","Dozer","Vultures REPRESS",3188065541,2021,"2021-09-24","https://heavypsychsoundsrecords.bandcamp.com/album/dozer-vultures-repress","D"],[2476205072,"a","Dozer","Call It Conspiracy",2060867295,2020,"2020-03-20","https://heavypsychsoundsrecords.bandcamp.com/album/dozer-call-it-conspiracy","D"],[3631883313,"a","Dozer","In The Tail Of A Comet",1140654300,2020,"2020-03-13","https://heavypsychsoundsrecords.bandcamp.com/album/dozer-in-the-tail-of-a-comet","D"],[1994782022,"a","Dozer","Madre de Dios",1800052550,2020,"2020-03-20","https://heavypsychsoundsrecords.bandcamp.com/album/dozer-madre-de-dios","D"],[1471307635,"a","Duel","Breakfast With Death",4260918899,2024,"2024-07-05","https://heavypsychsoundsrecords.bandcamp.com/album/duel-breakfast-with-death","D"],[102959241,"a","Duel","Live At Hellfest",523841181,2023,"2023-03-10","https://heavypsychsoundsrecords.bandcamp.com/album/duel-live-at-hellfest","D"],[1889630502,"a","Duel","Fears Of The Dead (repress)",4247038680,2021,"2021-01-11","https://heavypsychsoundsrecords.bandcamp.com/album/duel-fears-of-the-dead-repress","D"],[3530633568,"a","Duel","In Carne Persona",3565697322,2021,"2021-10-01","https://heavypsychsoundsrecords.bandcamp.com/album/duel-in-carne-persona","D"],[3627129680,"a","Duel","Valley Of Shadows",1244134697,2019,"2019-05-17","https://heavypsychsoundsrecords.bandcamp.com/album/duel-valley-of-shadows","D"],[3695801373,"a","Duel","Live at The Electric Church",3742831078,2018,"2018-05-18","https://heavypsychsoundsrecords.bandcamp.com/album/duel-live-at-the-electric-church","D"],[4152827374,"a","Duel","Fears Of The Dead",4014376821,2016,"2016-02-11","https://heavypsychsoundsrecords.bandcamp.com/album/duel-fears-of-the-dead","D"],[3924100995,"a","Dusted Angel","This Side Of The Dirt",3034185520,2025,"2025-09-19","https://heavypsychsoundsrecords.bandcamp.com/album/dusted-angel-this-side-of-the-dirt","D"],[2822535034,"a","Dzjenghis Khan","Dzjenghis Khan",73234533,2019,"2019-02-15","https://heavypsychsoundsrecords.bandcamp.com/album/dzjenghis-khan-dzjenghis-khan","D"],[527523775,"a","E.X.P.","PACHAMAMA",338643372,2014,"2014-02-07","https://heavypsychsoundsrecords.bandcamp.com/album/e-x-p-pachamama","E"],[3079168743,"a","Earthless","Live At Roadburn REMASTERED",3224959730,2026,"2026-02-06","https://heavypsychsoundsrecords.bandcamp.com/album/earthless-live-at-roadburn-remastered","E"],[281118172,"a","Earthless","Live in the Mojave Desert / Volume 1",2237920906,2021,"2021-04-02","https://heavypsychsoundsrecords.bandcamp.com/album/earthless-live-in-the-mojave-desert-volume-1","E"],[201415223,"a","Ecstatic Vision","Live At Dunajam",704141947,2023,"2023-03-17","https://heavypsychsoundsrecords.bandcamp.com/album/ecstatic-vision-live-at-dunajam","E"],[2386394206,"a","Ecstatic Vision","Elusive Mojo",2819536274,2022,"2022-05-13","https://heavypsychsoundsrecords.bandcamp.com/album/ecstatic-vision-elusive-mojo","E"],[1157766995,"a","Ecstatic Vision","For The Masses",1964781191,2019,"2019-09-20","https://heavypsychsoundsrecords.bandcamp.com/album/ecstatic-vision-for-the-masses","E"],[1654244033,"a","Ecstatic Vision","Sonic Praise (reissue)",3163510071,2019,"2019-09-06","https://heavypsychsoundsrecords.bandcamp.com/album/ecstatic-vision-sonic-praise-reissue","E"],[2392125119,"a","Ecstatic Vision","Under The Influence",1266199151,2018,"2018-05-04","https://heavypsychsoundsrecords.bandcamp.com/album/ecstatic-vision-under-the-influence","E"],[1747211723,"a","Electric Citizen","EC4",1331226432,2025,"2025-06-27","https://heavypsychsoundsrecords.bandcamp.com/album/electric-citizen-ec4","E"],[3212917356,"a","Emile","Spirit",2442743377,2023,"2023-09-29","https://heavypsychsoundsrecords.bandcamp.com/album/emile-spirit","E"],[3922270465,"a","Emile","The Black Spider / Det Kollektive Selvmord",4282097714,2020,"2020-05-01","https://heavypsychsoundsrecords.bandcamp.com/album/emile-the-black-spider-det-kollektive-selvmord","E"],[4247835628,"a","Endtime","Impending Doom",4104853802,2022,"2022-03-04","https://heavypsychsoundsrecords.bandcamp.com/album/endtime-impending-doom","E"],[756082592,"a","Farflung","\"5\"",4254236,2016,"2016-05-26","https://heavypsychsoundsrecords.bandcamp.com/album/farflung-5","F"],[1835449416,"a","Fatso Jetson","Flames For All REPRESS",393760189,2027,"2027-02-05","https://heavypsychsoundsrecords.bandcamp.com/album/fatso-jetson-flames-for-all-repress","F"],[1731415686,"a","Fatso Jetson","Idle Hands",3627920913,2016,"2016-10-05","https://heavypsychsoundsrecords.bandcamp.com/album/fatso-jetson-idle-hands-2","F"],[2095132881,"a","Firebreather","Blood That I Spill Turns To Fire",1465790849,2026,"2026-10-16","https://heavypsychsoundsrecords.bandcamp.com/album/firebreather-blood-that-i-spill-turns-to-fire","F"],[2827220827,"a","Fvzz Popvli","Melting Pop",1247735008,2025,"2025-02-07","https://heavypsychsoundsrecords.bandcamp.com/album/fvzz-popvli-melting-pop","F"],[2656326352,"a","Fvzz Popvli","Magna Fvzz",673917051,2018,"2018-10-05","https://heavypsychsoundsrecords.bandcamp.com/album/fvzz-popvli-magna-fvzz","F"],[3858854072,"a","Fvzz Popvli","Fvzz Dei",12908135,2017,"2017-09-21","https://heavypsychsoundsrecords.bandcamp.com/album/fvzz-popvli-fvzz-dei","F"],[1412267682,"a","Geezer","Stoned Blues Machine",1313810036,2022,"2022-05-20","https://heavypsychsoundsrecords.bandcamp.com/album/geezer-stoned-blues-machine","G"],[3135525924,"a","Geezer","Groovy",1817830525,2020,"2020-05-29","https://heavypsychsoundsrecords.bandcamp.com/album/geezer-groovy","G"],[4294315287,"a","Gentlemans Pistols","Hustler's Row REPRESS",778340892,2025,"2025-05-06","https://heavypsychsoundsrecords.bandcamp.com/album/gentlemans-pistols-hustlers-row-repress","G"],[1722225261,"a","Giöbia","X-ÆON",1817160520,2025,"2025-10-17","https://heavypsychsoundsrecords.bandcamp.com/album/gi-bia-x-on","G"],[514485968,"a","Giöbia","Acid Disorder",88584390,2023,"2023-04-28","https://heavypsychsoundsrecords.bandcamp.com/album/gi-bia-acid-disorder","G"],[3593997352,"a","Giöbia","Plasmatic Idol",3411392639,2020,"2020-02-07","https://heavypsychsoundsrecords.bandcamp.com/album/gi-bia-plasmatic-idol","G"],[2307087586,"a","Giöbia / The Cosmic Dead","The Intergalactic Connection – Exploring The Sideral Remote Hyperspace",3933675595,2021,"2021-10-29","https://heavypsychsoundsrecords.bandcamp.com/album/gi-bia-the-cosmic-dead-the-intergalactic-connection-exploring-the-sideral-remote-hyperspace","G"],[645691276,"a","Glitter Wizard","Opera Villains",2755435376,2019,"2019-04-20","https://heavypsychsoundsrecords.bandcamp.com/album/glitter-wizard-opera-villains","G"],[2164925377,"a","Gorilla","Treecreeper",2988682719,2019,"2019-06-21","https://heavypsychsoundsrecords.bandcamp.com/album/gorilla-treecreeper","G"],[1315983693,"a","Hazemaze","Blinded By The Wicked",4252033066,2022,"2022-01-28","https://heavypsychsoundsrecords.bandcamp.com/album/hazemaze-blinded-by-the-wicked","H"],[3887282305,"a","Hazemaze","Hazemaze",2262746878,2022,"2022-01-21","https://heavypsychsoundsrecords.bandcamp.com/album/hazemaze-hazemaze","H"],[124802572,"a","Hazemaze","Hymns Of The Damned",1157715788,2022,"2022-01-21","https://heavypsychsoundsrecords.bandcamp.com/album/hazemaze-hymns-of-the-damned","H"],[1944092971,"a","Nebula / Black Rainbows","In Search Of The Cosmic Tale: Crossing The Galactic Portal",1149993001,2024,"2024-06-28","https://heavypsychsoundsrecords.bandcamp.com/album/nebula-black-rainbows-in-search-of-the-cosmic-tale-crossing-the-galactic-portal","N"],[1067046698,"a","Heavy Psych Sounds","HEAVY PSYCH SOUNDS SAMPLER VOL. VIII",2047513585,2022,"2022-04-13","https://heavypsychsoundsrecords.bandcamp.com/album/heavy-psych-sounds-sampler-vol-viii","H"],[2159344618,"a","Dead Witches","Ouija REISSUE",164698295,2019,"2019-01-16","https://heavypsychsoundsrecords.bandcamp.com/album/dead-witches-ouija-reissue","D"],[1460835309,"a","Heavy Psych Sounds","HEAVY PSYCH SOUNDS Sampler Vol.IV",2872844940,2019,"2019-01-29","https://heavypsychsoundsrecords.bandcamp.com/album/heavy-psych-sounds-sampler-vol-iv","H"],[3656327063,"a","Heavy Psych Sounds","Sampler Vol. V",347880475,2019,"2019-12-06","https://heavypsychsoundsrecords.bandcamp.com/album/heavy-psych-sounds-sampler-vol-v","H"],[2983945339,"a","The Sonic Dawn","Into The Long Night REISSUE",1825533986,2019,"2019-01-18","https://heavypsychsoundsrecords.bandcamp.com/album/the-sonic-dawn-into-the-long-night-reissue","S"],[1478810114,"a","Brant Bjork","Brant Bjork & The Operators",1311566497,2018,"2018-03-21","https://heavypsychsoundsrecords.bandcamp.com/album/brant-bjork-the-operators","B"],[406213629,"a","Heavy Psych Sounds","HEAVY PSYCH SOUNDS Sampler VOL.III",3335557378,2018,"2018-03-16","https://heavypsychsoundsrecords.bandcamp.com/album/heavy-psych-sounds-sampler-vol-iii","H"],[414070250,"a","Nebula","Dos E.P.'s",2656396937,2018,"2018-03-02","https://heavypsychsoundsrecords.bandcamp.com/album/nebula-dos-e-p-s","N"],[3483324711,"a","Nebula","Let It Burn",3240243063,2018,"2018-01-26","https://heavypsychsoundsrecords.bandcamp.com/album/nebula-let-it-burn","N"],[3900993118,"a","Wedge","Wedge (Reissue)",743077369,2018,"2018-06-15","https://heavypsychsoundsrecords.bandcamp.com/album/wedge-reissue-2","W"],[2475355660,"a","Wedge","Killing Tongue",3869856635,2018,"2018-03-09","https://heavypsychsoundsrecords.bandcamp.com/album/wedge-killing-tongue","W"],[2353823742,"t","Black Rainbows","The Red Sky Above",3209987551,2017,"2017-03-24","https://heavypsychsoundsrecords.bandcamp.com/track/black-rainbows-the-red-sky-above","B"],[476181931,"a","Cachemira","Jungla",131027701,2017,"2017-05-12","https://heavypsychsoundsrecords.bandcamp.com/album/cachemira-jungla","C"],[1756795378,"a","Doctor Cyclops","Local Dogs",2669451326,2017,"2017-03-31","https://heavypsychsoundsrecords.bandcamp.com/album/doctor-cyclops-local-dogs","D"],[2671140722,"a","Duel","Witchbanger",3383940028,2017,"2017-04-27","https://heavypsychsoundsrecords.bandcamp.com/album/duel-witchbanger","D"],[1375385227,"a","Farflung","Unwound Cellular Frown",1474584357,2017,"2017-04-07","https://heavypsychsoundsrecords.bandcamp.com/album/farflung-unwound-cellular-frown","F"],[121842615,"a","Heavy Psych Sounds","HEAVY PSYCH SOUNDS Sampler VOL II",2699025429,2017,"2017-03-24","https://heavypsychsoundsrecords.bandcamp.com/album/heavy-psych-sounds-sampler-vol-ii","H"],[4215402716,"a","House of Broken Promises","Twisted",3969675624,2017,"2017-10-05","https://heavypsychsoundsrecords.bandcamp.com/album/house-of-broken-promises-twisted","H"],[512978467,"a","Nick Oliveri","N:O: Hits At All Vol. 2",2570252291,2017,"2017-07-07","https://heavypsychsoundsrecords.bandcamp.com/album/nick-oliveri-n-o-hits-at-all-vol-2","N"],[516809502,"a","Nick Oliveri","N.O. Hits At All Vol. 1",2386128570,2017,"2017-07-07","https://heavypsychsoundsrecords.bandcamp.com/album/nick-oliveri-n-o-hits-at-all-vol-1","N"],[3542555030,"a","The Clamps","Blend, Shake, Swallow",1225927926,2017,"2017-02-03","https://heavypsychsoundsrecords.bandcamp.com/album/the-clamps-blend-shake-swallow","C"],[3109975110,"t","The Lords Of Altamont","Going Downtown",2978749778,2017,"2017-07-20","https://heavypsychsoundsrecords.bandcamp.com/track/the-lords-of-altamont-going-downtown","L"],[727936819,"a","Heavy Psych Sounds","4 Way Split #2 \"Golden Grass-Killer Boogie-Wild Eyes-Banquet\"",933518610,2016,"2016-04-28","https://heavypsychsoundsrecords.bandcamp.com/album/4-way-split-2-golden-grass-killer-boogie-wild-eyes-banquet","H"],[1187520410,"a","Glitter Wizard","Hollow Earth Tour",958196621,2016,"2016-10-21","https://heavypsychsoundsrecords.bandcamp.com/album/glitter-wizard-hollow-earth-tour","G"],[1680532836,"a","Heavy Psych Sounds","HEAVY PSYCH SOUNDS SAMPLER",3838429347,2016,"2016-04-07","https://heavypsychsoundsrecords.bandcamp.com/album/heavy-psych-sounds-sampler","H"],[3159131267,"a","Monsternaut","Monsternaut",1077611509,2016,"2016-10-05","https://heavypsychsoundsrecords.bandcamp.com/album/monsternaut","M"],[585468646,"a","Ape Machine","Coalition of the Unwilling",1178268745,2015,"2015-11-20","https://heavypsychsoundsrecords.bandcamp.com/album/ape-machine-coalition-of-the-unwilling","A"],[3457930192,"a","Fatso Jetson / Farflung","Split",1756498644,2015,"2015-05-08","https://heavypsychsoundsrecords.bandcamp.com/album/fatso-jetson-farflung-split","F"],[1829279983,"a","Killer Boogie","Detroit",3515269634,2015,"2015-01-14","https://heavypsychsoundsrecords.bandcamp.com/album/killer-boogie-detroit","K"],[1609265156,"a","Mos Generator / Isaak","Split Album",2882706382,2015,"2015-01-08","https://heavypsychsoundsrecords.bandcamp.com/album/mos-generator-isaak-split-album","M"],[2446584844,"a","Sgt. Sunshine","Sgt. Sunshine",1777536638,2015,"2015-05-29","https://heavypsychsoundsrecords.bandcamp.com/album/sgt-sunshine","S"],[1439613971,"a","Throneless","Selftitled",2961873689,2015,"2015-10-29","https://heavypsychsoundsrecords.bandcamp.com/album/throneless-selftitled","T"],[1742104067,"a","Farflung / Black Rainbows","Split Album",1124236683,2012,"2012-01-04","https://heavypsychsoundsrecords.bandcamp.com/album/farflung-black-rainbows-splitalbum","F"],[872746425,"a","Heavy Psych Sounds Records","Sampler vol. VI",2350151383,2020,"2020-09-14","https://heavypsychsoundsrecords.bandcamp.com/album/heavy-psych-sounds-records-sampler-vol-vi","H"],[169152954,"a","Heavy Psych Sounds Sampler","VOL.VII",2908516695,2021,"2021-05-28","https://heavypsychsoundsrecords.bandcamp.com/album/heavy-psych-sounds-sampler-vol-vii","H"],[4159866149,"a","High Reeper","Renewed By Death",2253506345,2024,"2024-10-04","https://heavypsychsoundsrecords.bandcamp.com/album/high-reeper-renewed-by-death","H"],[76847607,"t","High Reeper","Cold World",2842958634,2023,"2023-03-03","https://heavypsychsoundsrecords.bandcamp.com/track/high-reeper-cold-world","H"],[2381144489,"a","High Reeper","High Reeper (repress)",848042165,2021,"2021-01-11","https://heavypsychsoundsrecords.bandcamp.com/album/high-reeper-high-reeper-repress","H"],[3301112581,"a","High Reeper","Higher Reeper",70988568,2019,"2019-03-22","https://heavypsychsoundsrecords.bandcamp.com/album/high-reeper-higher-reeper","H"],[9005522,"a","High Reeper","High Reeper",2882440720,2018,"2018-03-16","https://heavypsychsoundsrecords.bandcamp.com/album/high-reeper-high-reeper","H"],[1843369618,"a","hijss","hijss",1235525908,2026,"2026-09-18","https://heavypsychsoundsrecords.bandcamp.com/album/hijss-hijss","H"],[1458689212,"a","Hijss","Stuck On Common Ground",4093295667,2024,"2024-03-08","https://heavypsychsoundsrecords.bandcamp.com/album/hijss-stuck-on-common-ground","H"],[1591670809,"a","Hippie Death Cult","Circle of Days REPRESS",3098050859,2026,"2026-03-17","https://heavypsychsoundsrecords.bandcamp.com/album/hippie-death-cult-circle-of-days-repress","H"],[840569651,"a","Hippie Death Cult","Helichrysum REPRESS",2520033663,2026,"2026-03-17","https://heavypsychsoundsrecords.bandcamp.com/album/hippie-death-cult-helichrysum-repress","H"],[855104783,"a","Hippie Death Cult","Live At The Star Theater",3795413998,2025,"2025-05-09","https://heavypsychsoundsrecords.bandcamp.com/album/hippie-death-cult-live-at-the-star-theater","H"],[829742909,"a","Hippie Death Cult","Helichrysum",217447046,2023,"2023-10-20","https://heavypsychsoundsrecords.bandcamp.com/album/hippie-death-cult-helichrysum","H"],[3930161221,"a","Hippie Death Cult","111",3186331075,2021,"2021-05-21","https://heavypsychsoundsrecords.bandcamp.com/album/hippie-death-cult-111","H"],[3329536329,"a","Hippie Death Cult","Circle Of Days",3592849328,2021,"2021-05-21","https://heavypsychsoundsrecords.bandcamp.com/album/hippie-death-cult-circle-of-days","H"],[3895722613,"a","Holy Grove","St",53673488,2016,"2016-03-18","https://heavypsychsoundsrecords.bandcamp.com/album/holy-grove-st","H"],[1646825588,"a","Hot Lunch","Hot Lunch",2746792678,2022,"2022-01-07","https://heavypsychsoundsrecords.bandcamp.com/album/hot-lunch-hot-lunch","H"],[2532909767,"a","Hot Lunch","House Of Whispers",4116259389,2014,"2014-06-08","https://heavypsychsoundsrecords.bandcamp.com/album/hot-lunch-house-of-whispers","H"],[3366776320,"a","Isaak","Hey",209943850,2023,"2023-03-31","https://heavypsychsoundsrecords.bandcamp.com/album/isaak-hey","I"],[4028693742,"a","Isaak // Geezer","Interstellar Cosmic Blues & The Riffalicious Stoner Dudes",2970687014,2024,"2024-05-17","https://heavypsychsoundsrecords.bandcamp.com/album/isaak-geezer-interstellar-cosmic-blues-the-riffalicious-stoner-dudes","I"],[2561116979,"a","Josiah","Into The Outside",1161952085,2022,"2022-04-22","https://heavypsychsoundsrecords.bandcamp.com/album/josiah-into-the-outside","J"],[566942946,"a","Josiah","Josiah",3005090830,2022,"2022-04-29","https://heavypsychsoundsrecords.bandcamp.com/album/josiah-josiah","J"],[1968794196,"a","Josiah","No Time",3871681042,2022,"2022-04-29","https://heavypsychsoundsrecords.bandcamp.com/album/josiah-no-time","J"],[975082744,"a","Josiah","Procession",9381525,2022,"2022-04-22","https://heavypsychsoundsrecords.bandcamp.com/album/josiah-procession","J"],[3554260026,"a","Josiah","Out Of The First Rays",3919981568,2021,"2021-06-11","https://heavypsychsoundsrecords.bandcamp.com/album/josiah-out-of-the-first-rays","J"],[2071144599,"a","Kadabra","Umbra",2347551159,2023,"2023-10-06","https://heavypsychsoundsrecords.bandcamp.com/album/kadabra-umbra","K"],[1874160313,"a","Kadabra","Ultra",2948987768,2021,"2021-09-17","https://heavypsychsoundsrecords.bandcamp.com/album/kadabra-ultra","K"],[1174362566,"a","Kadavar","Live in Antwerp REPRESS",1331583775,2026,"2026-03-20","https://heavypsychsoundsrecords.bandcamp.com/album/kadavar-live-in-antwerp-repress","K"],[3869232844,"a","Kadavar","Live in Copenhagen REPRESS",4137160878,2026,"2026-03-20","https://heavypsychsoundsrecords.bandcamp.com/album/kadavar-live-in-copenhagen-repress","K"],[3674554443,"a","Karma To Burn","Arch Stanton",3659210738,2023,"2023-02-17","https://heavypsychsoundsrecords.bandcamp.com/album/karma-to-burn-arch-stanton","K"],[2277616814,"a","Karma To Burn","Karma to Burn",1610362826,2023,"2023-02-17","https://heavypsychsoundsrecords.bandcamp.com/album/karma-to-burn-karma-to-burn-2","K"],[1936392455,"a","Karma To Burn","Live in Brussels",956823322,2023,"2023-02-17","https://heavypsychsoundsrecords.bandcamp.com/album/karma-to-burn-live-in-brussels","K"],[1380504143,"a","Karma To Burn","Almost Heathen",1834396535,2022,"2022-03-18","https://heavypsychsoundsrecords.bandcamp.com/album/karma-to-burn-almost-heathen","K"],[1576959358,"a","Karma To Burn","Appalachian Incantation REISSUE",2465264988,2022,"2022-09-23","https://heavypsychsoundsrecords.bandcamp.com/album/karma-to-burn-appalachian-incantation-reissue","K"],[3453382912,"a","Karma To Burn","EP REPRESS",1740354137,2022,"2022-09-23","https://heavypsychsoundsrecords.bandcamp.com/album/karma-to-burn-ep-repress","K"],[534821575,"a","Karma To Burn","Karma To Burn",696525142,2022,"2022-03-11","https://heavypsychsoundsrecords.bandcamp.com/album/karma-to-burn-karma-to-burn","K"],[2411964243,"a","Karma To Burn","V REISSUE",3517856437,2022,"2022-09-23","https://heavypsychsoundsrecords.bandcamp.com/album/karma-to-burn-v-reissue","K"],[1511834961,"a","Karma To Burn","Wild Wonderful Purgatory",3489899198,2022,"2022-03-18","https://heavypsychsoundsrecords.bandcamp.com/album/karma-to-burn-wild-wonderful-purgatory","K"],[4278554291,"a","Karma To Burn","EP",3849184211,2013,"2013-09-10","https://heavypsychsoundsrecords.bandcamp.com/album/karma-to-burn-ep","K"],[316576562,"a","Killer Boogie","Detroit (repress)",3839912624,2021,"2021-01-11","https://heavypsychsoundsrecords.bandcamp.com/album/killer-boogie-detroit-repress","K"],[276821739,"a","Killer Boogie","Acid Cream",803384843,2018,"2018-03-09","https://heavypsychsoundsrecords.bandcamp.com/album/killer-boogie-acid-cream","K"],[177501947,"a","Komatsu","A Breakfast For Champions",2789862294,2025,"2025-04-11","https://heavypsychsoundsrecords.bandcamp.com/album/komatsu-a-breakfast-for-champions","K"],[2393904356,"a","Komatsu","Rose Of Jericho",2563458796,2021,"2021-02-05","https://heavypsychsoundsrecords.bandcamp.com/album/komatsu-rose-of-jericho","K"],[3048844300,"a","Kylesa","Exhausting Fire",3592150547,2022,"2022-04-01","https://heavypsychsoundsrecords.bandcamp.com/album/kylesa-exhausting-fire","K"],[3707313252,"a","Kylesa","Spiral Shadow",399572412,2022,"2022-04-08","https://heavypsychsoundsrecords.bandcamp.com/album/kylesa-spiral-shadow","K"],[2917507772,"a","Kylesa","Ultraviolet",544073063,2022,"2022-04-01","https://heavypsychsoundsrecords.bandcamp.com/album/kylesa-ultraviolet","K"],[3963900544,"a","Kylesa","Static Tensions",275304178,2021,"2021-10-15","https://heavypsychsoundsrecords.bandcamp.com/album/kylesa-static-tensions","K"],[617390699,"a","Kylesa","Time Will Fuse Its Worth",1046711547,2021,"2021-10-22","https://heavypsychsoundsrecords.bandcamp.com/album/kylesa-time-will-fuse-its-worth","K"],[4040552087,"a","Kylesa","To Walk a Middle Course",2146540427,2021,"2021-10-22","https://heavypsychsoundsrecords.bandcamp.com/album/kylesa-to-walk-a-middle-course","K"],[1399050768,"a","Lento/Tons","LENTO / TONS Split Album",2221279755,2013,"2013-06-30","https://heavypsychsoundsrecords.bandcamp.com/album/lento-tons-split-album","L"],[2291343709,"a","Lie Heavy","Burn To The Moon",4085961829,2024,"2024-04-19","https://heavypsychsoundsrecords.bandcamp.com/album/lie-heavy-burn-to-the-moon","L"],[3435217453,"a","Litania","Litania",3584850542,2025,"2025-10-10","https://heavypsychsoundsrecords.bandcamp.com/album/litania-litania","L"],[1025687225,"a","Little Villains","Philthy Lies",342833460,2019,"2019-03-29","https://heavypsychsoundsrecords.bandcamp.com/album/little-villains-philthy-lies","L"],[2294077357,"a","Lord Elephant","Ultra Soul",4073834337,2026,"2026-01-30","https://heavypsychsoundsrecords.bandcamp.com/album/lord-elephant-ultra-soul","L"],[2353049836,"a","Lord Elephant","Cosmic Awakening",2603899590,2022,"2022-07-08","https://heavypsychsoundsrecords.bandcamp.com/album/lord-elephant-cosmic-awakening","L"],[1645446347,"a","Lords Of Altamont","The Wild Sounds of The Lords of Altamont REPRESS",2978507348,2019,"2019-11-15","https://heavypsychsoundsrecords.bandcamp.com/album/lords-of-altamont-the-wild-sounds-of-the-lords-of-altamont-repress","L"],[2629696892,"a","Los Natas","Corsario Negro REISSUE",4004786019,2026,"2026-10-23","https://heavypsychsoundsrecords.bandcamp.com/album/los-natas-corsario-negro-reissue","L"],[2813312969,"a","Los Natas","El Hombre Montaña REISSUE",1867721593,2026,"2026-10-23","https://heavypsychsoundsrecords.bandcamp.com/album/los-natas-el-hombre-monta-a-reissue","L"],[2809383451,"a","Los Natas","Ciudad de Brahman REISSUE",3793432221,2025,"2025-10-31","https://heavypsychsoundsrecords.bandcamp.com/album/los-natas-ciudad-de-brahman-reissue","L"],[3846835180,"a","Los Natas","Delmar REISSUE",2029673788,2025,"2025-10-31","https://heavypsychsoundsrecords.bandcamp.com/album/los-natas-delmar-reissue","L"],[4166388119,"a","Love Gang","Meanstreak",413990396,2023,"2023-01-27","https://heavypsychsoundsrecords.bandcamp.com/album/love-gang-meanstreak","L"],[2405073871,"a","Lüger","Revelations Of The Sacred Skull",2801290722,2023,"2023-02-10","https://heavypsychsoundsrecords.bandcamp.com/album/l-ger-revelations-of-the-sacred-skull","L"],[2120263994,"a","Margarita Witch Cult","s/t REPRESS",1771775446,2025,"2025-07-18","https://heavypsychsoundsrecords.bandcamp.com/album/margarita-witch-cult-s-t-repress","M"],[273274902,"a","Margarita Witch Cult","Strung Out In Hell",2670201464,2025,"2025-07-18","https://heavypsychsoundsrecords.bandcamp.com/album/margarita-witch-cult-strung-out-in-hell","M"],[997848690,"a","Margarita Witch Cult","Margarita Witch Cult",636007097,2023,"2023-04-21","https://heavypsychsoundsrecords.bandcamp.com/album/margarita-witch-cult-margarita-witch-cult","M"],[1178205375,"a","Mario Lalli & The Rubber Snake Charmers","Folklore From The Other Desert Cities",2262807784,2024,"2024-03-29","https://heavypsychsoundsrecords.bandcamp.com/album/mario-lalli-the-rubber-snake-charmers-folklore-from-the-other-desert-cities","M"],[475978863,"a","Mephistofeles","Live in Europe",829193027,2026,"2026-08-07","https://heavypsychsoundsrecords.bandcamp.com/album/mephistofeles-live-in-europe","M"],[300936795,"a","Mephistofeles","Violent Theatre REPRESS",1358624517,2026,"2026-08-07","https://heavypsychsoundsrecords.bandcamp.com/album/mephistofeles-violent-theatre-repress","M"],[1507977042,"a","Mephistofeles","I'm Heroin REPRESS",1515983885,2025,"2025-10-03","https://heavypsychsoundsrecords.bandcamp.com/album/mephistofeles-im-heroin-repress","M"],[3041365831,"a","Mephistofeles","Satan Sex Ceremonies",2828515351,2025,"2025-10-03","https://heavypsychsoundsrecords.bandcamp.com/album/mephistofeles-satan-sex-ceremonies","M"],[3931030302,"a","Mephistofeles","Whore REPRESS",2077101706,2025,"2025-10-03","https://heavypsychsoundsrecords.bandcamp.com/album/mephistofeles-whore-repress","M"],[2269061712,"a","Mondo Generator","Cocaine Rodeo REPRESS",2491050098,2024,"2024-06-25","https://heavypsychsoundsrecords.bandcamp.com/album/mondo-generator-cocaine-rodeo-repress-2","M"],[2947930713,"a","Mondo Generator","We Stand Against You",2400366321,2023,"2023-10-13","https://heavypsychsoundsrecords.bandcamp.com/album/mondo-generator-we-stand-against-you","M"],[2971514326,"a","Mondo Generator","Live at Bronson",2997755350,2021,"2021-07-02","https://heavypsychsoundsrecords.bandcamp.com/album/mondo-generator-live-at-bronson","M"],[859948891,"a","Mondo Generator","Cocaine Rodeo (repress)",2891601680,2020,"2020-09-11","https://heavypsychsoundsrecords.bandcamp.com/album/mondo-generator-cocaine-rodeo-repress","M"],[2748794105,"a","Mondo Generator","Dead Planet (repress)",1567793204,2020,"2020-09-18","https://heavypsychsoundsrecords.bandcamp.com/album/mondo-generator-dead-planet-repress","M"],[1052206681,"a","Mondo Generator","Fuck It",1376365231,2020,"2020-02-21","https://heavypsychsoundsrecords.bandcamp.com/album/mondo-generator-fuck-it","M"],[3689396570,"a","Mondo Generator","Shooters Bible",1240142652,2020,"2020-02-28","https://heavypsychsoundsrecords.bandcamp.com/album/mondo-generator-shooters-bible","M"],[1171332712,"a","Monsternaut","Approaching Doom",723663713,2026,"2026-03-27","https://heavypsychsoundsrecords.bandcamp.com/album/monsternaut-approaching-doom","M"],[824123094,"a","Monsternaut","Enter the Storm",609652456,2018,"2018-04-27","https://heavypsychsoundsrecords.bandcamp.com/album/monsternaut-enter-the-storm","M"],[4211383194,"a","Mother Engine","Hangar",1429909978,2017,"2017-09-28","https://heavypsychsoundsrecords.bandcamp.com/album/mother-engine-hangar","M"],[1296233561,"a","Mountain Tamer","Live in the Mojave Desert / Volume 5",4135075378,2021,"2021-04-09","https://heavypsychsoundsrecords.bandcamp.com/album/mountain-tamer-live-in-the-mojave-desert-volume-5","M"],[190411087,"a","Mountain Tamer","Psychosis Ritual",4030378295,2020,"2020-09-25","https://heavypsychsoundsrecords.bandcamp.com/album/mountain-tamer-psychosis-ritual","M"],[214062873,"a","Mr Bison","The Garden of Forgotten Dreams",1072287468,2026,"2026-09-25","https://heavypsychsoundsrecords.bandcamp.com/album/mr-bison-the-garden-of-forgotten-dreams","M"],[1850617919,"a","Mr. Bison","Echoes From The Universe",2280376331,2024,"2024-02-16","https://heavypsychsoundsrecords.bandcamp.com/album/mr-bison-echoes-from-the-universe","M"],[3137439322,"a","My Home On Trees","How I Reached Home",4232965568,2015,"2015-09-24","https://heavypsychsoundsrecords.bandcamp.com/album/my-home-on-trees-how-i-reached-home","M"],[334900546,"a","Nebula","Holy Shit REPRESS",1125472229,2026,"2026-03-10","https://heavypsychsoundsrecords.bandcamp.com/album/nebula-holy-shit-repress","N"],[2599570464,"a","Nebula","Livewired in Europe",480052033,2023,"2023-10-27","https://heavypsychsoundsrecords.bandcamp.com/album/nebula-livewired-in-europe","N"],[3052529765,"a","Nebula","To The Center REPRESS",2925712504,2023,"2023-10-27","https://heavypsychsoundsrecords.bandcamp.com/album/nebula-to-the-center-repress-2","N"],[2074088278,"a","Nebula","Apollo REPRESS",299527200,2022,"2022-02-04","https://heavypsychsoundsrecords.bandcamp.com/album/nebula-apollo-repress","N"],[1847985303,"a","Nebula","Atomic Ritual REPRESS",462939056,2022,"2022-02-11","https://heavypsychsoundsrecords.bandcamp.com/album/nebula-atomic-ritual-repress","N"],[152915311,"a","Nebula","Heavy Psych REISSUE",1439898113,2022,"2022-07-22","https://heavypsychsoundsrecords.bandcamp.com/album/nebula-heavy-psych-reissue","N"],[1633140428,"a","Nebula","Transmission From Mothership Earth",3274156396,2022,"2022-07-22","https://heavypsychsoundsrecords.bandcamp.com/album/nebula-transmission-from-mothership-earth","N"],[20785092,"a","Nebula","Live in the Mojave Desert / Volume 2",4244155434,2021,"2021-04-09","https://heavypsychsoundsrecords.bandcamp.com/album/nebula-live-in-the-mojave-desert-volume-2","N"],[3978727187,"a","Nebula","To The Center (repress)",3596912691,2021,"2021-01-11","https://heavypsychsoundsrecords.bandcamp.com/album/nebula-to-the-center-repress","N"],[4161117423,"a","Nebula","Charged (remastered)",2063270548,2019,"2019-02-08","https://heavypsychsoundsrecords.bandcamp.com/album/nebula-charged-remastered","N"],[4262057064,"a","Nebula","Demos & Outtakes 98-02",3695877429,2019,"2019-01-25","https://heavypsychsoundsrecords.bandcamp.com/album/nebula-demos-outtakes-98-02","N"],[696500714,"a","Nebula","Holy Shit",3959376088,2019,"2019-06-07","https://heavypsychsoundsrecords.bandcamp.com/album/nebula-holy-shit","N"],[1961376813,"a","Nebula","To the Center",2032378963,2018,"2018-02-16","https://heavypsychsoundsrecords.bandcamp.com/album/nebula-to-the-center","N"],[472025403,"a","Nick Oliveri","N.O. Hits At All - Vol.10",3391771474,2026,"2026-04-03","https://heavypsychsoundsrecords.bandcamp.com/album/nick-oliveri-n-o-hits-at-all-vol-10","N"],[243359358,"a","Nick Oliveri","N.O. Hits At All Vol.8",2488508521,2024,"2024-01-19","https://heavypsychsoundsrecords.bandcamp.com/album/nick-oliveri-n-o-hits-at-all-vol-8","N"],[768103939,"a","Nick Oliveri","N.O. Hits At All Vol.9",1902857777,2024,"2024-01-19","https://heavypsychsoundsrecords.bandcamp.com/album/nick-oliveri-n-o-hits-at-all-vol-9","N"],[1783091809,"a","Nick Oliveri","N.O. Hits At All Vol.7",1383528719,2021,"2021-07-02","https://heavypsychsoundsrecords.bandcamp.com/album/nick-oliveri-n-o-hits-at-all-vol-7","N"],[2864966286,"a","Nick Oliveri","N.O. Hits At Al Vol. 666",2824635937,2020,"2020-03-06","https://heavypsychsoundsrecords.bandcamp.com/album/nick-oliveri-n-o-hits-at-al-vol-666","N"],[2289246441,"a","Nick Oliveri","N.O. HITS AT ALL - VOL.4",171477534,2018,"2018-02-23","https://heavypsychsoundsrecords.bandcamp.com/album/nick-oliveri-n-o-hits-at-all-vol-4-2","N"],[3185808318,"a","Nick Oliveri","N.O. HITS AT ALL VOL.5",3345841837,2018,"2018-10-12","https://heavypsychsoundsrecords.bandcamp.com/album/nick-oliveri-n-o-hits-at-all-vol-5","N"],[764302395,"a","Nick Oliveri","N.O. HITS AT ALL VOL 3",3687955031,2017,"2017-10-19","https://heavypsychsoundsrecords.bandcamp.com/album/nick-oliveri-n-o-hits-at-all-vol-3","N"],[2092629697,"a","NICK OLIVERI's UNCONTROLLABLE","Leave Me Alone REISSUE",2857476096,2023,"2023-10-13","https://heavypsychsoundsrecords.bandcamp.com/album/nick-oliveris-uncontrollable-leave-me-alone-reissue","N"],[2953128359,"a","Nightstalker","As Above, So Below REPRESS",2038933397,2027,"2027-02-15","https://heavypsychsoundsrecords.bandcamp.com/album/nightstalker-as-above-so-below-repress","N"],[480046080,"a","Nightstalker","Dead Rock Commandos REPRESS",2250249428,2026,"2026-05-08","https://heavypsychsoundsrecords.bandcamp.com/album/nightstalker-dead-rock-commandos-repress","N"],[2243407029,"a","Nightstalker","The Ritual",1260840447,2026,"2026-05-08","https://heavypsychsoundsrecords.bandcamp.com/album/nightstalker-the-ritual","N"],[2384378032,"a","Nightstalker","Return From The Point Of No Return",3387426413,2025,"2025-03-14","https://heavypsychsoundsrecords.bandcamp.com/album/nightstalker-return-from-the-point-of-no-return","N"],[1989167411,"a","Nightstalker","Use REPRESS",193038977,2025,"2025-03-07","https://heavypsychsoundsrecords.bandcamp.com/album/nightstalker-use-repress","N"],[958222675,"a","Nightstalker","Side FX",4272842954,2024,"2024-11-15","https://heavypsychsoundsrecords.bandcamp.com/album/nightstalker-side-fx","N"],[318886356,"a","Nightstalker","Great Hallucinations REPRESS",2150197457,2023,"2023-03-15","https://heavypsychsoundsrecords.bandcamp.com/album/nightstalker-great-hallucinations-repress","N"],[1521114602,"a","Nightstalker","Great Hallucinations",3910805193,2019,"2019-10-04","https://heavypsychsoundsrecords.bandcamp.com/album/nightstalker-great-hallucinations","N"],[2076816506,"a","Nina Saeidi & Wyatt E.","Armour of Surrender",2321103809,2027,"2027-01-29","https://heavypsychsoundsrecords.bandcamp.com/album/nina-saeidi-wyatt-e-armour-of-surrender","N"],[3603951171,"a","Ocultum","Buena Muerte",157601025,2025,"2025-02-28","https://heavypsychsoundsrecords.bandcamp.com/album/ocultum-buena-muerte","O"],[2415839259,"a","Old Man Lizard","Selftitled",2304313240,2015,"2015-09-24","https://heavypsychsoundsrecords.bandcamp.com/album/old-man-lizard-selftitled","O"],[2045027112,"a","Orchid","Capricorn REPRESS",588313074,2025,"2025-06-13","https://heavypsychsoundsrecords.bandcamp.com/album/orchid-capricorn-repress","O"],[802137213,"a","Orchid","The Mouths of Madness REPRESS",3962272622,2025,"2025-07-10","https://heavypsychsoundsrecords.bandcamp.com/album/orchid-the-mouths-of-madness-repress","O"],[2549641183,"a","Orchid","The Zodiac Sessions REPRESS",2589219702,2025,"2025-07-10","https://heavypsychsoundsrecords.bandcamp.com/album/orchid-the-zodiac-sessions-repress","O"],[1539425784,"a","Orchid","Through The Devil's Doorway REPRESS",379215210,2025,"2025-07-10","https://heavypsychsoundsrecords.bandcamp.com/album/orchid-through-the-devils-doorway-repress","O"],[2923989692,"a","Oreyeon","The Grotesque Within",2691529025,2026,"2026-02-13","https://heavypsychsoundsrecords.bandcamp.com/album/oreyeon-the-grotesque-within","O"],[908676279,"a","Oreyeon","Equations For The Useless",207053403,2022,"2022-06-17","https://heavypsychsoundsrecords.bandcamp.com/album/oreyeon-equations-for-the-useless","O"],[1324458566,"a","Oreyeon","Ode To Oblivion",3498972632,2019,"2019-03-15","https://heavypsychsoundsrecords.bandcamp.com/album/oreyeon-ode-to-oblivion","O"],[169570184,"a","Orgöne","MOS/FET",2248035938,2020,"2020-06-12","https://heavypsychsoundsrecords.bandcamp.com/album/org-ne-mos-fet","O"],[1286637298,"a","Orquesta Del Desierto","Dos",2470231983,2024,"2024-06-14","https://heavypsychsoundsrecords.bandcamp.com/album/orquesta-del-desierto-dos","O"],[1989681026,"a","Orquesta Del Desierto","Orquesta del Desierto",4244366450,2024,"2024-06-07","https://heavypsychsoundsrecords.bandcamp.com/album/orquesta-del-desierto-orquesta-del-desierto","O"],[4256328390,"a","Pentagram","Be Forewarned",354542281,2025,"2025-01-24","https://heavypsychsoundsrecords.bandcamp.com/album/pentagram-be-forewarned","P"],[3072943891,"a","Pentagram","Curious Volume",3044353015,2025,"2025-01-24","https://heavypsychsoundsrecords.bandcamp.com/album/pentagram-curious-volume","P"],[1747072968,"a","Pentagram","Day Of Reckoning",123032268,2025,"2025-01-24","https://heavypsychsoundsrecords.bandcamp.com/album/pentagram-day-of-reckoning","P"],[3691181367,"a","Pentagram","Last Rites",2736987296,2025,"2025-01-24","https://heavypsychsoundsrecords.bandcamp.com/album/pentagram-last-rites","P"],[1246009216,"a","Pentagram","Lightning In A Bottle",1707570360,2025,"2025-01-31","https://heavypsychsoundsrecords.bandcamp.com/album/pentagram-lightning-in-a-bottle","P"],[2145708649,"a","Pentagram","Lightning In A Bottle DELUXE EDITION",2728995889,2025,"2025-01-31","https://heavypsychsoundsrecords.bandcamp.com/album/pentagram-lightning-in-a-bottle-deluxe-edition","P"],[347099911,"a","Pentagram","Relentless",2992707666,2025,"2025-01-24","https://heavypsychsoundsrecords.bandcamp.com/album/pentagram-relentless","P"],[3994235603,"a","Pentagram","Show 'Em How REMASTERED REISSUE",1202624933,2025,"2025-01-24","https://heavypsychsoundsrecords.bandcamp.com/album/pentagram-show-em-how-remastered-reissue","P"],[1111749722,"a","Pentagram","Review Your Choices REMASTERED",3173740869,2024,"2024-09-27","https://heavypsychsoundsrecords.bandcamp.com/album/pentagram-review-your-choices-remastered","P"],[756087248,"a","Pentagram","Sub-Basement REMASTERED",615286444,2024,"2024-09-27","https://heavypsychsoundsrecords.bandcamp.com/album/pentagram-sub-basement-remastered","P"],[178942687,"a","Pink Cigs","Pink Cigs",3158588953,2021,"2021-01-11","https://heavypsychsoundsrecords.bandcamp.com/album/pink-cigs-pink-cigs","P"],[3211959883,"a","Planet Of Zeus","Faith in Physics",4100584630,2019,"2019-09-27","https://heavypsychsoundsrecords.bandcamp.com/album/planet-of-zeus-faith-in-physics","P"],[1594335976,"a","Ritual Arcana","Ritual Arcana",697593433,2026,"2026-01-23","https://heavypsychsoundsrecords.bandcamp.com/album/ritual-arcana-ritual-arcana","R"],[1206809573,"a","Ryte","Ryte",1202159783,2020,"2020-01-17","https://heavypsychsoundsrecords.bandcamp.com/album/ryte-ryte","R"],[3523698821,"a","Saltpig","Saltpig",484239406,2024,"2024-05-31","https://heavypsychsoundsrecords.bandcamp.com/album/saltpig-saltpig","S"],[3576632121,"a","Scorpion Child","Acid Roulette REPRESS",2522337230,2026,"2026-10-30","https://heavypsychsoundsrecords.bandcamp.com/album/scorpion-child-acid-roulette-repress","S"],[3708706902,"a","Scorpion Child","Scorpion Child REPRESS",677233808,2026,"2026-10-30","https://heavypsychsoundsrecords.bandcamp.com/album/scorpion-child-scorpion-child-repress","S"],[2092646046,"a","Sleepwulf","Sleepwulf",3450133945,2022,"2022-02-18","https://heavypsychsoundsrecords.bandcamp.com/album/sleepwulf-sleepwulf","S"],[2149969692,"a","Sleepwulf","Sunbeams Curl",975513637,2022,"2022-02-18","https://heavypsychsoundsrecords.bandcamp.com/album/sleepwulf-sunbeams-curl","S"],[4266244701,"a","Slower","Rage And Ruin",3010898484,2024,"2024-11-01","https://heavypsychsoundsrecords.bandcamp.com/album/slower-rage-and-ruin","S"],[3508023910,"a","Slower","Slower",475944507,2024,"2024-01-26","https://heavypsychsoundsrecords.bandcamp.com/album/slower-slower","S"],[2436263276,"a","Slower","Slower REPRESS",3694247017,2024,"2024-11-01","https://heavypsychsoundsrecords.bandcamp.com/album/slower-slower-repress","S"],[2877673955,"a","Softsun","Eternal Sunrise",1753071064,2025,"2025-11-07","https://heavypsychsoundsrecords.bandcamp.com/album/softsun-eternal-sunrise","S"],[2815692620,"a","Solarius","Universal Trial",733455300,2021,"2021-09-24","https://heavypsychsoundsrecords.bandcamp.com/album/solarius-universal-trial","S"],[3564152307,"a","Somnus Throne","Nemesis Lately",3637242056,2022,"2022-06-03","https://heavypsychsoundsrecords.bandcamp.com/album/somnus-throne-nemesis-lately","S"],[1379294455,"a","Sonic Flower","Me And My Bellbottom Blues",1431838719,2022,"2022-09-30","https://heavypsychsoundsrecords.bandcamp.com/album/sonic-flower-me-and-my-bellbottom-blues","S"],[2510165923,"a","Sonic Flower","Rides Again REPRESS",2170185524,2022,"2022-09-30","https://heavypsychsoundsrecords.bandcamp.com/album/sonic-flower-rides-again-repress","S"],[4007374991,"a","Sonic Flower","Sonic Flower REPRESS",2494302538,2022,"2022-09-30","https://heavypsychsoundsrecords.bandcamp.com/album/sonic-flower-sonic-flower-repress","S"],[1707138292,"a","Sonic Flower","Rides Again",3423272259,2021,"2021-01-29","https://heavypsychsoundsrecords.bandcamp.com/album/sonic-flower-rides-again","S"],[3317245953,"a","Sonic Flower","Rides Again (new cover)",783663035,2021,"2021-03-08","https://heavypsychsoundsrecords.bandcamp.com/album/sonic-flower-rides-again-new-cover","S"],[3447614083,"a","Sonic Flower","Sonic Flower",2861120248,2021,"2021-01-22","https://heavypsychsoundsrecords.bandcamp.com/album/sonic-flower-sonic-flower","S"],[1420726531,"a","Sonic Flower","Sonic Flower (new cover)",2140618765,2021,"2021-03-08","https://heavypsychsoundsrecords.bandcamp.com/album/sonic-flower-sonic-flower-new-cover","S"],[783581260,"a","Sons Of Otis","Paid To Suffer",2433975692,2026,"2026-10-06","https://heavypsychsoundsrecords.bandcamp.com/album/sons-of-otis-paid-to-suffer","S"],[1913342956,"a","Sons Of Otis","Spacejumbofudge REPRESS",2780093794,2026,"2026-10-06","https://heavypsychsoundsrecords.bandcamp.com/album/sons-of-otis-spacejumbofudge-repress","S"],[2406258782,"a","Spirit Caravan","Dreamwheel REPRESS",2886200847,2026,"2026-06-12","https://heavypsychsoundsrecords.bandcamp.com/album/spirit-caravan-dreamwheel-repress","S"],[3397046422,"a","Spirit Caravan","Elusive Truth REPRESS",3742050741,2026,"2026-06-12","https://heavypsychsoundsrecords.bandcamp.com/album/spirit-caravan-elusive-truth-repress","S"],[3088741898,"a","Spirit Caravan","Jug Fulla Sun REPRESS",1022282133,2026,"2026-06-12","https://heavypsychsoundsrecords.bandcamp.com/album/spirit-caravan-jug-fulla-sun-repress","S"],[2895010144,"a","Spirit Mother","Trails",2617461716,2024,"2024-09-13","https://heavypsychsoundsrecords.bandcamp.com/album/spirit-mother-trails","S"],[4219281595,"a","Spirit Mother","Live in the Mojave Desert / Volume 3",1493949559,2021,"2021-04-16","https://heavypsychsoundsrecords.bandcamp.com/album/spirit-mother-live-in-the-mojave-desert-volume-3","S"],[757802238,"a","ştiu Nu ştiu","New Sun",1691418370,2022,"2022-07-01","https://heavypsychsoundsrecords.bandcamp.com/album/tiu-nu-tiu-new-sun","T"],[1436209427,"a","Stöner","Hittin' The Bitchin' Switch",3805957981,2024,"2024-10-11","https://heavypsychsoundsrecords.bandcamp.com/album/st-ner-hittin-the-bitchin-switch","S"],[213652997,"a","Stöner","Stoners rule REPRESS",2778563474,2024,"2024-10-11","https://heavypsychsoundsrecords.bandcamp.com/album/st-ner-stoners-rule-repress","S"],[986695480,"a","Stöner","Boogie To Baja",72457255,2023,"2023-02-24","https://heavypsychsoundsrecords.bandcamp.com/album/st-ner-boogie-to-baja","S"],[906756984,"a","Stöner","totally…",2689954652,2022,"2022-05-06","https://heavypsychsoundsrecords.bandcamp.com/album/st-ner-totally","S"],[3621491696,"a","Stöner","Live in the Mojave Desert / Volume 4",836594834,2021,"2021-04-30","https://heavypsychsoundsrecords.bandcamp.com/album/st-ner-live-in-the-mojave-desert-volume-4","S"],[1991426856,"a","Stöner","Stoners rule",62701049,2021,"2021-06-25","https://heavypsychsoundsrecords.bandcamp.com/album/st-ner-stoners-rule","S"],[2758994457,"a","Stonewall Noise Orchestra","Constants In An Ever Changing Universe REISSUE",3225334162,2023,"2023-02-03","https://heavypsychsoundsrecords.bandcamp.com/album/stonewall-noise-orchestra-constants-in-an-ever-changing-universe-reissue","S"],[1779908329,"a","Stonewall Noise Orchestra","Vol. 1",520938250,2021,"2021-11-05","https://heavypsychsoundsrecords.bandcamp.com/album/stonewall-noise-orchestra-vol-1","S"],[759221713,"a","Sun And Sail Club","Mannequin REISSUE",3767900910,2024,"2024-10-25","https://heavypsychsoundsrecords.bandcamp.com/album/sun-and-sail-club-mannequin-reissue","S"],[634844224,"a","Sun And Sail Club","Shipwrecked",3635046850,2024,"2024-10-18","https://heavypsychsoundsrecords.bandcamp.com/album/sun-and-sail-club-shipwrecked","S"],[2046294104,"a","Sun And Sail Club","The Great White Dope REISSUE",2923294389,2024,"2024-10-25","https://heavypsychsoundsrecords.bandcamp.com/album/sun-and-sail-club-the-great-white-dope-reissue","S"],[2882741035,"a","Tankzilla","TankZilla",1379172621,2023,"2023-05-19","https://heavypsychsoundsrecords.bandcamp.com/album/tankzilla-tankzilla","T"],[2694624595,"a","The Atomic Bitchwax","Live At Freak Valley Fest",1292554843,2023,"2023-03-10","https://heavypsychsoundsrecords.bandcamp.com/album/the-atomic-bitchwax-live-at-freak-valley-fest","A"],[3643946088,"a","The Clamps","Megamouth",2468223494,2024,"2024-01-12","https://heavypsychsoundsrecords.bandcamp.com/album/the-clamps-megamouth","C"],[1985988200,"a","The Cosmic Dead","Beyond The Beyond",471876599,2026,"2026-04-17","https://heavypsychsoundsrecords.bandcamp.com/album/the-cosmic-dead-beyond-the-beyond","C"],[1552345863,"a","The Cosmic Dead","s/t REPRESS",4266680998,2026,"2026-04-17","https://heavypsychsoundsrecords.bandcamp.com/album/the-cosmic-dead-s-t-repress","C"],[2834447464,"a","The Cosmic Dead","The Exalted King REPRESS",2873199831,2026,"2026-04-17","https://heavypsychsoundsrecords.bandcamp.com/album/the-cosmic-dead-the-exalted-king-repress","C"],[2387520043,"a","The Cosmic Dead","Infinite Peaks",3493779834,2024,"2024-04-12","https://heavypsychsoundsrecords.bandcamp.com/album/the-cosmic-dead-infinite-peaks","C"],[1352170973,"a","The Freeks","Crazy World",154150351,2018,"2018-04-27","https://heavypsychsoundsrecords.bandcamp.com/album/the-freeks-crazy-world","F"],[1655366966,"a","The Freeks","THE FREEKS - Shattered",3321587849,2016,"2016-11-11","https://heavypsychsoundsrecords.bandcamp.com/album/the-freeks-shattered","F"],[1308451752,"a","The Golden Grass","Life Is Much Stranger",1790375608,2023,"2023-04-07","https://heavypsychsoundsrecords.bandcamp.com/album/the-golden-grass-life-is-much-stranger","G"],[2061153320,"a","The Lords Of Altamont","Forever Loaded",3090525242,2026,"2026-04-10","https://heavypsychsoundsrecords.bandcamp.com/album/the-lords-of-altamont-forever-loaded","L"],[3797346338,"a","The Lords Of Altamont","To Hell With Tomorrow The Lords Are Now (Live in Utrecht)",841442603,2023,"2023-03-17","https://heavypsychsoundsrecords.bandcamp.com/album/the-lords-of-altamont-to-hell-with-tomorrow-the-lords-are-now-live-in-utrecht","L"],[2402309584,"a","The Lords Of Altamont","Have Mercy REISSUE",75681041,2022,"2022-09-09","https://heavypsychsoundsrecords.bandcamp.com/album/the-lords-of-altamont-have-mercy-reissue","L"],[3779126085,"a","The Lords Of Altamont","The Altamont Sin REISSUE",691716276,2022,"2022-09-16","https://heavypsychsoundsrecords.bandcamp.com/album/the-lords-of-altamont-the-altamont-sin-reissue","L"],[1064784814,"a","The Lords Of Altamont","The Lords Take Altamont",2665050107,2022,"2022-09-16","https://heavypsychsoundsrecords.bandcamp.com/album/the-lords-of-altamont-the-lords-take-altamont","L"],[3823222161,"a","The Lords Of Altamont","To Hell With The Lords REISSUE",3069314564,2022,"2022-09-09","https://heavypsychsoundsrecords.bandcamp.com/album/the-lords-of-altamont-to-hell-with-the-lords-reissue","L"],[1273177749,"a","The Lords Of Altamont","Midnight to 666",471996415,2021,"2021-07-09","https://heavypsychsoundsrecords.bandcamp.com/album/the-lords-of-altamont-midnight-to-666","L"],[1986718107,"a","The Lords Of Altamont","Tune In, Turn On, Electrify!",2829792611,2021,"2021-07-09","https://heavypsychsoundsrecords.bandcamp.com/album/the-lords-of-altamont-tune-in-turn-on-electrify","L"],[2366980405,"a","The Lords Of Altamont","Lords Have Mercy",1967859170,2020,"2020-12-16","https://heavypsychsoundsrecords.bandcamp.com/album/the-lords-of-altamont-lords-have-mercy","L"],[4294534741,"a","The Lords Of Altamont","Lords Take Altamont",1277472262,2020,"2020-12-16","https://heavypsychsoundsrecords.bandcamp.com/album/the-lords-of-altamont-lords-take-altamont","L"],[1124281730,"a","The Pilgrim","Walking Into The Forest REPRESS",365379860,2023,"2023-05-02","https://heavypsychsoundsrecords.bandcamp.com/album/the-pilgrim-walking-into-the-forest-repress-2","P"],[196495052,"a","The Pilgrim","...From The Earth To The Sky And Back",4262791883,2020,"2020-10-02","https://heavypsychsoundsrecords.bandcamp.com/album/the-pilgrim-from-the-earth-to-the-sky-and-back","P"],[2588548288,"a","The Pilgrim","Walking Into The Forest REPRESS",2462110821,2020,"2020-10-02","https://heavypsychsoundsrecords.bandcamp.com/album/the-pilgrim-walking-into-the-forest-repress","P"],[1891319491,"a","The Pilgrim","Walking Into The Forest",2939746655,2019,"2019-04-26","https://heavypsychsoundsrecords.bandcamp.com/album/the-pilgrim-walking-into-the-forest","P"],[3013182775,"a","The Rubber Snake Charmers","Electric Mecca",3539853713,2027,"2027-02-05","https://heavypsychsoundsrecords.bandcamp.com/album/the-rubber-snake-charmers-electric-mecca","R"],[3295960328,"a","The Sonic Dawn","Phantom",222674030,2024,"2024-05-10","https://heavypsychsoundsrecords.bandcamp.com/album/the-sonic-dawn-phantom","S"],[556319035,"a","The Sonic Dawn","Enter The Mirage",3791444486,2020,"2020-05-01","https://heavypsychsoundsrecords.bandcamp.com/album/the-sonic-dawn-enter-the-mirage","S"],[756746018,"a","The Sonic Dawn","Eclipse",3995776185,2019,"2019-02-01","https://heavypsychsoundsrecords.bandcamp.com/album/the-sonic-dawn-eclipse","S"],[1205290406,"a","The Vintage Caravan","Arrival REPRESS",491239355,2027,"2027-01-22","https://heavypsychsoundsrecords.bandcamp.com/album/the-vintage-caravan-arrival-repress","V"],[3793608595,"a","The Vintage Caravan","Gateways REPRESS",2076234853,2027,"2027-01-22","https://heavypsychsoundsrecords.bandcamp.com/album/the-vintage-caravan-gateways-repress","V"],[3238668439,"a","The Vintage Caravan","Voyage REPRESS",3070224633,2027,"2027-01-22","https://heavypsychsoundsrecords.bandcamp.com/album/the-vintage-caravan-voyage-repress","V"],[1307933343,"a","The Wisdoom","\"Hypothalamus\"",134363294,2014,"2014-02-06","https://heavypsychsoundsrecords.bandcamp.com/album/the-wisdoom-hypothalamus","W"],[2315853666,"a","Tigers On Opium","Psychodrama",925501575,2024,"2024-03-01","https://heavypsychsoundsrecords.bandcamp.com/album/tigers-on-opium-psychodrama","T"],[1641117327,"a","Tons","Stoned Villains",3489319730,2026,"2026-04-20","https://heavypsychsoundsrecords.bandcamp.com/album/tons-stoned-villains","T"],[1519895326,"a","Tons","Hashension",1449190426,2022,"2022-10-07","https://heavypsychsoundsrecords.bandcamp.com/album/tons-hashension","T"],[810293858,"a","Tons","Musineè Doom Session, Vol 1 (2022 Remastered)",786715094,2022,"2022-10-07","https://heavypsychsoundsrecords.bandcamp.com/album/tons-musine-doom-session-vol-1-2022-remastered","T"],[3455327369,"a","Tons","Filthy Flowers of Doom",1831956682,2018,"2018-04-20","https://heavypsychsoundsrecords.bandcamp.com/album/tons-filthy-flowers-of-doom","T"],[1100339738,"a","Tons","TONS - Musineè Doom Session vol1",2953749223,2013,"2013-04-04","https://heavypsychsoundsrecords.bandcamp.com/album/tons-musine-doom-session-vol1","T"],[1247658853,"a","Turn Me On Dead Man","Heavymetal Mothership",3710647049,2017,"2017-10-12","https://heavypsychsoundsrecords.bandcamp.com/album/turn-me-on-dead-man-heavymetal-mothership","T"],[3661664797,"a","Ungraven","Hollows Made Homes In Their Sunken Cheeks",442391157,2025,"2025-04-18","https://heavypsychsoundsrecords.bandcamp.com/album/ungraven-hollows-made-homes-in-their-sunken-cheeks","U"],[2446570914,"a","Valley Of The Sun","The Blacklight Sessions",2242453221,2026,"2026-10-02","https://heavypsychsoundsrecords.bandcamp.com/album/valley-of-the-sun-the-blacklight-sessions","V"],[1550170938,"a","Warlung","The Poison Touch",3729150628,2025,"2025-02-14","https://heavypsychsoundsrecords.bandcamp.com/album/warlung-the-poison-touch","W"],[4050758539,"a","Warlung","Vulture's Paradise",1228593747,2022,"2022-11-04","https://heavypsychsoundsrecords.bandcamp.com/album/warlung-vultures-paradise","W"],[4057228765,"a","Warlung","Immortal Portal",1074349675,2020,"2020-10-16","https://heavypsychsoundsrecords.bandcamp.com/album/warlung-immortal-portal","W"],[1783153069,"a","Warlung","Optical Delusions",3717002673,2020,"2020-10-09","https://heavypsychsoundsrecords.bandcamp.com/album/warlung-optical-delusions","W"],[1317278126,"a","Warlung","Sleepwalker",692917069,2020,"2020-10-16","https://heavypsychsoundsrecords.bandcamp.com/album/warlung-sleepwalker","W"],[82951292,"a","Wedge","Like No Tomorrow",1624377084,2021,"2021-01-15","https://heavypsychsoundsrecords.bandcamp.com/album/wedge-like-no-tomorrow","W"],[4231418305,"a","Weedpecker","III REPRESS",4091038031,2027,"2027-02-12","https://heavypsychsoundsrecords.bandcamp.com/album/weedpecker-iii-repress","W"],[1086314693,"a","Weedpecker","II repress",2846579143,2026,"2026-02-27","https://heavypsychsoundsrecords.bandcamp.com/album/weedpecker-ii-repress","W"],[3042467205,"a","Weedpecker","V",3272135332,2026,"2026-02-27","https://heavypsychsoundsrecords.bandcamp.com/album/weedpecker-v","W"],[4262346538,"a","Witchcraft","A Sinner's Child EP",2309839042,2026,"2026-03-13","https://heavypsychsoundsrecords.bandcamp.com/album/witchcraft-a-sinners-child-ep","W"],[2277734408,"a","Witchcraft","Black Metal REPRESS",3446222894,2025,"2025-05-16","https://heavypsychsoundsrecords.bandcamp.com/album/witchcraft-black-metal-repress","W"],[3491347001,"a","Witchcraft","Idag",3641857359,2025,"2025-05-23","https://heavypsychsoundsrecords.bandcamp.com/album/witchcraft-idag","W"],[2342320552,"a","Witchcraft","Idag DELUXE EDITION",3033505525,2025,"2025-05-23","https://heavypsychsoundsrecords.bandcamp.com/album/witchcraft-idag-deluxe-edition","W"],[175595250,"a","Witchcraft","Nucleus REPRESS",1771173530,2025,"2025-05-16","https://heavypsychsoundsrecords.bandcamp.com/album/witchcraft-nucleus-repress","W"],[1726901975,"a","Witchpit","Forever Spoken",2077948125,2024,"2024-11-08","https://heavypsychsoundsrecords.bandcamp.com/album/witchpit-forever-spoken","W"],[883443445,"a","Witchpit","The Weight Of Death",4132258740,2022,"2022-03-25","https://heavypsychsoundsrecords.bandcamp.com/album/witchpit-the-weight-of-death","W"],[2314048853,"a","Witchthroat Serpent","Demons Left To Roam",856995404,2026,"2026-10-09","https://heavypsychsoundsrecords.bandcamp.com/album/witchthroat-serpent-demons-left-to-roam","W"],[1960688430,"a","Witchthroat Serpent","Sang Dragon REISSUE",1042897756,2024,"2024-02-09","https://heavypsychsoundsrecords.bandcamp.com/album/witchthroat-serpent-sang-dragon-reissue","W"],[145724640,"a","Witchthroat Serpent","Witchthroat Serpent REISSUE",4058886416,2024,"2024-02-09","https://heavypsychsoundsrecords.bandcamp.com/album/witchthroat-serpent-witchthroat-serpent-reissue","W"],[1698115673,"a","Witchthroat Serpent","Trove of Oddities at the Devil's Driveway",867103185,2023,"2023-03-03","https://heavypsychsoundsrecords.bandcamp.com/album/witchthroat-serpent-trove-of-oddities-at-the-devils-driveway","W"],[1934587298,"a","Wyatt E.","Zamāru ultu qereb ziqquratu Part 1 REPRESS",3242752162,2027,"2027-01-29","https://heavypsychsoundsrecords.bandcamp.com/album/wyatt-e-zam-ru-ultu-qereb-ziqquratu-part-1-repress","W"],[227204877,"a","Wyatt E.","Exile to Beyn Neharot REPRESS",33920193,2025,"2025-01-17","https://heavypsychsoundsrecords.bandcamp.com/album/wyatt-e-exile-to-beyn-neharot-repress","W"],[3594216608,"a","Wyatt E.","Mount Sinai / Aswan REPRESS",3245834202,2025,"2025-01-17","https://heavypsychsoundsrecords.bandcamp.com/album/wyatt-e-mount-sinai-aswan-repress","W"],[4231656063,"a","Wyatt E.","Zamāru ultu qereb ziqquratu Part 1",401367756,2025,"2025-01-10","https://heavypsychsoundsrecords.bandcamp.com/album/wyatt-e-zam-ru-ultu-qereb-ziqquratu-part-1","W"],[1783312872,"a","Yawning Balch","Volume Four",3225450775,2026,"2026-05-29","https://heavypsychsoundsrecords.bandcamp.com/album/yawning-balch-volume-four","Y"],[333120603,"a","Yawning Balch","Volume Three",869671777,2025,"2025-02-21","https://heavypsychsoundsrecords.bandcamp.com/album/yawning-balch-volume-three","Y"],[977750942,"a","Yawning Balch","Volume One",333160292,2023,"2023-07-07","https://heavypsychsoundsrecords.bandcamp.com/album/yawning-balch-volume-one","Y"],[3263451611,"a","Yawning Balch","Volume Two",1116429043,2023,"2023-11-03","https://heavypsychsoundsrecords.bandcamp.com/album/yawning-balch-volume-two","Y"],[352305101,"a","Yawning Man","Live At Giant Rock REPRESS",2647435383,2026,"2026-03-17","https://heavypsychsoundsrecords.bandcamp.com/album/yawning-man-live-at-giant-rock-repress","Y"],[924720105,"a","Yawning Man","Pavement Ends",2076895118,2025,"2025-11-14","https://heavypsychsoundsrecords.bandcamp.com/album/yawning-man-pavement-ends","Y"],[853126245,"a","Yawning Man","Long Walk Of The Navajo",445146373,2023,"2023-06-16","https://heavypsychsoundsrecords.bandcamp.com/album/yawning-man-long-walk-of-the-navajo","Y"],[1543730937,"a","Yawning Man","Historical Graffiti REISSUE",3136434775,2022,"2022-10-14","https://heavypsychsoundsrecords.bandcamp.com/album/yawning-man-historical-graffiti-reissue-2","Y"],[2737239584,"a","Yawning Man","Nomadic Pursuits REISSUE",3975629537,2022,"2022-10-21","https://heavypsychsoundsrecords.bandcamp.com/album/yawning-man-nomadic-pursuits-reissue","Y"],[1983886722,"a","Yawning Man","The Birth Of Sol REISSUE",3744704435,2022,"2022-10-14","https://heavypsychsoundsrecords.bandcamp.com/album/yawning-man-the-birth-of-sol-reissue","Y"],[3994019526,"a","Yawning Man","Live At Giant Rock",2141303489,2020,"2020-10-30","https://heavypsychsoundsrecords.bandcamp.com/album/yawning-man-live-at-giant-rock","Y"],[3969520179,"a","Yawning Man","Macedonian Lines",1280387377,2019,"2019-06-14","https://heavypsychsoundsrecords.bandcamp.com/album/yawning-man-macedonian-lines","Y"],[2116668777,"a","Yawning Man","The Revolt Against Tired Noises",2096065937,2018,"2018-07-06","https://heavypsychsoundsrecords.bandcamp.com/album/yawning-man-the-revolt-against-tired-noises","Y"]];
+
+    const RELEASES = RAW_DATA.map((r, idx) => ({
+      idx,
+      id: r[0],
+      type: r[1],
+      artist: r[2],
+      title: r[3],
+      artId: r[4],
+      year: r[5],
+      isoDate: r[6],
+      url: r[7],
+      letter: r[8],
+      isDoomSession: /doom sessions/i.test(r[2]) || /doom sessions/i.test(r[3]),
+      searchKey: (r[2] + " " + r[3] + " " + r[5]).toLowerCase()
+    }));
+
+    const BY_ID = new Map(RELEASES.map((r) => [r.id, r]));
+    const ARTIST_MAP = new Map();
+    for (const r of RELEASES) {
+      if (!ARTIST_MAP.has(r.artist)) ARTIST_MAP.set(r.artist, []);
+      ARTIST_MAP.get(r.artist).push(r);
+    }
+
+    const STORAGE_FAVS = "hps_saved_v1";
+    const STORAGE_RECENT = "hps_recent_v1";
+    const STORAGE_INK = "hps_ink_v1";
+
+    const INK_CONFIG = {
+      "acid-foil": { bcBg: "171214", bcLink: "e6b83e", colors: ["#e6b83e", "#e83e72", "#591638", "#180d12"] },
+      "acid-hoof": { bcBg: "191111", bcLink: "e05246", colors: ["#e05246", "#e8d9b5", "#691915", "#140a0a"] },
+      "rosin-haze": { bcBg: "161813", bcLink: "aec437", colors: ["#aec437", "#d6504b", "#3a4515", "#10120c"] },
+      "cosmic-skull": { bcBg: "12181a", bcLink: "35cfc3", colors: ["#35cfc3", "#e6b83e", "#104c4e", "#0b1113"] }
+    };
+
+    const ROSTER_PICKS = [
+      "Brant Bjork",
+      "Black Rainbows",
+      "Nebula",
+      "Bongzilla",
+      "Dead Meadow",
+      "The Lords Of Altamont",
+      "Nick Oliveri",
+      "Karma To Burn",
+      "Pentagram",
+      "Acid Mammoth",
+      "Yawning Man",
+      "Duel",
+      "Nightstalker",
+      "Dozer",
+      "Mondo Generator",
+      "Sonic Flower",
+      "Belzebong",
+      "Hippie Death Cult",
+      "Kylesa",
+      "Stöner",
+      "1782"
+    ];
+
+    const state = {
+      query: "",
+      artist: "ALL",
+      year: "ALL",
+      doomOnly: false,
+      savedOnly: false,
+      sort: "artist-asc",
+      view: "rack",
+      ink: localStorage.getItem(STORAGE_INK) || "acid-foil",
+      selectedId: null,
+      visibleLimit: 72,
+      wallLimit: 120,
+      saved: new Set(JSON.parse(localStorage.getItem(STORAGE_FAVS) || "[]")),
+      recent: JSON.parse(localStorage.getItem(STORAGE_RECENT) || "[]").filter((id) => BY_ID.has(id)),
+      filtered: [],
+      oilOn: !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    };
+
+    if (!INK_CONFIG[state.ink]) state.ink = "acid-foil";
+
+    const dom = {
+      rosterBar: document.getElementById("rosterBar"),
+      searchInput: document.getElementById("searchInput"),
+      searchClear: document.getElementById("searchClear"),
+      artistSelect: document.getElementById("artistSelect"),
+      yearSelect: document.getElementById("yearSelect"),
+      sortSelect: document.getElementById("sortSelect"),
+      viewRackBtn: document.getElementById("viewRackBtn"),
+      viewListBtn: document.getElementById("viewListBtn"),
+      resetBtn: document.getElementById("resetBtn"),
+      resultLedger: document.getElementById("resultLedger"),
+      catalogScroll: document.getElementById("catalogScroll"),
+      azRail: document.getElementById("azRail"),
+      azToast: document.getElementById("azToast"),
+      detail: document.getElementById("detail"),
+      pressTitle: document.getElementById("pressTitle"),
+      savedFilterBtn: document.getElementById("savedFilterBtn"),
+      randomBtn: document.getElementById("randomBtn"),
+      coverWallBtn: document.getElementById("coverWallBtn"),
+      wallModal: document.getElementById("wallModal"),
+      wallCloseBtn: document.getElementById("wallCloseBtn"),
+      wallSub: document.getElementById("wallSub"),
+      wallGrid: document.getElementById("wallGrid"),
+      wallMoreWrap: document.getElementById("wallMoreWrap"),
+      lightbox: document.getElementById("lightbox"),
+      lightboxImg: document.getElementById("lightboxImg"),
+      lightboxArtist: document.getElementById("lightboxArtist"),
+      lightboxCaption: document.getElementById("lightboxCaption"),
+      lbPrevBtn: document.getElementById("lbPrevBtn"),
+      lbNextBtn: document.getElementById("lbNextBtn"),
+      lbCloseBtn: document.getElementById("lbCloseBtn"),
+      oilCanvas: document.getElementById("oilCanvas"),
+      oilToggleBtn: document.getElementById("oilToggleBtn")
+    };
+
+    function artUrl(artId, size) {
+      return "https://f4.bcbits.com/img/a" + artId + "_" + (size || 16) + ".jpg";
+    }
+
+    function esc(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function applyInk(inkKey, persist) {
+      if (!INK_CONFIG[inkKey]) return;
+      state.ink = inkKey;
+      document.documentElement.setAttribute("data-ink", inkKey);
+      if (persist) {
+        try { localStorage.setItem(STORAGE_INK, inkKey); } catch {}
+      }
+      document.querySelectorAll(".ink-btn").forEach((b) => {
+        b.classList.toggle("active", b.dataset.ink === inkKey);
+      });
+      pulseOil(1.2);
+    }
+
+    function saveFavs() {
+      try { localStorage.setItem(STORAGE_FAVS, JSON.stringify([...state.saved])); } catch {}
+      dom.savedFilterBtn.textContent = "Saved (" + state.saved.size + ")";
+      dom.savedFilterBtn.classList.toggle("active", state.savedOnly);
+    }
+
+    function pushRecent(id) {
+      state.recent = [id, ...state.recent.filter((x) => x !== id)].slice(0, 12);
+      try { localStorage.setItem(STORAGE_RECENT, JSON.stringify(state.recent)); } catch {}
+    }
+
+    function populateDropdowns() {
+      const artists = [...ARTIST_MAP.keys()].sort((a, b) => a.localeCompare(b));
+      dom.artistSelect.innerHTML =
+        '<option value="ALL">All Artists (' + artists.length + ')</option>' +
+        artists.map((a) => '<option value="' + esc(a) + '">' + esc(a) + ' (' + ARTIST_MAP.get(a).length + ')</option>').join("");
+
+      const yearCounts = new Map();
+      for (const r of RELEASES) {
+        if (r.year) yearCounts.set(r.year, (yearCounts.get(r.year) || 0) + 1);
+      }
+      const years = [...yearCounts.keys()].sort((a, b) => b - a);
+      dom.yearSelect.innerHTML =
+        '<option value="ALL">All Years</option>' +
+        years.map((y) => '<option value="' + y + '">' + y + ' (' + yearCounts.get(y) + ')</option>').join("");
+    }
+
+    function renderRosterBar() {
+      const doomCount = RELEASES.filter((r) => r.isDoomSession).length;
+      const parts = [];
+      parts.push(
+        '<button type="button" class="roster-btn' +
+          (state.artist === "ALL" && !state.doomOnly ? " active" : "") +
+          '" data-roster="ALL">All (' + RELEASES.length + ')</button>'
+      );
+      parts.push(
+        '<button type="button" class="roster-btn doom-btn' +
+          (state.doomOnly ? " active" : "") +
+          '" data-roster="DOOM">Doom Sessions (' + doomCount + ')</button>'
+      );
+      for (const name of ROSTER_PICKS) {
+        const list = ARTIST_MAP.get(name);
+        if (!list) continue;
+        parts.push(
+          '<button type="button" class="roster-btn' +
+            (state.artist === name && !state.doomOnly ? " active" : "") +
+            '" data-roster="' + esc(name) + '">' + esc(name) + ' (' + list.length + ')</button>'
+        );
+      }
+      dom.rosterBar.innerHTML = parts.join("");
+    }
+
+    function computeFiltered() {
+      const q = state.query.trim().toLowerCase();
+      let list = RELEASES.filter((r) => {
+        if (state.doomOnly && !r.isDoomSession) return false;
+        if (state.artist !== "ALL" && r.artist !== state.artist) return false;
+        if (state.year !== "ALL" && String(r.year) !== String(state.year)) return false;
+        if (state.savedOnly && !state.saved.has(r.id)) return false;
+        if (q && !r.searchKey.includes(q)) return false;
+        return true;
+      });
+
+      list = list.slice();
+      switch (state.sort) {
+        case "artist-desc":
+          list.sort((a, b) => b.artist.localeCompare(a.artist) || b.year - a.year || a.title.localeCompare(b.title));
+          break;
+        case "year-desc":
+          list.sort((a, b) => b.year - a.year || b.isoDate.localeCompare(a.isoDate) || a.artist.localeCompare(b.artist));
+          break;
+        case "year-asc":
+          list.sort((a, b) => a.year - b.year || a.isoDate.localeCompare(b.isoDate) || a.artist.localeCompare(b.artist));
+          break;
+        case "title-asc":
+          list.sort((a, b) => a.title.localeCompare(b.title) || a.artist.localeCompare(b.artist));
+          break;
+        default:
+          list.sort((a, b) => a.artist.localeCompare(b.artist) || b.year - a.year || a.title.localeCompare(b.title));
+      }
+
+      state.filtered = list;
+      const hasFilters = Boolean(q || state.artist !== "ALL" || state.year !== "ALL" || state.doomOnly || state.savedOnly);
+      dom.resetBtn.classList.toggle("visible", hasFilters);
+      dom.searchClear.classList.toggle("visible", Boolean(q));
+      dom.resultLedger.innerHTML = "Showing <b>" + list.length + "</b> of " + RELEASES.length;
+    }
+
+    function groupKeyFor(item) {
+      if (state.sort === "year-desc" || state.sort === "year-asc") {
+        return item.year ? String(item.year) : "Unknown";
+      }
+      if (state.sort === "title-asc") {
+        const ch = (item.title.replace(/^[^A-Za-z0-9]+/, "")[0] || "#").toUpperCase();
+        return /[A-Z]/.test(ch) ? ch : "#";
+      }
+      return item.letter || "#";
+    }
+
+    function renderCatalog() {
+      const list = state.filtered;
+      if (!list.length) {
+        dom.catalogScroll.innerHTML =
+          '<div class="empty-state">' +
+            '<h3>No releases match those filters</h3>' +
+            '<p>Try clearing your search or switching back to the full Heavy Psych Sounds archive.</p>' +
+            '<button type="button" class="hdr-btn active" id="emptyResetBtn">Show All ' + RELEASES.length + ' Releases</button>' +
+          '</div>';
+        const btn = document.getElementById("emptyResetBtn");
+        if (btn) btn.addEventListener("click", resetFilters);
+        renderAzRail();
+        return;
+      }
+
+      const slice = list.slice(0, state.visibleLimit);
+      const groups = new Map();
+      for (const item of slice) {
+        const key = groupKeyFor(item);
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(item);
+      }
+
+      const fullCounts = new Map();
+      for (const item of list) {
+        const key = groupKeyFor(item);
+        fullCounts.set(key, (fullCounts.get(key) || 0) + 1);
+      }
+
+      const htmlParts = [];
+      for (const [key, items] of groups.entries()) {
+        const totalInGroup = fullCounts.get(key) || items.length;
+        htmlParts.push(
+          '<div class="section-divider" data-section="' + esc(key) + '">' +
+            '<span class="section-key">' + esc(key) + '</span>' +
+            '<span class="section-count">' + totalInGroup + (totalInGroup === 1 ? " release" : " releases") + '</span>' +
+          '</div>'
+        );
+
+        if (state.view === "list") {
+          htmlParts.push('<div class="list-stack">');
+          for (const item of items) {
+            const isSel = item.id === state.selectedId;
+            const isFav = state.saved.has(item.id);
+            htmlParts.push(
+              '<button type="button" class="list-row' + (isSel ? " selected" : "") + '" data-id="' + item.id + '">' +
+                '<img class="lr-thumb" src="' + artUrl(item.artId, 9) + '" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.visibility=&apos;hidden&apos;" />' +
+                '<div style="min-width:0">' +
+                  '<div class="lr-artist">' + esc(item.artist) + '</div>' +
+                  '<div class="lr-sub-mobile">' + esc(item.title) + '</div>' +
+                '</div>' +
+                '<div class="lr-title lr-title-col">' + esc(item.title) + '</div>' +
+                '<div class="lr-year">' + (item.year || "—") + '</div>' +
+                '<div class="lr-fav">' + (isFav ? "★" : "") + '</div>' +
+              '</button>'
+            );
+          }
+          htmlParts.push('</div>');
+        } else {
+          htmlParts.push('<div class="poster-grid">');
+          for (const item of items) {
+            const isSel = item.id === state.selectedId;
+            const isFav = state.saved.has(item.id);
+            htmlParts.push(
+              '<button type="button" class="sleeve-card' + (isSel ? " selected" : "") + '" data-id="' + item.id + '">' +
+                '<div class="sleeve-art-wrap">' +
+                  '<img class="sleeve-img" src="' + artUrl(item.artId, 16) + '" alt="' + esc(item.artist + " - " + item.title) + '" loading="lazy" referrerpolicy="no-referrer" onerror="this.outerHTML=&apos;<div class=sleeve-fallback>' + esc(item.artist).replace(/'/g, "") + '</div>&apos;" />' +
+                '</div>' +
+                '<div class="sleeve-info">' +
+                  '<div class="sleeve-artist">' + esc(item.artist) + '</div>' +
+                  '<div class="sleeve-album">' + esc(item.title) + '</div>' +
+                  '<div class="sleeve-meta">' +
+                    '<span>' + (item.year || "—") + ' · ' + (item.type === "t" ? "Single" : "Album") + '</span>' +
+                    (isFav ? '<span class="sleeve-fav-mark" title="Saved">★</span>' : '') +
+                  '</div>' +
+                '</div>' +
+              '</button>'
+            );
+          }
+          htmlParts.push('</div>');
+        }
+      }
+
+      if (list.length > slice.length) {
+        const remaining = list.length - slice.length;
+        htmlParts.push(
+          '<div class="load-more-wrap">' +
+            '<button type="button" class="load-more-btn" id="loadMoreBtn">Load More Releases (' + remaining + ' remaining)</button>' +
+          '</div>'
+        );
+      }
+
+      dom.catalogScroll.innerHTML = htmlParts.join("");
+      const moreBtn = document.getElementById("loadMoreBtn");
+      if (moreBtn) {
+        moreBtn.addEventListener("click", () => {
+          state.visibleLimit += 84;
+          renderCatalog();
+        });
+      }
+
+      renderAzRail();
+    }
+
+    function renderAzRail() {
+      const letters = ["#", ..."ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")];
+      const available = new Set();
+      for (const item of state.filtered) {
+        if (state.sort === "title-asc") {
+          const ch = (item.title.replace(/^[^A-Za-z0-9]+/, "")[0] || "#").toUpperCase();
+          available.add(/[A-Z]/.test(ch) ? ch : "#");
+        } else {
+          available.add(item.letter || "#");
+        }
+      }
+
+      dom.azRail.innerHTML = letters
+        .map((ch) => {
+          const has = available.has(ch);
+          return (
+            '<button type="button" class="az-btn' + (has ? " has-items" : "") + '" data-letter="' + ch + '"' + (has ? "" : " disabled") + '>' +
+              ch +
+            '</button>'
+          );
+        })
+        .join("");
+
+      updateActiveAzLetter();
+    }
+
+    let azToastTimer = null;
+    function showAzToast(letter) {
+      dom.azToast.textContent = letter;
+      dom.azToast.classList.add("visible");
+      clearTimeout(azToastTimer);
+      azToastTimer = setTimeout(() => dom.azToast.classList.remove("visible"), 520);
+    }
+
+    function jumpToLetter(letter) {
+      // If currently sorted by year, switch to Artist A-Z so A-Z jump is exact
+      if (state.sort === "year-desc" || state.sort === "year-asc") {
+        state.sort = "artist-asc";
+        dom.sortSelect.value = "artist-asc";
+        computeFiltered();
+      }
+
+      const idx = state.filtered.findIndex((item) => {
+        if (state.sort === "title-asc") {
+          const ch = (item.title.replace(/^[^A-Za-z0-9]+/, "")[0] || "#").toUpperCase();
+          return (/[A-Z]/.test(ch) ? ch : "#") === letter;
+        }
+        return (item.letter || "#") === letter;
+      });
+      if (idx < 0) return;
+
+      if (idx + 36 > state.visibleLimit) {
+        state.visibleLimit = Math.min(state.filtered.length, idx + 72);
+        renderCatalog();
+      }
+
+      const sec = dom.catalogScroll.querySelector('.section-divider[data-section="' + letter + '"]');
+      if (sec) {
+        dom.catalogScroll.scrollTop = Math.max(0, sec.offsetTop - 4);
+      }
+      showAzToast(letter);
+      updateActiveAzLetter(letter);
+    }
+
+    function updateActiveAzLetter(forced) {
+      let current = forced || null;
+      if (!current) {
+        const secs = dom.catalogScroll.querySelectorAll(".section-divider");
+        const top = dom.catalogScroll.scrollTop + 24;
+        for (const s of secs) {
+          if (s.offsetTop <= top) current = s.dataset.section;
+        }
+      }
+      dom.azRail.querySelectorAll(".az-btn").forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.letter === current);
+      });
+    }
+
+    function renderDetail(item) {
+      if (!item) {
+        dom.detail.innerHTML = '<div class="empty-state"><h3>Select a release</h3><p>Pick any album sleeve from the Heavy Psych Sounds catalog to inspect and listen.</p></div>';
+        return;
+      }
+
+      state.selectedId = item.id;
+      pushRecent(item.id);
+
+      const isTrack = item.type === "t";
+      const isFav = state.saved.has(item.id);
+      const inkCfg = INK_CONFIG[state.ink] || INK_CONFIG["acid-foil"];
+      const embedUrl =
+        "https://bandcamp.com/EmbeddedPlayer/" +
+        (isTrack ? "track=" : "album=") +
+        item.id +
+        "/size=large/bgcol=" + inkCfg.bcBg +
+        "/linkcol=" + inkCfg.bcLink +
+        "/artwork=none/transparent=true/";
+
+      const artistItems = (ARTIST_MAP.get(item.artist) || []).slice().sort((a, b) => b.year - a.year);
+      const moreByArtist = artistItems.filter((x) => x.id !== item.id);
+      const recentItems = state.recent.map((id) => BY_ID.get(id)).filter(Boolean);
+
+      dom.pressTitle.innerHTML = "<span>" + esc(item.artist) + "</span> · " + esc(item.title) + (item.year ? " (" + item.year + ")" : "");
+
+      dom.detail.innerHTML =
+        '<div class="booth-head">' +
+          '<button type="button" class="booth-cover-btn" id="boothCoverBtn" title="Inspect cover artwork">' +
+            '<img src="' + artUrl(item.artId, 16) + '" alt="' + esc(item.artist + " - " + item.title) + '" referrerpolicy="no-referrer" />' +
+          '</button>' +
+          '<div class="booth-titles">' +
+            '<div class="booth-kicker">' + (item.year || "Archive") + ' · ' + (isTrack ? "Single" : "Full Album") + (item.isDoomSession ? " · Doom Sessions" : "") + '</div>' +
+            '<h2 class="booth-artist">' + esc(item.artist) + '</h2>' +
+            '<div class="booth-album">' + esc(item.title) + '</div>' +
+            '<div class="booth-loc">Heavy Psych Sounds · Rome, Italy · ' + artistItems.length + (artistItems.length === 1 ? " release" : " releases") + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="booth-actions">' +
+          '<button type="button" class="booth-btn" id="prevBtn" title="Previous release (←)">← Prev</button>' +
+          '<button type="button" class="booth-btn" id="nextBtn" title="Next release (→)">Next →</button>' +
+          '<button type="button" class="booth-btn' + (isFav ? " saved" : "") + '" id="favBtn">' + (isFav ? "★ Saved" : "☆ Save") + '</button>' +
+          '<a class="booth-btn" href="' + esc(item.url) + '" target="_blank" rel="noopener noreferrer">Bandcamp ↗</a>' +
+        '</div>' +
+        '<div class="embed-slot">' +
+          '<iframe class="bc-iframe' + (isTrack ? " track-embed" : "") + '" src="' + embedUrl + '" seamless title="' + esc(item.artist + " - " + item.title) + '"></iframe>' +
+        '</div>' +
+        (moreByArtist.length
+          ? '<div class="related-block">' +
+              '<div class="related-head">' +
+                '<span>More by ' + esc(item.artist) + ' (' + moreByArtist.length + ')</span>' +
+                '<button type="button" id="filterArtistBtn">Show all in catalog</button>' +
+              '</div>' +
+              '<div class="mini-strip">' +
+                moreByArtist.slice(0, 14).map((m) =>
+                  '<button type="button" class="mini-tile" data-jump-id="' + m.id + '" title="' + esc(m.title + (m.year ? " (" + m.year + ")" : "")) + '">' +
+                    '<img src="' + artUrl(m.artId, 9) + '" alt="' + esc(m.title) + '" loading="lazy" referrerpolicy="no-referrer" />' +
+                  '</button>'
+                ).join("") +
+              '</div>' +
+            '</div>'
+          : '') +
+        (recentItems.length > 1
+          ? '<div class="related-block">' +
+              '<div class="related-head"><span>Recently Inspected (' + recentItems.length + ')</span></div>' +
+              '<div class="mini-strip">' +
+                recentItems.map((m) =>
+                  '<button type="button" class="mini-tile' + (m.id === item.id ? " active" : "") + '" data-jump-id="' + m.id + '" title="' + esc(m.artist + " — " + m.title) + '">' +
+                    '<img src="' + artUrl(m.artId, 9) + '" alt="' + esc(m.title) + '" loading="lazy" referrerpolicy="no-referrer" />' +
+                  '</button>'
+                ).join("") +
+              '</div>' +
+            '</div>'
+          : '');
+
+      // Highlight selected item in catalog without full re-render
+      dom.catalogScroll.querySelectorAll(".sleeve-card.selected, .list-row.selected").forEach((el) => el.classList.remove("selected"));
+      const activeCard = dom.catalogScroll.querySelector('[data-id="' + item.id + '"]');
+      if (activeCard) activeCard.classList.add("selected");
+
+      // Bind detail buttons
+      const coverBtn = document.getElementById("boothCoverBtn");
+      if (coverBtn) coverBtn.addEventListener("click", () => openLightbox(item));
+
+      const prevBtn = document.getElementById("prevBtn");
+      if (prevBtn) prevBtn.addEventListener("click", () => stepSelection(-1));
+
+      const nextBtn = document.getElementById("nextBtn");
+      if (nextBtn) nextBtn.addEventListener("click", () => stepSelection(1));
+
+      const favBtn = document.getElementById("favBtn");
+      if (favBtn) {
+        favBtn.addEventListener("click", () => {
+          if (state.saved.has(item.id)) state.saved.delete(item.id);
+          else state.saved.add(item.id);
+          saveFavs();
+          if (state.savedOnly) {
+            computeFiltered();
+            renderCatalog();
+          } else {
+            renderCatalog();
+          }
+          renderDetail(item);
+        });
+      }
+
+      const filterArtistBtn = document.getElementById("filterArtistBtn");
+      if (filterArtistBtn) {
+        filterArtistBtn.addEventListener("click", () => {
+          state.artist = item.artist;
+          state.doomOnly = false;
+          dom.artistSelect.value = item.artist;
+          state.visibleLimit = 72;
+          renderRosterBar();
+          computeFiltered();
+          renderCatalog();
+          dom.catalogScroll.scrollTop = 0;
+        });
+      }
+
+      dom.detail.querySelectorAll("[data-jump-id]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = BY_ID.get(Number(btn.dataset.jumpId));
+          if (target) {
+            renderDetail(target);
+            pulseOil(1.0);
+          }
+        });
+      });
+
+      pulseOil(0.95);
+    }
+
+    function stepSelection(delta) {
+      const list = state.filtered.length ? state.filtered : RELEASES;
+      const pos = list.findIndex((r) => r.id === state.selectedId);
+      const nextIdx = pos < 0 ? 0 : (pos + delta + list.length) % list.length;
+      const target = list[nextIdx];
+      if (!target) return;
+      if (nextIdx >= state.visibleLimit) {
+        state.visibleLimit = nextIdx + 36;
+        renderCatalog();
+      }
+      renderDetail(target);
+      const el = dom.catalogScroll.querySelector('[data-id="' + target.id + '"]');
+      if (el) el.scrollIntoView({ block: "nearest" });
+    }
+
+    function pickRandom() {
+      const pool = state.filtered.length ? state.filtered : RELEASES;
+      const pick = pool[Math.floor(Math.random() * pool.length)];
+      if (!pick) return;
+      const idx = state.filtered.findIndex((r) => r.id === pick.id);
+      if (idx >= state.visibleLimit) {
+        state.visibleLimit = idx + 36;
+        renderCatalog();
+      }
+      renderDetail(pick);
+      const el = dom.catalogScroll.querySelector('[data-id="' + pick.id + '"]');
+      if (el) el.scrollIntoView({ block: "center" });
+    }
+
+    function resetFilters() {
+      state.query = "";
+      state.artist = "ALL";
+      state.year = "ALL";
+      state.doomOnly = false;
+      state.savedOnly = false;
+      state.visibleLimit = 72;
+      dom.searchInput.value = "";
+      dom.artistSelect.value = "ALL";
+      dom.yearSelect.value = "ALL";
+      dom.savedFilterBtn.classList.remove("active");
+      renderRosterBar();
+      computeFiltered();
+      renderCatalog();
+      dom.catalogScroll.scrollTop = 0;
+    }
+
+    /* COVER WALL */
+    function renderWall() {
+      const list = state.filtered.length ? state.filtered : RELEASES;
+      const slice = list.slice(0, state.wallLimit);
+      dom.wallSub.textContent = slice.length + " of " + list.length + " sleeves";
+      dom.wallGrid.innerHTML = slice
+        .map(
+          (r) =>
+            '<button type="button" class="wall-tile" data-wall-id="' + r.id + '">' +
+              '<img src="' + artUrl(r.artId, 16) + '" alt="' + esc(r.artist + " - " + r.title) + '" loading="lazy" referrerpolicy="no-referrer" />' +
+              '<div class="wall-caption"><strong>' + esc(r.artist) + '</strong><span>' + esc(r.title) + '</span></div>' +
+            '</button>'
+        )
+        .join("");
+
+      if (list.length > slice.length) {
+        dom.wallMoreWrap.innerHTML =
+          '<button type="button" class="load-more-btn" id="wallMoreBtn">Load More Covers (' + (list.length - slice.length) + ' remaining)</button>';
+        document.getElementById("wallMoreBtn").addEventListener("click", () => {
+          state.wallLimit += 120;
+          renderWall();
+        });
+      } else {
+        dom.wallMoreWrap.innerHTML = "";
+      }
+    }
+
+    function openWall() {
+      state.wallLimit = 120;
+      renderWall();
+      dom.wallModal.classList.add("open");
+    }
+    function closeWall() {
+      dom.wallModal.classList.remove("open");
+    }
+
+    /* LIGHTBOX */
+    function openLightbox(item) {
+      if (!item) return;
+      dom.lightboxImg.src = artUrl(item.artId, 10);
+      dom.lightboxImg.alt = item.artist + " — " + item.title;
+      dom.lightboxArtist.textContent = item.artist;
+      dom.lightboxCaption.textContent = item.title + (item.year ? " · " + item.year : "") + " · Heavy Psych Sounds";
+      dom.lightbox.classList.add("open");
+    }
+    function closeLightbox() {
+      dom.lightbox.classList.remove("open");
+    }
+
+    /* 1970s PSYCHEDELIC LIQUID OIL-PROJECTOR CANVAS (Nebula / Black Rainbows visual motif) */
+    let oilPulse = 0;
+    let oilPhase = 0;
+    let oilRaf = null;
+
+    function pulseOil(amount) {
+      oilPulse = Math.min(2.2, oilPulse + (amount || 0.8));
+      if (!state.oilOn) drawOilFrame(oilPhase);
+    }
+
+    function drawOilFrame(t) {
+      const canvas = dom.oilCanvas;
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      const w = canvas.width;
+      const h = canvas.height;
+      const cfg = INK_CONFIG[state.ink] || INK_CONFIG["acid-foil"];
+      const [c1, c2, c3, bg] = cfg.colors;
+
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, w, h);
+
+      // Marbled psychedelic oil blobs
+      const blobs = [
+        { x: 0.22 + Math.sin(t * 0.7) * 0.14, y: 0.5 + Math.cos(t * 0.9) * 0.22, r: 95 + oilPulse * 24, col: c3, a: 0.92 },
+        { x: 0.52 + Math.cos(t * 0.6) * 0.18, y: 0.48 + Math.sin(t * 0.8) * 0.25, r: 82 + oilPulse * 20, col: c2, a: 0.65 },
+        { x: 0.78 + Math.sin(t * 0.85 + 1.4) * 0.15, y: 0.52 + Math.cos(t * 0.75) * 0.22, r: 76 + oilPulse * 18, col: c1, a: 0.72 },
+        { x: 0.38 + Math.sin(t * 1.1 + 2.2) * 0.2, y: 0.5 + Math.cos(t * 0.65 + 1.1) * 0.24, r: 58 + oilPulse * 14, col: c1, a: 0.52 }
+      ];
+
+      ctx.save();
+      ctx.globalCompositeOperation = "screen";
+      for (const b of blobs) {
+        const gx = b.x * w;
+        const gy = b.y * h;
+        const grad = ctx.createRadialGradient(gx, gy, 4, gx, gy, b.r);
+        grad.addColorStop(0, b.col);
+        grad.addColorStop(0.55, b.col + "66");
+        grad.addColorStop(1, "transparent");
+        ctx.globalAlpha = b.a;
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(gx, gy, b.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+
+      // Silkscreen halftone dot matrix overlay
+      ctx.fillStyle = "rgba(14, 11, 12, 0.28)";
+      for (let y = 4; y < h; y += 8) {
+        for (let x = (y % 16 === 0 ? 4 : 8); x < w; x += 8) {
+          ctx.fillRect(x, y, 2, 2);
+        }
+      }
+    }
+
+    function tickOil() {
+      if (!state.oilOn) {
+        oilRaf = null;
+        return;
+      }
+      oilPhase += 0.016 + oilPulse * 0.012;
+      oilPulse *= 0.94;
+      drawOilFrame(oilPhase);
+      oilRaf = requestAnimationFrame(tickOil);
+    }
+
+    function syncOilButton() {
+      dom.oilToggleBtn.textContent = state.oilOn ? "Oil Light: On" : "Oil Light: Off";
+      dom.oilToggleBtn.setAttribute("aria-pressed", String(state.oilOn));
+      if (state.oilOn && !oilRaf) tickOil();
+      if (!state.oilOn) {
+        if (oilRaf) cancelAnimationFrame(oilRaf);
+        oilRaf = null;
+        drawOilFrame(oilPhase);
+      }
+    }
+
+    /* EVENT WIRING */
+    dom.oilToggleBtn.addEventListener("click", () => {
+      state.oilOn = !state.oilOn;
+      syncOilButton();
+    });
+
+    document.querySelectorAll(".ink-btn").forEach((btn) => {
+      btn.addEventListener("click", () => applyInk(btn.dataset.ink, true));
+    });
+
+    dom.rosterBar.addEventListener("click", (e) => {
+      const btn = e.target.closest(".roster-btn");
+      if (!btn) return;
+      const val = btn.dataset.roster;
+      if (val === "ALL") {
+        state.artist = "ALL";
+        state.doomOnly = false;
+        dom.artistSelect.value = "ALL";
+      } else if (val === "DOOM") {
+        state.doomOnly = !state.doomOnly;
+        if (state.doomOnly) {
+          state.artist = "ALL";
+          dom.artistSelect.value = "ALL";
+        }
+      } else {
+        state.doomOnly = false;
+        state.artist = state.artist === val ? "ALL" : val;
+        dom.artistSelect.value = state.artist;
+      }
+      state.visibleLimit = 72;
+      renderRosterBar();
+      computeFiltered();
+      renderCatalog();
+      dom.catalogScroll.scrollTop = 0;
+    });
+
+    let searchTimer = null;
+    dom.searchInput.addEventListener("input", () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => {
+        state.query = dom.searchInput.value;
+        state.visibleLimit = 72;
+        computeFiltered();
+        renderCatalog();
+        dom.catalogScroll.scrollTop = 0;
+      }, 90);
+    });
+
+    dom.searchClear.addEventListener("click", () => {
+      dom.searchInput.value = "";
+      state.query = "";
+      state.visibleLimit = 72;
+      computeFiltered();
+      renderCatalog();
+      dom.searchInput.focus();
+    });
+
+    dom.artistSelect.addEventListener("change", () => {
+      state.artist = dom.artistSelect.value;
+      state.doomOnly = false;
+      state.visibleLimit = 72;
+      renderRosterBar();
+      computeFiltered();
+      renderCatalog();
+      dom.catalogScroll.scrollTop = 0;
+    });
+
+    dom.yearSelect.addEventListener("change", () => {
+      state.year = dom.yearSelect.value;
+      state.visibleLimit = 72;
+      computeFiltered();
+      renderCatalog();
+      dom.catalogScroll.scrollTop = 0;
+    });
+
+    dom.sortSelect.addEventListener("change", () => {
+      state.sort = dom.sortSelect.value;
+      state.visibleLimit = 72;
+      computeFiltered();
+      renderCatalog();
+      dom.catalogScroll.scrollTop = 0;
+    });
+
+    dom.viewRackBtn.addEventListener("click", () => {
+      state.view = "rack";
+      dom.viewRackBtn.classList.add("active");
+      dom.viewListBtn.classList.remove("active");
+      renderCatalog();
+    });
+
+    dom.viewListBtn.addEventListener("click", () => {
+      state.view = "list";
+      dom.viewListBtn.classList.add("active");
+      dom.viewRackBtn.classList.remove("active");
+      renderCatalog();
+    });
+
+    dom.resetBtn.addEventListener("click", resetFilters);
+
+    dom.savedFilterBtn.addEventListener("click", () => {
+      state.savedOnly = !state.savedOnly;
+      dom.savedFilterBtn.classList.toggle("active", state.savedOnly);
+      state.visibleLimit = 72;
+      computeFiltered();
+      renderCatalog();
+      dom.catalogScroll.scrollTop = 0;
+    });
+
+    dom.randomBtn.addEventListener("click", pickRandom);
+    dom.coverWallBtn.addEventListener("click", openWall);
+    dom.wallCloseBtn.addEventListener("click", closeWall);
+
+    dom.wallGrid.addEventListener("click", (e) => {
+      const tile = e.target.closest(".wall-tile");
+      if (!tile) return;
+      const target = BY_ID.get(Number(tile.dataset.wallId));
+      if (target) {
+        closeWall();
+        renderDetail(target);
+      }
+    });
+
+    dom.lbCloseBtn.addEventListener("click", closeLightbox);
+    dom.lightbox.addEventListener("click", (e) => {
+      if (e.target === dom.lightbox) closeLightbox();
+    });
+    dom.lbPrevBtn.addEventListener("click", () => {
+      stepSelection(-1);
+      openLightbox(BY_ID.get(state.selectedId));
+    });
+    dom.lbNextBtn.addEventListener("click", () => {
+      stepSelection(1);
+      openLightbox(BY_ID.get(state.selectedId));
+    });
+
+    dom.catalogScroll.addEventListener("click", (e) => {
+      const card = e.target.closest("[data-id]");
+      if (!card) return;
+      const item = BY_ID.get(Number(card.dataset.id));
+      if (item) renderDetail(item);
+    });
+
+    dom.catalogScroll.addEventListener("scroll", () => {
+      updateActiveAzLetter();
+    }, { passive: true });
+
+    // Vertical A–Z Rail click + pointer drag scrubbing
+    let azDragging = false;
+    function scrubAzAt(clientY) {
+      const rect = dom.azRail.getBoundingClientRect();
+      const ratio = Math.max(0, Math.min(0.999, (clientY - rect.top) / rect.height));
+      const buttons = dom.azRail.querySelectorAll(".az-btn");
+      const target = buttons[Math.floor(ratio * buttons.length)];
+      if (target && !target.disabled) {
+        jumpToLetter(target.dataset.letter);
+      }
+    }
+
+    dom.azRail.addEventListener("pointerdown", (e) => {
+      azDragging = true;
+      dom.azRail.setPointerCapture(e.pointerId);
+      scrubAzAt(e.clientY);
+    });
+    dom.azRail.addEventListener("pointermove", (e) => {
+      if (!azDragging) return;
+      scrubAzAt(e.clientY);
+    });
+    dom.azRail.addEventListener("pointerup", () => { azDragging = false; });
+    dom.azRail.addEventListener("pointercancel", () => { azDragging = false; });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const tag = (document.activeElement && document.activeElement.tagName || "").toLowerCase();
+      if (e.key === "Escape") {
+        if (dom.lightbox.classList.contains("open")) return closeLightbox();
+        if (dom.wallModal.classList.contains("open")) return closeWall();
+        if (tag === "input") document.activeElement.blur();
+        return;
+      }
+      if (tag === "input" || tag === "select" || tag === "textarea") return;
+
+      if (e.key === "/") {
+        e.preventDefault();
+        dom.searchInput.focus();
+      } else if (e.key === "l" || e.key === "L") {
+        if (state.view === "rack") dom.viewListBtn.click();
+        else dom.viewRackBtn.click();
+      } else if (e.key === "w" || e.key === "W") {
+        if (dom.wallModal.classList.contains("open")) closeWall();
+        else openWall();
+      } else if (e.key === "r" || e.key === "R") {
+        pickRandom();
+      } else if (e.key === "f" || e.key === "F") {
+        dom.savedFilterBtn.click();
+      } else if (e.key === "ArrowRight") {
+        stepSelection(1);
+        if (dom.lightbox.classList.contains("open")) openLightbox(BY_ID.get(state.selectedId));
+      } else if (e.key === "ArrowLeft") {
+        stepSelection(-1);
+        if (dom.lightbox.classList.contains("open")) openLightbox(BY_ID.get(state.selectedId));
+      }
+    });
+
+    /* INIT */
+    applyInk(state.ink, false);
+    saveFavs();
+    populateDropdowns();
+    renderRosterBar();
+    computeFiltered();
+
+    // Pick iconic Black Rainbows Superskull or first release as default inspected item
+    const featured =
+      RELEASES.find((r) => r.artist === "Black Rainbows" && /superskull/i.test(r.title)) ||
+      RELEASES.find((r) => r.artist === "Acid Mammoth") ||
+      state.filtered[0];
+
+    renderCatalog();
+    renderDetail(featured);
+    syncOilButton();
+  </script>
+  <script src="./now-playing-dock.js" defer></script>
+  <script src="./chrome-cast.js" defer></script>
+</body>
+</html>

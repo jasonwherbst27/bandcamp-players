@@ -1,7 +1,16 @@
-/* Shared Persistent Always-Visible Now-Playing Bar
- * Houses the ONE live Bandcamp player iframe cleanly at the bottom of the screen
- * across all 13 standalone players. Browsing or clicking any other album never
- * stops or reloads your music — switching what plays is always an explicit manual click.
+/* Shared Persistent Vertically Resizable Now-Playing Bar (All 16 Players)
+ *
+ * Streamlined UX:
+ * - While idle (nothing playing yet), clicking any album immediately loads it
+ *   into the bottom Now-Playing Bar — zero extra "Load" clicks required.
+ * - The moment you click inside the Bandcamp player to press Play, playback
+ *   protection automatically engages so browsing or clicking other albums never
+ *   cuts off your music.
+ * - While protected, viewing any other album shows a clean one-click "Play This Album"
+ *   button (both in the detail pane and on the bottom bar) to switch whenever you want,
+ *   plus a quick Lock/Auto toggle on the bar for manual control.
+ * - Drag the top edge of the bar vertically to resize smoothly from compact (120px)
+ *   up to full tracklist height, persisted in localStorage.
  */
 (function () {
   "use strict";
@@ -15,23 +24,35 @@
   if (isIndexPage) return;
 
   const PLAY_ICON =
-    '<svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">' +
+    '<svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">' +
       '<path d="M3.5 2.2L13.5 8L3.5 13.8V2.2Z"/>' +
     '</svg>';
 
   const CHEVRON_UP =
-    '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">' +
+    '<svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">' +
       '<path d="M3.5 10.5L8 6L12.5 10.5"/>' +
     '</svg>';
 
   const CHEVRON_DOWN =
-    '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">' +
+    '<svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">' +
       '<path d="M3.5 6L8 10.5L12.5 6"/>' +
     '</svg>';
 
   const STOP_ICON =
     '<svg width="10" height="10" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true">' +
       '<rect x="2.5" y="2.5" width="9" height="9"/>' +
+    '</svg>';
+
+  const LOCK_ICON =
+    '<svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">' +
+      '<rect x="3" y="7.2" width="10" height="7" rx="1"/>' +
+      '<path d="M5.2 7.2V5a2.8 2.8 0 0 1 5.6 0v2.2"/>' +
+    '</svg>';
+
+  const UNLOCK_ICON =
+    '<svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">' +
+      '<rect x="3" y="7.2" width="10" height="7" rx="1"/>' +
+      '<path d="M5.2 7.2V5a2.8 2.8 0 0 1 5.3-1.2"/>' +
     '</svg>';
 
   const HEIGHT_STORAGE_KEY = "bc_np_bar_height_v1";
@@ -67,13 +88,18 @@
   const state = {
     playing: null,            // { embedSrc, key, isTrack, artist, title, cover, thumb, meta, url, collection }
     viewed: null,             // Currently browsed album inside #detail
+    playbackActive: false,    // True once user clicks inside the Bandcamp player (protects audio while browsing)
+    manualLock: false,        // Optional explicit lock toggle
     expanded: initialHeight > 165,
     playerHeight: initialHeight,
     lastExpandedHeight: initialHeight > 165 ? initialHeight : DEFAULT_EXPANDED_HEIGHT,
     isResizing: false,
-    initializedFirst: false,  // Auto-load initial album once so the bar is ready on arrival
     detailContainer: null
   };
+
+  function isProtected() {
+    return Boolean(state.playing && (state.playbackActive || state.manualLock));
+  }
 
   let barEl = null;
   let resizeHandleEl = null;
@@ -81,7 +107,6 @@
   let kickerEl = null;
   let titleEl = null;
   let subBtnsEl = null;
-  let playerColEl = null;
   let iframeMountEl = null;
   let idlePromptEl = null;
   let persistentIframe = null;
@@ -110,10 +135,6 @@
     return m ? (m[1].toLowerCase() + "=" + m[2]) : src;
   }
 
-  /* Ensure Bandcamp embed uses artwork=none (since our bar shows crisp album art)
-   * and tracklist=true for albums so the top 120px is always the full Play/Pause/Scrubber
-   * transport bar and expanding to 340px smoothly reveals the full tracklist without reloading!
-   */
   function normalizeEmbedSrc(src) {
     if (!src) return "";
     const isTrack = /\/track=\d+/i.test(src);
@@ -168,23 +189,23 @@
     const accent =
       readCssVar(rootStyle, [
         "--brass-lit", "--brass", "--ochre-hi", "--ochre", "--accent", "--accent-hi",
-        "--cyan", "--gold", "--orange", "--amber", "--pink", "--frog", "--lamp-color", "--rust", "--crimson"
+        "--gold", "--cyan", "--orange", "--amber", "--pink", "--frog", "--lamp-color", "--rust", "--crimson"
       ]) || (isLight ? "#235472" : "#e0a94d");
 
     const monoFont =
       readCssVar(rootStyle, ["--font-mono"]) ||
-      "'Share Tech Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace";
+      "'IBM Plex Mono', 'Share Tech Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace";
 
     if (isLight) {
       return {
         barBg: "rgba(247, 244, 238, 0.98)",
-        cardBg: "rgba(255, 255, 255, 0.88)",
+        cardBg: "rgba(255, 255, 255, 0.85)",
         slotBg: "#f2eee6",
         ink: "#1a1d20",
         inkMid: "#444c54",
         inkMuted: "#68727c",
-        border: "rgba(26, 29, 32, 0.2)",
-        borderStrong: "rgba(26, 29, 32, 0.34)",
+        border: "rgba(26, 29, 32, 0.18)",
+        borderStrong: "rgba(26, 29, 32, 0.32)",
         accent,
         accentInk: "#ffffff",
         btnBg: "rgba(26, 29, 32, 0.06)",
@@ -196,13 +217,13 @@
 
     return {
       barBg: "rgba(10, 14, 17, 0.98)",
-      cardBg: "rgba(15, 21, 25, 0.86)",
+      cardBg: "rgba(15, 21, 25, 0.72)",
       slotBg: "#070b0d",
       ink: "#f2ede2",
       inkMid: "#c7c0b0",
       inkMuted: "#8d9699",
-      border: "rgba(255, 255, 255, 0.16)",
-      borderStrong: "rgba(255, 255, 255, 0.3)",
+      border: "rgba(255, 255, 255, 0.15)",
+      borderStrong: "rgba(255, 255, 255, 0.28)",
       accent,
       accentInk: "#090c0e",
       btnBg: "rgba(255, 255, 255, 0.07)",
@@ -239,79 +260,58 @@
     style.id = "bc-np-styles";
     style.textContent = `
       body.bc-np-active {
-        padding-bottom: 136px !important;
+        padding-bottom: var(--bc-np-body-pad, 148px) !important;
       }
 
-      /* Inline Manual Control Box inside #detail (where ephemeral iframe used to live) */
+      /* Streamlined Single-Row Inline Bar inside #detail */
       .bc-np-inline-card {
-        padding: 15px 17px;
-        background: var(--bc-np-card-bg);
-        border: 1px solid var(--bc-np-border-strong);
-        border-radius: 2px;
-        color: var(--bc-np-ink);
-        display: flex;
-        flex-direction: column;
-        gap: 11px;
-      }
-
-      .bc-np-inline-head {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 10px;
         flex-wrap: wrap;
+        padding: 10px 13px;
+        background: var(--bc-np-card-bg);
+        border: 1px solid var(--bc-np-border);
+        border-radius: 2px;
+        color: var(--bc-np-ink);
+      }
+
+      .bc-np-inline-card.is-switch {
+        border-color: var(--bc-np-border-strong);
+      }
+
+      .bc-np-inline-status {
+        min-width: 0;
+        flex: 1 1 160px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .bc-np-inline-label {
         font-family: var(--bc-np-mono);
         font-size: 11px;
-        letter-spacing: 0.04em;
         color: var(--bc-np-accent);
-      }
-
-      .bc-np-inline-copy {
-        font-size: 13.5px;
-        line-height: 1.48;
-        color: var(--bc-np-ink-mid);
-      }
-
-      .bc-np-current-ref {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 8px 10px;
-        background: var(--bc-np-btn-bg);
-        border: 1px solid var(--bc-np-border);
-      }
-      .bc-np-current-ref img {
-        width: 34px;
-        height: 34px;
-        object-fit: cover;
-        display: block;
-        flex-shrink: 0;
-        border: 1px solid var(--bc-np-border);
-      }
-      .bc-np-current-ref-text {
-        min-width: 0;
-        flex: 1;
-      }
-      .bc-np-current-ref-label {
-        font-family: var(--bc-np-mono);
-        font-size: 10px;
-        color: var(--bc-np-ink-muted);
-      }
-      .bc-np-current-ref-title {
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--bc-np-ink);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        margin-top: 2px;
+      }
+
+      .bc-np-inline-sub {
+        font-size: 12px;
+        color: var(--bc-np-ink-muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .bc-np-inline-actions {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
         flex-wrap: wrap;
+        flex-shrink: 0;
       }
 
       /* Shared Flat Geometric Buttons */
@@ -320,10 +320,10 @@
         align-items: center;
         justify-content: center;
         gap: 6px;
-        padding: 8px 14px;
-        min-height: 36px;
+        padding: 7px 13px;
+        min-height: 34px;
         font-family: inherit;
-        font-size: 12.5px;
+        font-size: 12px;
         font-weight: 600;
         letter-spacing: 0.015em;
         color: var(--bc-np-ink);
@@ -357,10 +357,18 @@
       }
 
       .bc-np-btn.sm {
-        padding: 5px 9px;
-        min-height: 29px;
-        font-size: 11.5px;
+        padding: 4px 8px;
+        min-height: 28px;
+        font-size: 11px;
         font-weight: 500;
+      }
+
+      .bc-np-btn.switch-pill {
+        max-width: 190px;
+      }
+      .bc-np-btn.switch-pill span {
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       /* ALWAYS-VISIBLE PERSISTENT BOTTOM NOW-PLAYING BAR */
@@ -432,7 +440,7 @@
         max-width: 1560px;
         margin: 0 auto;
         display: grid;
-        grid-template-columns: minmax(240px, 340px) minmax(0, 1fr);
+        grid-template-columns: minmax(250px, 360px) minmax(0, 1fr);
         align-items: start;
         gap: 16px;
       }
@@ -442,7 +450,7 @@
         align-items: flex-start;
         gap: 12px;
         min-width: 0;
-        padding-top: 6px;
+        padding-top: 4px;
       }
 
       .bc-np-cover {
@@ -474,7 +482,7 @@
       .bc-np-kicker {
         font-family: var(--bc-np-mono);
         font-size: 10.5px;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.04em;
         color: var(--bc-np-accent);
         white-space: nowrap;
         overflow: hidden;
@@ -499,7 +507,6 @@
         margin-top: 2px;
       }
 
-      /* Live Bandcamp Transport & Expandable Tracklist Column */
       .bc-np-player-col {
         min-width: 0;
         background: var(--bc-np-slot-bg);
@@ -539,8 +546,8 @@
       }
 
       @media (max-width: 860px) {
-        body.bc-np-active { padding-bottom: 220px !important; }
-        .bc-np-bar { padding: 8px 12px; }
+        body.bc-np-active { padding-bottom: 224px !important; }
+        .bc-np-bar { padding: 10px 12px 8px; }
         .bc-np-bar-inner {
           grid-template-columns: 1fr;
           gap: 8px;
@@ -574,8 +581,8 @@
         '<div class="bc-np-meta-col">' +
           '<div class="bc-np-cover" id="bcNpCover" aria-hidden="true">' + PLAY_ICON + '</div>' +
           '<div class="bc-np-info">' +
-            '<div class="bc-np-kicker" id="bcNpKicker">Now Playing · Ready</div>' +
-            '<div class="bc-np-title" id="bcNpTitle">Pick an album to load</div>' +
+            '<div class="bc-np-kicker" id="bcNpKicker">Player · Ready</div>' +
+            '<div class="bc-np-title" id="bcNpTitle">Select any album to play</div>' +
             '<div class="bc-np-bar-btns" id="bcNpSubBtns"></div>' +
           '</div>' +
         '</div>' +
@@ -592,7 +599,6 @@
     kickerEl = document.getElementById("bcNpKicker");
     titleEl = document.getElementById("bcNpTitle");
     subBtnsEl = document.getElementById("bcNpSubBtns");
-    playerColEl = document.getElementById("bcNpPlayerCol");
     iframeMountEl = document.getElementById("bcNpIframeMount");
     idlePromptEl = document.getElementById("bcNpIdlePrompt");
 
@@ -609,6 +615,7 @@
     if (isExp) state.lastExpandedHeight = clamped;
 
     document.documentElement.style.setProperty("--bc-np-player-h", clamped + "px");
+    document.documentElement.style.setProperty("--bc-np-body-pad", (clamped + 28) + "px");
     if (barEl) barEl.classList.toggle("expanded", isExp);
     if (resizeHandleEl) {
       resizeHandleEl.setAttribute("aria-valuemax", String(maxH));
@@ -636,7 +643,7 @@
 
     resizeHandleEl.addEventListener("pointermove", e => {
       if (!state.isResizing) return;
-      const deltaY = startY - e.clientY; // dragging upward increases height
+      const deltaY = startY - e.clientY;
       if (Math.abs(deltaY) > 2) moved = true;
       applyPlayerHeight(startH + deltaY, false);
     });
@@ -696,10 +703,10 @@
 
   function readViewedMetadata(detailRoot, iframeSrc) {
     const brandEl =
-      document.querySelector(".brand") ||
       document.querySelector(".brand-title") ||
+      document.querySelector(".brand") ||
       document.querySelector(".masthead-brand");
-    const collection = cleanText(brandEl) || document.title.split("—")[0].trim() || "Bandcamp Archive";
+    const collection = cleanText(brandEl) || document.title.split("·")[0].split("—")[0].trim() || "Bandcamp Archive";
 
     let coverSrc = "";
     const imgCandidates = [
@@ -712,7 +719,7 @@
       detailRoot.querySelector("img[src*='bcbits.com']")
     ].filter(Boolean);
     for (const img of imgCandidates) {
-      if (img.src && !img.closest(".strip-grid") && !img.closest(".history-strip") && !img.closest(".bc-np-inline-card")) {
+      if (img.src && !img.closest(".strip-grid") && !img.closest(".history-strip") && !img.closest(".mini-strip") && !img.closest(".bc-np-inline-card")) {
         coverSrc = img.src;
         break;
       }
@@ -803,7 +810,7 @@
     if (!barEl) return;
     barEl.classList.add("flash");
     clearTimeout(flashBar._t);
-    flashBar._t = setTimeout(() => barEl.classList.remove("flash"), 850);
+    flashBar._t = setTimeout(() => barEl.classList.remove("flash"), 750);
   }
 
   function loadIntoBar(item, opts) {
@@ -814,6 +821,14 @@
     state.playing = Object.assign({}, item);
 
     if (!sameRelease || !persistentIframe) {
+      // Fresh album loaded: auto-follow remains active until user clicks Play inside Bandcamp
+      state.playbackActive = false;
+      if (options.clearManualLock) state.manualLock = false;
+
+      if (persistentIframe && document.activeElement === persistentIframe) {
+        try { persistentIframe.blur(); } catch {}
+      }
+
       iframeMountEl.innerHTML = "";
       persistentIframe = document.createElement("iframe");
       persistentIframe.id = "bcPersistentIframe";
@@ -844,6 +859,8 @@
 
   function stopAndUnload() {
     state.playing = null;
+    state.playbackActive = false;
+    state.manualLock = false;
     if (persistentIframe) {
       persistentIframe.src = "about:blank";
       persistentIframe.remove();
@@ -857,29 +874,46 @@
     refreshInlineCard();
   }
 
+  function toggleProtectionLock() {
+    if (!state.playing) return;
+    if (isProtected()) {
+      // Unlock: allow clicking albums to immediately follow again
+      state.playbackActive = false;
+      state.manualLock = false;
+      if (state.viewed && state.viewed.key !== state.playing.key) {
+        loadIntoBar(state.viewed, { flash: true });
+        return;
+      }
+    } else {
+      state.manualLock = true;
+    }
+    renderBarMeta();
+    refreshInlineCard();
+  }
+
   function renderBarMeta() {
     if (!barEl) return;
     applyThemeVars();
 
     if (!state.playing) {
       coverEl.innerHTML = PLAY_ICON;
-      kickerEl.textContent = "Now Playing Bar · Stopped";
-      titleEl.textContent = "Nothing loaded";
+      kickerEl.textContent = "Player · Stopped";
+      titleEl.textContent = "Click any album to play";
       titleEl.title = "";
       subBtnsEl.innerHTML = "";
 
       idlePromptEl.innerHTML = "";
       const txt = document.createElement("span");
       txt.textContent = state.viewed
-        ? "Player stopped. Ready to load " + state.viewed.artist + " — " + state.viewed.title + "."
-        : "Player stopped. Select any album to load.";
+        ? "Stopped · Click any album or play " + state.viewed.title + "."
+        : "Stopped · Click any album to start listening.";
       idlePromptEl.appendChild(txt);
 
       if (state.viewed) {
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "bc-np-btn primary";
-        btn.innerHTML = PLAY_ICON + "<span>Load Viewed " + (state.viewed.isTrack ? "Single" : "Album") + "</span>";
+        btn.innerHTML = PLAY_ICON + "<span>Play " + escapeHtml(state.viewed.title) + "</span>";
         btn.addEventListener("click", () => loadIntoBar(state.viewed, { flash: true }));
         idlePromptEl.appendChild(btn);
       }
@@ -887,6 +921,7 @@
     }
 
     const p = state.playing;
+    const locked = isProtected();
     const isViewingOther = Boolean(state.viewed && state.viewed.key !== p.key);
     const displayName = p.artist === p.title ? p.title : (p.artist + " — " + p.title);
 
@@ -896,24 +931,52 @@
       coverEl.innerHTML = PLAY_ICON;
     }
 
-    kickerEl.textContent = isViewingOther
-      ? "Now Playing · Locked while browsing"
-      : "Now Playing · " + (p.isTrack ? "Single" : "Album");
+    if (locked && isViewingOther) {
+      kickerEl.textContent = "Now Playing · Protected while browsing";
+    } else if (locked) {
+      kickerEl.textContent = "Now Playing · " + (p.isTrack ? "Single" : "Album");
+    } else {
+      kickerEl.textContent = "Ready to Play · Auto-follows clicks";
+    }
+
     titleEl.textContent = displayName;
     titleEl.title = displayName;
 
     subBtnsEl.innerHTML = "";
 
+    // Quick-switch shortcut right on the bar when browsing a different album
+    if (isViewingOther && state.viewed) {
+      const swBtn = document.createElement("button");
+      swBtn.type = "button";
+      swBtn.className = "bc-np-btn sm primary switch-pill";
+      swBtn.title = "Switch bottom player to " + state.viewed.title;
+      swBtn.innerHTML = PLAY_ICON + "<span>Switch: " + escapeHtml(state.viewed.title) + "</span>";
+      swBtn.addEventListener("click", () => loadIntoBar(state.viewed, { flash: true, clearManualLock: true }));
+      subBtnsEl.appendChild(swBtn);
+    }
+
     if (!p.isTrack) {
       const trkBtn = document.createElement("button");
       trkBtn.type = "button";
       trkBtn.className = "bc-np-btn sm" + (state.expanded ? " primary" : "");
-      trkBtn.title = "Expand or collapse full album tracklist without stopping audio (P)";
+      trkBtn.title = "Expand or collapse full tracklist (P)";
       trkBtn.innerHTML =
         (state.expanded ? CHEVRON_DOWN + "<span>Compact</span>" : CHEVRON_UP + "<span>Tracklist</span>");
       trkBtn.addEventListener("click", () => setExpanded(!state.expanded));
       subBtnsEl.appendChild(trkBtn);
     }
+
+    const lockBtn = document.createElement("button");
+    lockBtn.type = "button";
+    lockBtn.className = "bc-np-btn sm";
+    lockBtn.title = locked
+      ? "Audio is protected while you browse. Click to unlock auto-follow."
+      : "Lock current album so clicking other albums won't replace it.";
+    lockBtn.innerHTML = locked
+      ? (LOCK_ICON + "<span>Locked</span>")
+      : (UNLOCK_ICON + "<span>Auto</span>");
+    lockBtn.addEventListener("click", toggleProtectionLock);
+    subBtnsEl.appendChild(lockBtn);
 
     if (p.url) {
       const link = document.createElement("a");
@@ -928,7 +991,7 @@
     const stopBtn = document.createElement("button");
     stopBtn.type = "button";
     stopBtn.className = "bc-np-btn sm";
-    stopBtn.title = "Stop and clear Now-Playing Bar";
+    stopBtn.title = "Stop player";
     stopBtn.innerHTML = STOP_ICON + "<span>Stop</span>";
     stopBtn.addEventListener("click", stopAndUnload);
     subBtnsEl.appendChild(stopBtn);
@@ -943,76 +1006,65 @@
     const isPlayingThis = Boolean(state.playing && state.playing.key === item.key);
     const isPlayingOther = Boolean(state.playing && state.playing.key !== item.key);
 
+    // Case 1: This album is ALREADY in the bottom player — ultra-clean 1-line strip!
     if (isPlayingThis) {
+      const statusLabel = isProtected()
+        ? "Playing in bar below"
+        : "Ready in player below · Press Play";
+
       card.innerHTML =
-        '<div class="bc-np-inline-head">' +
-          '<span>Loaded in the Now-Playing Bar Below</span>' +
-          '<span>' + (item.isTrack ? "Single Track" : "Full Album") + '</span>' +
-        '</div>' +
-        '<div class="bc-np-inline-copy">' +
-          'Press Play on the Bandcamp bar at the bottom of the screen. You can click any other album to look around and this will keep playing until you manually switch.' +
+        '<div class="bc-np-inline-status">' +
+          '<div class="bc-np-inline-label">' + statusLabel + '</div>' +
         '</div>' +
         '<div class="bc-np-inline-actions">' +
           (!item.isTrack
-            ? '<button type="button" class="bc-np-btn primary" data-act="tracklist">' +
-                (state.expanded ? CHEVRON_DOWN + '<span>Collapse Tracklist</span>' : CHEVRON_UP + '<span>Show Full Tracklist Below</span>') +
+            ? '<button type="button" class="bc-np-btn sm" data-act="tracklist">' +
+                (state.expanded ? CHEVRON_DOWN + '<span>Compact</span>' : CHEVRON_UP + '<span>Tracklist</span>') +
               '</button>'
             : '') +
-          '<button type="button" class="bc-np-btn" data-act="stop">' +
-            STOP_ICON + '<span>Stop Player</span>' +
-          '</button>' +
         '</div>';
 
       const trk = card.querySelector('[data-act="tracklist"]');
       if (trk) trk.addEventListener("click", () => setExpanded(!state.expanded));
-      card.querySelector('[data-act="stop"]').addEventListener("click", stopAndUnload);
       return card;
     }
 
+    // Case 2: Music is actively playing on ANOTHER album — clean one-click "Play This Album" switch!
     if (isPlayingOther) {
       const p = state.playing;
       const pName = p.artist === p.title ? p.title : (p.artist + " — " + p.title);
+      card.classList.add("is-switch");
       card.innerHTML =
-        '<div class="bc-np-inline-head">' +
-          '<span>Browsing Only · Current Music Stays Playing</span>' +
-          '<span>Manual Switch</span>' +
-        '</div>' +
-        '<div class="bc-np-current-ref">' +
-          (p.thumb ? '<img src="' + escapeHtml(p.thumb) + '" alt="" referrerpolicy="no-referrer">' : '') +
-          '<div class="bc-np-current-ref-text">' +
-            '<div class="bc-np-current-ref-label">Still loaded in Now-Playing Bar below</div>' +
-            '<div class="bc-np-current-ref-title">' + escapeHtml(pName) + '</div>' +
-          '</div>' +
+        '<div class="bc-np-inline-status">' +
+          '<div class="bc-np-inline-label">Keep listening · ' + escapeHtml(pName) + '</div>' +
+          '<div class="bc-np-inline-sub">Browsing will not stop your music</div>' +
         '</div>' +
         '<div class="bc-np-inline-actions">' +
           '<button type="button" class="bc-np-btn primary" data-act="switch">' +
-            PLAY_ICON + '<span>Load This ' + kindWord + ' in Now-Playing Bar</span>' +
+            PLAY_ICON + '<span>Play This ' + kindWord + '</span>' +
           '</button>' +
         '</div>';
 
       card.querySelector('[data-act="switch"]').addEventListener("click", () => {
-        loadIntoBar(item, { flash: true });
+        loadIntoBar(item, { flash: true, clearManualLock: true });
       });
       return card;
     }
 
-    /* Stopped / idle state */
+    // Case 3: Player was explicitly stopped — one-click Play button
+    card.classList.add("is-switch");
     card.innerHTML =
-      '<div class="bc-np-inline-head">' +
-        '<span>Now-Playing Bar · Ready</span>' +
-        '<span>' + (item.isTrack ? "Single Track" : "Full Album") + '</span>' +
-      '</div>' +
-      '<div class="bc-np-inline-copy">' +
-        'Click below to load this ' + kindWord.toLowerCase() + ' into the persistent Bandcamp player bar at the bottom of the screen.' +
+      '<div class="bc-np-inline-status">' +
+        '<div class="bc-np-inline-label">Player stopped</div>' +
       '</div>' +
       '<div class="bc-np-inline-actions">' +
         '<button type="button" class="bc-np-btn primary" data-act="load">' +
-          PLAY_ICON + '<span>Load This ' + kindWord + ' in Now-Playing Bar</span>' +
+          PLAY_ICON + '<span>Play This ' + kindWord + '</span>' +
         '</button>' +
       '</div>';
 
     card.querySelector('[data-act="load"]').addEventListener("click", () => {
-      loadIntoBar(item, { flash: true });
+      loadIntoBar(item, { flash: true, clearManualLock: true });
     });
     return card;
   }
@@ -1041,18 +1093,41 @@
       const info = readViewedMetadata(detailRoot, src);
       state.viewed = info;
 
-      /* Auto-load the very first album on page open so a live Bandcamp player is immediately ready */
-      if (!state.initializedFirst) {
-        state.initializedFirst = true;
+      /* Streamlined Auto-Follow:
+       * If nothing is actively playing (and user hasn't manually locked the bar),
+       * immediately load the clicked album into the bottom player!
+       * If music IS actively playing, leave it uninterrupted so the user can browse freely.
+       */
+      if (!isProtected()) {
         loadIntoBar(info, { flash: false });
       }
 
-      /* Replace ephemeral detail iframe with manual switcher card so browsing never stops music */
       iframe.setAttribute("src", "about:blank");
       iframe.replaceWith(buildInlineCard(info));
     });
 
     renderBarMeta();
+  }
+
+  /* Detect when the user clicks inside the Bandcamp iframe (e.g., to press Play)
+   * and automatically lock playback so subsequent browsing never stops their audio.
+   */
+  function bindIframePlaybackDetection() {
+    window.addEventListener("blur", () => {
+      if (document.visibilityState !== "visible") return;
+      setTimeout(() => {
+        if (
+          persistentIframe &&
+          state.playing &&
+          document.activeElement === persistentIframe &&
+          !state.playbackActive
+        ) {
+          state.playbackActive = true;
+          renderBarMeta();
+          refreshInlineCard();
+        }
+      }, 0);
+    });
   }
 
   function init() {
@@ -1066,6 +1141,7 @@
     injectStyles();
     buildBarDom();
     applyThemeVars();
+    bindIframePlaybackDetection();
 
     interceptDetailIframes();
     renderBarMeta();
@@ -1075,8 +1151,8 @@
       obs.observe(detailRoot, { childList: true, subtree: true });
 
       const themeObs = new MutationObserver(() => applyThemeVars());
-      themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "data-theme"] });
-      themeObs.observe(document.body, { attributes: true, attributeFilter: ["class", "data-theme"] });
+      themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "data-theme", "data-ink"] });
+      themeObs.observe(document.body, { attributes: true, attributeFilter: ["class", "data-theme", "data-ink"] });
     }
 
     document.addEventListener("keydown", e => {
