@@ -59,7 +59,17 @@
   const MIN_PLAYER_HEIGHT = 120;
   const DEFAULT_EXPANDED_HEIGHT = 340;
 
+  function isMobilePhone() {
+    return (
+      document.documentElement.classList.contains("is-mobile-phone") ||
+      (window.innerWidth || 1024) <= 680
+    );
+  }
+
   function getMaxPlayerHeight() {
+    if (isMobilePhone()) {
+      return Math.max(200, Math.min(420, Math.round(window.innerHeight * 0.55)));
+    }
     return Math.max(240, Math.min(620, window.innerHeight - 140));
   }
 
@@ -93,6 +103,7 @@
     expanded: initialHeight > 165,
     playerHeight: initialHeight,
     lastExpandedHeight: initialHeight > 165 ? initialHeight : DEFAULT_EXPANDED_HEIGHT,
+    mobileMinimized: false,
     isResizing: false,
     detailContainer: null
   };
@@ -261,6 +272,13 @@
     style.textContent = `
       body.bc-np-active {
         padding-bottom: var(--bc-np-body-pad, 148px) !important;
+      }
+
+      /* Enlarged photo lightboxes & hover loupes always sit above the bottom Now-Playing Bar */
+      body.bc-np-active .lightbox,
+      body.bc-np-active .lightbox.open,
+      body.bc-np-active .hover-zoom {
+        z-index: 220 !important;
       }
 
       /* Streamlined Single-Row Inline Bar inside #detail */
@@ -546,14 +564,83 @@
       }
 
       @media (max-width: 860px) {
-        body.bc-np-active { padding-bottom: 224px !important; }
-        .bc-np-bar { padding: 10px 12px 8px; }
+        body.bc-np-active { padding-bottom: var(--bc-np-body-pad, 214px) !important; }
+        .bc-np-bar {
+          padding: 10px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+        }
         .bc-np-bar-inner {
           grid-template-columns: 1fr;
           gap: 8px;
         }
         .bc-np-meta-col { padding-top: 0; }
-        .bc-np-cover { width: 52px; height: 52px; }
+        .bc-np-cover { width: 48px; height: 48px; }
+      }
+
+      /* Mobile Phone Compact & Collapsible Mini-Dock */
+      html.is-mobile-phone .bc-np-bar {
+        padding: 10px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+      }
+      html.is-mobile-phone .bc-np-resize-handle {
+        top: -8px;
+        height: 24px;
+      }
+      html.is-mobile-phone .bc-np-resize-grip {
+        width: 44px;
+        height: 4px;
+      }
+      html.is-mobile-phone .bc-np-bar-inner {
+        grid-template-columns: 1fr;
+        gap: 7px;
+      }
+      html.is-mobile-phone .bc-np-meta-col {
+        padding-top: 2px;
+        align-items: center;
+        gap: 10px;
+      }
+      html.is-mobile-phone .bc-np-cover {
+        width: 44px;
+        height: 44px;
+      }
+      html.is-mobile-phone .bc-np-title {
+        font-size: 13px;
+      }
+      html.is-mobile-phone .bc-np-kicker {
+        font-size: 10px;
+      }
+      html.is-mobile-phone .bc-np-bar-btns {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 6px;
+        margin-top: 3px;
+        padding-bottom: 1px;
+      }
+      html.is-mobile-phone .bc-np-bar-btns::-webkit-scrollbar { display: none; }
+      html.is-mobile-phone .bc-np-btn.sm {
+        min-height: 34px;
+        padding: 5px 10px;
+        font-size: 11.5px;
+      }
+
+      /* Minimized Phone Mini-Strip: visually hides embed WITHOUT removing/pausing audio */
+      html.is-mobile-phone .bc-np-bar.mobile-minimized {
+        padding: 7px 12px calc(7px + env(safe-area-inset-bottom, 0px));
+      }
+      html.is-mobile-phone .bc-np-bar.mobile-minimized .bc-np-bar-inner {
+        gap: 0;
+      }
+      html.is-mobile-phone .bc-np-bar.mobile-minimized .bc-np-resize-handle {
+        display: none;
+      }
+      html.is-mobile-phone .bc-np-bar.mobile-minimized .bc-np-player-col {
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+        border-width: 0 !important;
+        opacity: 0;
+        pointer-events: none;
+        overflow: hidden;
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -604,6 +691,32 @@
 
     applyPlayerHeight(state.playerHeight, false);
     bindResizeHandle();
+
+    [coverEl, titleEl].forEach(el => {
+      if (!el) return;
+      el.addEventListener("click", () => {
+        if (isMobilePhone() && state.mobileMinimized) {
+          setMobileMinimized(false);
+        }
+      });
+    });
+  }
+
+  function syncBodyPadding() {
+    let pad = state.playerHeight + 28;
+    if (isMobilePhone()) {
+      pad = state.mobileMinimized ? 86 : (state.playerHeight + 104);
+    } else if ((window.innerWidth || 1024) <= 860) {
+      pad = state.playerHeight + 100;
+    }
+    document.documentElement.style.setProperty("--bc-np-body-pad", pad + "px");
+  }
+
+  function setMobileMinimized(min) {
+    state.mobileMinimized = Boolean(min);
+    if (barEl) barEl.classList.toggle("mobile-minimized", state.mobileMinimized && isMobilePhone());
+    syncBodyPadding();
+    renderBarMeta();
   }
 
   function applyPlayerHeight(heightPx, persist) {
@@ -615,8 +728,11 @@
     if (isExp) state.lastExpandedHeight = clamped;
 
     document.documentElement.style.setProperty("--bc-np-player-h", clamped + "px");
-    document.documentElement.style.setProperty("--bc-np-body-pad", (clamped + 28) + "px");
-    if (barEl) barEl.classList.toggle("expanded", isExp);
+    syncBodyPadding();
+    if (barEl) {
+      barEl.classList.toggle("expanded", isExp);
+      barEl.classList.toggle("mobile-minimized", state.mobileMinimized && isMobilePhone());
+    }
     if (resizeHandleEl) {
       resizeHandleEl.setAttribute("aria-valuemax", String(maxH));
       resizeHandleEl.setAttribute("aria-valuenow", String(clamped));
@@ -944,6 +1060,23 @@
 
     subBtnsEl.innerHTML = "";
 
+    const mobile = isMobilePhone();
+
+    // Mobile Hide/Show toggle keeps audio running while reclaiming screen space
+    if (mobile) {
+      const minBtn = document.createElement("button");
+      minBtn.type = "button";
+      minBtn.className = "bc-np-btn sm" + (state.mobileMinimized ? " primary" : "");
+      minBtn.title = state.mobileMinimized
+        ? "Show player controls"
+        : "Minimize bar while keeping music playing";
+      minBtn.innerHTML = state.mobileMinimized
+        ? (CHEVRON_UP + "<span>Show</span>")
+        : (CHEVRON_DOWN + "<span>Hide</span>");
+      minBtn.addEventListener("click", () => setMobileMinimized(!state.mobileMinimized));
+      subBtnsEl.appendChild(minBtn);
+    }
+
     // Quick-switch shortcut right on the bar when browsing a different album
     if (isViewingOther && state.viewed) {
       const swBtn = document.createElement("button");
@@ -951,7 +1084,10 @@
       swBtn.className = "bc-np-btn sm primary switch-pill";
       swBtn.title = "Switch bottom player to " + state.viewed.title;
       swBtn.innerHTML = PLAY_ICON + "<span>Switch: " + escapeHtml(state.viewed.title) + "</span>";
-      swBtn.addEventListener("click", () => loadIntoBar(state.viewed, { flash: true, clearManualLock: true }));
+      swBtn.addEventListener("click", () => {
+        if (state.mobileMinimized) setMobileMinimized(false);
+        loadIntoBar(state.viewed, { flash: true, clearManualLock: true });
+      });
       subBtnsEl.appendChild(swBtn);
     }
 
@@ -984,7 +1120,10 @@
       link.href = p.url;
       link.target = "_blank";
       link.rel = "noopener";
-      link.textContent = "Bandcamp ↗";
+      link.title = mobile
+        ? "Open in the Bandcamp app for background & lock-screen playback"
+        : "Open release on Bandcamp";
+      link.textContent = mobile ? "Bandcamp App ↗" : "Bandcamp ↗";
       subBtnsEl.appendChild(link);
     }
 
@@ -1154,6 +1293,14 @@
       themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "data-theme", "data-ink"] });
       themeObs.observe(document.body, { attributes: true, attributeFilter: ["class", "data-theme", "data-ink"] });
     }
+
+    window.addEventListener("bc-mobile-mode-changed", () => {
+      if (!isMobilePhone() && state.mobileMinimized) {
+        state.mobileMinimized = false;
+      }
+      applyPlayerHeight(state.playerHeight, false);
+      renderBarMeta();
+    });
 
     document.addEventListener("keydown", e => {
       const tag = (document.activeElement && document.activeElement.tagName) || "";

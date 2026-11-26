@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Napalm Records — 1,481 Releases · 3D Kinetic Hex-Mirror Archive</title>
 <meta name="description" content="3D kinetic hexagonal mirror-wave archive for Napalm Records on Bandcamp, spanning 1,481 releases across 418 artists (1993–2027) with interactive fluid wave tiles, List View, A–Z rail, Cover Wall, and Bandcamp embeds.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2471,6 +2471,7 @@ updateStatusAndRail();
 renderDetail(state.filtered[state.activeIndex] || null, true);
 requestAnimationFrame(animateHexWave);
 </script>
+<script src="./mobile-adapt.js" defer></script>
 <script src="./now-playing-dock.js" defer></script>
 <script src="./chrome-cast.js" defer></script>
 </body>

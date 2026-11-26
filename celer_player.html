@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Celer — 174 Bandcamp Releases · Ambient &amp; Field Monograph</title>
 <meta name="description" content="Self-contained archival Bandcamp player for Celer (Will Long &amp; Danielle Baquet), spanning 174 ambient, tape-loop, and field-recording releases from 2006 to 2026.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -986,7 +986,7 @@
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 24px 28px 44px;
+    padding: 24px 28px 180px;
     background: var(--light-table);
     display: flex;
     flex-direction: column;
@@ -1119,7 +1119,7 @@
   .lightbox {
     position: fixed;
     inset: 0;
-    z-index: 60;
+    z-index: 220;
     background: rgba(14, 17, 20, 0.92);
     backdrop-filter: blur(10px);
     display: none;
@@ -1206,9 +1206,9 @@
   /* Toast */
   .toast {
     position: fixed;
-    bottom: 20px;
+    bottom: 148px;
     right: 24px;
-    z-index: 80;
+    z-index: 260;
     padding: 10px 16px;
     background: var(--ink);
     color: var(--surface);
@@ -1234,7 +1234,7 @@
   /* Floating 35mm Hover Loupe Preview beside Covers sidebar */
   .hover-zoom {
     position: fixed;
-    z-index: 55;
+    z-index: 210;
     width: 288px;
     padding: 10px 10px 12px;
     background: var(--mat-bg);
@@ -2312,6 +2312,7 @@ const paramId = Number(params.get("id"));
 const initial = RELEASES.find(r => r.id === paramId) || RELEASES[0];
 selectRelease(initial.id, { skipRecent: true, noScroll: true });
 </script>
+<script src="./mobile-adapt.js" defer></script>
 <script src="./now-playing-dock.js" defer></script>
 <script src="./chrome-cast.js" defer></script>
 </body>
