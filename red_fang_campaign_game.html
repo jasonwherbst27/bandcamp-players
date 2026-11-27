@@ -1,0 +1,3687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Red Fang · Riff &amp; Ruin — Album-Timed Tabletop Campaign</title>
+  <meta name="description" content="Single-player dark-fantasy tabletop RPG board game timed in real time to Red Fang's 14 Bandcamp releases across Main Quests, Side Quests, and Deluxe Vaults." />
+  <meta property="og:title" content="Red Fang · Riff &amp; Ruin" />
+  <meta property="og:description" content="Battle the virtual band across animated dark-fantasy dungeon maps timed to every Red Fang album on Bandcamp." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-table: #0f0d0b;
+      --bg-map: #181410;
+      --surface: #211c16;
+      --surface-hi: #2b241c;
+      --surface-deep: #14110e;
+      --ink: #f1e9d8;
+      --ink-soft: #c7bca8;
+      --ink-dim: #8c8170;
+      --brass: #e0b254;
+      --brass-hi: #f2cb73;
+      --crimson: #d94638;
+      --crimson-hi: #f06052;
+      --emerald: #38b87c;
+      --violet: #a77be8;
+      --rule: rgba(224, 178, 84, 0.22);
+      --rule-strong: rgba(224, 178, 84, 0.44);
+      --rule-subtle: rgba(241, 233, 216, 0.11);
+      --font-display: 'Cinzel', Georgia, serif;
+      --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --dock-h: 120px;
+      --body-pad: 158px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100dvh;
+      background: var(--bg-table);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      line-height: 1.5;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      padding-bottom: var(--body-pad);
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(224, 178, 84, 0.08), transparent 65%),
+        radial-gradient(ellipse 60% 45% at 88% 85%, rgba(217, 70, 56, 0.06), transparent 65%);
+    }
+
+    button, a, input, select { font-family: inherit; }
+
+    :focus-visible {
+      outline: 2px solid var(--brass);
+      outline-offset: 2px;
+    }
+
+    .mono {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Subtle iron-gall paper grain */
+    .grain-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.07;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* =========================================================================
+     * TOP HEADER BAR (Strict 3-Zone Contract)
+     * ========================================================================= */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(15, 13, 11, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--rule);
+      padding: 10px 22px;
+    }
+
+    .top-bar-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--ink);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .brand-wordmark {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+    }
+
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      min-width: 0;
+    }
+
+    .nav-link {
+      background: none;
+      border: none;
+      color: var(--ink-soft);
+      font-size: 13.5px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding: 6px 2px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.16s var(--ease), border-color 0.16s var(--ease);
+    }
+    .nav-link:hover, .nav-link.active {
+      color: var(--brass-hi);
+      border-bottom-color: var(--brass);
+    }
+
+    .top-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 15px;
+      min-height: 38px;
+      background: var(--brass);
+      color: #14110c;
+      border: 1px solid var(--brass);
+      border-radius: 3px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: filter 0.15s var(--ease), transform 0.15s var(--ease);
+    }
+    .top-cta:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+    /* Shared Flat Geometric Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 8px 14px;
+      min-height: 40px;
+      background: var(--surface-hi);
+      color: var(--ink);
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background-color 0.15s var(--ease), border-color 0.15s var(--ease), transform 0.12s var(--ease);
+    }
+    .btn:hover:not(:disabled) {
+      background: #352d23;
+      border-color: var(--brass);
+    }
+    .btn:active:not(:disabled) { transform: translateY(1px); }
+    .btn:disabled {
+      opacity: 0.42;
+      cursor: not-allowed;
+    }
+
+    .btn.primary {
+      background: var(--brass);
+      border-color: var(--brass);
+      color: #15110b;
+    }
+    .btn.primary:hover:not(:disabled) {
+      background: var(--brass-hi);
+      border-color: var(--brass-hi);
+    }
+
+    .btn.danger {
+      background: rgba(217, 70, 56, 0.18);
+      border-color: rgba(217, 70, 56, 0.55);
+      color: #ffb9b2;
+    }
+    .btn.danger:hover:not(:disabled) {
+      background: rgba(217, 70, 56, 0.3);
+      border-color: var(--crimson-hi);
+    }
+
+    .btn.emerald {
+      background: rgba(56, 184, 124, 0.18);
+      border-color: rgba(56, 184, 124, 0.55);
+      color: #aaf2cf;
+    }
+    .btn.emerald:hover:not(:disabled) {
+      background: rgba(56, 184, 124, 0.28);
+      border-color: var(--emerald);
+    }
+
+    .btn.sm {
+      min-height: 32px;
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
+    /* =========================================================================
+     * MAIN CONTAINER & SCREENS
+     * ========================================================================= */
+    .stage-shell {
+      position: relative;
+      z-index: 5;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 20px 22px 28px;
+    }
+
+    .view-hidden { display: none !important; }
+
+    /* =========================================================================
+     * SCREEN 1: TITLE & CAMPAIGN ATLAS
+     * ========================================================================= */
+    .atlas-hero {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 24px;
+      align-items: end;
+      padding: 12px 0 22px;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 22px;
+    }
+
+    .atlas-kicker {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--brass);
+      margin-bottom: 8px;
+    }
+
+    .atlas-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 800;
+      line-height: 1.04;
+      letter-spacing: 0.01em;
+      color: var(--ink);
+      text-wrap: balance;
+    }
+
+    .atlas-desc {
+      margin-top: 10px;
+      color: var(--ink-soft);
+      max-width: 62ch;
+      font-size: 15px;
+    }
+
+    .career-panel {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .career-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .career-rank {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--brass-hi);
+    }
+
+    .career-xp {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .xp-bar-track {
+      height: 7px;
+      background: var(--surface-deep);
+      border: 1px solid var(--rule-subtle);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .xp-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--crimson), var(--brass));
+      width: 0%;
+      transition: width 0.35s var(--ease);
+    }
+
+    .career-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--ink-dim);
+      font-variant-numeric: tabular-nums;
+    }
+    .career-stats b { color: var(--ink); font-weight: 600; }
+
+    /* Resume Saved Run Banner */
+    .resume-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 14px 18px;
+      margin-bottom: 22px;
+      background: linear-gradient(90deg, rgba(224, 178, 84, 0.14), rgba(33, 28, 22, 0.92));
+      border: 1px solid var(--brass);
+      border-radius: 4px;
+    }
+
+    .resume-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .resume-thumb {
+      width: 52px;
+      height: 52px;
+      object-fit: cover;
+      border: 1px solid var(--rule-strong);
+      border-radius: 2px;
+      flex-shrink: 0;
+      background: var(--surface-deep);
+    }
+
+    .resume-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--brass-hi);
+    }
+
+    .resume-meta {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--ink-soft);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .resume-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Hero Class Picker Row */
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .section-sub {
+      font-size: 13px;
+      color: var(--ink-dim);
+    }
+
+    .class-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 26px;
+    }
+
+    .class-card {
+      text-align: left;
+      background: var(--surface);
+      border: 1px solid var(--rule-subtle);
+      border-radius: 4px;
+      padding: 15px 16px;
+      color: var(--ink);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: border-color 0.16s var(--ease), background-color 0.16s var(--ease), transform 0.16s var(--ease);
+    }
+    .class-card:hover {
+      background: var(--surface-hi);
+      border-color: var(--rule-strong);
+      transform: translateY(-2px);
+    }
+    .class-card.selected {
+      background: linear-gradient(180deg, rgba(224, 178, 84, 0.12), var(--surface-hi));
+      border-color: var(--brass);
+    }
+
+    .class-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .class-name {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .class-card.selected .class-name { color: var(--brass-hi); }
+
+    .class-stats {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--brass);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .class-perk {
+      font-size: 13px;
+      color: var(--ink-soft);
+    }
+
+    /* Filter Segmented Controls */
+    .atlas-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .filter-group {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 4px;
+      background: var(--surface-deep);
+      border: 1px solid var(--rule-subtle);
+      border-radius: 4px;
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: none;
+      color: var(--ink-soft);
+      padding: 8px 14px;
+      min-height: 36px;
+      border-radius: 3px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background-color 0.15s var(--ease), color 0.15s var(--ease);
+    }
+    .filter-btn:hover { color: var(--ink); }
+    .filter-btn.active {
+      background: var(--brass);
+      color: #14110c;
+    }
+
+    /* Campaign Cards Grid */
+    .campaign-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .camp-card {
+      background: var(--surface);
+      border: 1px solid var(--rule-subtle);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.18s var(--ease), transform 0.18s var(--ease), background-color 0.18s var(--ease);
+    }
+    .camp-card:hover {
+      border-color: var(--rule-strong);
+      background: var(--surface-hi);
+      transform: translateY(-3px);
+    }
+    .camp-card.cleared {
+      border-color: rgba(56, 184, 124, 0.48);
+    }
+
+    .camp-top {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 14px;
+      padding: 14px 15px 12px;
+      align-items: start;
+    }
+
+    .camp-art-wrap {
+      width: 88px;
+      height: 88px;
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      overflow: hidden;
+      background: var(--surface-deep);
+      position: relative;
+      flex-shrink: 0;
+    }
+    .camp-art-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .camp-meta-line {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--brass);
+      font-variant-numeric: tabular-nums;
+      margin-bottom: 4px;
+    }
+    .camp-card[data-cat="side"] .camp-meta-line { color: var(--emerald); }
+    .camp-card[data-cat="vault"] .camp-meta-line { color: var(--violet); }
+
+    .camp-title {
+      font-family: var(--font-display);
+      font-size: 16.5px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .camp-sub {
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      line-height: 1.4;
+    }
+
+    .camp-foot {
+      margin-top: auto;
+      padding: 10px 15px 13px;
+      border-top: 1px solid var(--rule-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .camp-reward {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--ink-dim);
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .camp-card.cleared .camp-reward { color: var(--emerald); }
+
+    /* =========================================================================
+     * SCREEN 2: ACTIVE CAMPAIGN TABLETOP ARENA
+     * ========================================================================= */
+    .hud-strip {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 12px 16px;
+      margin-bottom: 14px;
+      display: grid;
+      grid-template-columns: minmax(210px, 0.9fr) minmax(280px, 1.35fr) auto;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .hud-hero-box {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .hud-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .hp-track {
+      height: 8px;
+      background: var(--surface-deep);
+      border: 1px solid var(--rule-subtle);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .hp-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #b83226, var(--crimson-hi));
+      transition: width 0.22s var(--ease);
+    }
+    .hp-fill.hero {
+      background: linear-gradient(90deg, #278a5d, var(--emerald));
+    }
+
+    .hud-clock-box {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .clock-title-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .clock-song {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--brass-hi);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .clock-time {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--ink-soft);
+      white-space: nowrap;
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .song-bar-track {
+      height: 8px;
+      background: var(--surface-deep);
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .song-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--brass), var(--crimson-hi));
+      width: 0%;
+      transition: width 0.25s linear;
+    }
+
+    .clock-sub-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-dim);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .hud-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    /* Arena 2-Column Split (Board Canvas + Encounter Panel) */
+    .arena-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.48fr) minmax(320px, 0.72fr);
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .board-stage {
+      position: relative;
+      background: var(--bg-map);
+      border: 1px solid var(--rule-strong);
+      border-radius: 4px;
+      overflow: hidden;
+      min-height: 430px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #boardCanvas {
+      display: block;
+      width: 100%;
+      height: 440px;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .board-caption {
+      position: absolute;
+      left: 12px;
+      top: 10px;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+    }
+
+    .board-biome {
+      font-family: var(--font-display);
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--brass-hi);
+      letter-spacing: 0.04em;
+    }
+
+    .board-hint {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-soft);
+    }
+
+    /* Interactive Animated D20 Dice Tray on Board */
+    .dice-tray {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      z-index: 6;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: rgba(18, 15, 12, 0.9);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--rule-strong);
+      border-radius: 4px;
+    }
+
+    .d20-btn {
+      position: relative;
+      width: 56px;
+      height: 56px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      transition: transform 0.16s var(--ease);
+    }
+    .d20-btn:hover { transform: scale(1.06); }
+    .d20-btn.rolling svg {
+      animation: d20Spin 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .d20-btn.crit svg polygon {
+      stroke: var(--brass-hi);
+      fill: rgba(224, 178, 84, 0.28);
+    }
+    .d20-btn.fumble svg polygon {
+      stroke: var(--crimson-hi);
+      fill: rgba(217, 70, 56, 0.25);
+    }
+
+    @keyframes d20Spin {
+      0% { transform: rotate(0deg) scale(0.92); }
+      45% { transform: rotate(210deg) scale(1.16); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+
+    .d20-num {
+      position: absolute;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--ink);
+      pointer-events: none;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .dice-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 108px;
+    }
+
+    .dice-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--brass);
+    }
+
+    .dice-result {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* Encounter & Chronicle Sidebar */
+    .encounter-panel {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .enemy-card {
+      background: var(--surface-deep);
+      border: 1px solid var(--rule-subtle);
+      border-radius: 3px;
+      padding: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .enemy-head {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .enemy-sigil {
+      width: 44px;
+      height: 44px;
+      border-radius: 3px;
+      border: 1px solid var(--rule-strong);
+      display: grid;
+      place-items: center;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+
+    .enemy-name {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+
+    .enemy-role {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-dim);
+    }
+
+    .intent-box {
+      padding: 9px 11px;
+      background: rgba(217, 70, 56, 0.12);
+      border: 1px solid rgba(217, 70, 56, 0.36);
+      border-radius: 3px;
+      font-size: 12.5px;
+      color: #ffd0cb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .intent-box.cleared {
+      background: rgba(56, 184, 124, 0.14);
+      border-color: rgba(56, 184, 124, 0.42);
+      color: #b7f5d7;
+    }
+
+    .event-box {
+      padding: 11px 12px;
+      background: rgba(224, 178, 84, 0.08);
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .event-title {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--brass-hi);
+    }
+
+    .event-text {
+      font-size: 12.8px;
+      color: var(--ink-soft);
+      line-height: 1.42;
+    }
+
+    .log-box {
+      flex: 1;
+      min-height: 112px;
+      max-height: 168px;
+      overflow-y: auto;
+      background: var(--surface-deep);
+      border: 1px solid var(--rule-subtle);
+      border-radius: 3px;
+      padding: 10px 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 12.2px;
+    }
+
+    .log-line {
+      color: var(--ink-soft);
+      line-height: 1.38;
+      padding-bottom: 5px;
+      border-bottom: 1px solid rgba(241, 233, 216, 0.06);
+    }
+    .log-line:last-child { border-bottom: none; padding-bottom: 0; }
+    .log-line.good { color: #9de8c4; }
+    .log-line.bad { color: #ffaba2; }
+    .log-line.gold { color: var(--brass-hi); }
+
+    /* Tactical Card Hand Tray */
+    .hand-bar {
+      margin-top: 14px;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 13px 15px;
+    }
+
+    .hand-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 11px;
+    }
+
+    .stamina-readout {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      color: var(--brass-hi);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .hand-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .cards-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 11px;
+    }
+
+    .tactic-card {
+      text-align: left;
+      background: linear-gradient(180deg, #2b241c 0%, #1d1813 100%);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 12px 13px;
+      color: var(--ink);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-height: 110px;
+      transition: transform 0.15s var(--ease), border-color 0.15s var(--ease), box-shadow 0.15s var(--ease), opacity 0.15s ease;
+    }
+    .tactic-card:hover:not(:disabled) {
+      transform: translateY(-4px);
+      border-color: var(--brass-hi);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+    }
+    .tactic-card:disabled {
+      opacity: 0.42;
+      cursor: not-allowed;
+    }
+    .tactic-card[data-kind="attack"] { border-top: 3px solid var(--crimson); }
+    .tactic-card[data-kind="defense"] { border-top: 3px solid var(--emerald); }
+    .tactic-card[data-kind="arcane"] { border-top: 3px solid var(--violet); }
+    .tactic-card[data-kind="special"] { border-top: 3px solid var(--brass); }
+
+    .card-top-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .card-name {
+      font-family: var(--font-display);
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .card-cost {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--brass-hi);
+      white-space: nowrap;
+    }
+
+    .card-type {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--ink-dim);
+    }
+
+    .card-desc {
+      font-size: 12.5px;
+      color: var(--ink-soft);
+      line-height: 1.4;
+      margin-top: auto;
+    }
+
+    /* =========================================================================
+     * RELIC VAULT & VICTORY/DEFEAT MODALS
+     * ========================================================================= */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      background: rgba(8, 7, 6, 0.82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+    .modal-backdrop.open { display: flex; }
+
+    .modal-card {
+      width: 100%;
+      max-width: 680px;
+      max-height: 86dvh;
+      overflow-y: auto;
+      background: var(--surface);
+      border: 1px solid var(--brass);
+      border-radius: 5px;
+      padding: 22px 24px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.75);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--brass-hi);
+    }
+
+    .summary-stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .stat-tile {
+      background: var(--surface-deep);
+      border: 1px solid var(--rule-subtle);
+      border-radius: 3px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .stat-tile span { font-size: 11.5px; color: var(--ink-dim); }
+    .stat-tile strong {
+      font-family: var(--font-mono);
+      font-size: 18px;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .relic-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .relic-item {
+      background: var(--surface-deep);
+      border: 1px solid var(--rule-subtle);
+      border-radius: 3px;
+      padding: 11px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .relic-item.owned {
+      border-color: var(--brass);
+      background: rgba(224, 178, 84, 0.08);
+    }
+    .relic-item-name {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .relic-item.owned .relic-item-name { color: var(--brass-hi); }
+    .relic-item-desc { font-size: 12px; color: var(--ink-soft); }
+    .relic-item-src { font-family: var(--font-mono); font-size: 11px; color: var(--ink-dim); }
+
+    /* =========================================================================
+     * BUILT-IN PERSISTENT RESIZABLE BANDCAMP NOW-PLAYING BAR
+     * ========================================================================= */
+    .bc-dock {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 85;
+      background: rgba(14, 12, 10, 0.97);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-top: 2px solid var(--brass);
+      box-shadow: 0 -10px 32px rgba(0, 0, 0, 0.72);
+      padding: 12px 18px calc(8px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .dock-resize {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -6px;
+      height: 18px;
+      cursor: ns-resize;
+      touch-action: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+    }
+    .dock-grip {
+      width: 52px;
+      height: 4px;
+      border-radius: 1px;
+      background: var(--rule-strong);
+      transition: background-color 0.14s ease, width 0.14s ease;
+    }
+    .dock-resize:hover .dock-grip,
+    body.dock-resizing .dock-grip {
+      background: var(--brass-hi);
+      width: 74px;
+    }
+    body.dock-resizing {
+      cursor: ns-resize !important;
+      user-select: none !important;
+    }
+    body.dock-resizing iframe { pointer-events: none !important; }
+
+    .dock-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(240px, 340px) minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .dock-meta {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 0;
+    }
+
+    .dock-art {
+      width: 64px;
+      height: 64px;
+      border: 1px solid var(--rule-strong);
+      background: var(--surface-deep);
+      flex-shrink: 0;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      color: var(--brass);
+    }
+    .dock-art img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .dock-info {
+      min-width: 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .dock-kicker {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--brass);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .dock-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .dock-btns {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .dock-btns::-webkit-scrollbar { display: none; }
+
+    .dock-player-wrap {
+      min-width: 0;
+      background: #0a0908;
+      border: 1px solid var(--rule-subtle);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .dock-iframe {
+      display: block;
+      width: 100%;
+      height: var(--dock-h, 120px);
+      border: 0;
+      background: transparent;
+    }
+
+    .dock-idle {
+      height: var(--dock-h, 120px);
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 16px;
+      font-size: 13px;
+      color: var(--ink-soft);
+    }
+
+    .bc-dock.minimized .dock-player-wrap {
+      height: 0 !important;
+      min-height: 0 !important;
+      max-height: 0 !important;
+      border-width: 0 !important;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .bc-dock.minimized .dock-inner { gap: 0; }
+    .bc-dock.minimized .dock-resize { display: none; }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 162px;
+      transform: translateX(-50%) translateY(14px);
+      z-index: 130;
+      background: var(--surface-hi);
+      border: 1px solid var(--brass);
+      color: var(--ink);
+      padding: 9px 16px;
+      border-radius: 3px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s var(--ease);
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* =========================================================================
+     * RESPONSIVE & MOBILE PHONE BROWSER LAYOUT
+     * ========================================================================= */
+    @media (max-width: 1080px) {
+      .atlas-hero { grid-template-columns: 1fr; gap: 16px; }
+      .campaign-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .hud-strip { grid-template-columns: 1fr; gap: 10px; }
+      .hud-controls { justify-content: flex-start; }
+      .arena-grid { grid-template-columns: 1fr; }
+      .cards-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 720px) {
+      .top-bar { padding: 8px 12px; }
+      .top-bar-inner { gap: 10px; flex-wrap: wrap; }
+      .top-nav { gap: 12px; overflow-x: auto; scrollbar-width: none; }
+      .top-nav::-webkit-scrollbar { display: none; }
+      .stage-shell { padding: 12px 12px 24px; }
+      .class-grid { grid-template-columns: 1fr; }
+      .campaign-grid { grid-template-columns: 1fr; }
+      #boardCanvas { height: 320px; }
+      .board-stage { min-height: 320px; }
+      .dice-tray { right: 8px; bottom: 8px; padding: 6px 9px; gap: 7px; }
+      .d20-btn { width: 46px; height: 46px; }
+      .cards-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+      .tactic-card { min-height: 98px; padding: 10px; }
+      .summary-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .relic-grid { grid-template-columns: 1fr; }
+      .dock-inner { grid-template-columns: 1fr; gap: 8px; }
+      .dock-art { width: 44px; height: 44px; }
+      .bc-dock { padding: 9px 12px calc(8px + env(safe-area-inset-bottom, 0px)); }
+      .btn { min-height: 42px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="grain-overlay" aria-hidden="true"></div>
+
+  <!-- 3-ZONE TOP HEADER -->
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <a href="./index.html" class="brand-link" title="Back to Bandcamp Players Hub">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e0b254" stroke-width="1.8" aria-hidden="true">
+          <polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="rgba(224,178,84,0.12)"/>
+          <path d="M12 2L12 22M3 7L21 17M21 7L3 17" stroke-opacity="0.45"/>
+          <circle cx="12" cy="12" r="2.6" fill="#d94638" stroke="none"/>
+        </svg>
+        <span class="brand-wordmark">Red Fang: Riff &amp; Ruin</span>
+      </a>
+
+      <nav class="top-nav" aria-label="Game navigation">
+        <a href="./index.html" class="nav-link">All Players</a>
+        <button type="button" class="nav-link active" id="navAtlasBtn">Campaign Atlas</button>
+        <button type="button" class="nav-link" id="navRelicsBtn">Relic Vault</button>
+        <button type="button" class="nav-link" id="navRulesBtn">How to Play</button>
+      </nav>
+
+      <button type="button" class="top-cta" id="quickRandomBtn">Random Campaign</button>
+    </div>
+  </header>
+
+  <main class="stage-shell">
+    <!-- =======================================================================
+         SCREEN 1: CAMPAIGN ATLAS (TITLE_MENU)
+         ======================================================================= -->
+    <section id="atlasView" aria-label="Campaign Atlas">
+      <div class="atlas-hero">
+        <div>
+          <div class="atlas-kicker">Vol. 17 · Single-Player Album-Timed Tabletop RPG · Browser Save Enabled</div>
+          <h1 class="atlas-title">Outlast the Virtual Band Before the Final Track Fades</h1>
+          <p class="atlas-desc">
+            Every Red Fang Bandcamp release is a playable dark-fantasy dungeon timed to the record's real runtime.
+            Clear Main Quests for full albums, tackle Side Quests for singles and compilations, and raid Vaults for deluxe bonus chambers.
+          </p>
+        </div>
+
+        <div class="career-panel" aria-label="Player progression">
+          <div class="career-top">
+            <div class="career-rank" id="careerRank">Level 1 · Pit Initiate</div>
+            <div class="career-xp" id="careerXp">0 XP</div>
+          </div>
+          <div class="xp-bar-track"><div class="xp-bar-fill" id="careerXpFill"></div></div>
+          <div class="career-stats" id="careerStats"></div>
+        </div>
+      </div>
+
+      <!-- Resume Saved Mid-Campaign Banner -->
+      <div id="resumeBanner" class="resume-banner view-hidden" role="region" aria-label="Resume saved campaign">
+        <div class="resume-left">
+          <img id="resumeThumb" class="resume-thumb" src="" alt="" referrerpolicy="no-referrer" />
+          <div>
+            <div class="resume-title" id="resumeTitle">Saved Campaign in Progress</div>
+            <div class="resume-meta" id="resumeMeta"></div>
+          </div>
+        </div>
+        <div class="resume-actions">
+          <button type="button" class="btn primary" id="resumeBtn">Resume Campaign</button>
+          <button type="button" class="btn sm danger" id="discardSaveBtn">Discard Save</button>
+        </div>
+      </div>
+
+      <!-- Hero Class Selection -->
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">01. Choose Your Adventurer</h2>
+          <p class="section-sub">Your class shapes your starting card deck, HP pool, and D20 dice perks.</p>
+        </div>
+      </div>
+      <div class="class-grid" id="classGrid" role="radiogroup" aria-label="Choose hero class"></div>
+
+      <!-- Campaign Selection Grid -->
+      <div class="atlas-controls">
+        <div>
+          <h2 class="section-title">02. Select an Album Campaign</h2>
+          <p class="section-sub" id="atlasCountSub">15 expeditions across 14 real Bandcamp releases (120 tracks)</p>
+        </div>
+        <div class="filter-group" id="atlasFilters" role="tablist" aria-label="Filter campaigns by category">
+          <button type="button" class="filter-btn active" data-filter="all" role="tab" aria-selected="true">All (15)</button>
+          <button type="button" class="filter-btn" data-filter="main" role="tab" aria-selected="false">Main Quests (5)</button>
+          <button type="button" class="filter-btn" data-filter="side" role="tab" aria-selected="false">Side Quests (7)</button>
+          <button type="button" class="filter-btn" data-filter="vault" role="tab" aria-selected="false">Vaults (3)</button>
+        </div>
+      </div>
+
+      <div class="campaign-grid" id="campaignGrid"></div>
+    </section>
+
+    <!-- =======================================================================
+         SCREEN 2: ACTIVE CAMPAIGN TABLETOP ARENA (PLAYING)
+         ======================================================================= -->
+    <section id="arenaView" class="view-hidden" aria-label="Active campaign board">
+      <!-- Top Real-Time Sync & Hero HUD -->
+      <div class="hud-strip">
+        <div class="hud-hero-box">
+          <div class="hud-row">
+            <span id="hudHeroLabel">Riff Knight · HP 78/78</span>
+            <span id="hudBlockLabel" style="color:var(--emerald)">Block 0</span>
+          </div>
+          <div class="hp-track"><div class="hp-fill hero" id="hudHeroHpFill" style="width:100%"></div></div>
+          <div class="hud-row" style="color:var(--ink-dim);font-size:11px;">
+            <span id="hudScoreLabel">Score 0</span>
+            <span id="hudRelicCount">Relics Active: 0</span>
+          </div>
+        </div>
+
+        <div class="hud-clock-box">
+          <div class="clock-title-row">
+            <div class="clock-song" id="clockSongTitle">Ch. 1/10 · Prehistoric Dog</div>
+            <div class="clock-time" id="clockSongTime">00:00 / 04:28</div>
+          </div>
+          <div class="song-bar-track" id="songBarTrack" title="Click along the bar to resync timestamp within this song">
+            <div class="song-bar-fill" id="songBarFill"></div>
+          </div>
+          <div class="clock-sub-row">
+            <span id="clockAlbumTime">Album Clock · 00:00 / 36:15</span>
+            <span id="clockSyncState">Press Play in Bandcamp or Start Clock</span>
+          </div>
+        </div>
+
+        <div class="hud-controls">
+          <button type="button" class="btn sm primary" id="clockToggleBtn">Start Clock</button>
+          <button type="button" class="btn sm" id="prevTrackBtn" title="Jump to previous track chamber">◀ Prev</button>
+          <button type="button" class="btn sm" id="nextTrackBtn" title="Jump to next track chamber">Next ▶</button>
+          <button type="button" class="btn sm" id="sfxToggleBtn" title="Toggle subtle tabletop dice/card sound effects">SFX: Off</button>
+          <button type="button" class="btn sm" id="backAtlasBtn">Save &amp; Atlas</button>
+        </div>
+      </div>
+
+      <!-- Center Inked Map Canvas + Right Encounter Panel -->
+      <div class="arena-grid">
+        <div class="board-stage">
+          <canvas id="boardCanvas" aria-label="Interactive dark-fantasy album campaign map"></canvas>
+          <div class="board-caption">
+            <div class="board-biome" id="boardBiomeName">Prehistoric Cavern</div>
+            <div class="board-hint" id="boardHintText">Click any chamber node on the map to resync to that song</div>
+          </div>
+
+          <!-- Interactive D20 Dice Tray -->
+          <div class="dice-tray">
+            <button type="button" class="d20-btn" id="d20Btn" title="Click to spend a Reroll token or test-roll the D20">
+              <svg width="52" height="52" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <polygon points="32,4 58,19 58,45 32,60 6,45 6,19" fill="rgba(26,22,18,0.92)" stroke="#e0b254" stroke-width="2.4"/>
+                <polygon points="32,12 50,23 50,41 32,52 14,41 14,23" fill="none" stroke="rgba(224,178,84,0.35)" stroke-width="1.2"/>
+                <path d="M32,4 L32,12 M58,19 L50,23 M58,45 L50,41 M32,60 L32,52 M6,45 L14,41 M6,19 L14,23" stroke="rgba(224,178,84,0.45)" stroke-width="1.2"/>
+              </svg>
+              <span class="d20-num" id="d20Num">20</span>
+            </button>
+            <div class="dice-info">
+              <div class="dice-label" id="diceLabel">D20 · Ready</div>
+              <div class="dice-result" id="diceResult">Play a card to roll</div>
+              <div class="mono" style="font-size:11px;color:var(--ink-dim)" id="rerollLabel">Rerolls: 1</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Encounter & Combat Chronicle -->
+        <aside class="encounter-panel" aria-label="Active song encounter">
+          <div class="enemy-card">
+            <div class="enemy-head">
+              <div class="enemy-sigil" id="enemySigil">BG</div>
+              <div style="min-width:0;flex:1;">
+                <div class="enemy-name" id="enemyName">Bryan Giles</div>
+                <div class="enemy-role" id="enemyRole">Riff Berserker · Ch. 1 Boss</div>
+              </div>
+              <div class="mono" style="font-size:12px;color:var(--crimson-hi)" id="enemyHpText">34 / 34 HP</div>
+            </div>
+            <div class="hp-track"><div class="hp-fill" id="enemyHpFill" style="width:100%"></div></div>
+            <div class="intent-box" id="enemyIntentBox">
+              <span id="enemyIntentText">Telegraph: Prehistoric Charge</span>
+              <strong class="mono" id="enemyIntentVal">8 DMG</strong>
+            </div>
+          </div>
+
+          <div class="event-box" id="eventBox">
+            <div class="event-title" id="eventTitle">Song Event · DC 12 Check</div>
+            <div class="event-text" id="eventText">A prehistoric hound prowls the cavern entrance.</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button type="button" class="btn sm primary" id="eventRollBtn">Roll D20 Check</button>
+              <button type="button" class="btn sm emerald view-hidden" id="campHealBtn">Camp &amp; Mend (+5 HP)</button>
+            </div>
+          </div>
+
+          <div class="log-box" id="combatLog" aria-live="polite"></div>
+        </aside>
+      </div>
+
+      <!-- Bottom Tactical Card Hand -->
+      <div class="hand-bar" aria-label="Player tactical hand">
+        <div class="hand-top">
+          <div class="stamina-readout" id="staminaReadout">Turn 1 · Stamina 3 / 3 · Deck 6</div>
+          <div class="hand-actions">
+            <button type="button" class="btn sm" id="rerollBtn">Reroll Hand (1 Token)</button>
+            <button type="button" class="btn primary" id="endTurnBtn">End Turn — Band Strikes</button>
+          </div>
+        </div>
+        <div class="cards-row" id="cardsRow"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- RELIC VAULT MODAL -->
+  <div class="modal-backdrop" id="relicModal" role="dialog" aria-modal="true" aria-label="Relic Vault">
+    <div class="modal-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <h2 class="modal-title">Relic Vault &amp; Career Ledger</h2>
+        <button type="button" class="btn sm" id="closeRelicModal">Close</button>
+      </div>
+      <p style="font-size:13.5px;color:var(--ink-soft);">
+        Every completed Red Fang campaign permanently unlocks its signature Relic in your browser save. Up to 3 unlocked Relics automatically empower your adventurer on every future run.
+      </p>
+      <div class="relic-grid" id="relicGrid"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:10px;border-top:1px solid var(--rule-subtle);flex-wrap:wrap;">
+        <span class="mono" style="font-size:11.5px;color:var(--ink-dim);">All progress is saved automatically in localStorage.</span>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button type="button" class="btn sm danger" id="resetCareerBtn">Reset Saved Progress</button>
+          <button type="button" class="btn sm danger view-hidden" id="confirmResetBtn">Confirm Wipe Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW TO PLAY MODAL -->
+  <div class="modal-backdrop" id="rulesModal" role="dialog" aria-modal="true" aria-label="How to Play">
+    <div class="modal-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <h2 class="modal-title">How to Play · Riff &amp; Ruin</h2>
+        <button type="button" class="btn sm" id="closeRulesModal">Close</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;color:var(--ink-soft);">
+        <p><strong style="color:var(--ink);">1. Album-Timed Chapters:</strong> Every track on the chosen Red Fang album is a dungeon chamber on the inked map. Hit Play in the bottom Bandcamp player to start the music and the live album clock automatically—or use Pause, Prev/Next, or click any map node to keep the board synced to the song you're hearing.</p>
+        <p><strong style="color:var(--ink);">2. Battle the Virtual Band:</strong> Each song is guarded by Aaron Beam, Bryan Giles, David Sullivan, or John Sherman—and all four unite on the closing track. Spend your 3 Stamina each turn playing Attack, Shield, and Arcane cards, rolling the D20 for bonus damage and Encore Crits (Nat 20).</p>
+        <p><strong style="color:var(--ink);">3. Clear Chambers &amp; Trigger Song Events:</strong> Attempt each song's unique D20 Skill Check once per track for healing, shields, or bonus damage. Defeat the room boss before the track finishes to claim bonus healing and score; if time runs out while they stand, the band lands a Song-Change Ambush as your hero marches into the next track.</p>
+        <p><strong style="color:var(--ink);">4. Main Quests, Side Quests &amp; Vaults:</strong> Clear full albums (Main Quests), singles &amp; compilations (Side Quests), and Deluxe Editions with sealed bonus rooms (Vaults) to unlock permanent Relics saved right in your browser.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VICTORY / DEFEAT CHRONICLE MODAL -->
+  <div class="modal-backdrop" id="outcomeModal" role="dialog" aria-modal="true" aria-label="Campaign Outcome">
+    <div class="modal-card">
+      <div class="mono" style="font-size:12px;color:var(--brass);" id="outcomeKicker">CAMPAIGN COMPLETE</div>
+      <h2 class="modal-title" id="outcomeTitle">Victory Over the Riff</h2>
+      <p style="font-size:14px;color:var(--ink-soft);" id="outcomeDesc"></p>
+      <div class="summary-stats" id="outcomeStats"></div>
+      <div id="outcomeRelicBanner" style="padding:12px 14px;background:rgba(224,178,84,0.1);border:1px solid var(--brass);border-radius:3px;"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;">
+        <button type="button" class="btn" id="outcomeAtlasBtn">Campaign Atlas</button>
+        <button type="button" class="btn primary" id="outcomeReplayBtn">Play Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUILT-IN PERSISTENT RESIZABLE BANDCAMP NOW-PLAYING DOCK -->
+  <section class="bc-dock" id="bcDock" aria-label="Bandcamp Album Player">
+    <div class="dock-resize" id="dockResizeHandle" role="separator" aria-orientation="horizontal" tabindex="0" title="Drag up or down to resize Bandcamp player">
+      <span class="dock-grip" aria-hidden="true"></span>
+    </div>
+    <div class="dock-inner">
+      <div class="dock-meta">
+        <div class="dock-art" id="dockArt" title="Tap to expand player">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3.5 2.2L13.5 8L3.5 13.8V2.2Z"/></svg>
+        </div>
+        <div class="dock-info">
+          <div class="dock-kicker" id="dockKicker">Bandcamp Player · Select a Campaign</div>
+          <div class="dock-title" id="dockTitle">Red Fang — Ready to Roll</div>
+          <div class="dock-btns" id="dockBtns"></div>
+        </div>
+      </div>
+      <div class="dock-player-wrap" id="dockPlayerWrap">
+        <div class="dock-idle" id="dockIdle">
+          <span>Enter any Main Quest, Side Quest, or Vault to load its real Bandcamp stream here.</span>
+        </div>
+        <div id="dockIframeMount" style="display:none;"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+  (function () {
+    "use strict";
+
+    /* =========================================================================
+     * 1. VERIFIED BANDCAMP CATALOG (14 RELEASES / 15 CAMPAIGNS / 120 TRACKS)
+     * ========================================================================= */
+    const BIOMES = {
+      cavern:   { name: "Prehistoric Basalt Caverns", bg1: "#1a1410", bg2: "#100c09", accent: "#e09f3e", particle: "ember",  silhouette: "caverns" },
+      mountain: { name: "Crags of the Dirt Wizard",   bg1: "#171419", bg2: "#0e0c10", accent: "#d94638", particle: "spark",  silhouette: "peaks" },
+      abyss:    { name: "The Abyssal Leviathan Sea",  bg1: "#10181d", bg2: "#090e12", accent: "#38b87c", particle: "bubble", silhouette: "waves" },
+      manor:    { name: "Manor of Only Ghosts",       bg1: "#15131b", bg2: "#0c0b10", accent: "#a77be8", particle: "mist",   silhouette: "spires" },
+      forest:   { name: "Timberland of Cursed Arrows",bg1: "#121914", bg2: "#0a0f0c", accent: "#e0b254", particle: "wisp",   silhouette: "trees" },
+      bunker:   { name: "Subterranean Amp Bunker",    bg1: "#191714", bg2: "#100e0c", accent: "#d4a656", particle: "dust",   silhouette: "pillars" },
+      vault:    { name: "Gilded Deluxe Relic Vault",  bg1: "#1c1710", bg2: "#110d08", accent: "#f2cb73", particle: "gold",   silhouette: "vault" },
+      catacomb: { name: "20-Year Deep Cuts Catacomb", bg1: "#1a1112", bg2: "#0f090a", accent: "#f06052", particle: "ember",  silhouette: "peaks" }
+    };
+
+    const BAND_MEMBERS = [
+      {
+        id: "bryan", name: "Bryan Giles", initials: "BG", role: "Riff Berserker",
+        color: "#d94638", bg: "rgba(217, 70, 56, 0.2)",
+        moves: [
+          { name: "Prehistoric Charge", type: "attack", base: 8 },
+          { name: "Cardboard Armor Bash", type: "attack_block", base: 7, block: 5 },
+          { name: "Pyre Power Chord", type: "heavy", base: 11 }
+        ]
+      },
+      {
+        id: "aaron", name: "Aaron Beam", initials: "AB", role: "Sub-Bass Warlock",
+        color: "#38b87c", bg: "rgba(56, 184, 124, 0.2)",
+        moves: [
+          { name: "Sub-Bass Undertow", type: "attack", base: 7 },
+          { name: "Fuzz Wall Barrier", type: "block_strike", base: 6, block: 8 },
+          { name: "Resonance Siphon", type: "drain", base: 8 }
+        ]
+      },
+      {
+        id: "david", name: "David Sullivan", initials: "DS", role: "Feedback Sorcerer",
+        color: "#a77be8", bg: "rgba(167, 123, 232, 0.2)",
+        moves: [
+          { name: "Ghost Echo Barrage", type: "attack", base: 8 },
+          { name: "Feedback Lightning", type: "heavy", base: 10 },
+          { name: "Cursed Arrow Volley", type: "attack_block", base: 7, block: 6 }
+        ]
+      },
+      {
+        id: "john", name: "John Sherman", initials: "JS", role: "Iron Percussionist",
+        color: "#e0b254", bg: "rgba(224, 178, 84, 0.2)",
+        moves: [
+          { name: "Double-Time Snare Slam", type: "attack", base: 9 },
+          { name: "Cymbal Shatter", type: "heavy", base: 11 },
+          { name: "Tempo Earthquake", type: "attack_block", base: 8, block: 5 }
+        ]
+      }
+    ];
+
+    const FINALE_BOSS = {
+      id: "band", name: "Red Fang (Full Quartet)", initials: "RF", role: "Encore Finale Boss",
+      color: "#f2cb73", bg: "rgba(224, 178, 84, 0.24)",
+      moves: [
+        { name: "Four-Amp Wall of Sound", type: "heavy", base: 12 },
+        { name: "Encore Riff Tempest", type: "attack_block", base: 10, block: 8 },
+        { name: "Portland Pit Crush", type: "drain", base: 11 }
+      ]
+    };
+
+    const CAMPAIGNS = [
+      /* ==================== MAIN QUESTS (5 Full Albums) ==================== */
+      {
+        id: "red-fang-2009", bcId: 468503817, artId: 855568817, year: 2009, cat: "main", catLabel: "Main Quest",
+        title: "Red Fang", subtitle: "The Prehistoric Cavern Expedition", biome: "cavern", difficulty: 2, xp: 300,
+        url: "https://redfang.bandcamp.com/album/red-fang",
+        relic: { id: "prehistoric-fang", name: "Prehistoric Fang", desc: "+2 damage on every Attack card.", effect: "atk2" },
+        tracks: [
+          ["Prehistoric Dog", 268], ["Reverse Thunder", 195], ["Night Destroyer", 192],
+          ["Human Remain Human Remains", 389], ["Good To Die", 209], ["Bird On Fire", 188],
+          ["Wings Of Fang", 169], ["Sharks", 146], ["Whales And Leeches", 261], ["Witness", 158]
+        ]
+      },
+      {
+        id: "mtm-main", bcId: 2156612403, artId: 101982953, year: 2011, cat: "main", catLabel: "Main Quest",
+        title: "Murder The Mountains", subtitle: "Ascent of the Dirt Wizard's Peak", biome: "mountain", difficulty: 3, xp: 340,
+        url: "https://redfang.bandcamp.com/album/murder-the-mountains-deluxe-edition",
+        relic: { id: "dirt-wizard-staff", name: "Dirt Wizard's Staff", desc: "+1 bonus Stamina on Turn 1 of every chamber.", effect: "stamina1" },
+        tracks: [
+          ["Malverde", 242], ["Wires", 343], ["Hank is Dead", 156], ["Dirt Wizard", 178],
+          ["Throw Up", 393], ["Painted Parade", 147], ["Number Thirteen", 285],
+          ["Into the Eye", 239], ["The Undertow", 302], ["Human Herd", 232]
+        ]
+      },
+      {
+        id: "whales-main", bcId: 2283441571, artId: 3482625391, year: 2013, cat: "main", catLabel: "Main Quest",
+        title: "Whales and Leeches", subtitle: "Voyage Across the Blood-Like Trench", biome: "abyss", difficulty: 3, xp: 360,
+        url: "https://redfang.bandcamp.com/album/whales-and-leeches",
+        relic: { id: "whalebone-pick", name: "Whalebone Pick", desc: "Restore +4 HP whenever you clear a song chamber.", effect: "clearHeal4" },
+        tracks: [
+          ["DOEN", 198], ["Blood Like Cream", 213], ["No Hope", 178], ["Crows in Swine", 182],
+          ["Voices of the Dead", 164], ["Behind The Light", 164], ["Dawn Rising", 421],
+          ["Failure", 297], ["1516", 217], ["This Animal", 163], ["Every Little Twist", 284]
+        ]
+      },
+      {
+        id: "ghosts-main", bcId: 4192377599, artId: 1546996237, year: 2016, cat: "main", catLabel: "Main Quest",
+        title: "Only Ghosts", subtitle: "Haunting of the Hollow Manor", biome: "manor", difficulty: 4, xp: 380,
+        url: "https://redfang.bandcamp.com/album/only-ghosts",
+        relic: { id: "spectral-lantern", name: "Spectral Lantern", desc: "+2 bonus to every D20 roll.", effect: "d20plus2" },
+        tracks: [
+          ["Flies", 217], ["Cut it Short", 252], ["Flames", 90], ["No Air", 292], ["Shadows", 191],
+          ["Not for You", 199], ["The Smell of the Sound", 323], ["The Deep", 267],
+          ["I Am a Ghost", 248], ["Living in Lye", 379]
+        ]
+      },
+      {
+        id: "arrows-main", bcId: 3666082417, artId: 2079914558, year: 2021, cat: "main", catLabel: "Main Quest",
+        title: "Arrows", subtitle: "Gauntlet of the Haunted Timberland", biome: "forest", difficulty: 4, xp: 400,
+        url: "https://redfang.bandcamp.com/album/arrows",
+        relic: { id: "fletched-arrow", name: "Fletched Riff-Arrow", desc: "Score Encore Crits on 19 or 20.", effect: "crit19" },
+        tracks: [
+          ["Take It Back", 121], ["Unreal Estate", 309], ["Arrows", 233], ["My Disaster", 116],
+          ["Two High", 234], ["Anodyne", 216], ["Interop-Mod", 62], ["Fonzi Scheme", 254],
+          ["Days Collide", 344], ["Rabbits in Hives", 96], ["Why", 188], ["Dr. Owl", 214], ["Funeral Coach", 206]
+        ]
+      },
+
+      /* ==================== SIDE QUESTS (7 Singles, Sessions & Comp) ==================== */
+      {
+        id: "crows-single", bcId: 2984234791, artId: 4278859668, year: 2012, cat: "side", catLabel: "Side Quest",
+        title: "Crows In Swine", subtitle: "2:36 One-Room Blitz Ambush", biome: "cavern", difficulty: 1, xp: 120,
+        url: "https://redfang.bandcamp.com/album/crows-in-swine-single",
+        relic: { id: "crow-charm", name: "Crow Feather Charm", desc: "Start every chamber with +4 Block.", effect: "startBlock4" },
+        tracks: [["Crows In Swine", 156]]
+      },
+      {
+        id: "bunker-session", bcId: 1449668823, artId: 697269913, year: 2014, cat: "side", catLabel: "Side Quest",
+        title: "Absolute Music Bunker Session", subtitle: "Acoustic vs. Electric 6-Room Skirmish", biome: "bunker", difficulty: 2, xp: 240,
+        url: "https://redfang.bandcamp.com/album/teamrock-com-presents-an-absolute-music-bunker-session-with-red-fang",
+        relic: { id: "bunker-resonator", name: "Bunker Resonator", desc: "Healing cards & Camp Mend restore +3 extra HP.", effect: "heal3" },
+        tracks: [
+          ["Failure (Acoustic)", 279], ["Human Herd (Acoustic)", 224], ["Malverde (Acoustic)", 232],
+          ["Failure (Album Version)", 297], ["Human Herd (Album Version)", 232], ["Malverde (Album Version)", 242]
+        ]
+      },
+      {
+        id: "scion-av", bcId: 1502004322, artId: 3504817762, year: 2014, cat: "side", catLabel: "Side Quest",
+        title: "Scion AV Presents", subtitle: "Twin-Chamber Meadow & Shadow Duel", biome: "forest", difficulty: 2, xp: 150,
+        url: "https://redfang.bandcamp.com/album/scion-av-presents-red-fang",
+        relic: { id: "shadow-coin", name: "Twin-Shadow Coin", desc: "+1 extra D20 Reroll token each campaign.", effect: "reroll1" },
+        tracks: [["The Meadows", 221], ["The Shadows", 215]]
+      },
+      {
+        id: "sirens-single", bcId: 463244752, artId: 4186620142, year: 2018, cat: "side", catLabel: "Side Quest",
+        title: "Listen To The Sirens", subtitle: "Tubeway Army Cover Watchtower Duel", biome: "manor", difficulty: 1, xp: 120,
+        url: "https://redfang.bandcamp.com/album/listen-to-the-sirens-tubeway-army-cover",
+        relic: { id: "siren-coil", name: "Siren Signal Coil", desc: "Defense cards also deal +3 counter-damage.", effect: "thorns3" },
+        tracks: [["Listen To The Sirens (Tubeway Army Cover)", 193]]
+      },
+      {
+        id: "antidote-single", bcId: 2306438067, artId: 1183258030, year: 2019, cat: "side", catLabel: "Side Quest",
+        title: "Antidote", subtitle: "3:50 Alchemist Pit Boss Clash", biome: "abyss", difficulty: 2, xp: 130,
+        url: "https://redfang.bandcamp.com/album/antidote-digital-single",
+        relic: { id: "antidote-vial", name: "Vial of Antidote", desc: "+10 Maximum HP on all campaigns.", effect: "maxhp10" },
+        tracks: [["Antidote", 230]]
+      },
+      {
+        id: "stereo-single", bcId: 2866183643, artId: 1913569999, year: 2020, cat: "side", catLabel: "Side Quest",
+        title: "Stereo Nucleosis", subtitle: "3:00 Reactor Rift Blitz", biome: "bunker", difficulty: 2, xp: 130,
+        url: "https://redfang.bandcamp.com/album/stereo-nucleosis",
+        relic: { id: "stereo-core", name: "Stereo Core", desc: "Encore Crits restore +1 Stamina immediately.", effect: "critStam" },
+        tracks: [["Stereo Nucleosis", 180]]
+      },
+      {
+        id: "deep-cuts", bcId: 4282652693, artId: 3628531769, year: 2025, cat: "side", catLabel: "Side Quest · Compilation",
+        title: "Deep Cuts", subtitle: "26-Track 20-Year Catacomb Marathon", biome: "catacomb", difficulty: 5, xp: 650,
+        url: "https://redfang.bandcamp.com/album/deep-cuts",
+        relic: { id: "deep-cuts-crown", name: "Crown of the Deep Cuts", desc: "+3 Damage on Attacks and +3 Block on Shields.", effect: "master3" },
+        tracks: [
+          ["Antidote", 230], ["The Shadows", 215], ["Murder The Mountains", 114], ["Weird Poly", 129],
+          ["Hollow Light", 194], ["Over The Edge", 237], ["Listen To The Sirens", 193], ["Stereo Nucleosis", 180],
+          ["Black Hole", 151], ["Through", 280], ["Champ Chugger", 95], ["Ice Ice Baby", 216],
+          ["It's Always There", 166], ["Black Water", 280], ["Pawn Everything", 85], ["Wires (Demo)", 278],
+          ["In 5 With Keys", 120], ["Bad Places", 223], ["Forgot to Write", 94], ["Endless Sea", 296],
+          ["Suicide", 298], ["OMG OMD", 201], ["LSP", 219], ["50's Tremors", 33], ["AGB Fruit", 155], ["Feeder", 399]
+        ]
+      },
+
+      /* ==================== VAULTS (3 Deluxe Editions) ==================== */
+      {
+        id: "mtm-vault", bcId: 2156612403, artId: 101982953, year: 2011, cat: "vault", catLabel: "Deluxe Vault",
+        title: "Murder The Mountains · Vault", subtitle: "13 Chambers incl. 3 Sealed Bonus Crypts", biome: "vault", difficulty: 4, xp: 460,
+        url: "https://redfang.bandcamp.com/album/murder-the-mountains-deluxe-edition",
+        vaultStartIndex: 10,
+        relic: { id: "gilded-peak", name: "Gilded Mountain Seal", desc: "+3 damage against Vault & Finale bosses.", effect: "boss3" },
+        tracks: [
+          ["Malverde", 242], ["Wires", 343], ["Hank is Dead", 156], ["Dirt Wizard", 178],
+          ["Throw Up", 393], ["Painted Parade", 147], ["Number Thirteen", 285], ["Into the Eye", 239],
+          ["The Undertow", 302], ["Human Herd", 232], ["Over The Edge (Bonus Track)", 237],
+          ["Through (Bonus Track)", 280], ["Pawn Everything (Bonus Track)", 85]
+        ]
+      },
+      {
+        id: "whales-vault", bcId: 3869699106, artId: 77624342, year: 2013, cat: "vault", catLabel: "Deluxe Vault",
+        title: "Whales and Leeches · Vault", subtitle: "13 Chambers incl. Black Water Sanctum", biome: "vault", difficulty: 4, xp: 480,
+        url: "https://redfang.bandcamp.com/album/whales-and-leeches-deluxe-version",
+        vaultStartIndex: 11,
+        relic: { id: "leviathan-chalice", name: "Leviathan Chalice", desc: "Start every campaign at +15% bonus score & +6 HP.", effect: "chalice" },
+        tracks: [
+          ["DOEN", 198], ["Blood Like Cream", 213], ["No Hope", 178], ["Crows in Swine", 182],
+          ["Voices of the Dead", 164], ["Behind The Light", 164], ["Dawn Rising", 421], ["Failure", 297],
+          ["1516", 217], ["This Animal", 163], ["Every Little Twist", 284],
+          ["Murder The Mountains (Bonus Track)", 114], ["Black Water (Bonus Track)", 280]
+        ]
+      },
+      {
+        id: "ghosts-vault", bcId: 3123654384, artId: 971574415, year: 2016, cat: "vault", catLabel: "Deluxe Vault",
+        title: "Only Ghosts · Vault", subtitle: "12 Chambers incl. One Hit Two Hit Crypt", biome: "vault", difficulty: 5, xp: 500,
+        url: "https://redfang.bandcamp.com/album/only-ghosts-deluxe-version",
+        vaultStartIndex: 10,
+        relic: { id: "phantom-key", name: "Phantom Master Key", desc: "Passing Song Events awards +6 Block & +4 HP.", effect: "eventMaster" },
+        tracks: [
+          ["Flies", 217], ["Cut it Short", 252], ["Flames", 90], ["No Air", 292], ["Shadows", 191],
+          ["Not for You", 199], ["The Smell of the Sound", 323], ["The Deep", 267],
+          ["I Am a Ghost", 248], ["Living in Lye", 379],
+          ["Dumb Guy (Bonus Track)", 193], ["One Hit Two Hit (Bonus Track)", 320]
+        ]
+      }
+    ];
+
+    const CLASSES = [
+      {
+        id: "knight", name: "Riff Knight", maxHp: 78, stamina: 3, rerolls: 1, d20Mod: 0, critMin: 20, passiveBlock: 2,
+        stats: "HP 78 · +2 Block/Turn",
+        perk: "Clad in sacred cardboard plate. Gains +2 passive Block each turn and excels at fortified Amp Shields.",
+        deck: ["strike", "strike", "heavy_riff", "amp_shield", "amp_shield", "counter_riff", "bunker_brew", "war_chord"]
+      },
+      {
+        id: "mage", name: "Fuzz Mage", maxHp: 66, stamina: 3, rerolls: 3, d20Mod: 2, critMin: 20, passiveBlock: 0,
+        stats: "HP 66 · +2 D20 · 3 Rerolls",
+        perk: "Channels molten tube distortion. +2 to all D20 rolls and 3 Reroll tokens to bend fate every campaign.",
+        deck: ["strike", "fuzz_bolt", "fuzz_bolt", "amp_shield", "distortion_surge", "counter_riff", "bunker_brew", "arcane_echo"]
+      },
+      {
+        id: "rogue", name: "Pit Rogue", maxHp: 70, stamina: 3, rerolls: 2, d20Mod: 1, critMin: 18, passiveBlock: 0,
+        stats: "HP 70 · Crits 18–20",
+        perk: "Darts through the mosh pit. Scores Encore Crits on 18–20 and heals +3 HP on every critical hit.",
+        deck: ["strike", "pit_ambush", "pit_ambush", "amp_shield", "heavy_riff", "counter_riff", "bunker_brew", "lucky_riff"]
+      }
+    ];
+
+    const CARD_LIBRARY = {
+      strike:           { name: "Power Strike",     cost: 1, kind: "attack",  roll: true,  dmg: 8,  desc: "Roll D20: deal 8 DMG (+4 on 13+, Double on Crit)." },
+      heavy_riff:       { name: "Sludge Cleave",    cost: 2, kind: "attack",  roll: true,  dmg: 15, desc: "Roll D20: deal 15 heavy DMG (+6 on 14+, Double on Crit)." },
+      war_chord:        { name: "Iron Chord",       cost: 2, kind: "defense", roll: false, dmg: 8,  block: 10, desc: "Deal 8 DMG and gain 10 Block against the Band." },
+      amp_shield:       { name: "Amp Shield",       cost: 1, kind: "defense", roll: false, block: 10, desc: "Raise a wall of cabinets: gain 10 Block this turn." },
+      counter_riff:     { name: "Counter-Riff",     cost: 1, kind: "defense", roll: true,  dmg: 6,  block: 6, desc: "Gain 6 Block and roll D20 to counter for 6 DMG." },
+      bunker_brew:      { name: "Bunker Brew",      cost: 1, kind: "special", roll: false, heal: 9, desc: "Crack a cold brew: restore 9 HP immediately." },
+      fuzz_bolt:        { name: "Fuzz Bolt",        cost: 1, kind: "arcane",  roll: true,  dmg: 10, desc: "Arcane distortion bolt: roll D20 for 10 DMG (ignores Block)." },
+      distortion_surge: { name: "Tube Overdrive",   cost: 0, kind: "special", roll: false, staminaGain: 1, draw: 1, desc: "Free surge: gain +1 Stamina and draw 1 fresh card." },
+      arcane_echo:      { name: "Feedback Nova",    cost: 2, kind: "arcane",  roll: true,  dmg: 14, block: 5, desc: "Roll D20: deal 14 arcane DMG and gain 5 Block." },
+      pit_ambush:       { name: "Mosh Ambush",      cost: 1, kind: "attack",  roll: true,  dmg: 9,  desc: "Quick flank: roll D20 for 9 DMG with +2 Crit bonus." },
+      lucky_riff:       { name: "Encore Gamble",    cost: 1, kind: "special", roll: true,  dmg: 7,  heal: 4, desc: "Roll D20: deal 7 DMG, heal 4 HP, and +100 Score on 12+." }
+    };
+
+    const BESPOKE_EVENTS = {
+      "prehistoric dog": { dc: 11, text: "A prehistoric hound guards the cardboard armory. Roll to tame the beast.", reward: "heal_block" },
+      "wires":           { dc: 12, text: "High-voltage amp wires snake across the canyon floor. Roll to sever the trap.", reward: "dmg_burst" },
+      "hank is dead":    { dc: 11, text: "The tavern erupts into chaos! Roll to grab a shield from behind the bar.", reward: "heal_block" },
+      "dirt wizard":     { dc: 13, text: "The Dirt Wizard hurls a boulder of fuzz from his tower. Roll to deflect it!", reward: "dmg_burst" },
+      "blood like cream":{ dc: 12, text: "A horde of thirsty undead closes in on the stage. Roll to break their line.", reward: "dmg_burst" },
+      "crows in swine":  { dc: 11, text: "A murder of iron crows swoops down in sync with the riff. Roll to scatter them.", reward: "stamina" },
+      "whales and leeches":{ dc: 13, text: "A colossal leviathan surfaces beside your vessel. Roll to harpoon its flank.", reward: "dmg_burst" },
+      "flies":           { dc: 11, text: "A buzzing swarm dims the hall torches. Roll to ignite an arcane flare.", reward: "heal_block" },
+      "only ghosts":     { dc: 12, text: "Spectral amps materialize in the fog. Roll to banish the phantom echo.", reward: "stamina" },
+      "arrows":          { dc: 12, text: "Volleys of flaming arrows rain through the canopy! Roll to weave past them.", reward: "heal_block" },
+      "funeral coach":   { dc: 13, text: "A roaring hearse barrels into the finale clearing. Roll to commandeer the wheel!", reward: "dmg_burst" },
+      "antidote":        { dc: 11, text: "A glowing alchemical flask sits on the amp stack. Roll to distill the cure.", reward: "heal_block" },
+      "black water":     { dc: 13, text: "Dark vault tides surge around the bonus relic pedestal. Roll to seize the seal!", reward: "dmg_burst" },
+      "pawn everything": { dc: 12, text: "A hooded vault merchant offers a risky wager. Roll to strike a winning bargain.", reward: "stamina" }
+    };
+
+    function getSongEvent(trackTitle, isVaultChamber, isFinale) {
+      const key = trackTitle.toLowerCase().replace(/\s*\([^)]*\)\s*/g, "").trim();
+      if (BESPOKE_EVENTS[key]) return BESPOKE_EVENTS[key];
+      const hash = Array.from(key).reduce((a, c) => a + c.charCodeAt(0), 0);
+      const templates = [
+        { dc: isVaultChamber ? 13 : 11, text: `The echoes of "${trackTitle}" shake the chamber walls. Roll to channel the riff into a shockwave!`, reward: "dmg_burst" },
+        { dc: isVaultChamber ? 13 : 11, text: `An ancient amp shrine hums during "${trackTitle}". Roll to fortify your armor and mend wounds.`, reward: "heal_block" },
+        { dc: isFinale ? 14 : 12, text: `The tempo shifts sharply on "${trackTitle}". Roll to catch the downbeat for bonus Stamina!`, reward: "stamina" }
+      ];
+      return templates[hash % templates.length];
+    }
+
+    /* =========================================================================
+     * 2. BROWSER LOCALSTORAGE PERSISTENCE (CAREER + MID-CAMPAIGN CHECKPOINT)
+     * ========================================================================= */
+    const STORAGE_KEY = "red_fang_riff_ruin_save_v1";
+    const DOCK_H_KEY = "red_fang_riff_ruin_dock_h_v1";
+
+    function defaultCareer() {
+      return {
+        xp: 0,
+        clearedIds: [],
+        relics: [],
+        bestScores: {},
+        totalVictories: 0,
+        totalCrits: 0,
+        totalRoomsCleared: 0,
+        sfxEnabled: false,
+        selectedClass: "knight"
+      };
+    }
+
+    function loadSaveData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return { career: defaultCareer(), activeRun: null };
+        const parsed = JSON.parse(raw);
+        return {
+          career: Object.assign(defaultCareer(), parsed.career || {}),
+          activeRun: parsed.activeRun || null
+        };
+      } catch {
+        return { career: defaultCareer(), activeRun: null };
+      }
+    }
+
+    let saveData = loadSaveData();
+
+    function persistSave() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(saveData));
+      } catch {
+        /* ignore quota errors */
+      }
+    }
+
+    /* =========================================================================
+     * 3. OPTIONAL SUBTLE WEB AUDIO API TABLETOP SFX (MUTED BY DEFAULT)
+     * ========================================================================= */
+    let audioCtx = null;
+    function playSfx(kind) {
+      if (!saveData.career.sfxEnabled) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === "suspended") audioCtx.resume();
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        if (kind === "dice") {
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(240, now);
+          osc.frequency.exponentialRampToValueAtTime(520, now + 0.08);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+          osc.start(now); osc.stop(now + 0.12);
+        } else if (kind === "hit") {
+          osc.type = "sawtooth";
+          osc.frequency.setValueAtTime(160, now);
+          osc.frequency.exponentialRampToValueAtTime(58, now + 0.14);
+          gain.gain.setValueAtTime(0.09, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+          osc.start(now); osc.stop(now + 0.17);
+        } else if (kind === "crit") {
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(440, now);
+          osc.frequency.setValueAtTime(660, now + 0.06);
+          osc.frequency.setValueAtTime(880, now + 0.12);
+          gain.gain.setValueAtTime(0.11, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+          osc.start(now); osc.stop(now + 0.29);
+        } else if (kind === "shield") {
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(320, now);
+          osc.frequency.exponentialRampToValueAtTime(490, now + 0.13);
+          gain.gain.setValueAtTime(0.07, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+          osc.start(now); osc.stop(now + 0.17);
+        }
+      } catch {
+        /* ignore Web Audio errors */
+      }
+    }
+
+    /* =========================================================================
+     * 4. RUNTIME STATE & DOM REFS
+     * ========================================================================= */
+    const state = {
+      phase: "TITLE_MENU", // TITLE_MENU | PLAYING | GAME_OVER
+      filter: "all",
+      campaign: null,
+      heroClass: CLASSES[0],
+      hero: { hp: 78, maxHp: 78, block: 0, stamina: 3, maxStamina: 3, rerolls: 1, turn: 1 },
+      clock: { running: false, trackIndex: 0, trackElapsed: 0, totalDuration: 0, lastFrameMs: 0, lastCheckpointSec: 0 },
+      encounter: null,
+      clearedTracks: [],
+      deck: { draw: [], hand: [], discard: [] },
+      score: 0,
+      crits: 0,
+      dmgDealt: 0,
+      turnLocked: false,
+      lastD20: 20,
+      dockCampaignId: null,
+      dockMinimized: false,
+      dockHeight: 120,
+      nodes: [],
+      heroPos: { x: 0, y: 0 },
+      fx: [],
+      floaters: [],
+      particles: [],
+      shake: 0
+    };
+
+    const $ = id => document.getElementById(id);
+
+    const els = {
+      atlasView: $("atlasView"),
+      arenaView: $("arenaView"),
+      careerRank: $("careerRank"),
+      careerXp: $("careerXp"),
+      careerXpFill: $("careerXpFill"),
+      careerStats: $("careerStats"),
+      resumeBanner: $("resumeBanner"),
+      resumeThumb: $("resumeThumb"),
+      resumeTitle: $("resumeTitle"),
+      resumeMeta: $("resumeMeta"),
+      resumeBtn: $("resumeBtn"),
+      discardSaveBtn: $("discardSaveBtn"),
+      classGrid: $("classGrid"),
+      atlasFilters: $("atlasFilters"),
+      campaignGrid: $("campaignGrid"),
+      hudHeroLabel: $("hudHeroLabel"),
+      hudBlockLabel: $("hudBlockLabel"),
+      hudHeroHpFill: $("hudHeroHpFill"),
+      hudScoreLabel: $("hudScoreLabel"),
+      hudRelicCount: $("hudRelicCount"),
+      clockSongTitle: $("clockSongTitle"),
+      clockSongTime: $("clockSongTime"),
+      songBarTrack: $("songBarTrack"),
+      songBarFill: $("songBarFill"),
+      clockAlbumTime: $("clockAlbumTime"),
+      clockSyncState: $("clockSyncState"),
+      clockToggleBtn: $("clockToggleBtn"),
+      prevTrackBtn: $("prevTrackBtn"),
+      nextTrackBtn: $("nextTrackBtn"),
+      sfxToggleBtn: $("sfxToggleBtn"),
+      backAtlasBtn: $("backAtlasBtn"),
+      boardCanvas: $("boardCanvas"),
+      boardBiomeName: $("boardBiomeName"),
+      boardHintText: $("boardHintText"),
+      d20Btn: $("d20Btn"),
+      d20Num: $("d20Num"),
+      diceLabel: $("diceLabel"),
+      diceResult: $("diceResult"),
+      rerollLabel: $("rerollLabel"),
+      enemySigil: $("enemySigil"),
+      enemyName: $("enemyName"),
+      enemyRole: $("enemyRole"),
+      enemyHpText: $("enemyHpText"),
+      enemyHpFill: $("enemyHpFill"),
+      enemyIntentBox: $("enemyIntentBox"),
+      enemyIntentText: $("enemyIntentText"),
+      enemyIntentVal: $("enemyIntentVal"),
+      eventTitle: $("eventTitle"),
+      eventText: $("eventText"),
+      eventRollBtn: $("eventRollBtn"),
+      campHealBtn: $("campHealBtn"),
+      combatLog: $("combatLog"),
+      staminaReadout: $("staminaReadout"),
+      rerollBtn: $("rerollBtn"),
+      endTurnBtn: $("endTurnBtn"),
+      cardsRow: $("cardsRow"),
+      relicModal: $("relicModal"),
+      relicGrid: $("relicGrid"),
+      rulesModal: $("rulesModal"),
+      outcomeModal: $("outcomeModal"),
+      outcomeKicker: $("outcomeKicker"),
+      outcomeTitle: $("outcomeTitle"),
+      outcomeDesc: $("outcomeDesc"),
+      outcomeStats: $("outcomeStats"),
+      outcomeRelicBanner: $("outcomeRelicBanner"),
+      bcDock: $("bcDock"),
+      dockResizeHandle: $("dockResizeHandle"),
+      dockArt: $("dockArt"),
+      dockKicker: $("dockKicker"),
+      dockTitle: $("dockTitle"),
+      dockBtns: $("dockBtns"),
+      dockIdle: $("dockIdle"),
+      dockIframeMount: $("dockIframeMount"),
+      toast: $("toast")
+    };
+
+    const reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isPhoneScreen = () => (window.innerWidth || 1024) <= 720;
+
+    function fmtTime(sec) {
+      const s = Math.max(0, Math.floor(sec));
+      const m = Math.floor(s / 60);
+      const r = s % 60;
+      return String(m).padStart(2, "0") + ":" + String(r).padStart(2, "0");
+    }
+
+    function artUrl(artId, size) {
+      return `https://f4.bcbits.com/img/a${artId}_${size || 9}.jpg`;
+    }
+
+    function showToast(msg) {
+      els.toast.textContent = msg;
+      els.toast.classList.add("show");
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => els.toast.classList.remove("show"), 2600);
+    }
+
+    function hasRelicEffect(effect) {
+      const owned = saveData.career.relics || [];
+      return CAMPAIGNS.some(c => owned.includes(c.relic.id) && c.relic.effect === effect);
+    }
+
+    function totalCampaignDur(c) {
+      return c.tracks.reduce((sum, t) => sum + t[1], 0);
+    }
+
+    function getCareerRank(xp) {
+      const tiers = [
+        [0, "Level 1 · Pit Initiate"],
+        [250, "Level 2 · Cardboard Vanguard"],
+        [650, "Level 3 · Sludge Scout"],
+        [1200, "Level 4 · Dirt Wizard's Bane"],
+        [2000, "Level 5 · Leviathan Hunter"],
+        [3000, "Level 6 · Vault Raider"],
+        [4400, "Level 7 · Grandmaster of the Riff"]
+      ];
+      let cur = tiers[0], next = tiers[1];
+      for (let i = 0; i < tiers.length; i++) {
+        if (xp >= tiers[i][0]) {
+          cur = tiers[i];
+          next = tiers[i + 1] || [tiers[i][0] + 1000, "Max"];
+        }
+      }
+      const span = Math.max(1, next[0] - cur[0]);
+      const pct = Math.min(100, Math.round(((xp - cur[0]) / span) * 100));
+      return { title: cur[1], pct };
+    }
+
+    /* =========================================================================
+     * 5. BUILT-IN BANDCAMP PLAYER DOCK (AUTO-START + RESIZABLE + MOBILE HIDE)
+     * ========================================================================= */
+    let bcIframeEl = null;
+
+    function syncDockLayout() {
+      const h = state.dockHeight;
+      document.documentElement.style.setProperty("--dock-h", h + "px");
+      els.bcDock.classList.toggle("minimized", state.dockMinimized);
+      let pad = h + 38;
+      if (state.dockMinimized) pad = 92;
+      else if (isPhoneScreen()) pad = h + 114;
+      document.documentElement.style.setProperty("--body-pad", pad + "px");
+    }
+
+    function loadBandcampCampaign(camp) {
+      if (!camp) return;
+      if (state.dockCampaignId === camp.id && bcIframeEl) {
+        renderDockMeta(camp);
+        return;
+      }
+      state.dockCampaignId = camp.id;
+      const embedSrc = `https://bandcamp.com/EmbeddedPlayer/album=${camp.bcId}/size=large/bgcol=14110e/linkcol=e0b254/tracklist=true/artwork=none/transparent=true/`;
+
+      els.dockIframeMount.innerHTML = "";
+      bcIframeEl = document.createElement("iframe");
+      bcIframeEl.className = "dock-iframe";
+      bcIframeEl.setAttribute("seamless", "");
+      bcIframeEl.setAttribute("allow", "autoplay");
+      bcIframeEl.title = `Red Fang — ${camp.title} Bandcamp Player`;
+      bcIframeEl.src = embedSrc;
+      els.dockIframeMount.appendChild(bcIframeEl);
+      els.dockIframeMount.style.display = "block";
+      els.dockIdle.style.display = "none";
+      renderDockMeta(camp);
+    }
+
+    function renderDockMeta(camp) {
+      if (!camp) return;
+      els.dockArt.innerHTML = `<img src="${artUrl(camp.artId, 9)}" alt="" referrerpolicy="no-referrer">`;
+      els.dockKicker.textContent = `${camp.catLabel} · ${fmtTime(totalCampaignDur(camp))} · ${camp.tracks.length} Tracks`;
+      els.dockTitle.textContent = `Red Fang — ${camp.title}`;
+
+      const exp = state.dockHeight > 165;
+      els.dockBtns.innerHTML = "";
+
+      const minBtn = document.createElement("button");
+      minBtn.type = "button";
+      minBtn.className = "btn sm" + (state.dockMinimized ? " primary" : "");
+      minBtn.textContent = state.dockMinimized ? "Show Player" : "Hide";
+      minBtn.addEventListener("click", () => {
+        state.dockMinimized = !state.dockMinimized;
+        syncDockLayout();
+        renderDockMeta(camp);
+      });
+      els.dockBtns.appendChild(minBtn);
+
+      const trkBtn = document.createElement("button");
+      trkBtn.type = "button";
+      trkBtn.className = "btn sm";
+      trkBtn.textContent = exp ? "Compact" : "Tracklist";
+      trkBtn.addEventListener("click", () => {
+        state.dockMinimized = false;
+        state.dockHeight = exp ? 120 : 310;
+        try { localStorage.setItem(DOCK_H_KEY, String(state.dockHeight)); } catch {}
+        syncDockLayout();
+        renderDockMeta(camp);
+      });
+      els.dockBtns.appendChild(trkBtn);
+
+      const bcLink = document.createElement("a");
+      bcLink.className = "btn sm";
+      bcLink.href = camp.url;
+      bcLink.target = "_blank";
+      bcLink.rel = "noopener";
+      bcLink.textContent = isPhoneScreen() ? "Bandcamp App ↗" : "Bandcamp ↗";
+      els.dockBtns.appendChild(bcLink);
+    }
+
+    function bindDockResize() {
+      try {
+        const saved = parseInt(localStorage.getItem(DOCK_H_KEY) || "", 10);
+        if (Number.isFinite(saved) && saved >= 120 && saved <= 420) state.dockHeight = saved;
+      } catch {}
+      syncDockLayout();
+
+      let dragging = false, startY = 0, startH = 120;
+      els.dockResizeHandle.addEventListener("pointerdown", e => {
+        if (e.button !== 0) return;
+        e.preventDefault();
+        dragging = true;
+        startY = e.clientY;
+        startH = state.dockHeight;
+        document.body.classList.add("dock-resizing");
+        try { els.dockResizeHandle.setPointerCapture(e.pointerId); } catch {}
+      });
+      els.dockResizeHandle.addEventListener("pointermove", e => {
+        if (!dragging) return;
+        const maxH = Math.min(440, Math.round(window.innerHeight * 0.56));
+        state.dockHeight = Math.max(120, Math.min(maxH, Math.round(startH + (startY - e.clientY))));
+        syncDockLayout();
+      });
+      const finish = () => {
+        if (!dragging) return;
+        dragging = false;
+        document.body.classList.remove("dock-resizing");
+        try { localStorage.setItem(DOCK_H_KEY, String(state.dockHeight)); } catch {}
+        if (state.campaign) renderDockMeta(state.campaign);
+      };
+      els.dockResizeHandle.addEventListener("pointerup", finish);
+      els.dockResizeHandle.addEventListener("pointercancel", finish);
+
+      els.dockArt.addEventListener("click", () => {
+        if (state.dockMinimized && state.campaign) {
+          state.dockMinimized = false;
+          syncDockLayout();
+          renderDockMeta(state.campaign);
+        }
+      });
+
+      // Auto-start album campaign clock the moment the user clicks Play inside the Bandcamp iframe!
+      window.addEventListener("blur", () => {
+        if (document.visibilityState !== "visible") return;
+        setTimeout(() => {
+          if (
+            bcIframeEl &&
+            document.activeElement === bcIframeEl &&
+            state.phase === "PLAYING" &&
+            !state.clock.running
+          ) {
+            state.clock.running = true;
+            state.clock.lastFrameMs = performance.now();
+            updateHud();
+            addLog("Bandcamp playback detected — album campaign clock engaged!", "gold");
+            showToast("Campaign clock synced & running!");
+          }
+        }, 0);
+      });
+    }
+
+    /* =========================================================================
+     * 6. ATLAS & CAREER RENDERING
+     * ========================================================================= */
+    function renderCareer() {
+      const c = saveData.career;
+      const rank = getCareerRank(c.xp);
+      els.careerRank.textContent = rank.title;
+      els.careerXp.textContent = `${c.xp.toLocaleString()} XP`;
+      els.careerXpFill.style.width = `${rank.pct}%`;
+      els.careerStats.innerHTML = `
+        <span><b>${c.clearedIds.length}</b> / ${CAMPAIGNS.length} Campaigns Cleared</span>
+        <span aria-hidden="true">·</span>
+        <span><b>${c.relics.length}</b> Relics Unlocked</span>
+        <span aria-hidden="true">·</span>
+        <span><b>${c.totalCrits}</b> Encore Crits</span>
+      `;
+    }
+
+    function renderResumeBanner() {
+      const run = saveData.activeRun;
+      if (!run) {
+        els.resumeBanner.classList.add("view-hidden");
+        return;
+      }
+      const camp = CAMPAIGNS.find(x => x.id === run.campaignId);
+      const cls = CLASSES.find(x => x.id === run.classId) || CLASSES[0];
+      if (!camp) {
+        els.resumeBanner.classList.add("view-hidden");
+        return;
+      }
+      const trk = camp.tracks[run.trackIndex] || camp.tracks[0];
+      els.resumeBanner.classList.remove("view-hidden");
+      els.resumeThumb.src = artUrl(camp.artId, 9);
+      els.resumeTitle.textContent = `Resume: ${camp.title} (${cls.name})`;
+      els.resumeMeta.textContent = `Ch. ${run.trackIndex + 1}/${camp.tracks.length} · ${trk[0]} (${fmtTime(run.trackElapsed)}) · HP ${run.hp}/${run.maxHp} · Score ${run.score}`;
+    }
+
+    function renderClasses() {
+      const sel = saveData.career.selectedClass || "knight";
+      state.heroClass = CLASSES.find(c => c.id === sel) || CLASSES[0];
+      els.classGrid.innerHTML = CLASSES.map(cls => {
+        const active = cls.id === sel;
+        return `
+          <button type="button" class="class-card${active ? " selected" : ""}" data-cls="${cls.id}" role="radio" aria-checked="${active}">
+            <div class="class-head">
+              <span class="class-name">${cls.name}</span>
+              <span class="class-stats">${cls.stats}</span>
+            </div>
+            <div class="class-perk">${cls.perk}</div>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function renderCampaignGrid() {
+      const list = state.filter === "all" ? CAMPAIGNS : CAMPAIGNS.filter(c => c.cat === state.filter);
+      const clearedSet = new Set(saveData.career.clearedIds || []);
+      els.campaignGrid.innerHTML = list.map(camp => {
+        const dur = fmtTime(totalCampaignDur(camp));
+        const isCleared = clearedSet.has(camp.id);
+        const skulls = "◆".repeat(camp.difficulty) + "◇".repeat(5 - camp.difficulty);
+        const best = saveData.career.bestScores[camp.id];
+        return `
+          <article class="camp-card${isCleared ? " cleared" : ""}" data-cat="${camp.cat}">
+            <div class="camp-top">
+              <div class="camp-art-wrap">
+                <img src="${artUrl(camp.artId, 9)}" alt="${camp.title} cover" loading="lazy" referrerpolicy="no-referrer" />
+              </div>
+              <div style="min-width:0;">
+                <div class="camp-meta-line">${camp.catLabel} · ${camp.year} · ${dur}</div>
+                <h3 class="camp-title">${camp.title}</h3>
+                <p class="camp-sub">${camp.subtitle} · ${camp.tracks.length} ${camp.tracks.length === 1 ? "Chamber" : "Chambers"} · ${skulls}</p>
+              </div>
+            </div>
+            <div class="camp-foot">
+              <span class="camp-reward">${isCleared ? `Cleared · Relic: ${camp.relic.name}${best ? ` · Best ${best}` : ""}` : `Relic: ${camp.relic.name}`}</span>
+              <button type="button" class="btn sm primary" data-start="${camp.id}">${isCleared ? "Replay" : "Enter"}</button>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderRelicModal() {
+      const owned = new Set(saveData.career.relics || []);
+      els.relicGrid.innerHTML = CAMPAIGNS.map(camp => {
+        const isOwned = owned.has(camp.relic.id);
+        return `
+          <div class="relic-item${isOwned ? " owned" : ""}">
+            <div class="relic-item-name">${isOwned ? "★ " : "○ "}${camp.relic.name}</div>
+            <div class="relic-item-desc">${camp.relic.desc}</div>
+            <div class="relic-item-src">${isOwned ? "Unlocked · Active" : "Locked"} · ${camp.title} (${camp.catLabel})</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    /* =========================================================================
+     * 7. CAMPAIGN ENGINE: DECK, COMBAT, VIRTUAL BAND AI & REAL-TIME SYNC
+     * ========================================================================= */
+    function shuffle(arr) {
+      const copy = arr.slice();
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function addLog(msg, cls) {
+      const div = document.createElement("div");
+      div.className = "log-line" + (cls ? " " + cls : "");
+      div.textContent = msg;
+      els.combatLog.prepend(div);
+      while (els.combatLog.children.length > 26) {
+        els.combatLog.lastElementChild.remove();
+      }
+    }
+
+    function buildChamberEncounter(camp, idx) {
+      const track = camp.tracks[idx];
+      const isFinale = idx === camp.tracks.length - 1 && camp.tracks.length > 1;
+      const isVaultChamber = typeof camp.vaultStartIndex === "number" && idx >= camp.vaultStartIndex;
+      const member = isFinale ? FINALE_BOSS : BAND_MEMBERS[(idx + camp.difficulty) % BAND_MEMBERS.length];
+      const scale = 1 + (camp.difficulty - 1) * 0.14 + (idx / Math.max(1, camp.tracks.length)) * 0.25;
+      const baseHp = isFinale ? 44 : (isVaultChamber ? 36 : 26);
+      const maxHp = Math.round(baseHp * scale);
+      const intent = member.moves[Math.floor(Math.random() * member.moves.length)];
+      const dmgScale = Math.round(intent.base * (0.85 + camp.difficulty * 0.08));
+
+      return {
+        trackIndex: idx,
+        trackTitle: track[0],
+        trackDur: track[1],
+        member,
+        isFinale,
+        isVaultChamber,
+        hp: maxHp,
+        maxHp,
+        block: isVaultChamber ? 5 : 0,
+        intentName: intent.name,
+        intentType: intent.type,
+        intentVal: dmgScale,
+        intentBlock: intent.block || 0,
+        event: getSongEvent(track[0], isVaultChamber, isFinale),
+        eventResolved: false,
+        cleared: state.clearedTracks.includes(idx)
+      };
+    }
+
+    function pickNextBandIntent() {
+      const enc = state.encounter;
+      if (!enc || enc.cleared) return;
+      const m = enc.member.moves[Math.floor(Math.random() * enc.member.moves.length)];
+      const camp = state.campaign;
+      enc.intentName = m.name;
+      enc.intentType = m.type;
+      enc.intentVal = Math.round(m.base * (0.85 + camp.difficulty * 0.08));
+      enc.intentBlock = m.block || 0;
+    }
+
+    function resetDeck() {
+      state.deck.draw = shuffle(state.heroClass.deck.slice());
+      state.deck.hand = [];
+      state.deck.discard = [];
+    }
+
+    function drawCards(n) {
+      for (let i = 0; i < n; i++) {
+        if (!state.deck.draw.length) {
+          if (!state.deck.discard.length) break;
+          state.deck.draw = shuffle(state.deck.discard);
+          state.deck.discard = [];
+        }
+        const next = state.deck.draw.pop();
+        if (next) state.deck.hand.push(next);
+      }
+    }
+
+    function enterChamber(idx, resetElapsed) {
+      const camp = state.campaign;
+      if (!camp) return;
+      const clamped = Math.max(0, Math.min(camp.tracks.length - 1, idx));
+      state.clock.trackIndex = clamped;
+      if (resetElapsed !== false) state.clock.trackElapsed = 0;
+      state.encounter = buildChamberEncounter(camp, clamped);
+      state.hero.turn = 1;
+      state.hero.stamina = state.hero.maxStamina + (hasRelicEffect("stamina1") ? 1 : 0);
+      state.hero.block = state.heroClass.passiveBlock + (hasRelicEffect("startBlock4") ? 4 : 0);
+      state.turnLocked = false;
+
+      if (!state.deck.hand.length) {
+        drawCards(4);
+      }
+      const enc = state.encounter;
+      const tag = enc.isFinale ? "ENCORE FINALE" : (enc.isVaultChamber ? "SEALED VAULT CHAMBER" : `Chapter ${clamped + 1}`);
+      addLog(`${tag}: "${enc.trackTitle}" — ${enc.member.name} blocks your path!`, enc.isFinale ? "gold" : "");
+      updateArenaUI();
+      saveCheckpoint();
+    }
+
+    function startNewCampaign(campId) {
+      const camp = CAMPAIGNS.find(c => c.id === campId);
+      if (!camp) return;
+      const cls = CLASSES.find(c => c.id === (saveData.career.selectedClass || "knight")) || CLASSES[0];
+      state.campaign = camp;
+      state.heroClass = cls;
+      state.phase = "PLAYING";
+
+      const bonusHp = (hasRelicEffect("maxhp10") ? 10 : 0) + (hasRelicEffect("chalice") ? 6 : 0);
+      state.hero = {
+        hp: cls.maxHp + bonusHp,
+        maxHp: cls.maxHp + bonusHp,
+        block: cls.passiveBlock + (hasRelicEffect("startBlock4") ? 4 : 0),
+        stamina: cls.stamina,
+        maxStamina: cls.stamina,
+        rerolls: cls.rerolls + (hasRelicEffect("reroll1") ? 1 : 0),
+        turn: 1
+      };
+      state.clearedTracks = [];
+      state.score = 0;
+      state.crits = 0;
+      state.dmgDealt = 0;
+      state.clock = {
+        running: false,
+        trackIndex: 0,
+        trackElapsed: 0,
+        totalDuration: totalCampaignDur(camp),
+        lastFrameMs: performance.now(),
+        lastCheckpointSec: 0
+      };
+      state.fx = [];
+      state.floaters = [];
+      els.combatLog.innerHTML = "";
+
+      resetDeck();
+      drawCards(4);
+      buildMapGeometry(camp);
+      enterChamber(0, true);
+      loadBandcampCampaign(camp);
+      switchScreen("PLAYING");
+      showToast(`Loaded ${camp.title} — Press Play in the Bandcamp bar!`);
+    }
+
+    function resumeSavedCampaign() {
+      const run = saveData.activeRun;
+      if (!run) return;
+      const camp = CAMPAIGNS.find(c => c.id === run.campaignId);
+      if (!camp) return;
+      const cls = CLASSES.find(c => c.id === run.classId) || CLASSES[0];
+      state.campaign = camp;
+      state.heroClass = cls;
+      state.phase = "PLAYING";
+      state.hero = {
+        hp: run.hp,
+        maxHp: run.maxHp,
+        block: run.block || 0,
+        stamina: cls.stamina,
+        maxStamina: cls.stamina,
+        rerolls: run.rerolls != null ? run.rerolls : cls.rerolls,
+        turn: 1
+      };
+      state.clearedTracks = Array.isArray(run.clearedTracks) ? run.clearedTracks.slice() : [];
+      state.score = run.score || 0;
+      state.crits = run.crits || 0;
+      state.dmgDealt = run.dmgDealt || 0;
+      state.clock = {
+        running: false,
+        trackIndex: Math.min(run.trackIndex || 0, camp.tracks.length - 1),
+        trackElapsed: run.trackElapsed || 0,
+        totalDuration: totalCampaignDur(camp),
+        lastFrameMs: performance.now(),
+        lastCheckpointSec: 0
+      };
+      state.fx = [];
+      state.floaters = [];
+      els.combatLog.innerHTML = "";
+
+      resetDeck();
+      drawCards(4);
+      buildMapGeometry(camp);
+      enterChamber(state.clock.trackIndex, false);
+      if (typeof run.enemyHp === "number" && state.encounter && !state.encounter.cleared) {
+        state.encounter.hp = Math.max(1, Math.min(state.encounter.maxHp, run.enemyHp));
+      }
+      loadBandcampCampaign(camp);
+      switchScreen("PLAYING");
+      addLog("Resumed saved campaign checkpoint from browser storage.", "gold");
+      showToast("Checkpoint restored — resume Bandcamp playback!");
+    }
+
+    function saveCheckpoint() {
+      if (state.phase !== "PLAYING" || !state.campaign) return;
+      saveData.activeRun = {
+        campaignId: state.campaign.id,
+        classId: state.heroClass.id,
+        hp: state.hero.hp,
+        maxHp: state.hero.maxHp,
+        block: state.hero.block,
+        rerolls: state.hero.rerolls,
+        trackIndex: state.clock.trackIndex,
+        trackElapsed: Math.floor(state.clock.trackElapsed),
+        clearedTracks: state.clearedTracks.slice(),
+        enemyHp: state.encounter ? state.encounter.hp : 0,
+        score: state.score,
+        crits: state.crits,
+        dmgDealt: state.dmgDealt,
+        savedAt: Date.now()
+      };
+      persistSave();
+    }
+
+    function rollD20(bonusMod, critOverrideMin) {
+      const raw = 1 + Math.floor(Math.random() * 20);
+      const relicMod = hasRelicEffect("d20plus2") ? 2 : 0;
+      const total = raw + state.heroClass.d20Mod + relicMod + (bonusMod || 0);
+      const critMin = Math.min(
+        critOverrideMin || 20,
+        state.heroClass.critMin,
+        hasRelicEffect("crit19") ? 19 : 20
+      );
+      const isCrit = raw >= critMin;
+      const isFumble = raw === 1;
+
+      state.lastD20 = raw;
+      els.d20Num.textContent = String(raw);
+      els.d20Btn.classList.remove("rolling", "crit", "fumble");
+      void els.d20Btn.offsetWidth;
+      els.d20Btn.classList.add("rolling");
+      if (isCrit) els.d20Btn.classList.add("crit");
+      else if (isFumble) els.d20Btn.classList.add("fumble");
+
+      playSfx(isCrit ? "crit" : "dice");
+      if (isCrit) {
+        state.crits++;
+        saveData.career.totalCrits++;
+        if (hasRelicEffect("critStam")) {
+          state.hero.stamina = Math.min(state.hero.maxStamina + 2, state.hero.stamina + 1);
+        }
+      }
+      return { raw, total, isCrit, isFumble };
+    }
+
+    function spawnCanvasFx(type, color, text) {
+      const node = state.nodes[state.clock.trackIndex] || { x: 240, y: 180 };
+      state.fx.push({ type, x: node.x, y: node.y, color, t: 0, maxT: 0.55 });
+      if (text) {
+        state.floaters.push({ x: node.x + (Math.random() * 34 - 17), y: node.y - 26, text, color, t: 0, maxT: 1.05 });
+      }
+      if (!reducedMotion && (type === "crit" || type === "band_hit")) {
+        state.shake = type === "crit" ? 8 : 6;
+      }
+    }
+
+    function playCard(handIndex) {
+      if (state.phase !== "PLAYING" || state.turnLocked) return;
+      const cardId = state.deck.hand[handIndex];
+      const card = CARD_LIBRARY[cardId];
+      if (!card) return;
+      if (state.hero.stamina < card.cost) {
+        showToast("Not enough Stamina — click End Turn!");
+        return;
+      }
+
+      const enc = state.encounter;
+      if (enc.cleared && card.kind === "attack") {
+        showToast("Chamber already cleared! Camp or advance to the next song.");
+        return;
+      }
+
+      state.hero.stamina -= card.cost;
+      state.deck.hand.splice(handIndex, 1);
+      state.deck.discard.push(cardId);
+
+      let rollInfo = null;
+      if (card.roll) {
+        rollInfo = rollD20(0, cardId === "pit_ambush" ? 18 : 20);
+        els.diceLabel.textContent = rollInfo.isCrit ? "ENCORE CRIT!" : (rollInfo.isFumble ? "FEEDBACK FUMBLE" : `D20 Rolled ${rollInfo.raw}`);
+        els.diceResult.textContent = `${card.name} (Total ${rollInfo.total})`;
+      }
+
+      // Apply Block
+      if (card.block) {
+        const blk = card.block + (hasRelicEffect("master3") ? 3 : 0);
+        state.hero.block += blk;
+        playSfx("shield");
+        spawnCanvasFx("shield", "#38b87c", `+${blk} BLOCK`);
+        addLog(`${card.name} raises +${blk} Block.`, "good");
+        if (hasRelicEffect("thorns3") && !enc.cleared) {
+          applyDamageToEnemy(3, "Siren Signal Coil", false);
+        }
+      }
+
+      // Apply Heal
+      if (card.heal) {
+        const healAmt = card.heal + (hasRelicEffect("heal3") ? 3 : 0);
+        state.hero.hp = Math.min(state.hero.maxHp, state.hero.hp + healAmt);
+        playSfx("shield");
+        spawnCanvasFx("heal", "#38b87c", `+${healAmt} HP`);
+        addLog(`${card.name} restores +${healAmt} HP.`, "good");
+      }
+
+      // Apply Stamina/Draw
+      if (card.staminaGain) {
+        state.hero.stamina += card.staminaGain;
+        drawCards(card.draw || 1);
+        spawnCanvasFx("shield", "#e0b254", `+${card.staminaGain} STAMINA`);
+        addLog(`${card.name} surges +${card.staminaGain} Stamina and draws a card!`, "gold");
+      }
+
+      // Apply Damage
+      if (card.dmg && !enc.cleared) {
+        let dmg = card.dmg;
+        if (card.kind === "attack" && hasRelicEffect("atk2")) dmg += 2;
+        if (card.kind === "attack" && hasRelicEffect("master3")) dmg += 3;
+        if ((enc.isFinale || enc.isVaultChamber) && hasRelicEffect("boss3")) dmg += 3;
+
+        if (rollInfo) {
+          if (rollInfo.isCrit) {
+            dmg = dmg * 2;
+            if (state.heroClass.id === "rogue") {
+              state.hero.hp = Math.min(state.hero.maxHp, state.hero.hp + 3);
+            }
+          } else if (rollInfo.isFumble) {
+            dmg = Math.max(2, Math.floor(dmg * 0.5));
+          } else if (rollInfo.total >= 14) {
+            dmg += 4;
+          }
+        }
+        if (cardId === "lucky_riff" && rollInfo && rollInfo.total >= 12) {
+          state.score += 100;
+        }
+        applyDamageToEnemy(dmg, card.name, Boolean(rollInfo && rollInfo.isCrit), card.kind === "arcane");
+      }
+
+      updateArenaUI();
+      saveCheckpoint();
+    }
+
+    function applyDamageToEnemy(rawDmg, sourceName, isCrit, ignoreBlock) {
+      const enc = state.encounter;
+      if (!enc || enc.cleared) return;
+      let dmg = rawDmg;
+      if (!ignoreBlock && enc.block > 0) {
+        const absorbed = Math.min(enc.block, dmg);
+        enc.block -= absorbed;
+        dmg -= absorbed;
+      }
+      enc.hp = Math.max(0, enc.hp - dmg);
+      state.dmgDealt += dmg;
+      state.score += dmg * (isCrit ? 12 : 6);
+
+      playSfx(isCrit ? "crit" : "hit");
+      spawnCanvasFx(isCrit ? "crit" : "slash", isCrit ? "#f2cb73" : "#d94638", `-${dmg}${isCrit ? " CRIT!" : ""}`);
+      addLog(
+        `${sourceName} hits ${enc.member.name} for ${dmg} DMG${isCrit ? " (ENCORE CRIT!)" : ""}!`,
+        isCrit ? "gold" : "good"
+      );
+
+      if (enc.hp <= 0) {
+        onChamberCleared();
+      }
+    }
+
+    function onChamberCleared() {
+      const enc = state.encounter;
+      if (!enc || enc.cleared) return;
+      enc.cleared = true;
+      if (!state.clearedTracks.includes(enc.trackIndex)) {
+        state.clearedTracks.push(enc.trackIndex);
+        saveData.career.totalRoomsCleared++;
+      }
+      const clearBonus = enc.isFinale ? 500 : (enc.isVaultChamber ? 260 : 160);
+      state.score += clearBonus;
+
+      const heal = 4 + (hasRelicEffect("clearHeal4") ? 4 : 0);
+      state.hero.hp = Math.min(state.hero.maxHp, state.hero.hp + heal);
+      spawnCanvasFx("crit", "#38b87c", "CLEARED!");
+      addLog(`Chamber "${enc.trackTitle}" cleared! +${heal} HP & +${clearBonus} Score.`, "gold");
+
+      // Check victory if this was the final track!
+      if (enc.trackIndex >= state.campaign.tracks.length - 1) {
+        finishCampaign(true, "You conquered the Virtual Band on the closing track!");
+      }
+    }
+
+    function resolveSongEvent() {
+      const enc = state.encounter;
+      if (!enc || enc.eventResolved || state.turnLocked) return;
+      enc.eventResolved = true;
+      const roll = rollD20(0, 20);
+      const passed = roll.total >= enc.event.dc || roll.isCrit;
+      els.diceLabel.textContent = passed ? `Event Passed (DC ${enc.event.dc})` : `Event Missed (DC ${enc.event.dc})`;
+      els.diceResult.textContent = `Rolled ${roll.raw} (Total ${roll.total})`;
+
+      if (passed) {
+        state.score += 120;
+        if (enc.event.reward === "dmg_burst" && !enc.cleared) {
+          applyDamageToEnemy(12, "Song Event Surge", roll.isCrit, true);
+        } else if (enc.event.reward === "stamina") {
+          state.hero.stamina += 2;
+          spawnCanvasFx("shield", "#e0b254", "+2 STAMINA");
+          addLog(`Event succeeded! Gained +2 Stamina for this turn.`, "gold");
+        } else {
+          state.hero.hp = Math.min(state.hero.maxHp, state.hero.hp + 7);
+          state.hero.block += 8;
+          spawnCanvasFx("heal", "#38b87c", "+7 HP / +8 BLK");
+          addLog(`Event succeeded! Restored +7 HP and +8 Block.`, "good");
+        }
+        if (hasRelicEffect("eventMaster")) {
+          state.hero.block += 6;
+          state.hero.hp = Math.min(state.hero.maxHp, state.hero.hp + 4);
+        }
+      } else {
+        state.hero.hp = Math.max(1, state.hero.hp - 4);
+        spawnCanvasFx("band_hit", "#d94638", "-4 HP");
+        addLog(`Event check missed (Total ${roll.total} vs DC ${enc.event.dc}). Took 4 hazard DMG.`, "bad");
+      }
+      updateArenaUI();
+      saveCheckpoint();
+    }
+
+    function endPlayerTurn() {
+      if (state.phase !== "PLAYING" || state.turnLocked) return;
+      const enc = state.encounter;
+      state.turnLocked = true;
+      updateArenaUI();
+
+      // Discard remaining hand
+      while (state.deck.hand.length) state.deck.discard.push(state.deck.hand.pop());
+
+      setTimeout(() => {
+        if (state.phase !== "PLAYING") return;
+        if (enc && !enc.cleared) {
+          let incoming = enc.intentVal;
+          const blocked = Math.min(state.hero.block, incoming);
+          state.hero.block -= blocked;
+          incoming -= blocked;
+
+          if (enc.intentBlock) {
+            enc.block += enc.intentBlock;
+          }
+          if (enc.intentType === "drain" && incoming > 0) {
+            enc.hp = Math.min(enc.maxHp, enc.hp + Math.ceil(incoming * 0.4));
+          }
+
+          if (incoming > 0) {
+            state.hero.hp = Math.max(0, state.hero.hp - incoming);
+            playSfx("hit");
+            spawnCanvasFx("band_hit", "#d94638", `-${incoming} HP`);
+            addLog(`${enc.member.name} plays ${enc.intentName} — ${incoming} DMG (${blocked} blocked)!`, "bad");
+          } else {
+            playSfx("shield");
+            spawnCanvasFx("shield", "#38b87c", "BLOCKED!");
+            addLog(`Your Amp Shield fully absorbs ${enc.member.name}'s ${enc.intentName}!`, "good");
+          }
+
+          if (state.hero.hp <= 0) {
+            finishCampaign(false, `${enc.member.name} overwhelmed you during "${enc.trackTitle}".`);
+            return;
+          }
+          pickNextBandIntent();
+        }
+
+        // Start next player turn
+        state.hero.turn++;
+        state.hero.stamina = state.hero.maxStamina;
+        state.hero.block = state.heroClass.passiveBlock;
+        drawCards(4);
+        state.turnLocked = false;
+        updateArenaUI();
+        saveCheckpoint();
+      }, reducedMotion ? 80 : 520);
+    }
+
+    function handleSongClockFinished() {
+      const camp = state.campaign;
+      const enc = state.encounter;
+      if (!camp || !enc) return;
+
+      // If enemy is still alive when track ends, trigger Track-Change Ambush!
+      if (!enc.cleared) {
+        const ambush = Math.max(3, Math.round(enc.intentVal * 0.65));
+        const blocked = Math.min(state.hero.block, ambush);
+        const dmg = ambush - blocked;
+        state.hero.block -= blocked;
+        if (dmg > 0) {
+          state.hero.hp = Math.max(0, state.hero.hp - dmg);
+          spawnCanvasFx("band_hit", "#d94638", `AMBUSH -${dmg}`);
+          addLog(`Song ended before clearing "${enc.trackTitle}"! Band lands a ${dmg} DMG Track-Change Ambush.`, "bad");
+          if (state.hero.hp <= 0) {
+            finishCampaign(false, `The Virtual Band's Track-Change Ambush ended your run after "${enc.trackTitle}".`);
+            return;
+          }
+        }
+      }
+
+      if (state.clock.trackIndex < camp.tracks.length - 1) {
+        enterChamber(state.clock.trackIndex + 1, true);
+        showToast(`Track ${state.clock.trackIndex + 1}: ${state.encounter.trackTitle}`);
+      } else {
+        finishCampaign(true, "You survived all the way through the final riff of the album!");
+      }
+    }
+
+    function finishCampaign(victory, reason) {
+      state.phase = "GAME_OVER";
+      state.clock.running = false;
+      const camp = state.campaign;
+
+      if (victory && hasRelicEffect("chalice")) {
+        state.score = Math.round(state.score * 1.15);
+      }
+
+      let unlockedNewRelic = false;
+      let earnedXp = Math.round(camp.xp * (victory ? 1 : 0.35));
+
+      if (victory) {
+        saveData.career.totalVictories++;
+        if (!saveData.career.clearedIds.includes(camp.id)) {
+          saveData.career.clearedIds.push(camp.id);
+        }
+        if (!saveData.career.relics.includes(camp.relic.id)) {
+          saveData.career.relics.push(camp.relic.id);
+          unlockedNewRelic = true;
+        }
+        const prevBest = saveData.career.bestScores[camp.id] || 0;
+        if (state.score > prevBest) saveData.career.bestScores[camp.id] = state.score;
+      }
+
+      saveData.career.xp += earnedXp;
+      saveData.activeRun = null; // Clear checkpoint on completion
+      persistSave();
+      renderCareer();
+      renderCampaignGrid();
+      renderResumeBanner();
+
+      els.outcomeKicker.textContent = victory ? `${camp.catLabel.toUpperCase()} CONQUERED` : "DEFEATED BY THE RIFF";
+      els.outcomeTitle.textContent = victory ? `Victory: ${camp.title}` : `Fallen in ${camp.title}`;
+      els.outcomeDesc.textContent = reason;
+      els.outcomeStats.innerHTML = `
+        <div class="stat-tile"><span>Final Score</span><strong>${state.score.toLocaleString()}</strong></div>
+        <div class="stat-tile"><span>Chambers Cleared</span><strong>${state.clearedTracks.length}/${camp.tracks.length}</strong></div>
+        <div class="stat-tile"><span>Damage Dealt</span><strong>${state.dmgDealt}</strong></div>
+        <div class="stat-tile"><span>XP Earned</span><strong>+${earnedXp}</strong></div>
+      `;
+
+      if (victory) {
+        els.outcomeRelicBanner.innerHTML = `
+          <div class="mono" style="font-size:11.5px;color:var(--brass-hi);">${unlockedNewRelic ? "NEW RELIC UNLOCKED & SAVED" : "RELIC MASTERED"}</div>
+          <div style="font-family:var(--font-display);font-size:17px;font-weight:700;margin-top:2px;">★ ${camp.relic.name}</div>
+          <div style="font-size:13px;color:var(--ink-soft);margin-top:2px;">${camp.relic.desc}</div>
+        `;
+      } else {
+        els.outcomeRelicBanner.innerHTML = `
+          <div class="mono" style="font-size:11.5px;color:var(--crimson-hi);">THE BAND HOLDS THE STAGE</div>
+          <div style="font-size:13px;color:var(--ink-soft);margin-top:4px;">You still earned +${earnedXp} XP toward your rank. Regroup, switch classes, or replay to claim <b>${camp.relic.name}</b>.</div>
+        `;
+      }
+
+      els.outcomeModal.classList.add("open");
+    }
+
+    /* =========================================================================
+     * 8. UI SYNC & SCREEN SWITCHING
+     * ========================================================================= */
+    function switchScreen(phase) {
+      state.phase = phase;
+      const inArena = phase === "PLAYING";
+      els.atlasView.classList.toggle("view-hidden", inArena);
+      els.arenaView.classList.toggle("view-hidden", !inArena);
+      $("navAtlasBtn").classList.toggle("active", !inArena);
+      if (inArena) {
+        resizeCanvas();
+        updateArenaUI();
+      } else {
+        renderCareer();
+        renderResumeBanner();
+        renderCampaignGrid();
+      }
+    }
+
+    function updateHud() {
+      const camp = state.campaign;
+      const enc = state.encounter;
+      if (!camp || !enc) return;
+
+      els.hudHeroLabel.textContent = `${state.heroClass.name} · HP ${state.hero.hp}/${state.hero.maxHp}`;
+      els.hudBlockLabel.textContent = `Block ${state.hero.block}`;
+      els.hudHeroHpFill.style.width = `${Math.max(0, Math.round((state.hero.hp / state.hero.maxHp) * 100))}%`;
+      els.hudScoreLabel.textContent = `Score ${state.score.toLocaleString()}`;
+      els.hudRelicCount.textContent = `Relics Active: ${saveData.career.relics.length}`;
+
+      els.clockSongTitle.textContent = `Ch. ${state.clock.trackIndex + 1}/${camp.tracks.length} · ${enc.trackTitle}`;
+      els.clockSongTime.textContent = `${fmtTime(state.clock.trackElapsed)} / ${fmtTime(enc.trackDur)}`;
+      const songPct = Math.min(100, (state.clock.trackElapsed / Math.max(1, enc.trackDur)) * 100);
+      els.songBarFill.style.width = `${songPct}%`;
+
+      let elapsedBefore = 0;
+      for (let i = 0; i < state.clock.trackIndex; i++) elapsedBefore += camp.tracks[i][1];
+      const totalElapsed = elapsedBefore + state.clock.trackElapsed;
+      els.clockAlbumTime.textContent = `Album Clock · ${fmtTime(totalElapsed)} / ${fmtTime(state.clock.totalDuration)}`;
+      els.clockSyncState.textContent = state.clock.running ? "Live Album Sync Running" : "Clock Paused · Press Play or Start Clock";
+      els.clockToggleBtn.textContent = state.clock.running ? "Pause Clock" : "Start Clock";
+      els.clockToggleBtn.classList.toggle("primary", !state.clock.running);
+      els.sfxToggleBtn.textContent = saveData.career.sfxEnabled ? "SFX: On" : "SFX: Off";
+      els.prevTrackBtn.disabled = state.clock.trackIndex <= 0;
+      els.nextTrackBtn.disabled = state.clock.trackIndex >= camp.tracks.length - 1;
+    }
+
+    function updateArenaUI() {
+      const camp = state.campaign;
+      const enc = state.encounter;
+      if (!camp || !enc) return;
+      updateHud();
+
+      const biome = BIOMES[camp.biome] || BIOMES.cavern;
+      els.boardBiomeName.textContent = `${camp.title} · ${biome.name}`;
+      els.rerollLabel.textContent = `Rerolls: ${state.hero.rerolls}`;
+
+      // Enemy Card
+      els.enemySigil.textContent = enc.member.initials;
+      els.enemySigil.style.background = enc.member.bg;
+      els.enemySigil.style.color = enc.member.color;
+      els.enemySigil.style.borderColor = enc.member.color;
+      els.enemyName.textContent = enc.member.name;
+      els.enemyRole.textContent = `${enc.member.role} · ${enc.isFinale ? "Finale Boss" : (enc.isVaultChamber ? "Vault Guardian" : `Track ${enc.trackIndex + 1}`)}`;
+      els.enemyHpText.textContent = enc.cleared
+        ? "DEFEATED"
+        : `${enc.hp} / ${enc.maxHp} HP${enc.block ? ` (+${enc.block} Blk)` : ""}`;
+      els.enemyHpFill.style.width = `${Math.max(0, Math.round((enc.hp / enc.maxHp) * 100))}%`;
+
+      if (enc.cleared) {
+        els.enemyIntentBox.className = "intent-box cleared";
+        els.enemyIntentText.textContent = "Chamber Cleared — Enjoy track or advance";
+        els.enemyIntentVal.textContent = "SAFE";
+      } else {
+        els.enemyIntentBox.className = "intent-box";
+        els.enemyIntentText.textContent = `Telegraph: ${enc.intentName}`;
+        els.enemyIntentVal.textContent = `${enc.intentVal} DMG${enc.intentBlock ? ` / +${enc.intentBlock} BLK` : ""}`;
+      }
+
+      // Song Event
+      els.eventTitle.textContent = `Song Event · DC ${enc.event.dc} Check`;
+      els.eventText.textContent = enc.event.text;
+      els.eventRollBtn.disabled = enc.eventResolved || state.turnLocked;
+      els.eventRollBtn.textContent = enc.eventResolved ? "Event Resolved" : "Roll D20 Check";
+      els.campHealBtn.classList.toggle("view-hidden", !enc.cleared || state.clock.trackIndex >= camp.tracks.length - 1);
+
+      // Hand & Stamina
+      els.staminaReadout.textContent = `Turn ${state.hero.turn} · Stamina ${state.hero.stamina}/${state.hero.maxStamina} · Draw ${state.deck.draw.length}`;
+      els.rerollBtn.disabled = state.hero.rerolls <= 0 || state.turnLocked;
+      els.rerollBtn.textContent = `Fresh Hand (${state.hero.rerolls} Token${state.hero.rerolls === 1 ? "" : "s"})`;
+      els.endTurnBtn.disabled = state.turnLocked;
+
+      els.cardsRow.innerHTML = state.deck.hand.map((cardId, idx) => {
+        const c = CARD_LIBRARY[cardId];
+        const cantAfford = state.hero.stamina < c.cost || state.turnLocked || (enc.cleared && c.kind === "attack");
+        return `
+          <button type="button" class="tactic-card" data-kind="${c.kind}" data-hand-idx="${idx}" ${cantAfford ? "disabled" : ""}>
+            <div class="card-top-line">
+              <span class="card-name">${c.name}</span>
+              <span class="card-cost">${c.cost} STM</span>
+            </div>
+            <div class="card-type">${c.kind.toUpperCase()}${c.roll ? " · D20 ROLL" : " · INSTANT"}</div>
+            <div class="card-desc">${c.desc}</div>
+          </button>
+        `;
+      }).join("");
+    }
+
+    /* =========================================================================
+     * 9. DARK-FANTASY INKED MAP CANVAS & 60FPS MOTION GRAPHICS ENGINE
+     * ========================================================================= */
+    const ctx = els.boardCanvas.getContext("2d");
+    let canvasW = 760, canvasH = 440;
+
+    function resizeCanvas() {
+      const rect = els.boardCanvas.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvasW = rect.width;
+      canvasH = rect.height;
+      els.boardCanvas.width = Math.round(canvasW * dpr);
+      els.boardCanvas.height = Math.round(canvasH * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (state.campaign) buildMapGeometry(state.campaign);
+    }
+
+    function buildMapGeometry(camp) {
+      const n = camp.tracks.length;
+      const nodes = [];
+      const padX = Math.max(54, canvasW * 0.085);
+      const padTop = 76;
+      const padBot = 86;
+      const usableW = Math.max(200, canvasW - padX * 2);
+      const usableH = Math.max(140, canvasH - padTop - padBot);
+
+      if (n === 1) {
+        nodes.push({ x: canvasW * 0.5, y: canvasH * 0.52, idx: 0 });
+      } else if (n === 2) {
+        nodes.push({ x: canvasW * 0.32, y: canvasH * 0.56, idx: 0 });
+        nodes.push({ x: canvasW * 0.68, y: canvasH * 0.44, idx: 1 });
+      } else {
+        // Serpentine hand-inked cartography trail (2 rows for <= 14 tracks, 3 rows for 26-track Deep Cuts)
+        const rows = n > 14 ? 3 : 2;
+        const perRow = Math.ceil(n / rows);
+        for (let i = 0; i < n; i++) {
+          const r = Math.floor(i / perRow);
+          const colInRow = i % perRow;
+          const colsThisRow = r === rows - 1 ? (n - r * perRow) : perRow;
+          const frac = colsThisRow <= 1 ? 0.5 : colInRow / (colsThisRow - 1);
+          const xFrac = r % 2 === 0 ? frac : (1 - frac);
+          const x = padX + xFrac * usableW;
+          const rowBaseY = padTop + (rows === 1 ? 0.5 : r / (rows - 1)) * usableH;
+          const wave = Math.sin((i + 0.6) * 1.35) * (rows === 3 ? 14 : 24);
+          nodes.push({ x, y: rowBaseY + wave, idx: i });
+        }
+      }
+
+      state.nodes = nodes;
+      const cur = nodes[state.clock.trackIndex] || nodes[0];
+      if (cur) {
+        state.heroPos.x = cur.x;
+        state.heroPos.y = cur.y;
+      }
+
+      // Seed ambient biome particles
+      state.particles = [];
+      const pCount = reducedMotion ? 0 : (isPhoneScreen() ? 18 : 34);
+      for (let i = 0; i < pCount; i++) {
+        state.particles.push({
+          x: Math.random() * canvasW,
+          y: Math.random() * canvasH,
+          r: 1.2 + Math.random() * 2.2,
+          vx: (Math.random() - 0.5) * 14,
+          vy: -8 - Math.random() * 18,
+          alpha: 0.2 + Math.random() * 0.55
+        });
+      }
+    }
+
+    function drawBiomeBackdrop(biome, t) {
+      const grad = ctx.createRadialGradient(canvasW * 0.5, canvasH * 0.48, 30, canvasW * 0.5, canvasH * 0.5, Math.max(canvasW, canvasH) * 0.72);
+      grad.addColorStop(0, biome.bg1);
+      grad.addColorStop(1, biome.bg2);
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvasW, canvasH);
+
+      // Subtle parchment cartography grid & inked border frame
+      ctx.strokeStyle = "rgba(224, 178, 84, 0.065)";
+      ctx.lineWidth = 1;
+      for (let x = 48; x < canvasW; x += 64) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvasH); ctx.stroke();
+      }
+      for (let y = 48; y < canvasH; y += 64) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvasW, y); ctx.stroke();
+      }
+
+      // Stylized inked biome silhouette along horizon
+      ctx.save();
+      ctx.strokeStyle = "rgba(224, 178, 84, 0.13)";
+      ctx.fillStyle = "rgba(0, 0, 0, 0.22)";
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(0, canvasH);
+      if (biome.silhouette === "peaks") {
+        for (let x = 0; x <= canvasW + 60; x += 58) {
+          const h = 42 + Math.abs(Math.sin(x * 0.017)) * 68;
+          ctx.lineTo(x, canvasH - h);
+        }
+      } else if (biome.silhouette === "waves") {
+        for (let x = 0; x <= canvasW + 20; x += 24) {
+          const h = 38 + Math.sin(x * 0.025 + t * 1.1) * 14;
+          ctx.lineTo(x, canvasH - h);
+        }
+      } else {
+        for (let x = 0; x <= canvasW + 40; x += 44) {
+          const h = 34 + (Math.cos(x * 0.021) * 0.5 + 0.5) * 46;
+          ctx.lineTo(x, canvasH - h);
+        }
+      }
+      ctx.lineTo(canvasW, canvasH);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Compass Rose in top-right corner
+      const cx = canvasW - 38, cy = 36;
+      ctx.strokeStyle = "rgba(224, 178, 84, 0.25)";
+      ctx.beginPath(); ctx.arc(cx, cy, 18, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - 23); ctx.lineTo(cx, cy + 23);
+      ctx.moveTo(cx - 23, cy); ctx.lineTo(cx + 23, cy);
+      ctx.stroke();
+      ctx.fillStyle = "rgba(224, 178, 84, 0.55)";
+      ctx.font = "600 9px 'IBM Plex Mono', monospace";
+      ctx.textAlign = "center";
+      ctx.fillText("N", cx, cy - 25);
+
+      // Inner cartography double-rule border
+      ctx.strokeStyle = "rgba(224, 178, 84, 0.22)";
+      ctx.strokeRect(8, 8, canvasW - 16, canvasH - 16);
+      ctx.restore();
+    }
+
+    function renderCanvasFrame(nowMs) {
+      requestAnimationFrame(renderCanvasFrame);
+      if (state.phase !== "PLAYING" || !state.campaign) return;
+
+      const dt = Math.min(0.1, (nowMs - (state.clock.lastFrameMs || nowMs)) / 1000);
+      state.clock.lastFrameMs = nowMs;
+
+      // Advance real-time album clock
+      if (state.clock.running && state.encounter) {
+        state.clock.trackElapsed += dt;
+        if (state.clock.trackElapsed >= state.encounter.trackDur) {
+          state.clock.trackElapsed = state.encounter.trackDur;
+          handleSongClockFinished();
+        } else {
+          updateHud();
+          if (Math.floor(state.clock.trackElapsed) - state.clock.lastCheckpointSec >= 6) {
+            state.clock.lastCheckpointSec = Math.floor(state.clock.trackElapsed);
+            saveCheckpoint();
+          }
+        }
+      }
+
+      const camp = state.campaign;
+      const biome = BIOMES[camp.biome] || BIOMES.cavern;
+      const t = nowMs * 0.001;
+
+      ctx.save();
+      if (state.shake > 0.2) {
+        const sx = (Math.random() - 0.5) * state.shake;
+        const sy = (Math.random() - 0.5) * state.shake;
+        ctx.translate(sx, sy);
+        state.shake *= 0.85;
+      }
+
+      drawBiomeBackdrop(biome, t);
+
+      // Ambient biome particles
+      for (const p of state.particles) {
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        if (p.y < -10) { p.y = canvasH + 10; p.x = Math.random() * canvasW; }
+        if (p.x < -10) p.x = canvasW + 10;
+        if (p.x > canvasW + 10) p.x = -10;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = biome.accent;
+        ctx.globalAlpha = p.alpha * (0.65 + 0.35 * Math.sin(t * 2 + p.x));
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+
+      const nodes = state.nodes;
+      // Draw inked winding road connecting all track chambers
+      if (nodes.length > 1) {
+        ctx.save();
+        ctx.setLineDash([6, 6]);
+        ctx.lineWidth = 2.4;
+        for (let i = 0; i < nodes.length - 1; i++) {
+          const a = nodes[i], b = nodes[i + 1];
+          const passed = i < state.clock.trackIndex;
+          ctx.strokeStyle = passed ? "rgba(56, 184, 124, 0.72)" : "rgba(224, 178, 84, 0.32)";
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          const mx = (a.x + b.x) * 0.5;
+          const my = (a.y + b.y) * 0.5 + (i % 2 === 0 ? -12 : 12);
+          ctx.quadraticCurveTo(mx, my, b.x, b.y);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      // Draw each track chamber node
+      const rBase = nodes.length > 14 ? 13 : 17;
+      for (let i = 0; i < nodes.length; i++) {
+        const nd = nodes[i];
+        const isCurrent = i === state.clock.trackIndex;
+        const isCleared = state.clearedTracks.includes(i);
+        const isVault = typeof camp.vaultStartIndex === "number" && i >= camp.vaultStartIndex;
+        const isFinale = i === nodes.length - 1 && nodes.length > 1;
+
+        if (isCurrent) {
+          // Flickering torchlight halo around active song chamber
+          const pulse = 26 + Math.sin(t * 4.5) * 5;
+          const halo = ctx.createRadialGradient(nd.x, nd.y, 4, nd.x, nd.y, pulse + 16);
+          halo.addColorStop(0, "rgba(224, 178, 84, 0.42)");
+          halo.addColorStop(0.6, "rgba(217, 70, 56, 0.16)");
+          halo.addColorStop(1, "rgba(0, 0, 0, 0)");
+          ctx.fillStyle = halo;
+          ctx.beginPath(); ctx.arc(nd.x, nd.y, pulse + 16, 0, Math.PI * 2); ctx.fill();
+        }
+
+        ctx.beginPath();
+        ctx.arc(nd.x, nd.y, isFinale ? rBase + 3 : rBase, 0, Math.PI * 2);
+        ctx.fillStyle = isCurrent ? "#2e2217" : (isCleared ? "#172920" : "#181410");
+        ctx.fill();
+        ctx.lineWidth = isCurrent ? 2.6 : 1.6;
+        ctx.strokeStyle = isCurrent
+          ? "#f2cb73"
+          : (isCleared ? "#38b87c" : (isVault ? "#a77be8" : (isFinale ? "#d94638" : "rgba(224,178,84,0.45)")));
+        ctx.stroke();
+
+        // Chamber number or check
+        ctx.fillStyle = isCurrent ? "#f2cb73" : (isCleared ? "#9de8c4" : "#c7bca8");
+        ctx.font = `700 ${nodes.length > 14 ? 10 : 11.5}px 'IBM Plex Mono', monospace`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(isCleared && !isCurrent ? "✓" : String(i + 1), nd.x, nd.y + 0.5);
+
+        // Song title caption under active / first / last nodes (or all nodes if <= 11 tracks)
+        if (isCurrent || nodes.length <= 6 || isFinale) {
+          const label = camp.tracks[i][0];
+          const shortLbl = label.length > 18 ? label.slice(0, 17) + "…" : label;
+          ctx.font = `${isCurrent ? "700" : "500"} 10.5px 'DM Sans', sans-serif`;
+          ctx.fillStyle = isCurrent ? "#f1e9d8" : "rgba(199, 188, 168, 0.72)";
+          ctx.fillText(shortLbl, nd.x, nd.y + rBase + 13);
+        }
+      }
+
+      // Smoothly glide hero pawn toward active song node
+      const targetNode = nodes[state.clock.trackIndex];
+      if (targetNode) {
+        state.heroPos.x += (targetNode.x - state.heroPos.x) * Math.min(1, dt * 8);
+        state.heroPos.y += (targetNode.y - state.heroPos.y) * Math.min(1, dt * 8);
+
+        // Draw Hero Pawn slightly left-above & Virtual Band Token slightly right-above active chamber
+        const bob = Math.sin(t * 3.8) * 2.5;
+        const hx = state.heroPos.x - 16;
+        const hy = state.heroPos.y - 22 + bob;
+
+        ctx.beginPath();
+        ctx.arc(hx, hy, 10, 0, Math.PI * 2);
+        ctx.fillStyle = "#e0b254";
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#110d09";
+        ctx.stroke();
+        ctx.fillStyle = "#110d09";
+        ctx.font = "800 9px 'Cinzel', serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("YOU", hx, hy + 0.5);
+
+        if (state.encounter && !state.encounter.cleared) {
+          const ex = targetNode.x + 18;
+          const ey = targetNode.y - 22 - bob;
+          ctx.beginPath();
+          ctx.arc(ex, ey, 10, 0, Math.PI * 2);
+          ctx.fillStyle = state.encounter.member.color;
+          ctx.fill();
+          ctx.strokeStyle = "#110d09";
+          ctx.stroke();
+          ctx.fillStyle = "#110d09";
+          ctx.font = "800 9px 'IBM Plex Mono', monospace";
+          ctx.fillText(state.encounter.member.initials, ex, ey + 0.5);
+        }
+      }
+
+      // Combat Motion FX Bursts
+      for (let i = state.fx.length - 1; i >= 0; i--) {
+        const f = state.fx[i];
+        f.t += dt;
+        const p = f.t / f.maxT;
+        if (p >= 1) { state.fx.splice(i, 1); continue; }
+        ctx.save();
+        ctx.globalAlpha = 1 - p;
+        ctx.strokeStyle = f.color;
+        if (f.type === "slash" || f.type === "crit") {
+          ctx.lineWidth = f.type === "crit" ? 4.5 : 3;
+          const rad = 16 + p * (f.type === "crit" ? 58 : 34);
+          ctx.beginPath();
+          ctx.arc(f.x, f.y, rad, -0.8, 1.4);
+          ctx.stroke();
+          if (f.type === "crit") {
+            for (let k = 0; k < 8; k++) {
+              const ang = (k / 8) * Math.PI * 2 + p;
+              ctx.beginPath();
+              ctx.moveTo(f.x + Math.cos(ang) * 12, f.y + Math.sin(ang) * 12);
+              ctx.lineTo(f.x + Math.cos(ang) * (rad + 12), f.y + Math.sin(ang) * (rad + 12));
+              ctx.stroke();
+            }
+          }
+        } else {
+          ctx.lineWidth = 2.6;
+          ctx.beginPath();
+          ctx.arc(f.x, f.y, 14 + p * 38, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      // Floating Damage / Block / Heal Numbers
+      for (let i = state.floaters.length - 1; i >= 0; i--) {
+        const fl = state.floaters[i];
+        fl.t += dt;
+        const p = fl.t / fl.maxT;
+        if (p >= 1) { state.floaters.splice(i, 1); continue; }
+        ctx.save();
+        ctx.globalAlpha = 1 - p * p;
+        ctx.font = "800 14px 'IBM Plex Mono', monospace";
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#090706";
+        ctx.fillText(fl.text, fl.x + 1, fl.y - p * 38 + 1);
+        ctx.fillStyle = fl.color;
+        ctx.fillText(fl.text, fl.x, fl.y - p * 38);
+        ctx.restore();
+      }
+
+      ctx.restore();
+    }
+
+    /* =========================================================================
+     * 10. EVENT BINDINGS
+     * ========================================================================= */
+    function bindEvents() {
+      // Top Nav
+      $("navAtlasBtn").addEventListener("click", () => {
+        if (state.phase === "PLAYING") saveCheckpoint();
+        switchScreen("TITLE_MENU");
+      });
+      $("navRelicsBtn").addEventListener("click", () => {
+        renderRelicModal();
+        els.relicModal.classList.add("open");
+      });
+      $("navRulesBtn").addEventListener("click", () => els.rulesModal.classList.add("open"));
+      $("closeRelicModal").addEventListener("click", () => {
+        els.relicModal.classList.remove("open");
+        $("confirmResetBtn").classList.add("view-hidden");
+      });
+      $("closeRulesModal").addEventListener("click", () => els.rulesModal.classList.remove("open"));
+
+      // Two-step safe reset inside Relic Vault
+      $("resetCareerBtn").addEventListener("click", () => {
+        $("confirmResetBtn").classList.remove("view-hidden");
+      });
+      $("confirmResetBtn").addEventListener("click", () => {
+        saveData = { career: defaultCareer(), activeRun: null };
+        persistSave();
+        renderCareer();
+        renderClasses();
+        renderCampaignGrid();
+        renderResumeBanner();
+        renderRelicModal();
+        $("confirmResetBtn").classList.add("view-hidden");
+        showToast("Saved browser progress wiped clean.");
+      });
+
+      // Random Campaign CTA
+      $("quickRandomBtn").addEventListener("click", () => {
+        const pick = CAMPAIGNS[Math.floor(Math.random() * CAMPAIGNS.length)];
+        startNewCampaign(pick.id);
+      });
+
+      // Resume / Discard checkpoint
+      els.resumeBtn.addEventListener("click", resumeSavedCampaign);
+      els.discardSaveBtn.addEventListener("click", () => {
+        saveData.activeRun = null;
+        persistSave();
+        renderResumeBanner();
+        showToast("Saved checkpoint discarded.");
+      });
+
+      // Class selector
+      els.classGrid.addEventListener("click", e => {
+        const btn = e.target.closest("[data-cls]");
+        if (!btn) return;
+        saveData.career.selectedClass = btn.dataset.cls;
+        persistSave();
+        renderClasses();
+      });
+
+      // Atlas Category Filters
+      els.atlasFilters.addEventListener("click", e => {
+        const btn = e.target.closest("[data-filter]");
+        if (!btn) return;
+        state.filter = btn.dataset.filter;
+        els.atlasFilters.querySelectorAll(".filter-btn").forEach(b => {
+          const active = b === btn;
+          b.classList.toggle("active", active);
+          b.setAttribute("aria-selected", String(active));
+        });
+        renderCampaignGrid();
+      });
+
+      // Start Campaign buttons
+      els.campaignGrid.addEventListener("click", e => {
+        const btn = e.target.closest("[data-start]");
+        if (!btn) return;
+        startNewCampaign(btn.dataset.start);
+      });
+
+      // Clock & Sync Controls
+      els.clockToggleBtn.addEventListener("click", () => {
+        state.clock.running = !state.clock.running;
+        state.clock.lastFrameMs = performance.now();
+        updateHud();
+        saveCheckpoint();
+      });
+      els.prevTrackBtn.addEventListener("click", () => {
+        if (state.clock.trackIndex > 0) enterChamber(state.clock.trackIndex - 1, true);
+      });
+      els.nextTrackBtn.addEventListener("click", () => {
+        if (state.campaign && state.clock.trackIndex < state.campaign.tracks.length - 1) {
+          enterChamber(state.clock.trackIndex + 1, true);
+        }
+      });
+      els.songBarTrack.addEventListener("click", e => {
+        if (!state.encounter) return;
+        const rect = els.songBarTrack.getBoundingClientRect();
+        const frac = Math.max(0, Math.min(0.99, (e.clientX - rect.left) / rect.width));
+        state.clock.trackElapsed = frac * state.encounter.trackDur;
+        updateHud();
+        saveCheckpoint();
+        showToast(`Resynced song clock to ${fmtTime(state.clock.trackElapsed)}`);
+      });
+      els.sfxToggleBtn.addEventListener("click", () => {
+        saveData.career.sfxEnabled = !saveData.career.sfxEnabled;
+        persistSave();
+        updateHud();
+        if (saveData.career.sfxEnabled) playSfx("dice");
+      });
+      els.backAtlasBtn.addEventListener("click", () => {
+        state.clock.running = false;
+        saveCheckpoint();
+        switchScreen("TITLE_MENU");
+        showToast("Campaign checkpoint saved in your browser.");
+      });
+
+      // Click any chamber node directly on the map canvas to resync!
+      els.boardCanvas.addEventListener("click", e => {
+        if (state.phase !== "PLAYING" || !state.nodes.length) return;
+        const rect = els.boardCanvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        for (const nd of state.nodes) {
+          if (Math.hypot(x - nd.x, y - nd.y) <= 24) {
+            if (nd.idx !== state.clock.trackIndex) {
+              enterChamber(nd.idx, true);
+              showToast(`Resynced board to Track ${nd.idx + 1}: ${state.campaign.tracks[nd.idx][0]}`);
+            }
+            break;
+          }
+        }
+      });
+
+      // Combat Actions
+      els.cardsRow.addEventListener("click", e => {
+        const btn = e.target.closest("[data-hand-idx]");
+        if (!btn || btn.disabled) return;
+        playCard(parseInt(btn.dataset.handIdx, 10));
+      });
+      els.endTurnBtn.addEventListener("click", endPlayerTurn);
+      els.eventRollBtn.addEventListener("click", resolveSongEvent);
+
+      els.campHealBtn.addEventListener("click", () => {
+        if (!state.encounter || !state.encounter.cleared) return;
+        const amt = 5 + (hasRelicEffect("heal3") ? 3 : 0);
+        state.hero.hp = Math.min(state.hero.maxHp, state.hero.hp + amt);
+        playSfx("shield");
+        spawnCanvasFx("heal", "#38b87c", `+${amt} HP`);
+        addLog(`Camped while the track played out (+${amt} HP) and marched onward!`, "good");
+        enterChamber(state.clock.trackIndex + 1, true);
+      });
+
+      const doRerollHand = () => {
+        if (state.phase !== "PLAYING" || state.turnLocked || state.hero.rerolls <= 0) return;
+        state.hero.rerolls--;
+        while (state.deck.hand.length) state.deck.discard.push(state.deck.hand.pop());
+        drawCards(4);
+        rollD20(0, 20);
+        els.diceLabel.textContent = "Fate Reroll Spent";
+        els.diceResult.textContent = "Drew 4 fresh cards!";
+        addLog("Spent 1 Reroll Token to draw a fresh 4-card hand.", "gold");
+        updateArenaUI();
+        saveCheckpoint();
+      };
+      els.rerollBtn.addEventListener("click", doRerollHand);
+      els.d20Btn.addEventListener("click", () => {
+        if (state.hero.rerolls > 0 && state.phase === "PLAYING" && !state.turnLocked) {
+          doRerollHand();
+        } else {
+          const r = rollD20(0, 20);
+          els.diceLabel.textContent = "Practice D20 Roll";
+          els.diceResult.textContent = `Rolled ${r.raw}`;
+        }
+      });
+
+      // Outcome Modal Buttons
+      $("outcomeAtlasBtn").addEventListener("click", () => {
+        els.outcomeModal.classList.remove("open");
+        switchScreen("TITLE_MENU");
+      });
+      $("outcomeReplayBtn").addEventListener("click", () => {
+        els.outcomeModal.classList.remove("open");
+        if (state.campaign) startNewCampaign(state.campaign.id);
+      });
+
+      // Close modals on backdrop click or Escape
+      [els.relicModal, els.rulesModal].forEach(m => {
+        m.addEventListener("click", e => {
+          if (e.target === m) m.classList.remove("open");
+        });
+      });
+      document.addEventListener("keydown", e => {
+        if (e.key === "Escape") {
+          els.relicModal.classList.remove("open");
+          els.rulesModal.classList.remove("open");
+        }
+      });
+
+      window.addEventListener("resize", () => {
+        syncDockLayout();
+        if (state.phase === "PLAYING") resizeCanvas();
+      }, { passive: true });
+    }
+
+    /* =========================================================================
+     * 11. INIT
+     * ========================================================================= */
+    renderCareer();
+    renderClasses();
+    renderResumeBanner();
+    renderCampaignGrid();
+    bindDockResize();
+    bindEvents();
+    requestAnimationFrame(renderCanvasFrame);
+  })();
+  </script>
+</body>
+</html>
